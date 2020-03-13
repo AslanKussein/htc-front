@@ -1,8 +1,23 @@
 {
+  "analytics": {
+    "title": "Analytics"
+  },
+  "news": {
+    "title": "News"
+  },
   "сlaim": {
     "title": "Claims"
   },
   "board": {
     "title": "Kanban"
+  },
+  "objects": {
+    "title": "Objects"
+  },
+  "controlPanels": {
+    "title": "Control Panel"
+  },
+  "staffs": {
+    "title": "Staffs"
   }
 }

@@ -1,8 +1,23 @@
 {
+  "analytics": {
+    "title": "Аналитика"
+  },
+  "news": {
+    "title": "Новости"
+  },
   "сlaim": {
-    "title": "Мәлімдеме"
+    "title": "Заявление"
   },
   "board": {
     "title": "Канбан"
+  },
+  "objects": {
+    "title": "Обьекты"
+  },
+  "controlPanels": {
+    "title": "Панель управления"
+  },
+  "staffs": {
+    "title": "Сотрудники"
   }
 }

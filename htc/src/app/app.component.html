@@ -1,6 +1,6 @@
 <div class="wrapper">
   <!--Navbar -->
-  <nav class="mb-1 navbar navbar-expand-lg navbar-dark default-color">
+  <nav class="mb navbar navbar-expand-lg navbar-dark default-color">
     <a class="navbar-brand" href="#">HTC</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
             aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,28 +9,28 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a (click)="dnHref('claims')" class="nav-link">
-            <span translate>сlaim.title</span>
+          <a class="nav-link">
+            <span translate>analytics.title</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="dnHref('board')">
-            <span translate>board.title</span>
+          <a class="nav-link">
+            <span translate>news.title</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
-             aria-haspopup="true" aria-expanded="false">Dropdown
-          </a>
-          <div class="dropdown-menu dropdown-default" aria-labelledby="navbarDropdownMenuLink-333">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
-        </li>
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" href="#">Pricing</a>-->
+<!--        </li>-->
+<!--        <li class="nav-item dropdown">-->
+<!--          <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"-->
+<!--             aria-haspopup="true" aria-expanded="false">Dropdown-->
+<!--          </a>-->
+<!--          <div class="dropdown-menu dropdown-default" aria-labelledby="navbarDropdownMenuLink-333">-->
+<!--            <a class="dropdown-item" href="#">Action</a>-->
+<!--            <a class="dropdown-item" href="#">Another action</a>-->
+<!--            <a class="dropdown-item" href="#">Something else here</a>-->
+<!--          </div>-->
+<!--        </li>-->
       </ul>
       <ul class="navbar-nav ml-auto nav-flex-icons">
         <li class="nav-item" [className]="_language.language == 'ru' ? 'active' : ''">
@@ -59,6 +59,29 @@
       </ul>
     </div>
   </nav>
+
+  <ul class="nav justify-content-center grey lighten-4 py-1">
+    <li class="nav-item">
+      <a  class="nav-link">
+        <span translate>objects.title</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a  class="nav-link">
+        <span translate>controlPanels.title</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a (click)="dnHref('claims')" class="nav-link">
+        <span translate>сlaim.title</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a  class="nav-link">
+        <span translate>staffs.title</span>
+      </a>
+    </li>
+  </ul>
   <!--/.Navbar -->
 
   <router-outlet [hidden]="loading"></router-outlet>
