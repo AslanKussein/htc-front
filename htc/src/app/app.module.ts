@@ -12,6 +12,7 @@ import {
   HttpClient,
   HttpClientModule,
 } from '@angular/common/http';
+import { ProfileComponent } from './profile/profile.component';
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
@@ -20,13 +21,15 @@ const routes: Routes = [
   {path: '', redirectTo: '/claims', pathMatch: 'full'},
   {path: 'claims', component: ClaimsComponent},
   {path: 'board', component: BoardComponent},
+  {path: 'profile', component: ProfileComponent},
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     BoardComponent,
-    ClaimsComponent
+    ClaimsComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
