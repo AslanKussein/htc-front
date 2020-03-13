@@ -5,8 +5,14 @@
   "news": {
     "title": "Новости"
   },
-  "сlaim": {
-    "title": "Заявки"
+  "claim": {
+    "title": "Заявки",
+    "step": "Шаг",
+    "fillClaims": "Заполните заявку",
+    "contractOU": "Договор ОУ",
+    "impressions": "Показы",
+    "journals": "Журналы",
+    "aboutDeal": "О Сделке"
   },
   "board": {
     "title": "Канбан"
