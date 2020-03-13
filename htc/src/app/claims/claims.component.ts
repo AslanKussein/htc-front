@@ -15,7 +15,20 @@ export class ClaimsComponent implements OnInit {
     translate.use(this.env.language);
   }
 
+  formData = {iin: '', surname: '', firstName: '', patronymic: '', post: '', resumeStatus: ''};
+  dClaimType = [];
+  loading;
+  totalItems = 0;
+  itemsPerPage = 10;
+  currentPage = 1;
+
   ngOnInit(): void {
+  }
+
+  pageChanged(event: any): void {
+    if (this.currentPage !== event.page) {
+      // this.getJournalList(event.page);
+    }
   }
 
 }

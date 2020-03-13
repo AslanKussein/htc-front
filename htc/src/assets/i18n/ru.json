@@ -1,4 +1,6 @@
 {
+  "clear": "Очистить",
+  "search": "Поиск",
   "analytics": {
     "title": "Аналитика"
   },
@@ -12,7 +14,18 @@
     "contractOU": "Договор ОУ",
     "impressions": "Показы",
     "journals": "Журналы",
-    "aboutDeal": "О Сделке"
+    "aboutDeal": "О Сделке",
+    "searchClaim": "Поиск заявки",
+    "crDateFrom": "Дата создания",
+    "lastModifyDate": "Дата последнего изменения",
+    "lastCommentDate": "Дата последнего комментирования",
+    "textSearch": "Посик по тексту",
+    "claimType": "Тип заявки",
+    "addToShow": "Добавить на показ",
+    "opening": "Открытые",
+    "openingSell": "Открытые продать",
+    "openingBuy": "Открытые купить",
+    "closed": "Закрытые"
   },
   "board": {
     "title": "Канбан"

@@ -18,6 +18,9 @@ import { PanelComponent } from './panel/panel.component';
 import {StaffsComponent} from "./staffs/staffs.component";
 import {NewsComponent} from "./news/news.component";
 import {AnalyticsComponent} from "./analytics/analytics.component";
+import {ModalModule, PaginationModule} from 'ngx-bootstrap';
+
+
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
@@ -42,7 +45,7 @@ const routes: Routes = [
     ProfileComponent,
     ObjectsComponent,
     PanelComponent,
-    StaffsComponent
+    StaffsComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,6 +59,8 @@ const routes: Routes = [
       }
     }),
     HttpClientModule,
+    PaginationModule.forRoot(),
+    ModalModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,177 +1,211 @@
 <div class="card-body">
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-         aria-selected="true"><span translate>claim.step</span> 1. <span translate>claim.fillClaims</span></a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-         aria-selected="false"><span translate>claim.step</span> 2. <span translate>claim.contractOU</span></a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
-         aria-selected="false"><span translate>claim.impressions</span></a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="journals-tab" data-toggle="tab" href="#journals" role="tab" aria-controls="journals"
-         aria-selected="false"><span translate>claim.journals</span></a>
-    </li>
-  </ul>
-  <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="card-body">
-              <div class="accordion" id="claimAccordion">
-                <div class="card z-depth-0 bordered">
-                  <div class="card-header" id="deal">
-                    <h5 class="mb-0">
-                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#dealOne"
-                              aria-expanded="true" aria-controls="dealOne" translate>
-                        claim.aboutDeal
-                      </button>
-                    </h5>
-                  </div>
-                  <div id="dealOne" class="collapse show" aria-labelledby="deal"
-                       data-parent="#claimAccordion">
-                    <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
-                      wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                      eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-                      assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                      nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
-                      farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-                      labore sustainable.
-                    </div>
-                  </div>
-                </div>
-                <div class="card z-depth-0 bordered">
-                  <div class="card-header" id="headingTwo">
-                    <h5 class="mb-0">
-                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                              data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Collapsible Group Item #2
-                      </button>
-                    </h5>
-                  </div>
-                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#claimAccordion">
-                    <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
-                      wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                      eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-                      assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                      nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
-                      farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-                      labore sustainable.
-                    </div>
-                  </div>
-                </div>
-                <div class="card z-depth-0 bordered">
-                  <div class="card-header" id="headingThree">
-                    <h5 class="mb-0">
-                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                              data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Collapsible Group Item #3
-                      </button>
-                    </h5>
-                  </div>
-                  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#claimAccordion">
-                    <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
-                      wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                      eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-                      assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                      nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
-                      farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-                      labore sustainable.
-                    </div>
-                  </div>
-                </div>
-              </div>
+  <div class="card">
+    <div class="card-body">
+      <h4 translate>claim.searchClaim</h4>
+      <br/>
+      <div class="row">
+        <div class="row text-left">
+          <div class="col-md-2">
+            <div class="form-groups">
+              <label class="control-labels" translate>claim.claimType</label>
+              <!--            <ng-select [allowClear]="true"-->
+              <!--                       [(ngModel)]="formData.resumeStatus"-->
+              <!--                       [options]="dClaimType"-->
+              <!--                       placeholder="{{ 'chooseElement' | translate }}">-->
+              <!--            </ng-select>-->
             </div>
-
           </div>
-          <div class="col-lg-6">
-            <div class="card-body">
-              <div class="accordion" id="accordionExample">
-                <div class="card z-depth-0 bordered">
-                  <div class="card-header" id="headingOne">
-                    <h5 class="mb-0">
-                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
-                              aria-expanded="true" aria-controls="collapseOne">
-                        Collapsible Group Item #1
-                      </button>
-                    </h5>
-                  </div>
-                  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                       data-parent="#accordionExample">
-                    <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
-                      wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                      eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-                      assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                      nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
-                      farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-                      labore sustainable.
-                    </div>
-                  </div>
-                </div>
-                <div class="card z-depth-0 bordered">
-                  <div class="card-header" id="headingTwo">
-                    <h5 class="mb-0">
-                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                              data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Collapsible Group Item #2
-                      </button>
-                    </h5>
-                  </div>
-                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                    <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
-                      wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                      eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-                      assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                      nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
-                      farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-                      labore sustainable.
-                    </div>
-                  </div>
-                </div>
-                <div class="card z-depth-0 bordered">
-                  <div class="card-header" id="headingThree">
-                    <h5 class="mb-0">
-                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                              data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Collapsible Group Item #3
-                      </button>
-                    </h5>
-                  </div>
-                  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                    <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
-                      wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                      eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-                      assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                      nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
-                      farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-                      labore sustainable.
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div class="col-md-2">
+            <div class="form-groups">
+              <label class="control-labels" translate>claim.crDateFrom</label>
+              <!--                  <input type="text" [(ngModel)]="formData.surname" class="form-controls"/>-->
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-groups">
+              <label class="control-labels" translate>claim.lastModifyDate</label>
+              <!--                  <input type="text" [(ngModel)]="formData.firstName" class="form-controls"/>-->
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-groups">
+              <label class="control-labels" translate>claim.lastCommentDate</label>
+              <!--                  <input type="text" [(ngModel)]="formData.patronymic" class="form-controls"/>-->
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-groups">
+              <label class="control-labels" translate>claim.textSearch</label>
+              <!--                  <ng-select [allowClear]="true"-->
+              <!--                             [(ngModel)]="formData.post"-->
+              <!--                             [options]="dPost"-->
+              <!--                             placeholder="{{ 'chooseElement' | translate }}">-->
+              <!--                  </ng-select>-->
             </div>
           </div>
         </div>
-    </div>
-    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-      2
-    </div>
-    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-      3
-    </div>
+      </div>
 
-    <div class="tab-pane fade" id="journals" role="tabpanel" aria-labelledby="journals-tab">
-      4
+      <div class="row">
+        <div class="col-md">
+          <button type="button" mdbBtn class="btn btn-sm btn-success" style="width: 200px; float: right" mdbWavesEffect  translate>
+            claim.addToShow
+          </button>
+          <button type="button" mdbBtn color="success" class="btn btn-sm btn-info" style="width: 200px; float: right" mdbWavesEffect>
+            <span class="fa fa-search" translate> search</span>
+          </button>
+          <button type="button" class="btn btn-sm btn-link" style="width: 200px;float: right" translate>
+            clear
+          </button>
+
+        </div>
+      </div>
+
+      <div class="loader" *ngIf="loading" style="text-align: center">
+        <i class="fa fa-spinner fa-pulse fa-fw fa-2x"></i>
+      </div>
+      <br>
+
+      <div class="row">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="open-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open"
+               aria-selected="true" translate>claim.opening
+              <span>(0 в т.ч)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="open-sell-tab" data-toggle="tab" href="#open-sell" role="tab" aria-controls="open-sell"
+               aria-selected="false" translate>claim.openingSell
+              <span>(0)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="open-buy-tab" data-toggle="tab" href="#open-buy" role="tab" aria-controls="open-buy"
+               aria-selected="false" translate>claim.openingBuy
+              <span>(0)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="closed-tab" data-toggle="tab" href="#closed" role="tab" aria-controls="closed"
+               aria-selected="false" translate>claim.closed
+              <span>(0)</span>
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="open" role="tabpanel" aria-labelledby="open-tab">
+          </div>
+          <div class="tab-pane fade" id="open-sell" role="tabpanel" aria-labelledby="open-sell-tab">
+
+          </div>
+          <div class="tab-pane fade" id="open-buy" role="tabpanel" aria-labelledby="open-buy-tab">
+          </div>
+
+          <div class="tab-pane fade" id="closed" role="tabpanel" aria-labelledby="closed-tab">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm">
+          <table class="table table-bordered text-center table-sm">
+            <thead class="text-center">
+            <tr>
+              <th>№</th>
+              <th translate>Вид сделки</th>
+              <th translate>Дата создания</th>
+              <th translate>ФИО</th>
+              <th translate>Телефон</th>
+              <th translate>e-mail</th>
+              <th translate>Район</th>
+              <th translate>Код обьекта</th>
+              <th translate>Количество комнат</th>
+              <th translate>Цена</th>
+              <th translate>Вид расчета</th>
+              <th translate>Прошадь</th>
+              <th translate>Этаж</th>
+              <th translate>Комментарий</th>
+            </tr>
+            </thead>
+            <!--            <tbody style="cursor: pointer">-->
+            <!--            <tr *ngFor="let node of actData;let i = index"-->
+            <!--                (click)="setClickedRow(i, node)"-->
+            <!--                [class.active]="i == selectedRow"-->
+            <!--                [className]="node.blacklist == true ? 'text-left rgba-indigo-slight' : 'text-left'">-->
+            <!--              <td [hidden]="tblColumn.DateEntry">{{node.appDate}}</td>-->
+            <!--              <td [hidden]="tblColumn.ShortFullName">-->
+            <!--                <a style="color: #01A9C3;text-decoration: underline; font-weight: bold"-->
+            <!--                   (click)="basicModal.show()">-->
+            <!--                  {{node.personData.surname}} {{node.personData.name}} {{node.personData.patronymic}}-->
+
+            <!--                </a>-->
+            <!--              </td>-->
+            <!--              <td [hidden]="tblColumn.LiveCity">{{node.personData.birthCity}}</td>-->
+            <!--              <td [hidden]="tblColumn.Position">-->
+            <!--                <div *ngFor="let staff of node.resumeStaffs">-->
+            <!--                  <span>{{staff.staffId.post.nameRu}}</span>-->
+            <!--                </div>-->
+            <!--              </td>-->
+            <!--              <td [hidden]="tblColumn.ResumeStatus">{{node.status.nameRu}}</td>-->
+            <!--              <td class="text-center">-->
+            <!--                <div class="btn-group" *ngIf="!node.status?.dresumeStatusChanges?.length < 1">-->
+            <!--                  <button type="button" class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown"-->
+            <!--                          aria-haspopup="false" aria-expanded="false"-->
+            <!--                          (click)="panelExpanded = !panelExpanded" translate>Route-->
+            <!--                  </button>-->
+            <!--                  <div class="dropdown-menu">-->
+            <!--                    <div *ngFor="let statused of node.status?.dresumeStatusChanges;">-->
+            <!--                      <div (click)="changeStatus(statused, node)"-->
+            <!--                           class="dropdown-item clearfix"> {{statused.buttonNameRu}}</div>-->
+            <!--                      <div class="dropdown-divider"></div>-->
+            <!--                    </div>-->
+            <!--                  </div>-->
+            <!--                </div>-->
+            <!--              </td>-->
+            <!--              <td class="text-center">-->
+            <!--                <div class="custom-control custom-checkbox" [hidden]="node.check?.id">-->
+            <!--                  <input type="checkbox" [(ngModel)]="node.check" class="custom-control-input"-->
+            <!--                         id="defaultChecked+{{i}}">-->
+            <!--                  <label class="custom-control-label" for="defaultChecked+{{i}}"></label>-->
+            <!--                </div>-->
+            <!--              </td>-->
+            <!--            </tr>-->
+            <!--            </tbody>-->
+          </table>
+<!--          <pagination [(ngModel)]="currentPage"-->
+<!--                      [totalItems]="totalItems"-->
+<!--                      [itemsPerPage]="itemsPerPage"-->
+<!--                      [maxSize]="10"-->
+<!--                      [rotate]="true"-->
+<!--                      [boundaryLinks]="true"-->
+<!--                      previousText="&lsaquo;"-->
+<!--                      nextText="&rsaquo;"-->
+<!--                      firstText="&laquo;"-->
+<!--                      lastText="&raquo;"-->
+<!--                      (pageChanged)="pageChanged($event)">-->
+<!--          </pagination>-->
+<!--          <ng-pagination [position]="'left'" [pageSize]="10" [itemsCount]="1" [data]="dClaimType" (getPageData)="pageChanged($event)"></ng-pagination>-->
+
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
   </div>
 
