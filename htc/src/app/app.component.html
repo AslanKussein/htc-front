@@ -9,12 +9,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link">
+          <a class="nav-link" (click)="dnHref('analytics')">
             <span translate>analytics.title</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link">
+          <a class="nav-link" (click)="dnHref('news')">
             <span translate>news.title</span>
           </a>
         </li>
@@ -62,12 +62,12 @@
 
   <ul class="nav justify-content-center grey lighten-4 py-1">
     <li class="nav-item">
-      <a  class="nav-link">
+      <a  class="nav-link" (click)="dnHref('objects')">
         <span translate>objects.title</span>
       </a>
     </li>
     <li class="nav-item">
-      <a  class="nav-link">
+      <a  class="nav-link" (click)="dnHref('panel')">
         <span translate>controlPanels.title</span>
       </a>
     </li>
@@ -77,7 +77,7 @@
       </a>
     </li>
     <li class="nav-item">
-      <a  class="nav-link">
+      <a  class="nav-link" (click)="dnHref('staffs')">
         <span translate>staffs.title</span>
       </a>
     </li>

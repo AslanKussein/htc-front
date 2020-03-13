@@ -13,6 +13,11 @@ import {
   HttpClientModule,
 } from '@angular/common/http';
 import { ProfileComponent } from './profile/profile.component';
+import { ObjectsComponent } from './objects/objects.component';
+import { PanelComponent } from './panel/panel.component';
+import {StaffsComponent} from "./staffs/staffs.component";
+import {NewsComponent} from "./news/news.component";
+import {AnalyticsComponent} from "./analytics/analytics.component";
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
@@ -22,6 +27,11 @@ const routes: Routes = [
   {path: 'claims', component: ClaimsComponent},
   {path: 'board', component: BoardComponent},
   {path: 'profile', component: ProfileComponent},
+  {path: 'objects', component: ObjectsComponent},
+  {path: 'panel', component: PanelComponent},
+  {path: 'staffs', component: StaffsComponent},
+  {path: 'news', component: NewsComponent},
+  {path: 'analytics', component: AnalyticsComponent},
 ];
 
 @NgModule({
@@ -29,7 +39,10 @@ const routes: Routes = [
     AppComponent,
     BoardComponent,
     ClaimsComponent,
-    ProfileComponent
+    ProfileComponent,
+    ObjectsComponent,
+    PanelComponent,
+    StaffsComponent
   ],
   imports: [
     BrowserModule,
