@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {language} from "../../environments/language";
 import {TranslateService} from "@ngx-translate/core";
 
@@ -15,7 +15,16 @@ export class ClaimsComponent implements OnInit {
     translate.use(this.env.language);
   }
 
-  formData = {iin: '', surname: '', firstName: '', patronymic: '', post: '', resumeStatus: ''};
+  formData = {
+    claimType: '',
+    crDateFrom: '',
+    crDateTo: '',
+    lastModifyDateFrom: '',
+    lastModifyDateTo: '',
+    lastCommentDateFrom: '',
+    lastCommentDateTo: '',
+    textSearch: ''
+  };
   dClaimType = [];
   loading;
   totalItems = 0;

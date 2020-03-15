@@ -4,60 +4,79 @@
       <h4 translate>claim.searchClaim</h4>
       <br/>
       <div class="row">
-        <div class="row text-left">
-          <div class="col-md-2">
-            <div class="form-groups">
-              <label class="control-labels" translate>claim.claimType</label>
-              <!--            <ng-select [allowClear]="true"-->
-              <!--                       [(ngModel)]="formData.resumeStatus"-->
-              <!--                       [options]="dClaimType"-->
-              <!--                       placeholder="{{ 'chooseElement' | translate }}">-->
-              <!--            </ng-select>-->
-            </div>
+        <div class="col-sm">
+          <label class="control-labels" translate>claim.claimType</label>
+          <div class="row">
+            <ng-select [allowClear]="true"
+                       [(ngModel)]="formData.claimType"
+                       [options]="dClaimType"
+                       placeholder="{{ 'chooseElement' | translate }}">
+            </ng-select>
           </div>
-          <div class="col-md-2">
-            <div class="form-groups">
-              <label class="control-labels" translate>claim.crDateFrom</label>
-              <!--                  <input type="text" [(ngModel)]="formData.surname" class="form-controls"/>-->
-            </div>
-          </div>
-          <div class="col-md-2">
-            <div class="form-groups">
-              <label class="control-labels" translate>claim.lastModifyDate</label>
-              <!--                  <input type="text" [(ngModel)]="formData.firstName" class="form-controls"/>-->
-            </div>
-          </div>
-          <div class="col-md-2">
-            <div class="form-groups">
-              <label class="control-labels" translate>claim.lastCommentDate</label>
-              <!--                  <input type="text" [(ngModel)]="formData.patronymic" class="form-controls"/>-->
-            </div>
-          </div>
-          <div class="col-md-2">
-            <div class="form-groups">
-              <label class="control-labels" translate>claim.textSearch</label>
-              <!--                  <ng-select [allowClear]="true"-->
-              <!--                             [(ngModel)]="formData.post"-->
-              <!--                             [options]="dPost"-->
-              <!--                             placeholder="{{ 'chooseElement' | translate }}">-->
-              <!--                  </ng-select>-->
+        </div>
+        <div class="col-sm">
+          <div class="form-groups">
+            <label class="control-labels" for="crDateFrom" translate>claim.crDateFrom</label>
+            <div class="row">
+              <div class="col-form-label">
+                <input type="text" [(ngModel)]="formData.crDateFrom" id="crDateFrom"
+                       placeholder="{{ 'patterns.from' | translate }}" maxlength="10"
+                       class="form-controls"
+                       bsDatepicker #ru="bsDatepicker"/>
+              </div>
+              <div class="col-form-label">
+                <input type="text" [(ngModel)]="formData.crDateTo" id="crDateTo"
+                       placeholder="{{ 'patterns.to' | translate }}" maxlength="10"
+                       class="form-controls"
+                       bsDatepicker #ru="bsDatepicker"/>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        <div class="col-sm">
+          <div class="form-groups">
+            <label class="control-labels" translate>claim.lastModifyDate</label>
+            <div class="row">
+              <div class="col-form-label">
+                <input type="text" [(ngModel)]="formData.lastModifyDateFrom"
+                       placeholder="{{ 'patterns.from' | translate }}" maxlength="10"
+                       class="form-controls"
+                       bsDatepicker #ru="bsDatepicker"/>
+              </div>
+              <div class="col-form-label">
+                <input type="text" [(ngModel)]="formData.lastModifyDateTo"
+                       placeholder="{{ 'patterns.to' | translate }}" maxlength="10"
+                       class="form-controls"
+                       bsDatepicker #ru="bsDatepicker"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="form-groups">
+            <label class="control-labels" translate>claim.lastCommentDate</label>
+            <div class="row">
+              <div class="col-form-label">
+                <input type="text" [(ngModel)]="formData.lastCommentDateFrom"
+                       placeholder="{{ 'patterns.from' | translate }}" maxlength="10"
+                       class="form-controls"
+                       bsDatepicker #ru="bsDatepicker"/>
+              </div>
+              <div class="col-form-label">
+                <input type="text" [(ngModel)]="formData.lastCommentDateTo"
+                       placeholder="{{ 'patterns.to' | translate }}" maxlength="10"
+                       class="form-controls"
+                       bsDatepicker #ru="bsDatepicker"/>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div class="row">
-        <div class="col-md">
-          <button type="button" mdbBtn class="btn btn-sm btn-success" style="width: 200px; float: right" mdbWavesEffect  translate>
-            claim.addToShow
-          </button>
-          <button type="button" mdbBtn color="success" class="btn btn-sm btn-info" style="width: 200px; float: right" mdbWavesEffect>
-            <span class="fa fa-search" translate> search</span>
-          </button>
-          <button type="button" class="btn btn-sm btn-link" style="width: 200px;float: right" translate>
-            clear
-          </button>
-
+        <div class="col-sm">
+          <label class="control-labels" for="textSearch" translate>claim.textSearch</label>
+          <div class="row">
+            <input type="text" id="textSearch" [(ngModel)]="formData.textSearch" class="form-controls"/>
+          </div>
         </div>
       </div>
 
@@ -65,6 +84,21 @@
         <i class="fa fa-spinner fa-pulse fa-fw fa-2x"></i>
       </div>
       <br>
+
+      <div class="row">
+        <div class="col-sm">
+          <!--          <button type="button" mdbBtn class="btn btn-sm btn-success" style="width: 200px; float: right" mdbWavesEffect  translate>-->
+          <!--            claim.addToShow-->
+          <!--          </button>-->
+          <button type="button" mdbBtn color="success" class="btn btn-sm btn-info" style="width: 200px; float: right"
+                  mdbWavesEffect>
+            <span class="fa fa-search" translate> search</span>
+          </button>
+          <button type="button" class="btn btn-sm btn-link" style="width: 200px;float: right" translate>
+            clear
+          </button>
+        </div>
+      </div>
 
       <div class="row">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -75,13 +109,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="open-sell-tab" data-toggle="tab" href="#open-sell" role="tab" aria-controls="open-sell"
+            <a class="nav-link" id="open-sell-tab" data-toggle="tab" href="#open-sell" role="tab"
+               aria-controls="open-sell"
                aria-selected="false" translate>claim.openingSell
               <span>(0)</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="open-buy-tab" data-toggle="tab" href="#open-buy" role="tab" aria-controls="open-buy"
+            <a class="nav-link" id="open-buy-tab" data-toggle="tab" href="#open-buy" role="tab"
+               aria-controls="open-buy"
                aria-selected="false" translate>claim.openingBuy
               <span>(0)</span>
             </a>
@@ -113,10 +149,10 @@
             <thead class="text-center">
             <tr>
               <th>№</th>
-              <th translate>Вид сделки</th>
-              <th translate>Дата создания</th>
-              <th translate>ФИО</th>
-              <th translate>Телефон</th>
+              <th translate>claim.transactionType</th>
+              <th translate>claim.crDateFrom</th>
+              <th translate>fio</th>
+              <th translate>phone</th>
               <th translate>e-mail</th>
               <th translate>Район</th>
               <th translate>Код обьекта</th>
@@ -173,39 +209,20 @@
             <!--            </tr>-->
             <!--            </tbody>-->
           </table>
-<!--          <pagination [(ngModel)]="currentPage"-->
-<!--                      [totalItems]="totalItems"-->
-<!--                      [itemsPerPage]="itemsPerPage"-->
-<!--                      [maxSize]="10"-->
-<!--                      [rotate]="true"-->
-<!--                      [boundaryLinks]="true"-->
-<!--                      previousText="&lsaquo;"-->
-<!--                      nextText="&rsaquo;"-->
-<!--                      firstText="&laquo;"-->
-<!--                      lastText="&raquo;"-->
-<!--                      (pageChanged)="pageChanged($event)">-->
-<!--          </pagination>-->
-<!--          <ng-pagination [position]="'left'" [pageSize]="10" [itemsCount]="1" [data]="dClaimType" (getPageData)="pageChanged($event)"></ng-pagination>-->
-
+          <pagination [(ngModel)]="currentPage"
+                      [totalItems]="totalItems"
+                      [itemsPerPage]="itemsPerPage"
+                      [maxSize]="10"
+                      [rotate]="true"
+                      [boundaryLinks]="true"
+                      previousText="&lsaquo;"
+                      nextText="&rsaquo;"
+                      firstText="&laquo;"
+                      lastText="&raquo;"
+                      (pageChanged)="pageChanged($event)">
+          </pagination>
         </div>
       </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
   </div>
 

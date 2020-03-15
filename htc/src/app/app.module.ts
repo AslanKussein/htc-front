@@ -19,6 +19,10 @@ import {StaffsComponent} from "./staffs/staffs.component";
 import {NewsComponent} from "./news/news.component";
 import {AnalyticsComponent} from "./analytics/analytics.component";
 import {ModalModule, PaginationModule} from 'ngx-bootstrap';
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgSelectModule } from '@ng-select/ng-select';
+import {FormsModule} from "@angular/forms";
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -61,6 +65,10 @@ const routes: Routes = [
     HttpClientModule,
     PaginationModule.forRoot(),
     ModalModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    NgSelectModule,
+    FormsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,8 +1,14 @@
 {
   "clear": "Очистить",
   "search": "Поиск",
+  "fio": "ФИО",
+  "phone": "Телефон",
   "analytics": {
     "title": "Аналитика"
+  },
+  "patterns": {
+    "from": "с",
+    "to": "по"
   },
   "news": {
     "title": "Новости"
@@ -25,7 +31,8 @@
     "opening": "Открытые",
     "openingSell": "Открытые продать",
     "openingBuy": "Открытые купить",
-    "closed": "Закрытые"
+    "closed": "Закрытые",
+    "transactionType": "Вид сделки"
   },
   "board": {
     "title": "Канбан"
