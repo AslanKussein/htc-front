@@ -7,11 +7,11 @@
         <div class="col-sm">
           <label class="control-labels" translate>claim.claimType</label>
           <div class="row">
-            <ng-select [allowClear]="true"
-                       [(ngModel)]="formData.claimType"
-                       [options]="dClaimType"
-                       placeholder="{{ 'chooseElement' | translate }}">
-            </ng-select>
+<!--            <ng-select [allowClear]="true"-->
+<!--                       [(ngModel)]="formData.claimType"-->
+<!--                       [options]="dClaimType"-->
+<!--                       placeholder="{{ 'patterns.chooseElement' | translate }}">-->
+<!--            </ng-select>-->
           </div>
         </div>
         <div class="col-sm">
@@ -87,9 +87,7 @@
 
       <div class="row">
         <div class="col-sm">
-          <!--          <button type="button" mdbBtn class="btn btn-sm btn-success" style="width: 200px; float: right" mdbWavesEffect  translate>-->
-          <!--            claim.addToShow-->
-          <!--          </button>-->
+
           <button type="button" mdbBtn color="success" class="btn btn-sm btn-info" style="width: 200px; float: right"
                   mdbWavesEffect>
             <span class="fa fa-search" translate> search</span>
@@ -209,6 +207,12 @@
             <!--            </tr>-->
             <!--            </tbody>-->
           </table>
+          <div class="position-static" style="z-index: 99999999999999999999; float: right">
+            <button type="button" class="btn btn-success btn-circle btn-xl"><i class="fa fa-plus"></i>
+            </button>
+
+          </div>
+
           <pagination [(ngModel)]="currentPage"
                       [totalItems]="totalItems"
                       [itemsPerPage]="itemsPerPage"

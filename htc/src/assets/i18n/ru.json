@@ -8,7 +8,8 @@
   },
   "patterns": {
     "from": "с",
-    "to": "по"
+    "to": "по",
+    "chooseElement": "Выберите данные"
   },
   "news": {
     "title": "Новости"
