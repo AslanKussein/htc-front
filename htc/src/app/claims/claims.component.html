@@ -7,67 +7,61 @@
         <div class="col-sm">
           <label class="control-labels" translate>claim.claimType</label>
           <div class="row">
-<!--            <ng-select [allowClear]="true"-->
-<!--                       [(ngModel)]="formData.claimType"-->
-<!--                       [options]="dClaimType"-->
-<!--                       placeholder="{{ 'patterns.chooseElement' | translate }}">-->
-<!--            </ng-select>-->
+            <!--            <ng-select [allowClear]="true"-->
+            <!--                       [(ngModel)]="formData.claimType"-->
+            <!--                       [options]="dClaimType"-->
+            <!--                       placeholder="{{ 'patterns.chooseElement' | translate }}">-->
+            <!--            </ng-select>-->
           </div>
         </div>
         <div class="col-sm">
-          <div class="form-groups">
-            <label class="control-labels" for="crDateFrom" translate>claim.crDateFrom</label>
-            <div class="row">
-              <div class="col-form-label">
-                <input type="text" [(ngModel)]="formData.crDateFrom" id="crDateFrom"
-                       placeholder="{{ 'patterns.from' | translate }}" maxlength="10"
-                       class="form-controls"
-                       bsDatepicker #ru="bsDatepicker"/>
-              </div>
-              <div class="col-form-label">
-                <input type="text" [(ngModel)]="formData.crDateTo" id="crDateTo"
-                       placeholder="{{ 'patterns.to' | translate }}" maxlength="10"
-                       class="form-controls"
-                       bsDatepicker #ru="bsDatepicker"/>
-              </div>
+          <label class="control-labels" for="crDateFrom" translate>claim.crDateFrom</label>
+          <div class="row">
+            <div class="col-sm-6">
+              <input type="text" [(ngModel)]="formData.crDateFrom" id="crDateFrom"
+                     placeholder="{{ 'patterns.from' | translate }}" maxlength="10"
+                     class="form-controls"
+                     bsDatepicker #ru="bsDatepicker"/>
+            </div>
+            <div class="col-sm-6">
+              <input type="text" [(ngModel)]="formData.crDateTo" id="crDateTo"
+                     placeholder="{{ 'patterns.to' | translate }}" maxlength="10"
+                     class="form-controls"
+                     bsDatepicker #ru="bsDatepicker"/>
             </div>
           </div>
         </div>
         <div class="col-sm">
-          <div class="form-groups">
-            <label class="control-labels" translate>claim.lastModifyDate</label>
-            <div class="row">
-              <div class="col-form-label">
-                <input type="text" [(ngModel)]="formData.lastModifyDateFrom"
-                       placeholder="{{ 'patterns.from' | translate }}" maxlength="10"
-                       class="form-controls"
-                       bsDatepicker #ru="bsDatepicker"/>
-              </div>
-              <div class="col-form-label">
-                <input type="text" [(ngModel)]="formData.lastModifyDateTo"
-                       placeholder="{{ 'patterns.to' | translate }}" maxlength="10"
-                       class="form-controls"
-                       bsDatepicker #ru="bsDatepicker"/>
-              </div>
+          <label class="control-labels" translate>claim.lastModifyDate</label>
+          <div class="row">
+            <div class="col-sm-6">
+              <input type="text" [(ngModel)]="formData.lastModifyDateFrom"
+                     placeholder="{{ 'patterns.from' | translate }}" maxlength="10"
+                     class="form-controls"
+                     bsDatepicker #ru="bsDatepicker"/>
+            </div>
+            <div class="col-sm-6">
+              <input type="text" [(ngModel)]="formData.lastModifyDateTo"
+                     placeholder="{{ 'patterns.to' | translate }}" maxlength="10"
+                     class="form-controls"
+                     bsDatepicker #ru="bsDatepicker"/>
             </div>
           </div>
         </div>
         <div class="col-sm">
-          <div class="form-groups">
-            <label class="control-labels" translate>claim.lastCommentDate</label>
-            <div class="row">
-              <div class="col-form-label">
-                <input type="text" [(ngModel)]="formData.lastCommentDateFrom"
-                       placeholder="{{ 'patterns.from' | translate }}" maxlength="10"
-                       class="form-controls"
-                       bsDatepicker #ru="bsDatepicker"/>
-              </div>
-              <div class="col-form-label">
-                <input type="text" [(ngModel)]="formData.lastCommentDateTo"
-                       placeholder="{{ 'patterns.to' | translate }}" maxlength="10"
-                       class="form-controls"
-                       bsDatepicker #ru="bsDatepicker"/>
-              </div>
+          <label class="control-labels" translate>claim.lastCommentDate</label>
+          <div class="row">
+            <div class="col-sm-6">
+              <input type="text" [(ngModel)]="formData.lastCommentDateFrom"
+                     placeholder="{{ 'patterns.from' | translate }}" maxlength="10"
+                     class="form-controls"
+                     bsDatepicker #ru="bsDatepicker"/>
+            </div>
+            <div class="col-sm-6">
+              <input type="text" [(ngModel)]="formData.lastCommentDateTo"
+                     placeholder="{{ 'patterns.to' | translate }}" maxlength="10"
+                     class="form-controls"
+                     bsDatepicker #ru="bsDatepicker"/>
             </div>
           </div>
         </div>
@@ -75,7 +69,9 @@
         <div class="col-sm">
           <label class="control-labels" for="textSearch" translate>claim.textSearch</label>
           <div class="row">
-            <input type="text" id="textSearch" [(ngModel)]="formData.textSearch" class="form-controls"/>
+            <div class="col-sm-12">
+              <input type="text" style="width: 300px" id="textSearch" [(ngModel)]="formData.textSearch" class="form-controls"/>
+            </div>
           </div>
         </div>
       </div>
