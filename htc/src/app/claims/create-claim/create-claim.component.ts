@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {TranslateService} from "@ngx-translate/core";
-import {language} from "../../../environments/language";
 
 @Component({
   selector: 'app-create-claim',
@@ -9,11 +7,8 @@ import {language} from "../../../environments/language";
 })
 export class CreateClaimComponent implements OnInit {
 
-  env = language;
 
-  constructor(private translate: TranslateService) {
-    translate.setDefaultLang(this.env.language);
-    translate.use(this.env.language);
+  constructor() {
   }
 
   ngOnInit(): void {

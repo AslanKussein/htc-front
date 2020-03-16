@@ -52,6 +52,7 @@ const routes: Routes = [
     ObjectsComponent,
     PanelComponent,
     StaffsComponent,
+    CreateClaimComponent
   ],
   imports: [
     BrowserModule,
@@ -73,6 +74,9 @@ const routes: Routes = [
     BrowserAnimationsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    CreateClaimComponent
+  ],
 })
 export class AppModule { }

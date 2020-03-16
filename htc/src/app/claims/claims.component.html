@@ -7,11 +7,14 @@
         <div class="col-sm">
           <label class="control-labels" translate>claim.claimType</label>
           <div class="row">
-            <!--            <ng-select [allowClear]="true"-->
-            <!--                       [(ngModel)]="formData.claimType"-->
-            <!--                       [options]="dClaimType"-->
-            <!--                       placeholder="{{ 'patterns.chooseElement' | translate }}">-->
-            <!--            </ng-select>-->
+            <div class="col-sm">
+              <ng-select [allowClear]="true"
+                         [(ngModel)]="formData.claimType"
+                         class="form-control"
+                         [options]="dClaimType"
+                         placeholder="{{ 'patterns.chooseElement' | translate }}">
+              </ng-select>
+            </div>
           </div>
         </div>
         <div class="col-sm">
@@ -46,9 +49,9 @@
         <div class="col-sm">
           <label class="control-labels" for="textSearch" translate>claim.textSearch</label>
           <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm">
               <input type="text" style="width: 300px" id="textSearch" [(ngModel)]="formData.textSearch"
-                     class="form-controls"/>
+                     class="form-control"/>
             </div>
           </div>
         </div>
