@@ -23,6 +23,7 @@ import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgSelectModule } from '@ng-select/ng-select';
 import {FormsModule} from "@angular/forms";
+import {CreateClaimComponent} from "./claims/create-claim/create-claim.component";
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -39,6 +40,7 @@ const routes: Routes = [
   {path: 'staffs', component: StaffsComponent},
   {path: 'news', component: NewsComponent},
   {path: 'analytics', component: AnalyticsComponent},
+  {path: 'create-claim', component: CreateClaimComponent},
 ];
 
 @NgModule({

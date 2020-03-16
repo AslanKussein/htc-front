@@ -9,6 +9,7 @@
   "patterns": {
     "from": "с",
     "to": "по",
+    "fillFromAndTo": "Введите дату с и по",
     "chooseElement": "Выберите данные"
   },
   "news": {

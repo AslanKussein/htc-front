@@ -15,53 +15,30 @@
           </div>
         </div>
         <div class="col-sm">
-          <label class="control-labels" for="crDateFrom" translate>claim.crDateFrom</label>
+          <label class="control-labels" for="fillFromAndTo" translate>claim.crDateFrom</label>
           <div class="row">
-            <div class="col-sm-6">
-              <input type="text" [(ngModel)]="formData.crDateFrom" id="crDateFrom"
-                     placeholder="{{ 'patterns.from' | translate }}" maxlength="10"
-                     class="form-controls"
-                     bsDatepicker #ru="bsDatepicker"/>
-            </div>
-            <div class="col-sm-6">
-              <input type="text" [(ngModel)]="formData.crDateTo" id="crDateTo"
-                     placeholder="{{ 'patterns.to' | translate }}" maxlength="10"
-                     class="form-controls"
-                     bsDatepicker #ru="bsDatepicker"/>
+            <div class="col-sm">
+              <input placeholder="{{'patterns.fillFromAndTo' | translate}}" [(ngModel)]="formData.lastModifyDateRange"
+                     id="fillFromAndTo" type="text" class="form-control" bsDaterangepicker #ru="bsDaterangepicker">
             </div>
           </div>
         </div>
         <div class="col-sm">
-          <label class="control-labels" translate>claim.lastModifyDate</label>
+          <label class="control-labels" for="lastModifyDate" translate>claim.lastModifyDate</label>
           <div class="row">
-            <div class="col-sm-6">
-              <input type="text" [(ngModel)]="formData.lastModifyDateFrom"
-                     placeholder="{{ 'patterns.from' | translate }}" maxlength="10"
-                     class="form-controls"
-                     bsDatepicker #ru="bsDatepicker"/>
-            </div>
-            <div class="col-sm-6">
-              <input type="text" [(ngModel)]="formData.lastModifyDateTo"
-                     placeholder="{{ 'patterns.to' | translate }}" maxlength="10"
-                     class="form-controls"
-                     bsDatepicker #ru="bsDatepicker"/>
+            <div class="col-sm">
+              <input placeholder="{{'patterns.fillFromAndTo' | translate}}" [(ngModel)]="formData.crDateRange"
+                     id="lastModifyDate" type="text" class="form-control" bsDaterangepicker #ru="bsDaterangepicker">
             </div>
           </div>
         </div>
         <div class="col-sm">
-          <label class="control-labels" translate>claim.lastCommentDate</label>
+          <label class="control-labels" for="lastCommentDateRange" translate>claim.lastCommentDate</label>
           <div class="row">
-            <div class="col-sm-6">
-              <input type="text" [(ngModel)]="formData.lastCommentDateFrom"
-                     placeholder="{{ 'patterns.from' | translate }}" maxlength="10"
-                     class="form-controls"
-                     bsDatepicker #ru="bsDatepicker"/>
-            </div>
-            <div class="col-sm-6">
-              <input type="text" [(ngModel)]="formData.lastCommentDateTo"
-                     placeholder="{{ 'patterns.to' | translate }}" maxlength="10"
-                     class="form-controls"
-                     bsDatepicker #ru="bsDatepicker"/>
+            <div class="col-sm">
+              <input placeholder="{{'patterns.fillFromAndTo' | translate}}" [(ngModel)]="formData.lastCommentDateRange"
+                     id="lastCommentDateRange" type="text" class="form-control" bsDaterangepicker
+                     #ru="bsDaterangepicker">
             </div>
           </div>
         </div>
@@ -70,7 +47,8 @@
           <label class="control-labels" for="textSearch" translate>claim.textSearch</label>
           <div class="row">
             <div class="col-sm-12">
-              <input type="text" style="width: 300px" id="textSearch" [(ngModel)]="formData.textSearch" class="form-controls"/>
+              <input type="text" style="width: 300px" id="textSearch" [(ngModel)]="formData.textSearch"
+                     class="form-controls"/>
             </div>
           </div>
         </div>
@@ -204,7 +182,8 @@
             <!--            </tbody>-->
           </table>
           <div class="position-static" style="z-index: 99999999999999999999; float: right">
-            <button type="button" class="btn btn-success btn-circle btn-xl"><i class="fa fa-plus"></i>
+            <button type="button" class="btn btn-success btn-circle btn-xl" (click)="dnHref('create-claim')"><i
+              class="fa fa-plus"></i>
             </button>
 
           </div>

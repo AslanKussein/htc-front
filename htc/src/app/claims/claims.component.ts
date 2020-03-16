@@ -1,6 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {language} from "../../environments/language";
 import {TranslateService} from "@ngx-translate/core";
+import {Router} from "@angular/router";
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { ruLocale } from 'ngx-bootstrap/locale';
+import {BsLocaleService} from "ngx-bootstrap";
 
 @Component({
   selector: 'app-claims',
@@ -10,19 +14,17 @@ import {TranslateService} from "@ngx-translate/core";
 export class ClaimsComponent implements OnInit {
   env = language;
 
-  constructor(private translate: TranslateService) {
-    translate.setDefaultLang(this.env.language);
-    translate.use(this.env.language);
+  constructor(private router: Router,
+              private localeService: BsLocaleService) {
+    defineLocale('ru', ruLocale);
+    this.localeService.use('ru');
   }
 
   formData = {
     claimType: '',
-    crDateFrom: '',
-    crDateTo: '',
-    lastModifyDateFrom: '',
-    lastModifyDateTo: '',
-    lastCommentDateFrom: '',
-    lastCommentDateTo: '',
+    crDateRange: '',
+    lastModifyDateRange: '',
+    lastCommentDateRange: '',
     textSearch: ''
   };
   dClaimType = [];
@@ -30,6 +32,11 @@ export class ClaimsComponent implements OnInit {
   totalItems = 0;
   itemsPerPage = 10;
   currentPage = 1;
+
+  dnHref(href) {
+    localStorage.setItem('url', href);
+    this.router.navigate([href]);
+  }
 
   ngOnInit(): void {
   }
