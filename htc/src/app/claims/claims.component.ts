@@ -38,6 +38,10 @@ export class ClaimsComponent implements OnInit {
     this.router.navigate([href]);
   }
 
+  clearForm() {
+    this.formData = {claimType: '', crDateRange: '', lastModifyDateRange: '', lastCommentDateRange: '', textSearch: ''};
+  }
+
   ngOnInit(): void {
   }
 
