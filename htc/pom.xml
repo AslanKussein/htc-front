@@ -10,7 +10,6 @@
 	</parent>
 
 	<artifactId>htc</artifactId>
-  <packaging>war</packaging>
 
   <build>
     <resources>

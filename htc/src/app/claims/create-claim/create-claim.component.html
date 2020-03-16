@@ -37,7 +37,123 @@
                 <div id="collapseaboutDeal" class="collapse show" aria-labelledby="headingOne"
                      data-parent="#accordionaboutDeal">
                   <div class="card-body">
-                    labore sustainable.1a
+                    <div class="row">
+                      <div class="col-sm">
+                        <label class="control-labels" translate>claim.operation</label>
+                        <div class="row">
+                          <div class="col-sm">
+                            <ng-select
+                              class="form-control"
+                              placeholder="{{ 'patterns.chooseElement' | translate }}">
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <label class="control-labels" translate>claim.objectType</label>
+                        <div class="row">
+                          <div class="col-sm">
+                            <ng-select
+                              class="form-control"
+                              placeholder="{{ 'patterns.chooseElement' | translate }}">
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <label class="control-labels" translate>claim.objectPriceInLim</label>
+                        <div class="row">
+                          <div class="col-sm">
+                            <ng-select
+                              class="form-control"
+                              placeholder="{{ 'patterns.chooseElement' | translate }}">
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-sm">
+                        <label class="col-sm-6 col-form-label" translate>claim.ipoteka</label>
+                        <div class="col-sm-6">
+                          <div class="row">
+                            <div class="col-sm">
+                              <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label" translate>yes</label>
+                              </div>
+                            </div>
+                            <div class="col-sm">
+                              <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label" translate>no</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <label class="col-sm-6 col-form-label" translate>claim.encumbrance</label>
+                        <div class="col-sm-6">
+                          <div class="row">
+                            <div class="col-sm">
+                              <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label" translate>yes</label>
+                              </div>
+                            </div>
+                            <div class="col-sm">
+                              <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label" translate>no</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm">
+                        <label class="col-sm-6 col-form-label" translate>claim.barter</label>
+                        <div class="col-sm-6">
+                          <div class="row">
+                            <div class="col-sm">
+                              <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label" translate>yes</label>
+                              </div>
+                            </div>
+                            <div class="col-sm">
+                              <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label" translate>no</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <label class="col-sm col-form-label" translate>claim.commonOwnership</label>
+                        <div class="col-sm-6">
+                          <div class="row">
+                            <div class="col-sm">
+                              <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label" translate>yes</label>
+                              </div>
+                            </div>
+                            <div class="col-sm">
+                              <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label" translate>no</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -57,17 +173,421 @@
                 <div id="aboutOwnerOne" class="collapse show" aria-labelledby="headingOne"
                      data-parent="#accordionaboutOwnerOne">
                   <div class="card-body">
-                    labore sustainable.1a
+                    <div class="row">
+                      <div class="col-sm">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-3 col-form-label" translate>name</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" id="name">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="surname" class="col-sm-3 col-form-label" translate>surname</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" id="surname">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="patronymic" class="col-sm-3 col-form-label" translate>patronymic</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" id="patronymic">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="clientID" class="col-sm-3 col-form-label" translate>claim.clientID</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" id="clientID">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <div class="form-group row">
+                          <label for="contacts" class="col-sm-3 col-form-label" translate>claim.contacts</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" id="contacts">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="email" class="col-sm-3 col-form-label" translate>claim.email</label>
+                          <div class="col-sm-9">
+                            <input type="email" class="form-control" id="email">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label" translate>gender</label>
+                          <div class="col-sm-9">
+                            <div class="row">
+                              <div class="col-sm">
+                                <div class="form-group form-check">
+                                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                  <label class="form-check-label" translate>men</label>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <div class="form-group form-check">
+                                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                  <label class="form-check-label" translate>women</label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
+        <br/>
         <div class="row">
           <div class="col-sm">
+            <div class="accordion" id="accordionAboutObject">
+              <div class="card z-depth-0 bordered">
+                <div class="card-header" id="aboutObjectOne">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                            aria-expanded="true" aria-controls="collapseOne" translate>
+                      claim.aboutObject
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseOne" class="collapse show" aria-labelledby="aboutObjectOne"
+                     data-parent="#accordionAboutObject">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="row">
+                          <div class="col-sm">
+                            <div class="form-group row">
+                              <label for="name" class="col-sm-3 col-form-label" translate>claim.city</label>
+                              <div class="col-sm-9">
+                                <ng-select
+                                  class="form-control"
+                                  placeholder="{{ 'patterns.chooseElement' | translate }}">
+                                </ng-select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm">
+                            <div class="form-group row">
+                              <label for="name" class="col-sm-3 col-form-label" translate>claim.building</label>
+                              <div class="col-sm-9">
+                                <ng-select
+                                  class="form-control"
+                                  placeholder="{{ 'patterns.chooseElement' | translate }}">
+                                </ng-select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
+                        <div class="row">
+                          <div class="col-sm">
+                            <div class="form-group row">
+                              <label for="name" class="col-sm-3 col-form-label" translate>claim.street</label>
+                              <div class="col-sm-9">
+                                <ng-select
+                                  class="form-control"
+                                  placeholder="{{ 'patterns.chooseElement' | translate }}">
+                                </ng-select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm">
+                            <div class="form-group row">
+                              <label for="name" class="col-sm-3 col-form-label" translate>claim.numberHouse</label>
+                              <div class="col-sm-9">
+                                <input type="text" class="form-control">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm">
+                            <div class="form-group row">
+                              <label for="name" class="col-sm-3 col-form-label" translate>claim.roomCount</label>
+                              <div class="col-sm-9">
+                                <ng-select
+                                  class="form-control"
+                                  placeholder="{{ 'patterns.chooseElement' | translate }}">
+                                </ng-select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <fieldset class="scheduler-border col-sm-11">
+                            <legend class="scheduler-border" translate>claim.quadrature</legend>
+                            <div class="row">
+                              <div class="col-sm">
+                                <label class="control-labels" translate>claim.square</label>
+                                <div class="row">
+                                  <div class="col-sm">
+                                    <input type="text" class="form-control"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <label class="control-labels" translate>claim.live</label>
+                                <div class="row">
+                                  <div class="col-sm">
+                                    <input type="text" class="form-control"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <label class="control-labels" translate>claim.kitchen</label>
+                                <div class="row">
+                                  <div class="col-sm">
+                                    <input type="text" class="form-control"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <label class="control-labels" translate>claim.balcony</label>
+                                <div class="row">
+                                  <div class="col-sm">
+                                    <input type="text" class="form-control"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <label class="control-labels" translate>claim.heightWall</label>
+                                <div class="row">
+                                  <div class="col-sm">
+                                    <input type="text" class="form-control"/>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm">
+                                <div class="col-sm">
+                                  <label class="control-labels" translate>claim.badRoomCount</label>
+                                  <div class="row">
+                                    <div class="col-sm">
+                                      <input type="text" class="form-control"/>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <div class="col-sm">
+                                  <label class="control-labels" translate>claim.studio</label>
+                                  <div class="row">
+                                    <div class="col-sm">
+                                      <input type="checkbox" class="form-control"/>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <div class="col-sm">
+                                  <label class="control-labels" translate>claim.separateBathroom</label>
+                                  <div class="row">
+                                    <div class="col-sm">
+                                      <input type="checkbox" class="form-control"/>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </fieldset>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="row">
+                          <fieldset class="scheduler-border col-sm-11">
+                            <legend class="scheduler-border" translate>claim.characterHouse</legend>
+                            <div class="row">
+                              <div class="col-sm">
+                                <div class="form-group row">
+                                  <label for="name" class="col-sm-5 col-form-label" translate>claim.district</label>
+                                  <div class="col-sm-7">
+                                    <ng-select
+                                      class="form-control"
+                                      placeholder="{{ 'patterns.chooseElement' | translate }}">
+                                    </ng-select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <div class="form-group row">
+                                  <label for="name" class="col-sm-7 col-form-label" translate>claim.flatHouse</label>
+                                  <div class="col-sm-5">
+                                    <input type="text" class="form-control">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <div class="form-group row">
+                                  <label for="name" class="col-sm-7 col-form-label" translate>claim.appInFlat</label>
+                                  <div class="col-sm-5">
+                                    <input type="text" class="form-control">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-sm">
+                                <div class="form-group row">
+                                  <label for="name" class="col-sm-5 col-form-label" translate>claim.material</label>
+                                  <div class="col-sm-7">
+                                    <ng-select
+                                      class="form-control"
+                                      placeholder="{{ 'patterns.chooseElement' | translate }}">
+                                    </ng-select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <div class="form-group row">
+                                  <label for="name" class="col-sm-7 col-form-label" translate>claim.buildYear</label>
+                                  <div class="col-sm-5">
+                                    <input type="text" class="form-control">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <div class="form-group row">
+                                  <label for="name" class="col-sm-7 col-form-label" translate>claim.lift</label>
+                                  <div class="col-sm-5">
+                                    <ng-select
+                                      class="form-control"
+                                      placeholder="{{ 'patterns.chooseElement' | translate }}">
+                                    </ng-select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </fieldset>
+                        </div>
+                        <div class="row">
+                          <fieldset class="scheduler-border col-sm-11">
+                            <legend class="scheduler-border" translate>claim.porch</legend>
+                            <div class="row">
+                              <div class="col-sm">
+                                <label class="col-sm col-form-label" translate>claim.concierge</label>
+                                <div class="col-sm">
+                                  <div class="row">
+                                    <div class="col-sm">
+                                      <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input">
+                                        <label class="form-check-label" translate>yes</label>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm">
+                                      <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input">
+                                        <label class="form-check-label" translate>no</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <label class="col-sm col-form-label" translate>claim.stroller</label>
+                                <div class="col-sm">
+                                  <div class="row">
+                                    <div class="col-sm">
+                                      <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input">
+                                        <label class="form-check-label" translate>yes</label>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm">
+                                      <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input">
+                                        <label class="form-check-label" translate>no</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </fieldset>
+                        </div>
+                        <div class="row">
+                          <fieldset class="scheduler-border col-sm-11">
+                            <legend class="scheduler-border" translate>claim.territory</legend>
+                            <div class="row">
+                              <div class="col-sm">
+                                <label class="col-sm-6 col-form-label" translate>claim.parking</label>
+                                <div class="col-sm-10">
+                                  <div class="row">
+                                    <div class="col-sm">
+                                      <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input">
+                                        <label class="form-check-label" translate>claim.withoutParking</label>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm">
+                                      <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input">
+                                        <label class="form-check-label" translate>claim.overgroundParking</label>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm">
+                                      <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input">
+                                        <label class="form-check-label" translate>claim.undergroundParking</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <label class="col-sm col-form-label" translate>claim.yard</label>
+                                <div class="col-sm">
+                                  <div class="row">
+                                    <div class="col-sm">
+                                      <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input">
+                                        <label class="form-check-label" translate>claim.opened</label>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm">
+                                      <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input">
+                                        <label class="form-check-label" translate>claim.closing</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <label class="col-sm col-form-label" translate>claim.childYard</label>
+                                <div class="col-sm">
+                                  <div class="row">
+                                    <div class="col-sm">
+                                      <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input">
+                                        <label class="form-check-label" translate>yes</label>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm">
+                                      <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input">
+                                        <label class="form-check-label" translate>no</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </fieldset>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -80,6 +600,19 @@
     </div>
     <div class="tab-pane fade" id="journals" role="tabpanel" aria-labelledby="journals-tab">
       3
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+
+      <button type="button" mdbBtn color="success" class="btn btn-sm btn-info" style="width: 200px; float: right"
+              mdbWavesEffect>
+        <span class="fa fa-save" translate> claim.saveClaim</span>
+      </button>
+      <button type="button" class="btn btn-sm btn-success" style="width: 200px;float: right" translate>
+        claim.generateContract
+      </button>
     </div>
   </div>
 </div>

@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "ng serve --proxy-config  proxy.conf.json",
+    "build": "ng build --prod --output-path dist/META-INF/resources",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -19,7 +19,7 @@
     "@angular/platform-browser": "~9.0.6",
     "@angular/platform-browser-dynamic": "~9.0.6",
     "@angular/router": "~9.0.6",
-    "@ng-select/ng-select": "latest",
+    "@ng-select/ng-select": "^3.7.3",
     "@ngx-translate/core": "latest",
     "@ngx-translate/http-loader": "latest",
     "angular-bootstrap-md": "^9.0.0",

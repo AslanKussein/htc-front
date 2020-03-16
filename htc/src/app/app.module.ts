@@ -71,7 +71,7 @@ const routes: Routes = [
     BsDatepickerModule.forRoot(),
     NgSelectModule,
     FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
