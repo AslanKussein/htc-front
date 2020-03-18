@@ -24,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgSelectModule } from '@ng-select/ng-select';
 import {FormsModule} from "@angular/forms";
 import {CreateClaimComponent} from "./claims/create-claim/create-claim.component";
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -72,6 +73,7 @@ const routes: Routes = [
     NgSelectModule,
     FormsModule,
     BrowserAnimationsModule,
+    DragDropModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

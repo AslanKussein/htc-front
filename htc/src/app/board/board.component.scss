@@ -1,0 +1,22 @@
+.font-up-bold .breadcrumb-item + .breadcrumb-item::before {
+  content: none;
+}
+
+.font-up-bold .breadcrumb-item a span::after {
+  content: "/";
+  margin-left: 1rem;
+  color: #868e96;
+}
+
+.blockItem {
+  width: 150px;
+  border-right: 1px solid black;
+  height: 100%;
+  display: block;
+}
+
+.boardTitle {
+  color: navy;
+  font-weight: bolder;
+  font-size: 18px !important;
+}
