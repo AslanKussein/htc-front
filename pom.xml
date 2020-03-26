@@ -12,7 +12,7 @@
         <module>frontend</module>
     </modules>
 
-	<name>htc</name>
+	<name>parent</name>
 	<description>htc</description>
 
 	<parent>
