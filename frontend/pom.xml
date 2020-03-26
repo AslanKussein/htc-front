@@ -9,7 +9,7 @@
 		<version>0.0.1</version>
 	</parent>
 
-	<artifactId>htc</artifactId>
+	<artifactId>frontend</artifactId>
 
   <build>
     <resources>
