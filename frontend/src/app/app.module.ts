@@ -14,7 +14,6 @@ import {
 } from '@angular/common/http';
 import { ProfileComponent } from './profile/profile.component';
 import { ObjectsComponent } from './objects/objects.component';
-import { PanelComponent } from './panel/panel.component';
 import {StaffsComponent} from "./staffs/staffs.component";
 import {NewsComponent} from "./news/news.component";
 import {AnalyticsComponent} from "./analytics/analytics.component";
@@ -37,7 +36,6 @@ const routes: Routes = [
   {path: 'board', component: BoardComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'objects', component: ObjectsComponent},
-  {path: 'panel', component: PanelComponent},
   {path: 'staffs', component: StaffsComponent},
   {path: 'news', component: NewsComponent},
   {path: 'analytics', component: AnalyticsComponent},
@@ -51,7 +49,6 @@ const routes: Routes = [
     ClaimsComponent,
     ProfileComponent,
     ObjectsComponent,
-    PanelComponent,
     StaffsComponent,
     CreateClaimComponent
   ],
