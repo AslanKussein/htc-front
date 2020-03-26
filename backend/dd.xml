@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Request xmlns="http://services.gcvp.kz/inv-fact-service/schemas">
+    <applicantInfo>
+        <iin>910107400553</iin>
+        <branchCode>1501</branchCode>
+        <lastName>МЫРЗАБАЕВА</lastName>
+        <firstName>НАТАЛЬЯ</firstName>
+        <patronymic>АНДРЕЕВНА</patronymic>
+        <dateOfBirth>1991-01-07T00:00:00.000+06:00</dateOfBirth>
+        <sex>0</sex>
+    </applicantInfo>
+    <identityDocument>
+        <documentType>002</documentType>
+        <number>040253989</number>
+        <issuingOrganizationRu>МИНИСТЕРСТВО ВНУТРЕННИХ ДЕЛ РК</issuingOrganizationRu>
+        <issuingOrganizationKz>ҚР ІШКІ ІСТЕР МИНИСТРЛІГІ</issuingOrganizationKz>
+        <issueDate>2016-06-16T00:00:00.000+06:00</issueDate>
+        <expirationDate>2026-06-15T00:00:00.000+06:00</expirationDate>
+        <relevanceSign>Нормальный</relevanceSign>
+    </identityDocument>
+    <applicantAddressInfo>
+        <country>КАЗАХСТАН</country>
+        <region>АЛМАТЫ</region>
+        <district>АЛМАЛИНСКИЙ</district>
+        <city>АЛМАТЫ</city>
+        <permanentResidenceRegistrationDate>2008-08-29T00:00:00.000+06:00</permanentResidenceRegistrationDate>
+        <street>Брусиловского</street>
+        <houseNumber>132</houseNumber>
+        <houseBuilding>0</houseBuilding>
+        <apartmentNumber>2</apartmentNumber>
+    </applicantAddressInfo>
+    <applicantLifeStatusInfo>
+        <lifeStatus>живой</lifeStatus>
+    </applicantLifeStatusInfo>
+    <flInfo>
+        <dependentInfo>
+            <childSign>родной</childSign>
+            <iin>080530554375</iin>
+            <lastName>БУРГАНОВ</lastName>
+            <firstName>ТАИР</firstName>
+            <patronymic>ТИМУРОВИЧ</patronymic>
+            <dateOfBirth>2008-05-30T00:00:00.000+06:00</dateOfBirth>
+            <birthRecordNumber>10-323-08-1001578</birthRecordNumber>
+            <birthRegistrationDate>2008-06-27T00:00:00.000+06:00</birthRegistrationDate>
+            <zagsNameRu>отдел ЗАГС Турксибского района города Алматы</zagsNameRu>
+            <zagsNameKz>Алматы қаласының Түрксіб аудандық АХАЖ бөлімі</zagsNameKz>
+            <issueDate>2019-10-11T00:00:00.000+06:00</issueDate>
+        </dependentInfo>
+        <dependentAddressInfo>
+            <country>КАЗАХСТАН</country>
+            <region>АЛМАТЫ</region>
+            <district>АЛМАЛИНСКИЙ</district>
+            <city>АЛМАТЫ</city>
+            <permanentResidenceRegistrationDate>2015-08-07T00:00:00.000+06:00</permanentResidenceRegistrationDate>
+            <street>БРУСИЛОВСКОГО</street>
+            <houseNumber>132</houseNumber>
+            <houseBuilding>0</houseBuilding>
+            <apartmentNumber>2</apartmentNumber>
+        </dependentAddressInfo>
+        <breadwinnerInfo>
+            <iin>840523301313</iin>
+            <lastName>Тимур</lastName>
+            <firstName>Бурганов</firstName>
+            <patronymic>Абдулахатович</patronymic>
+            <dateOfBirth>1984-05-23T00:00:00.000+07:00</dateOfBirth>
+            <deathDate>2019-09-30T00:00:00.000+06:00</deathDate>
+            <deathRecordNumber>20-560-19-0001359</deathRecordNumber>
+            <deathRegistrationDate>2019-10-04T00:00:00.000+06:00</deathRegistrationDate>
+            <zagsNameRu>Аппарат акима Турксибского района г. Алматы отдел регистрации актов гражданского состояния
+            </zagsNameRu>
+            <zagsNameKz>Аппарат акима Турксибского района г. Алматы отдел регистрации актов гражданского состояния
+            </zagsNameKz>
+        </breadwinnerInfo>
+    </flInfo>
+    <parentsInfo>
+        <motherInfo>
+            <iin>910107400553</iin>
+            <lastName>МЫРЗАБАЕВА</lastName>
+            <firstName>НАТАЛЬЯ</firstName>
+            <patronymic>АНДРЕЕВНА</patronymic>
+            <dateOfBirth>1991-01-07T00:00:00.000+06:00</dateOfBirth>
+            <nationality>РУССКИЙ</nationality>
+            <citizenshipRu>КАЗАХСТАН</citizenshipRu>
+            <citizenshipKz>КАЗАХСТАН</citizenshipKz>
+        </motherInfo>
+        <fatherInfo>
+            <iin>840523301313</iin>
+            <lastName>Бурганов</lastName>
+            <firstName>Тимур</firstName>
+            <patronymic>Абдулахатович</patronymic>
+            <dateOfBirth>1984-05-23T00:00:00.000+07:00</dateOfBirth>
+            <nationality>ТАТАРИН</nationality>
+            <citizenshipRu>КАЗАХСТАН</citizenshipRu>
+            <citizenshipKz>КАЗАХСТАН</citizenshipKz>
+        </fatherInfo>
+    </parentsInfo>
+    <paternityAssignInformation>
+        <lastNameAfter>БУРГАНОВ</lastNameAfter>
+        <firstNameAfter>ТАИР</firstNameAfter>
+        <patronymicAfter>ТИМУРОВИЧ</patronymicAfter>
+        <dateOfBirthAfter>2008-05-30T00:00:00.000+06:00</dateOfBirthAfter>
+        <motherLastName>БЕЛЯЕВА</motherLastName>
+        <motherFirstName>НАТАЛЬЯ</motherFirstName>
+        <motherPatronymic>АНДРЕЕВНА</motherPatronymic>
+        <fatherLastName>БУРГАНОВ</fatherLastName>
+        <fatherFirstName>ТИМУР</fatherFirstName>
+        <fatherPatronymic>АБДУЛАХАТОВИЧ</fatherPatronymic>
+        <issuingOrganizationRu>отдел ЗАГС Турксибского района города Алматы</issuingOrganizationRu>
+        <issuingOrganizationKz>Алматы қаласының Түрксіб аудандық АХАЖ бөлімі</issuingOrganizationKz>
+        <paternityAssignDocumentNumber>30-323-08-1000-291</paternityAssignDocumentNumber>
+        <paternityAssignDocumentDate>2008-05-27T00:00:00.000+06:00</paternityAssignDocumentDate>
+    </paternityAssignInformation>
+    <marriageInfo>
+        <zagsNameRu>Аппарат акима Алмалинского района г. Алматы отдел регистрации актов гражданского состояния
+        </zagsNameRu>
+        <zagsNameKz>Аппарат акима Алмалинского района г. Алматы отдел регистрации актов гражданского состояния
+        </zagsNameKz>
+        <marriageRecordNumber>50-555-16-0000889</marriageRecordNumber>
+        <marriageRegistrationDate>2016-06-15T00:00:00.000+06:00</marriageRegistrationDate>
+        <husbandInfo>
+            <iin>840712350021</iin>
+            <lastName>МЫРЗАБАЕВ</lastName>
+            <firstName>ДАРХАН</firstName>
+            <patronymic>БЕРИКОВИЧ</patronymic>
+            <dateOfBirth>1984-07-12T00:00:00.000+07:00</dateOfBirth>
+            <birthAddress>
+                <country>КАЗАХСТАН</country>
+                <region>АЛМАЛИНСКИЙ</region>
+                <district>АЛМАЛИНСКИЙ</district>
+                <city>АЛМАТЫ</city>
+            </birthAddress>
+            <lastNameAfterMarriage>МЫРЗАБАЕВ</lastNameAfterMarriage>
+        </husbandInfo>
+        <wifeInfo>
+            <iin>910107400553</iin>
+            <lastName>БЕЛЯЕВА</lastName>
+            <firstName>НАТАЛЬЯ</firstName>
+            <patronymic>АНДРЕЕВНА</patronymic>
+            <dateOfBirth>1991-01-07T00:00:00.000+06:00</dateOfBirth>
+            <birthAddress>
+                <country>КАЗАХСТАН</country>
+                <region>АЛМАЛИНСКИЙ</region>
+                <district>АЛМАЛИНСКИЙ</district>
+                <city>АЛМАТЫ</city>
+            </birthAddress>
+            <lastNameAfterMarriage>МЫРЗАБАЕВА</lastNameAfterMarriage>
+        </wifeInfo>
+    </marriageInfo>
+    <applicantBankDetails>
+        <bankNameRu>АО "Народный Банк Казахстана"</bankNameRu>
+        <bankNameKz>АО "Народный Банк Казахстана"</bankNameKz>
+        <iban>KZ146010002012111426</iban>
+        <accountType>КАРТСЧЕТ</accountType>
+        <bankBik>HSBKKZKX</bankBik>
+        <bankIik>KZ126010002203045292</bankIik>
+        <bankBin>940140000385</bankBin>
+    </applicantBankDetails>
+    <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:SignedInfo>
+            <ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+            <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#gost34310-gost34311"/>
+            <ds:Reference URI="">
+                <ds:Transforms>
+                    <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+                    <ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/>
+                </ds:Transforms>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#gost34311"/>
+                <ds:DigestValue>Ptac9eWtzdF8lUETWp5nipOiCtiL9xcs3Y1IjmW3J+s=</ds:DigestValue>
+            </ds:Reference>
+        </ds:SignedInfo>
+        <ds:SignatureValue>1qm3HMEici7uEYW4K5MoczQGHFYgkzv2+YUxQFnQpgU+dXaHmgCACBAqbcxAmFmp8HKzYrTr7MkB RrP5AhooHQ==
+        </ds:SignatureValue>
+        <ds:KeyInfo>
+            <ds:X509Data>
+                <ds:X509Certificate>MIIFFDCCBL6gAwIBAgIUXtjAcf99bju00zLKUJVKIQsvbecwDQYJKoMOAwoBAQECBQAwUzELMAkG
+                    A1UEBhMCS1oxRDBCBgNVBAMMO9Kw0JvQotCi0KvSmiDQmtCj05jQm9CQ0J3QlNCr0KDQo9Co0Ksg
+                    0J7QoNCi0JDQm9Cr0pogKEdPU1QpMB4XDTE5MDIxMjA1MjE0N1oXDTIwMDIxMjA1MjE0N1owggG+
+                    MSYwJAYDVQQDDB3QnNCj0JrQo9Co0JXQkiDQndCQ0KDQmNCc0JDQnTEXMBUGA1UEBAwO0JzQo9Ca
+                    0KPQqNCV0JIxGDAWBgNVBAUTD0lJTjg0MDUwOTM1MDAzODELMAkGA1UEBhMCS1oxFTATBgNVBAcM
+                    DNCQ0KHQotCQ0J3QkDEVMBMGA1UECAwM0JDQodCi0JDQndCQMYHEMIHBBgNVBAoMgbnQk9Ce0KHQ
+                    o9CU0JDQoNCh0KLQktCV0J3QndCe0JUg0KPQp9Cg0JXQltCU0JXQndCY0JUgItCc0JjQndCY0KHQ
+                    otCV0KDQodCi0JLQniDQotCg0KPQlNCQINCYINCh0J7QptCY0JDQm9Cs0J3QntCZINCX0JDQqdCY
+                    0KLQqyDQndCQ0KHQldCb0JXQndCY0K8g0KDQldCh0J/Qo9CR0JvQmNCa0Jgg0JrQkNCX0JDQpdCh
+                    0KLQkNCdIjEYMBYGA1UECwwPQklOMTcwMzQwMDAxMzM5MR0wGwYDVQQqDBTQndCj0KDQm9CQ0J3Q
+                    ntCS0JjQpzEmMCQGCSqGSIb3DQEJARYXTi5NVUtVU0hFVkBFTkJFSy5HT1YuS1owbDAlBgkqgw4D
+                    CgEBAQEwGAYKKoMOAwoBAQEBAQYKKoMOAwoBAwEBAANDAARAfxEUFQPxTd4LjTwe7vCZhQnmBFXZ
+                    a8NfCqc0WyA9+sP0cyFYac7JYkSmxP95EId5nIMstVcOX23VZODfxkcrdqOCAeswggHnMA4GA1Ud
+                    DwEB/wQEAwIGwDAoBgNVHSUEITAfBggrBgEFBQcDBAYIKoMOAwMEAQIGCSqDDgMDBAECAjAPBgNV
+                    HSMECDAGgARbanPpMB0GA1UdDgQWBBR4R7WaxmvnFG2LNYQvFdOrbxJFPTBeBgNVHSAEVzBVMFMG
+                    ByqDDgMDAgEwSDAhBggrBgEFBQcCARYVaHR0cDovL3BraS5nb3Yua3ovY3BzMCMGCCsGAQUFBwIC
+                    MBcMFWh0dHA6Ly9wa2kuZ292Lmt6L2NwczBYBgNVHR8EUTBPME2gS6BJhiJodHRwOi8vY3JsLnBr
+                    aS5nb3Yua3ovbmNhX2dvc3QuY3JshiNodHRwOi8vY3JsMS5wa2kuZ292Lmt6L25jYV9nb3N0LmNy
+                    bDBcBgNVHS4EVTBTMFGgT6BNhiRodHRwOi8vY3JsLnBraS5nb3Yua3ovbmNhX2RfZ29zdC5jcmyG
+                    JWh0dHA6Ly9jcmwxLnBraS5nb3Yua3ovbmNhX2RfZ29zdC5jcmwwYwYIKwYBBQUHAQEEVzBVMC8G
+                    CCsGAQUFBzAChiNodHRwOi8vcGtpLmdvdi5rei9jZXJ0L25jYV9nb3N0LmNlcjAiBggrBgEFBQcw
+                    AYYWaHR0cDovL29jc3AucGtpLmdvdi5rejANBgkqgw4DCgEBAQIFAANBAAfzIZf6f92XtJH1peKl
+                    Pd0sHxKWIOb8Lp/R82grC4qnIcz5yle72OR6gZeAYJ9wrXqIyen18B+KO0S6zXc1Wp8=
+                </ds:X509Certificate>
+            </ds:X509Data>
+        </ds:KeyInfo>
+    </ds:Signature>
+</Request>
