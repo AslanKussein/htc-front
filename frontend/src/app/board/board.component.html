@@ -1,14 +1,17 @@
-<div class="card-body">
+<div class="card-body card-bg">
+
   <div class="row">
     <div class="font-up-bold text-uppercase">
 
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a class="" href="#">
-            <span class="mr-3 mb-0"><strong>Home</strong></span>
-          </a></li>
-          <li class="breadcrumb-item active">
-            <span class="mr-3 mb-0"><strong translate>board.title</strong></span>
+      <nav aria-label="breadcrumb" style="color: blue">
+        <ol class="breadcrumb card-bg">
+          <li class="breadcrumb-item">
+            <a href="#">Home</a>
+            <i class="fa fa-caret-right mx-2" aria-hidden="true"></i>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="#" translate>board.title</a>
+            <i class="fa fa-caret-right mx-2" aria-hidden="true"></i>
           </li>
         </ol>
       </nav>
@@ -49,18 +52,20 @@
       <br>
       <div class="row" cdkDropListGroup>
         <div class="col-sm blockItem">
-          <h5 translate>board.firstContact</h5>
+          <div class="alert bg-primary text-white font-weight-bolder" role="alert" translate>board.firstContact</div>
           <div
             cdkDropList
             [cdkDropListData]="firstContact"
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of firstContact" cdkDrag>
-              <div class="card" style="width: 14rem;">
-                <h5 class="card-header">{{item}}</h5>
+              <div class="card" style="width: 15rem;">
+                <h5 class="card-header bg-info">{{item}}</h5>
                 <div class="card-body">
-                  <p class="card-text"><i class="fa fa-phone"> 870778945612</i></p>
-                  <a href="#" class="btn btn-primary" translate> open</a>
+                  <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                  <i class="fa fa-phone"><a href="tel:870778945612"> 870778945612</a></i>
                 </div>
               </div>
               <br/>
@@ -68,18 +73,20 @@
           </div>
         </div>
         <div class="col-sm blockItem">
-          <h5 translate>board.meet</h5>
+          <div class="alert alert-success" role="alert" translate>board.meet</div>
           <div
             cdkDropList
             [cdkDropListData]="meet"
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of meet" cdkDrag>
-              <div class="card" style="width: 14rem;">
-                <h5 class="card-header">{{item}}</h5>
+              <div class="card" style="width: 15rem;">
+                <h5 class="card-header bg-info">{{item}}</h5>
                 <div class="card-body">
-                  <p class="card-text"><i class="fa fa-phone"> 870778945612</i></p>
-                  <a href="#" class="btn btn-primary" translate> open</a>
+                  <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                  <i class="fa fa-phone"><a href="tel:870778945612"> 870778945612</a></i>
                 </div>
               </div>
               <br/>
@@ -87,18 +94,20 @@
           </div>
         </div>
         <div class="col-sm blockItem">
-          <h5 translate>board.dvou</h5>
+          <div class="alert alert-info" role="alert" translate>board.dvou</div>
           <div
             cdkDropList
             [cdkDropListData]="dvou"
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of dvou" cdkDrag>
-              <div class="card" style="width: 14rem;">
-                <h5 class="card-header">{{item}}</h5>
+              <div class="card" style="width: 15rem;">
+                <h5 class="card-header bg-info">{{item}}</h5>
                 <div class="card-body">
-                  <p class="card-text"><i class="fa fa-phone"> 870778945612</i></p>
-                  <a href="#" class="btn btn-primary" translate> open</a>
+                  <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                  <i class="fa fa-phone"><a href="tel:870778945612"> 870778945612</a></i>
                 </div>
               </div>
               <br/>
@@ -106,18 +115,20 @@
           </div>
         </div>
         <div class="col-sm blockItem">
-          <h5 translate>board.adv</h5>
+          <div class="alert alert-dark" role="alert" translate>board.adv</div>
           <div
             cdkDropList
             [cdkDropListData]="blockItem"
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of blockItem" cdkDrag>
-              <div class="card" style="width: 14rem;">
-                <h5 class="card-header">{{item}}</h5>
+              <div class="card" style="width: 15rem;">
+                <h5 class="card-header bg-info">{{item}}</h5>
                 <div class="card-body">
-                  <p class="card-text"><i class="fa fa-phone"> 870778945612</i></p>
-                  <a href="#" class="btn btn-primary" translate> open</a>
+                  <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                  <i class="fa fa-phone"><a href="tel:870778945612"> 870778945612</a></i>
                 </div>
               </div>
               <br/>
@@ -125,18 +136,20 @@
           </div>
         </div>
         <div class="col-sm blockItem">
-          <h5 translate>board.photoset</h5>
+          <div class="alert alert-warning" role="alert" translate>board.photoset</div>
           <div
             cdkDropList
             [cdkDropListData]="photoset"
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of photoset" cdkDrag>
-              <div class="card" style="width: 14rem;">
-                <h5 class="card-header">{{item}}</h5>
+              <div class="card" style="width: 15rem;">
+                <h5 class="card-header bg-info">{{item}}</h5>
                 <div class="card-body">
-                  <p class="card-text"><i class="fa fa-phone"> 870778945612</i></p>
-                  <a href="#" class="btn btn-primary" translate> open</a>
+                  <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                  <i class="fa fa-phone"><a href="tel:870778945612"> 870778945612</a></i>
                 </div>
               </div>
               <br/>
@@ -144,18 +157,20 @@
           </div>
         </div>
         <div class="col-sm blockItem">
-          <h5 translate>board.show</h5>
+          <div class="alert alert-danger" role="alert" translate>board.show</div>
           <div
             cdkDropList
             [cdkDropListData]="show"
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of show" cdkDrag>
-              <div class="card" style="width: 14rem;">
-                <h5 class="card-header">{{item}}</h5>
+              <div class="card" style="width: 15rem;">
+                <h5 class="card-header bg-info">{{item}}</h5>
                 <div class="card-body">
-                  <p class="card-text"><i class="fa fa-phone"> 870778945612</i></p>
-                  <a href="#" class="btn btn-primary" translate> open</a>
+                  <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                  <i class="fa fa-phone"><a href="tel:870778945612"> 870778945612</a></i>
                 </div>
               </div>
               <br/>
@@ -163,18 +178,20 @@
           </div>
         </div>
         <div class="col-sm blockItem">
-          <h5 translate>board.closedContract</h5>
+          <div class="alert alert-light" role="alert" translate>board.closedContract</div>
           <div
             cdkDropList
             [cdkDropListData]="closedContract"
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of closedContract" cdkDrag>
-              <div class="card" style="width: 14rem;">
-                <h5 class="card-header">{{item}}</h5>
+              <div class="card" style="width: 15rem;">
+                <h5 class="card-header bg-info">{{item}}</h5>
                 <div class="card-body">
-                  <p class="card-text"><i class="fa fa-phone"> 870778945612</i></p>
-                  <a href="#" class="btn btn-primary" translate> open</a>
+                  <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                  <i class="fa fa-phone"><a href="tel:870778945612"> 870778945612</a></i>
                 </div>
               </div>
               <br/>

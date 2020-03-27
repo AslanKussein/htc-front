@@ -10,7 +10,6 @@
 
 .blockItem {
   width: 150px;
-  border-right: 1px solid black;
   height: 100%;
   display: block;
 }
@@ -19,4 +18,8 @@
   color: navy;
   font-weight: bolder;
   font-size: 18px !important;
+}
+
+.card-bg {
+  background-color: #f0f7fc;
 }

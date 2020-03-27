@@ -1,6 +1,6 @@
 <div class="wrapper">
   <!--Navbar -->
-  <nav class="mb navbar navbar-expand-lg navbar-dark default-color">
+  <nav class="mb navbar navbar-expand-lg">
     <a class="navbar-brand" href="#">HTC</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
             aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,19 +18,6 @@
             <span translate>news.title</span>
           </a>
         </li>
-        <!--        <li class="nav-item">-->
-        <!--          <a class="nav-link" href="#">Pricing</a>-->
-        <!--        </li>-->
-        <!--        <li class="nav-item dropdown">-->
-        <!--          <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"-->
-        <!--             aria-haspopup="true" aria-expanded="false">Dropdown-->
-        <!--          </a>-->
-        <!--          <div class="dropdown-menu dropdown-default" aria-labelledby="navbarDropdownMenuLink-333">-->
-        <!--            <a class="dropdown-item" href="#">Action</a>-->
-        <!--            <a class="dropdown-item" href="#">Another action</a>-->
-        <!--            <a class="dropdown-item" href="#">Something else here</a>-->
-        <!--          </div>-->
-        <!--        </li>-->
       </ul>
       <ul class="navbar-nav ml-auto nav-flex-icons">
         <li class="nav-item" [className]="_language.language == 'ru' ? 'active' : ''">
@@ -60,7 +47,7 @@
     </div>
   </nav>
 
-  <ul class="nav justify-content-center grey lighten-4 py-1">
+  <ul class="nav justify-content-center lighten-4 py-1 nav2">
     <li class="nav-item">
       <a class="nav-link" (click)="dnHref('objects')">
         <span translate>objects.title</span>
@@ -86,4 +73,61 @@
 
   <router-outlet [hidden]="loading"></router-outlet>
 
+  <!-- Footer -->
+  <footer class="page-footer font-small cyan darken-3 fixed-bottom">
+
+    <!-- Footer Elements -->
+    <div class="container">
+
+      <!-- Grid row-->
+      <div class="row">
+        <div class="row">
+          <h1 class="text-justify text-reset">СТАНЬ АГЕНТОМ ГОДА И ВЫИГРАЙ ПУТЕВКУ В ШВЕЙЦАРИЮ</h1>
+        </div>
+        <!-- Grid column -->
+<!--        <div class="col-md-12 py-5">-->
+<!--          <div class="mb-5 flex-center">-->
+
+<!--            &lt;!&ndash; Facebook &ndash;&gt;-->
+<!--            <a class="fb-ic">-->
+<!--              <i class="fa fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>-->
+<!--            </a>-->
+<!--            &lt;!&ndash; Twitter &ndash;&gt;-->
+<!--            <a class="tw-ic">-->
+<!--              <i class="fa fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>-->
+<!--            </a>-->
+<!--            &lt;!&ndash; Google +&ndash;&gt;-->
+<!--            <a class="gplus-ic">-->
+<!--              <i class="fa fa-google-plus-g fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>-->
+<!--            </a>-->
+<!--            &lt;!&ndash;Linkedin &ndash;&gt;-->
+<!--            <a class="li-ic">-->
+<!--              <i class="fa fa-linkedin-in fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>-->
+<!--            </a>-->
+<!--            &lt;!&ndash;Instagram&ndash;&gt;-->
+<!--            <a class="ins-ic">-->
+<!--              <i class="fa fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>-->
+<!--            </a>-->
+<!--            &lt;!&ndash;Pinterest&ndash;&gt;-->
+<!--            <a class="pin-ic">-->
+<!--              <i class="fa fa-pinterest fa-lg white-text fa-2x"> </i>-->
+<!--            </a>-->
+<!--          </div>-->
+<!--        </div>-->
+        <!-- Grid column -->
+
+      </div>
+      <!-- Grid row-->
+
+    </div>
+    <!-- Footer Elements -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+      <a href="https://mdbootstrap.com/"> htc.kz</a>
+    </div>
+    <!-- Copyright -->
+
+  </footer>
+  <!-- Footer -->
 </div>
