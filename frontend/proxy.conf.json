@@ -1,6 +1,13 @@
 {
   "/api": {
-    "target": "http://localhost:8080/",
+    "target": "htc",
     "secure": false
+  },
+
+  "/htc": {
+    "target": "http://localhost:17080",
+    "secure": false,
+    "loglevel": "debug",
+    "changeOrigin": true
   }
 }
