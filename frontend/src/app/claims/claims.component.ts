@@ -59,7 +59,9 @@ export class ClaimsComponent implements OnInit {
     this.loading = true;
 
     this.claimService.getClaims(pageNo, this.itemsPerPage, this.formData).subscribe(res => {
+      console.log(res)
       if (res != null) {
+
         this.claimData = res;
         this.totalItems = res.totalElements;
         this.itemsPerPage = res.size;
