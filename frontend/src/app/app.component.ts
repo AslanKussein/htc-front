@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {Router} from "@angular/router";
 import {language} from "../environments/language";
 import {TranslateService} from '@ngx-translate/core';
+import {AuthenticationService} from "./services/authentication.service";
+import {User} from "./models/users";
 
 @Component({
   selector: 'app-root',
@@ -13,11 +15,14 @@ export class AppComponent {
   _language = language;
 
   public loading = false;
+  currentUser: User;
 
   constructor(public translate: TranslateService,
-              private router: Router) {
+              private router: Router,
+              private authenticationService: AuthenticationService) {
     translate.setDefaultLang(this._language.language);
     translate.use(this._language.language);
+    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
   dnHref(href) {
@@ -29,5 +34,10 @@ export class AppComponent {
     this._language.language = language;
     this.translate.setDefaultLang(language);
     this.translate.use(language);
+  }
+
+  logout() {
+    this.authenticationService.logout();
+    this.router.navigate(['/login']);
   }
 }

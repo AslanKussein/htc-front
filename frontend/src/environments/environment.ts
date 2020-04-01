@@ -4,10 +4,11 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'http://localhost:8080/keycloak-auth-api/rest',
+  authApiUrl: '/auth',
   // baseUrl: 'http://localhost:4200',
   // keycloakRealm: 'keycloak-auth',
-  // keycloakClient: 'auth-client',
+  client_id: 'htc',
+  grant_type: 'password',
   // keycloakBaseUrl: 'http://localhost:8080/'
 };
 

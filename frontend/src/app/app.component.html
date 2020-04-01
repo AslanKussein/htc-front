@@ -1,6 +1,6 @@
 <div class="wrapper">
   <!--Navbar -->
-  <nav class="mb navbar navbar-expand-lg">
+  <nav class="mb navbar navbar-expand-lg" *ngIf="currentUser">
     <a class="navbar-brand" href="#">HTC</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
             aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,14 +40,14 @@
                aria-labelledby="navbarDropdownMenuLink-333">
             <a class="dropdown-item" (click)="dnHref('profile')" translate>profile.myProfile</a>
             <hr/>
-            <a class="dropdown-item" translate>profile.exit</a>
+            <a class="dropdown-item" (click)="logout()" translate>profile.exit</a>
           </div>
         </li>
       </ul>
     </div>
   </nav>
 
-  <ul class="nav justify-content-center lighten-4 py-1 nav2">
+  <ul class="nav justify-content-center lighten-4 py-1 nav2" *ngIf="currentUser">
     <li class="nav-item">
       <a class="nav-link" (click)="dnHref('objects')">
         <span translate>objects.title</span>
@@ -74,7 +74,7 @@
   <router-outlet [hidden]="loading"></router-outlet>
 
   <!-- Footer -->
-  <footer class="page-footer font-small cyan darken-3 fixed-bottom">
+  <footer class="page-footer font-small cyan darken-3 fixed-bottom" *ngIf="currentUser">
 
     <!-- Footer Elements -->
     <div class="container">

@@ -3,8 +3,13 @@
     "target": "htc",
     "secure": false
   },
-
   "/htc": {
+    "target": "http://localhost:17080",
+    "secure": false,
+    "loglevel": "debug",
+    "changeOrigin": true
+  },
+  "/auth": {
     "target": "http://localhost:17080",
     "secure": false,
     "loglevel": "debug",

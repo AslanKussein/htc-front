@@ -22,25 +22,28 @@ import {ModalModule, PaginationModule} from 'ngx-bootstrap';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgSelectModule} from '@ng-select/ng-select';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CreateClaimComponent} from "./claims/create-claim/create-claim.component";
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {ClaimService} from "./services/claim.service";
 import {NotifierModule, NotifierOptions} from 'angular-notifier';
+import {AuthGuard} from "./helpers/auth.guard";
+import {LoginComponent} from "./login/login.component";
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
 
 const routes: Routes = [
-  {path: '', redirectTo: '/claims', pathMatch: 'full'},
-  {path: 'claims', component: ClaimsComponent},
-  {path: 'board', component: BoardComponent},
-  {path: 'profile', component: ProfileComponent},
-  {path: 'objects', component: ObjectsComponent},
-  {path: 'staffs', component: StaffsComponent},
-  {path: 'news', component: NewsComponent},
-  {path: 'analytics', component: AnalyticsComponent},
-  {path: 'create-claim', component: CreateClaimComponent},
+  {path: '', redirectTo: '/claims', pathMatch: 'full', canActivate: [AuthGuard]},
+  {path: 'claims', component: ClaimsComponent, canActivate: [AuthGuard]},
+  {path: 'login', component: LoginComponent},
+  {path: 'board', component: BoardComponent, canActivate: [AuthGuard]},
+  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
+  {path: 'objects', component: ObjectsComponent, canActivate: [AuthGuard]},
+  {path: 'staffs', component: StaffsComponent, canActivate: [AuthGuard]},
+  {path: 'news', component: NewsComponent, canActivate: [AuthGuard]},
+  {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
+  {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard]},
 ];
 
 const customNotifierOptions: NotifierOptions = {
@@ -111,6 +114,7 @@ const customNotifierOptions: NotifierOptions = {
     BsDatepickerModule.forRoot(),
     NgSelectModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     DragDropModule,
     NotifierModule.withConfig(customNotifierOptions)
