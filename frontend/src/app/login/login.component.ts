@@ -14,7 +14,6 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   submitted = false;
-  returnUrl: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -23,9 +22,11 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private alertService: AlertService
   ) {
+    console.log(this.authenticationService.currentUserValue)
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
-      this.router.navigate(['/']);
+
+      this.router.navigate(['claims']);
     }
   }
 
@@ -34,9 +35,9 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    //
+    // // get return url from route parameters or default to '/'
+    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   get f() {
@@ -60,7 +61,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         data => {
           console.log(78978978978978789)
-          this.router.navigate([this.returnUrl]);
+          this.router.navigate(['claims']);
         },
         error => {
           this.alertService.error(error);

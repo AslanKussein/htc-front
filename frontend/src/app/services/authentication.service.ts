@@ -32,7 +32,7 @@ export class AuthenticationService {
       .set('client_id', 'htc');
 
     return this.http.post<any>(`auth`, body_.toString(), options).pipe(map(user => {
-      if (user && user.token) {
+      if (user && user.access_token) {
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
       }
