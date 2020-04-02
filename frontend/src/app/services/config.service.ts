@@ -4,9 +4,7 @@ import {Injectable} from '@angular/core';
   providedIn: 'root'
 })
 export class ConfigService {
-  //serverUrl = 'http://localhost:9001';
-  serverUrl = 'http://localhost:8080';
-  apiUrl = 'https://dm-htc.dilau.kz';
+  apiUrl = 'htc';
 
   constructor() {
   }

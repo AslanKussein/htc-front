@@ -43,31 +43,16 @@ export class ClaimService {
     if (search.patronymic !== undefined) {
       params = params.append('patronymic', String(search.patronymic));
     }
-
-    return this.http.get<any>(`htc/applications`, {params: params})
-      .pipe(
-        tap(data => {
-          console.log('saved');
-        }),
-        catchError(this.handleError)
-      );
-    // return this.http.get<any>(`${this.configService.apiUrl}/applications`, {params: params});
+    // return this.http.get<any>(`htc/applications`, {params: params})
+    //   .pipe(
+    //     tap(data => {
+    //       console.log('saved');
+    //     }),
+    //     catchError(this.handleError)
+    //   );
+    return this.http.get<any>(`${this.configService.apiUrl}/applications`, {params: params});
   }
 
 
-  private handleError(error: HttpErrorResponse) {
-    if (error.status === 401) {
-      this.notifier.notify( 'warning', 'Заполните поля' );
 
-    }
-    if (error instanceof ErrorEvent) {
-      console.error('An error occurred:', error.message);
-    } else {
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.message}`);
-    }
-    return throwError(
-      error);
-  }
 }

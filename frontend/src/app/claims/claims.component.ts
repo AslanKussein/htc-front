@@ -6,6 +6,7 @@ import {defineLocale} from 'ngx-bootstrap/chronos';
 import {ruLocale} from 'ngx-bootstrap/locale';
 import {BsLocaleService} from "ngx-bootstrap";
 import {ClaimService} from "../services/claim.service";
+import {ApplicationDto} from "../models/applicationDto";
 
 @Component({
   selector: 'app-claims',
@@ -29,7 +30,7 @@ export class ClaimsComponent implements OnInit {
     lastCommentDateRange: '',
     textSearch: ''
   };
-  dClaimType = [];
+
   claimData = [];
   loading;
   totalItems = 0;

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ApplicationDto} from "../../models/applicationDto";
 
 @Component({
   selector: 'app-create-claim',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateClaimComponent implements OnInit {
 
+  application: ApplicationDto;
 
   constructor() {
   }
