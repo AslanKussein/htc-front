@@ -1,6 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule, APP_INITIALIZER} from '@angular/core';
-
+import {NgModule, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BoardComponent} from './board/board.component';
@@ -31,6 +30,7 @@ import {AuthGuard} from "./helpers/auth.guard";
 import {LoginComponent} from "./login/login.component";
 import {ErrorInterceptor} from "./helpers/error.interceptor";
 import {JwtInterceptor} from "./helpers/jwt.interceptor";
+import { ToastrModule } from 'ngx-toastr';
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
@@ -98,6 +98,7 @@ const customNotifierOptions: NotifierOptions = {
     ObjectsComponent,
     StaffsComponent,
     CreateClaimComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -119,6 +120,7 @@ const customNotifierOptions: NotifierOptions = {
     ReactiveFormsModule,
     BrowserAnimationsModule,
     DragDropModule,
+    ToastrModule.forRoot(),
     NotifierModule.withConfig(customNotifierOptions)
   ],
   providers: [
@@ -138,6 +140,7 @@ const customNotifierOptions: NotifierOptions = {
   entryComponents: [
     CreateClaimComponent
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA],
 
 })
 export class AppModule {

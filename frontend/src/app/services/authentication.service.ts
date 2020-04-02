@@ -19,20 +19,27 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
-  login(username: string, password: string) {
+  login(loginForm: any) {
 
     let options = {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
     };
 
     const body_ = new HttpParams()
-      .set('username', username)
-      .set('password', password)
+      .set('username', loginForm.username)
+      .set('password', loginForm.password)
       .set('grant_type', 'password')
       .set('client_id', 'htc');
 
     return this.http.post<any>(`auth`, body_.toString(), options).pipe(map(user => {
       if (user && user.access_token) {
+        if (loginForm.rememberMe) {
+          localStorage.setItem('username', loginForm.username);
+          localStorage.setItem('password', loginForm.password);
+        } else {
+          localStorage.removeItem('username');
+          localStorage.removeItem('password');
+        }
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
       }
