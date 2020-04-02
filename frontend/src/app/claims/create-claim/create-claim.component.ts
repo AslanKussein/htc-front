@@ -4,6 +4,7 @@ import {Util} from "../../services/util";
 import {NotificationService} from "../../services/notification.service";
 import * as $ from 'jquery';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {ClaimService} from "../../services/claim.service";
 
 @Component({
   selector: 'app-create-claim',
@@ -16,8 +17,9 @@ export class CreateClaimComponent implements OnInit {
   xVal: string;
 
   constructor(private util: Util,
-              private notifyService : NotificationService,
-              private formBuilder: FormBuilder,) {
+              private notifyService: NotificationService,
+              private formBuilder: FormBuilder,
+              private claimService: ClaimService) {
   }
 
   applicationForm: any;
@@ -43,6 +45,18 @@ export class CreateClaimComponent implements OnInit {
   submit(){
     this.application = this.applicationForm.value;
     console.log(this.application);
+
+    // this.loading = true;
+    this.claimService.saveClaim(this.application)
+      .subscribe(data => {
+        if (data != null) {
+          // this.resumeModel = data;
+          this.notifyService.showSuccess('success', 'Успешно сохранено');
+        }
+      }, err => {
+        this.notifyService.showError('warning', err.message);
+      });
+    // this.loading = false;
   }
 
   validator() {

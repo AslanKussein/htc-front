@@ -56,7 +56,7 @@ const routes: Routes = [
     ObjectsComponent,
     StaffsComponent,
     CreateClaimComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,7 +81,6 @@ const routes: Routes = [
     ToastrModule.forRoot(),
   ],
   providers: [
-    ClaimService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],

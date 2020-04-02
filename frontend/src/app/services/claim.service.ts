@@ -3,20 +3,14 @@ import {ConfigService} from './config.service';
 import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, tap} from "rxjs/operators";
-import { NotifierService } from "angular-notifier";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClaimService {
 
-  private notifier: NotifierService;
-
   constructor(private configService: ConfigService,
-              private http: HttpClient,
-              notifier: NotifierService) {
-    this.notifier = notifier;
-
+              private http: HttpClient) {
   }
 
   getClaims(start: number, length: number, search: any): Observable<any> {
@@ -53,6 +47,15 @@ export class ClaimService {
     return this.http.get<any>(`${this.configService.apiUrl}/applications`, {params: params});
   }
 
-
+  public saveClaim(obj): Observable<any> {
+    return this.http.post(`${this.configService.apiUrl}/applications`, obj)
+      // return this.http.post(`/ehr/api/resume/put/resume` , obj)
+      .pipe(
+        tap(data => {
+          console.log(data)
+        }),
+        // catchError(this.handleError)
+      );
+  }
 
 }
