@@ -25,7 +25,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CreateClaimComponent} from "./claims/create-claim/create-claim.component";
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {ClaimService} from "./services/claim.service";
-import {NotifierModule, NotifierOptions} from 'angular-notifier';
 import {AuthGuard} from "./helpers/auth.guard";
 import {LoginComponent} from "./login/login.component";
 import {ErrorInterceptor} from "./helpers/error.interceptor";
@@ -47,47 +46,6 @@ const routes: Routes = [
   {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard]},
 ];
-
-const customNotifierOptions: NotifierOptions = {
-  position: {
-    horizontal: {
-      position: 'right',
-      distance: 12
-    },
-    vertical: {
-      position: 'top',
-      distance: 12,
-      gap: 10
-    }
-  },
-  theme: 'material',
-  behaviour: {
-    autoHide: 5000,
-    onClick: 'hide',
-    onMouseover: 'pauseAutoHide',
-    showDismissButton: true,
-    stacking: 4
-  },
-  animations: {
-    enabled: true,
-    show: {
-      preset: 'slide',
-      speed: 300,
-      easing: 'ease'
-    },
-    hide: {
-      preset: 'fade',
-      speed: 300,
-      easing: 'ease',
-      offset: 50
-    },
-    shift: {
-      speed: 300,
-      easing: 'ease'
-    },
-    overlap: 150
-  }
-};
 
 @NgModule({
   declarations: [
@@ -121,20 +79,11 @@ const customNotifierOptions: NotifierOptions = {
     BrowserAnimationsModule,
     DragDropModule,
     ToastrModule.forRoot(),
-    NotifierModule.withConfig(customNotifierOptions)
   ],
   providers: [
     ClaimService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
-    // KeycloakService,
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: kcFactory,
-    //   // deps: [KeycloakService],
-    //   multi: true
-    // }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
   entryComponents: [
