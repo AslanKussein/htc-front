@@ -58,7 +58,7 @@ export class ClaimsComponent implements OnInit {
 
   findClaims(pageNo: number) {
     this.loading = true;
-
+    console.log('formData.lastModifyDateRange', this.formData)
     this.claimService.getClaims(pageNo, this.itemsPerPage, this.formData).subscribe(res => {
       console.log(res)
       if (res != null) {

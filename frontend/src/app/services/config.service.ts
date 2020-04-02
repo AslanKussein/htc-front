@@ -4,7 +4,7 @@ import {Injectable} from '@angular/core';
   providedIn: 'root'
 })
 export class ConfigService {
-  apiUrl = 'htc';
+  apiUrl = 'api';
 
   constructor() {
   }

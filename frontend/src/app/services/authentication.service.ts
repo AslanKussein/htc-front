@@ -32,6 +32,7 @@ export class AuthenticationService {
       .set('client_id', 'htc');
 
     return this.http.post<any>(`auth`, body_.toString(), options).pipe(map(user => {
+      console.log(user)
       if (user && user.access_token) {
         if (loginForm.rememberMe) {
           localStorage.setItem('username', loginForm.username);
