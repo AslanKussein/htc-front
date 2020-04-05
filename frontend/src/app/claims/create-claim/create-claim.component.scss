@@ -16,3 +16,16 @@ legend.scheduler-border {
 .card-bg {
   background-color: #f0f7fc;
 }
+
+.ng-select .ng-arrow-wrapper .ng-arrow {
+  display: none;
+}
+
+.ng-select span.ng-arrow-wrapper:before {
+  content: "\f0ab";
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  color: black!important;
+}

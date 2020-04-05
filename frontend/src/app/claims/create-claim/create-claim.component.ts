@@ -5,6 +5,8 @@ import {NotificationService} from "../../services/notification.service";
 import * as $ from 'jquery';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ClaimService} from "../../services/claim.service";
+import {NgSelectConfig} from "@ng-select/ng-select";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-create-claim',
@@ -19,7 +21,10 @@ export class CreateClaimComponent implements OnInit {
   constructor(private util: Util,
               private notifyService: NotificationService,
               private formBuilder: FormBuilder,
-              private claimService: ClaimService) {
+              private claimService: ClaimService,
+              private config: NgSelectConfig,
+              private translate: TranslateService) {
+    this.config.notFoundText = 'Данные не найдены';
   }
 
   applicationForm: any;
@@ -39,6 +44,35 @@ export class CreateClaimComponent implements OnInit {
       operationTypeId: ['', Validators.required],
       objectTypeId: ['', Validators.required],
       objectPrice: ['', Validators.required],
+      mortgage: ['', Validators.required],
+      encumbrance: ['', Validators.required],
+      exchange: ['', Validators.required],
+      sharedOwnershipProperty: ['', Validators.required],
+      gender: ['', Validators.nullValidator],
+      cityId: ['', Validators.required],
+      residentialComplexId: ['', Validators.nullValidator],
+      streetId: ['', Validators.required],
+      houseNumber: ['', Validators.required],
+      numberOfRooms: ['', Validators.required],
+      totalArea: ['', Validators.required],
+      livingArea: ['', Validators.required],
+      kitchenArea: ['', Validators.required],
+      balconyArea: ['', Validators.required],
+      ceilingHeight: ['', Validators.required],
+      numberOfBedrooms: ['', Validators.required],
+      atelier: ['', Validators.nullValidator],
+      separateBathroom: ['', Validators.nullValidator],
+      districtId: ['', Validators.required],
+      numberOfFloors: ['', Validators.nullValidator],
+      apartmentsOnTheSite: ['', Validators.nullValidator],
+      materialOfConstruction: ['', Validators.nullValidator],
+      yearOfConstruction: ['', Validators.nullValidator],
+      typeOfElevator: ['', Validators.nullValidator],
+      concierge: ['', Validators.nullValidator],
+      wheelchair: ['', Validators.nullValidator],
+      playground: ['', Validators.nullValidator],
+      yardType: ['', Validators.nullValidator],
+      parkingTypeId: ['', Validators.nullValidator],
     })
   }
 
@@ -47,7 +81,78 @@ export class CreateClaimComponent implements OnInit {
     console.log(this.application);
 
     // this.loading = true;
-    this.claimService.saveClaim(this.application)
+    this.claimService.saveClaim('{\n' +
+      '  "amount": 0,\n' +
+      '  "apartmentNumber": "string",\n' +
+      '  "apartmentsOnTheSite": "string",\n' +
+      '  "atelier": true,\n' +
+      '  "balconyArea": 0,\n' +
+      '  "balconyAreaFrom": 0,\n' +
+      '  "balconyAreaTo": 0,\n' +
+      '  "cadastralNumber": "string",\n' +
+      '  "ceilingHeight": 0,\n' +
+      '  "ceilingHeightFrom": 0,\n' +
+      '  "ceilingHeightTo": 0,\n' +
+      '  "cityId": 0,\n' +
+      '  "clientId": 0,\n' +
+      '  "commissionIncludedInThePrice": true,\n' +
+      '  "concierge": true,\n' +
+      '  "contractPeriod": "2020-04-02T16:45:06.072Z",\n' +
+      '  "district": "string",\n' +
+      '  "districtId": 0,\n' +
+      '  "email": "string",\n' +
+      '  "encumbrance": true,\n' +
+      '  "exchange": true,\n' +
+      '  "firstName": "string",\n' +
+      '  "floor": 0,\n' +
+      '  "floorFrom": 0,\n' +
+      '  "floorTo": 0,\n' +
+      '  "gender": "MALE",\n' +
+      '  "houseNumber": 0,\n' +
+      '  "houseNumberFraction": "string",\n' +
+      '  "id": 0,\n' +
+      '  "kitchenArea": 0,\n' +
+      '  "kitchenAreaFrom": 0,\n' +
+      '  "kitchenAreaTo": 0,\n' +
+      '  "livingArea": 0,\n' +
+      '  "livingAreaFrom": 0,\n' +
+      '  "livingAreaTo": 0,\n' +
+      '  "materialOfConstruction": "string",\n' +
+      '  "mortgage": true,\n' +
+      '  "note": "string",\n' +
+      '  "numberOfBedrooms": 0,\n' +
+      '  "numberOfBedroomsFrom": 0,\n' +
+      '  "numberOfBedroomsTo": 0,\n' +
+      '  "numberOfFloors": 0,\n' +
+      '  "numberOfRooms": 0,\n' +
+      '  "numberOfRoomsFrom": 0,\n' +
+      '  "numberOfRoomsTo": 0,\n' +
+      '  "objectPrice": 0,\n' +
+      '  "objectPriceFrom": 0,\n' +
+      '  "objectPriceTo": 0,\n' +
+      '  "objectTypeId": 0,\n' +
+      '  "operationTypeId": 0,\n' +
+      '  "parkingTypeId": 0,\n' +
+      '  "patronymic": "string",\n' +
+      '  "phoneNumber": "string",\n' +
+      '  "playground": true,\n' +
+      '  "possibleReasonForBiddingId": 0,\n' +
+      '  "probabilityOfBidding": true,\n' +
+      '  "residentialComplexId": 0,\n' +
+      '  "separateBathroom": true,\n' +
+      '  "sharedOwnershipProperty": true,\n' +
+      '  "street": "string",\n' +
+      '  "streetId": 0,\n' +
+      '  "surname": "string",\n' +
+      '  "theSizeOfTrades": "string",\n' +
+      '  "totalArea": 0,\n' +
+      '  "totalAreaFrom": 0,\n' +
+      '  "totalAreaTo": 0,\n' +
+      '  "typeOfElevator": "string",\n' +
+      '  "wheelchair": true,\n' +
+      '  "yardType": "PRIVATE",\n' +
+      '  "yearOfConstruction": 0\n' +
+      '}')
       .subscribe(data => {
         if (data != null) {
           // this.resumeModel = data;

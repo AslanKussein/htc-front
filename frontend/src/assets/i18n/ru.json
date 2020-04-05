@@ -19,7 +19,8 @@
     "from": "с",
     "to": "по",
     "fillFromAndTo": "Введите дату с и по",
-    "chooseElement": "Выберите данные"
+    "chooseElement": "Выберите данные",
+    "noDataFount": "Данные не найдены"
   },
   "news": {
     "title": "Новости"
@@ -90,7 +91,12 @@
     "appInFlat": "Кв. на площадке",
     "material": "Материал",
     "buildYear": "Год постройки",
-    "lift": "Лифт"
+    "lift": "Лифт",
+    "requiredField": "Обязательное поле",
+    "gender": {
+      "male": "Мужщина",
+      "female": "Женщина"
+    }
   },
   "board": {
     "title": "Канбан",
