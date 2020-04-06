@@ -30,6 +30,7 @@ import {LoginComponent} from "./login/login.component";
 import {ErrorInterceptor} from "./helpers/error.interceptor";
 import {JwtInterceptor} from "./helpers/jwt.interceptor";
 import { ToastrModule } from 'ngx-toastr';
+import {UploaderService} from "./services/uploader.service";
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
@@ -82,7 +83,8 @@ const routes: Routes = [
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    UploaderService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

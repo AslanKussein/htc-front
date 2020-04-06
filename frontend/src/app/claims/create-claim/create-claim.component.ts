@@ -6,7 +6,7 @@ import * as $ from 'jquery';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ClaimService} from "../../services/claim.service";
 import {NgSelectConfig} from "@ng-select/ng-select";
-import {TranslateService} from "@ngx-translate/core";
+import {UploaderService} from "../../services/uploader.service";
 
 @Component({
   selector: 'app-create-claim',
@@ -17,13 +17,16 @@ export class CreateClaimComponent implements OnInit {
 
   application: ApplicationDto;
   xVal: string;
+  selectedFile: File;
+  loading = false;
+  file: any;
 
   constructor(private util: Util,
               private notifyService: NotificationService,
               private formBuilder: FormBuilder,
               private claimService: ClaimService,
               private config: NgSelectConfig,
-              private translate: TranslateService) {
+              private uploader: UploaderService) {
     this.config.notFoundText = 'Данные не найдены';
   }
 
@@ -74,6 +77,19 @@ export class CreateClaimComponent implements OnInit {
       yardType: ['', Validators.nullValidator],
       parkingTypeId: ['', Validators.nullValidator],
     })
+  }
+
+  onFileChanged(event) {
+    this.selectedFile = event.target.files[0];
+
+    this.loading = true;
+    this.uploader.uploadData(this.selectedFile)
+      .subscribe(data => {
+        if (data != null) {
+          this.file = data.fileBody;
+        }
+      });
+    this.loading = false;
   }
 
   submit(){
