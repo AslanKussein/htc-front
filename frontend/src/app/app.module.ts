@@ -35,6 +35,7 @@ import {DicService} from "./services/dic.service";
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
+import { NgxMaskModule, IConfig } from 'ngx-mask'
 
 const routes: Routes = [
   {path: '', redirectTo: '/claims', pathMatch: 'full', canActivate: [AuthGuard]},
@@ -48,6 +49,7 @@ const routes: Routes = [
   {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard]},
 ];
+export let options: Partial<IConfig> | (() => Partial<IConfig>);
 
 @NgModule({
   declarations: [
@@ -81,6 +83,7 @@ const routes: Routes = [
     BrowserAnimationsModule,
     DragDropModule,
     ToastrModule.forRoot(),
+    NgxMaskModule.forRoot(options)
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

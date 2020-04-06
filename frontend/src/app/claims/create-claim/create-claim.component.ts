@@ -7,6 +7,9 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ClaimService} from "../../services/claim.service";
 import {NgSelectConfig} from "@ng-select/ng-select";
 import {UploaderService} from "../../services/uploader.service";
+import {DicService} from "../../services/dic.service";
+import {Dic} from "../../models/dic";
+import {language} from "../../../environments/language";
 
 @Component({
   selector: 'app-create-claim',
@@ -14,19 +17,21 @@ import {UploaderService} from "../../services/uploader.service";
   styleUrls: ['./create-claim.component.scss']
 })
 export class CreateClaimComponent implements OnInit {
-
+  _language = language;
   application: ApplicationDto;
   xVal: string;
   selectedFile: File;
   loading = false;
   file: any;
+  operationType: Dic[];
 
   constructor(private util: Util,
               private notifyService: NotificationService,
               private formBuilder: FormBuilder,
               private claimService: ClaimService,
               private config: NgSelectConfig,
-              private uploader: UploaderService) {
+              private uploader: UploaderService,
+              private dicService: DicService) {
     this.config.notFoundText = 'Данные не найдены';
   }
 
@@ -78,6 +83,27 @@ export class CreateClaimComponent implements OnInit {
       yardType: ['', Validators.nullValidator],
       parkingTypeId: ['', Validators.nullValidator],
     })
+
+    this.loadDictionary();
+  }
+
+  loadDictionary() {
+    this.dicService.getAllDictionaryCreateResume()
+      .subscribe(data => {
+        this.operationType = this.toSelectArray(data.dmember);
+        this.loading = false;
+      });
+  }
+
+  toSelectArray(data, idField = 'id', labelField = this._language.language = 'ru' ? 'nameRu' : 'nameRu') {
+    const list = [];
+    if (data) {
+      const len = data.length;
+      for (let i = 0; i < len; i++) {
+        list.push({value: '' + data[i][idField], label: data[i][labelField]});
+      }
+    }
+    return list;
   }
 
   onFileChanged(event) {

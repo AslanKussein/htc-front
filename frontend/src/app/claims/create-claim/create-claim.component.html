@@ -41,9 +41,12 @@
                     <div class="row">
                       <div class="col-sm">
                         <label class="control-labels" translate>claim.operation</label>
+                        <span class="text-danger" *ngIf="!applicationForm.operationTypeId">&nbsp;*</span>
                         <div class="row">
                           <div class="col-sm">
                             <ng-select
+                              [allowClear]="true"
+                              [options]="operationType"
                               class="form-control"
                               [(ngModel)]="applicationForm.operationTypeId"
                               [ngClass]="{'border-danger': !applicationForm.operationTypeId}"
@@ -58,6 +61,7 @@
                       </div>
                       <div class="col-sm">
                         <label class="control-labels" translate>claim.objectType</label>
+                        <span class="text-danger" *ngIf="!applicationForm.objectTypeId">&nbsp;*</span>
                         <div class="row">
                           <div class="col-sm">
                             <ng-select
@@ -75,6 +79,7 @@
                       </div>
                       <div class="col-sm">
                         <label class="control-labels" translate>claim.objectPriceInLim</label>
+                        <span class="text-danger" *ngIf="!applicationForm.objectPriceInLim">&nbsp;*</span>
                         <div class="row">
                           <div class="col-sm">
                             <input type="number" class="form-control" id="objectPrice"
@@ -92,7 +97,8 @@
                     <br>
                     <div class="row">
                       <div class="col-sm">
-                        <label class="col-sm-6 col-form-label" translate>claim.ipoteka</label>
+                        <label class="control-labels" translate>claim.ipoteka</label>
+                        <span class="text-danger" *ngIf="!applicationForm.mortgage">&nbsp;*</span>
                         <div class="col-sm">
                           <div class="row">
                             <select class="browser-default custom-select"
@@ -111,7 +117,8 @@
                         </div>
                       </div>
                       <div class="col-sm">
-                        <label class="col-sm-6 col-form-label" translate>claim.encumbrance</label>
+                        <label class="control-labels" translate>claim.encumbrance</label>
+                        <span class="text-danger" *ngIf="!applicationForm.encumbrance">&nbsp;*</span>
                         <div class="col-sm">
                           <div class="row">
                             <select class="browser-default custom-select"
@@ -130,10 +137,10 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="row">
                       <div class="col-sm-6">
-                        <label class="col-sm col-form-label" translate>claim.barter</label>
+                        <label class="control-labels" translate>claim.barter</label>
+                        <span class="text-danger" *ngIf="!applicationForm.exchange">&nbsp;*</span>
                         <div class="col-sm">
                           <div class="row">
                             <select class="browser-default custom-select"
@@ -152,7 +159,8 @@
                         </div>
                       </div>
                       <div class="col-sm-6">
-                        <label class="col-sm col-form-label" translate>claim.commonOwnership</label>
+                        <label class="control-labels" translate>claim.commonOwnership</label>
+                        <span class="text-danger" *ngIf="!applicationForm.sharedOwnershipProperty">&nbsp;*</span>
                         <div class="col-sm">
                           <div class="row">
                             <select class="browser-default custom-select"
@@ -193,7 +201,9 @@
                     <div class="row">
                       <div class="col-sm">
                         <div class="form-group row">
-                          <label for="name" class="col-sm-3 col-form-label" translate>name</label>
+                          <label for="name" class="col-sm-3 col-form-label" translate>name
+                            <span class="text-danger" *ngIf="!applicationForm.sharedOwnershipProperty">&nbsp;*</span>
+                          </label>
                           <div class="col-sm-9">
                             <input type="text" class="form-control" id="name"
                                    [(ngModel)]="applicationForm.firstName"
@@ -206,7 +216,9 @@
                           </div>
                         </div>
                         <div class="form-group row">
-                          <label for="surname" class="col-sm-3 col-form-label" translate>surname</label>
+                          <label for="surname" class="col-sm-3 col-form-label" translate>surname
+                            <span class="text-danger" *ngIf="!applicationForm.surname">&nbsp;*</span>
+                          </label>
                           <div class="col-sm-9">
                             <input type="text" class="form-control" id="surname" formControlName="surname"
                                    [(ngModel)]="applicationForm.surname"
@@ -226,7 +238,9 @@
                           </div>
                         </div>
                         <div class="form-group row">
-                          <label for="clientID" class="col-sm-3 col-form-label" translate>claim.clientID</label>
+                          <label for="clientID" class="col-sm-3 col-form-label" translate>claim.clientID
+                            <span class="text-danger" *ngIf="!applicationForm.clientId">*</span>
+                          </label>
                           <div class="col-sm-9">
                             <input type="text" class="form-control" id="clientID"
                                    [(ngModel)]="applicationForm.clientId"
@@ -241,12 +255,15 @@
                       </div>
                       <div class="col-sm">
                         <div class="form-group row">
-                          <label for="contacts" class="col-sm-3 col-form-label" translate>claim.contacts</label>
+                          <label for="contacts" class="col-sm-3 col-form-label" translate>claim.contacts
+                            <span class="text-danger" *ngIf="!applicationForm.phoneNumber">*</span>
+                          </label>
                           <div class="col-sm-9">
                             <input type="text" class="form-control" id="contacts"
                                    [(ngModel)]="applicationForm.phoneNumber"
                                    [ngClass]="{'border-danger': !applicationForm.phoneNumber}"
                                    formControlName="phoneNumber"
+                                   prefix="+7" mask="(000) 000 00 00"
                             />
                             <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="alert alert-danger">
                               <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>
