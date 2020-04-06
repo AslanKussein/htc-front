@@ -38,6 +38,7 @@ export class CreateClaimComponent implements OnInit {
 
   ngOnInit(): void {
     this.applicationForm = this.formBuilder.group({
+      id: ['', Validators.nullValidator],
       surname: ['', Validators.required],
       firstName: ['', Validators.required],
       patronymic: ['', Validators.nullValidator],

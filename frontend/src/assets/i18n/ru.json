@@ -30,7 +30,7 @@
     "step": "Шаг",
     "fillClaims": "Заполните заявку",
     "contractOU": "Договор ОУ",
-    "impressions": "Показы",
+    "impressions": "События",
     "journals": "Журналы",
     "aboutDeal": "О Сделке",
     "aboutOwner": "О Владельце",
@@ -96,7 +96,15 @@
     "gender": {
       "male": "Мужщина",
       "female": "Женщина"
-    }
+    },
+    "photo": "Фотографии",
+    "uploadPhoto": "Загрузить Фотографии",
+    "uploadPlan": "Загрузить планировку",
+    "upload3D": "Загрузить 3D тур",
+    "photoLegend": "Профессиональная фотосъемка",
+    "photoset": "Заявка на фотосет",
+    "createPhotoset": "Создать заявку",
+    "isSendPhotoset": "Заявка уже отправлена"
   },
   "board": {
     "title": "Канбан",

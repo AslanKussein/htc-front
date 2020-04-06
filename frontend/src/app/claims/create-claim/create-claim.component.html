@@ -32,6 +32,7 @@
                             aria-expanded="true" aria-controls="collapseaboutDeal" translate>
                       claim.aboutDeal
                     </button>
+                    <span *ngIf="applicationForm.id" class="float-right">ID - </span>
                   </h5>
                 </div>
                 <div id="collapseaboutDeal" class="collapse show" aria-labelledby="headingOne"
@@ -275,6 +276,41 @@
                           </div>
                         </div>
                       </div>
+                    </div>
+                    <div class="row" *ngIf="applicationForm.operationTypeId">
+                      <fieldset class="scheduler-border col-sm">
+                        <legend class="scheduler-border" translate>claim.photo</legend>
+                        <div class="row">
+                          <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                            <div class="btn-group" role="group">
+                              <button id="btnGroupDrop1" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                                      aria-haspopup="true" aria-expanded="false" translate>
+                                claim.photo
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                <a class="dropdown-item"  translate>claim.uploadPhoto</a>
+                                <a class="dropdown-item"  translate>claim.uploadPlan</a>
+                                <a class="dropdown-item"  translate>claim.upload3D</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <h5 translate>claim.photoLegend</h5>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4" translate>claim.photoset</div>
+                          <div class="col-sm-4">
+                            <button type="button" class="btn btn-primary" translate>claim.createPhotoset</button>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+                              <label class="custom-control-label" for="defaultUnchecked" translate>claim.isSendPhotoset</label>
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
                     </div>
                   </div>
                 </div>
