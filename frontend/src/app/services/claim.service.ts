@@ -44,11 +44,11 @@ export class ClaimService {
     //     }),
     //     catchError(this.handleError)
     //   );
-    return this.http.get<any>(`${this.configService.apiUrl}/applications`, {params: params});
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/applications`, {params: params});
   }
 
   public saveClaim(obj): Observable<any> {
-    return this.http.post(`${this.configService.apiUrl}/applications`, obj)
+    return this.http.post(`${this.configService.apiDataManagerUrl}/applications`, obj)
       // return this.http.post(`/ehr/api/resume/put/resume` , obj)
       .pipe(
         tap(data => {

@@ -16,7 +16,7 @@ export class UploaderService {
     const uploadData = new FormData();
     uploadData.append('upload', selectedFile, selectedFile.name);
 
-    return this.http.post<any>(`${this.configService.apiUrl}/doc/upload`, uploadData)
+    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/doc/upload`, uploadData)
       // return this.http.post('/ehr/api/doc/upload', uploadData)
       .pipe(
         tap(data => {
@@ -30,7 +30,7 @@ export class UploaderService {
     let params = new HttpParams();
     params = params.append('photoId', String(getPhotoById));
 
-    return this.http.get<any>(`${this.configService.apiUrl}/doc/getPhotoById`, {params})
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/doc/getPhotoById`, {params})
       // return this.http.get('/ehr/api/doc/getPhotoById', {params: params})
       .pipe(
         tap(data => {
