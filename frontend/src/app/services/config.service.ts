@@ -6,6 +6,7 @@ import {Injectable} from '@angular/core';
 export class ConfigService {
   authUrl = ' https://idp-htc.dilau.kz/auth/realms/htc/protocol/openid-connect/token';
   apiDataManagerUrl = ' https://dm-htc.dilau.kz';
+  apiFileManagerUrl = ' https://fm-htc.dilau.kz';
 
   constructor() {
   }

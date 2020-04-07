@@ -16,8 +16,7 @@ export class UploaderService {
     const uploadData = new FormData();
     uploadData.append('upload', selectedFile, selectedFile.name);
 
-    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/doc/upload`, uploadData)
-      // return this.http.post('/ehr/api/doc/upload', uploadData)
+    return this.http.post<any>(`${this.configService.apiFileManagerUrl}/upload`, uploadData)
       .pipe(
         tap(data => {
         }),
@@ -27,11 +26,10 @@ export class UploaderService {
 
 
   public getResumePhoto(getPhotoById): Observable<any> {
-    let params = new HttpParams();
-    params = params.append('photoId', String(getPhotoById));
+    // let params = new HttpParams();
+    // params = params.append('photoId', String(getPhotoById));
 
-    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/doc/getPhotoById`, {params})
-      // return this.http.get('/ehr/api/doc/getPhotoById', {params: params})
+    return this.http.get<any>(`${this.configService.apiFileManagerUrl}//download/` + getPhotoById, {})
       .pipe(
         tap(data => {
         }),
