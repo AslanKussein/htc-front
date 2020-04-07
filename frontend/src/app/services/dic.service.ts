@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs/index';
 import {catchError, tap} from 'rxjs/internal/operators';
 
@@ -12,8 +12,15 @@ export class DicService {
   constructor(private configService: ConfigService, private http: HttpClient) {
   }
 
-  public getAllDictionaryCreateResume(): Observable<any> {
-    return this.http.post(`${this.configService.apiUrl}/dic/getAllDictionaryCreateResume`, {})
+  public getOperationType(): Observable<any> {
+
+    let options = {
+      headers: new HttpHeaders().set("Access-Control-Allow-Origin", "*")
+        .set("Access-Control-Allow-Methods", "GET")
+        .set("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
+    };
+
+    return this.http.get(`${this.configService.apiDataManagerUrl}/dictionaries/operationTypes`, options)
       .pipe(
         tap(data => {
         }),

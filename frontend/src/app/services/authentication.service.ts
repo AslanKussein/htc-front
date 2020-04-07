@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {User} from "../models/users";
+import {ConfigService} from "./config.service";
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService {
@@ -10,7 +11,8 @@ export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private configService: ConfigService) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -31,7 +33,7 @@ export class AuthenticationService {
       .set('grant_type', 'password')
       .set('client_id', 'htc');
 
-    return this.http.post<any>(`auth`, body_.toString(), options).pipe(map(user => {
+    return this.http.post<any>(`${this.configService.authUrl}`, body_.toString(), options).pipe(map(user => {
       console.log(user)
       if (user && user.access_token) {
         if (loginForm.rememberMe) {

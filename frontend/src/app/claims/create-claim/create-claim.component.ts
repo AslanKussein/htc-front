@@ -82,13 +82,15 @@ export class CreateClaimComponent implements OnInit {
       playground: ['', Validators.nullValidator],
       yardType: ['', Validators.nullValidator],
       parkingTypeId: ['', Validators.nullValidator],
+      probabilityOfBidding: ['', Validators.nullValidator],
+      theSizeOfTrades: ['', Validators.nullValidator],
     })
 
     this.loadDictionary();
   }
 
   loadDictionary() {
-    this.dicService.getAllDictionaryCreateResume()
+    this.dicService.getOperationType()
       .subscribe(data => {
         this.operationType = this.toSelectArray(data.dmember);
         this.loading = false;

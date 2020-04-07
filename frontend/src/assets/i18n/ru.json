@@ -104,7 +104,20 @@
     "photoLegend": "Профессиональная фотосъемка",
     "photoset": "Заявка на фотосет",
     "createPhotoset": "Создать заявку",
-    "isSendPhotoset": "Заявка уже отправлена"
+    "isSendPhotoset": "Заявка уже отправлена",
+    "probabilityBargaining": "Вероятность торга",
+    "bidAmount": "Размер торга",
+    "possibleBargaining": "Возможные причины торга",
+    "theSizeOfTrades": {
+      "meet": "Встреча",
+      "cashPayment": "Оплата наличными",
+      "lowDemand": "Низкий спрос",
+      "giff": "Наследство/Подарок",
+      "fastSell": "Срочная продажа",
+      "mortgageProblems": "Проблемы с выплатами по ипотеке",
+      "other": "Другое"
+    },
+    "comments": "Комментарий"
   },
   "board": {
     "title": "Канбан",
