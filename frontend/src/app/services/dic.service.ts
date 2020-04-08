@@ -13,17 +13,9 @@ export class DicService {
   }
 
   public getOperationType(): Observable<any> {
-
-    let options = {
-      headers: new HttpHeaders().set("Access-Control-Allow-Origin", "*")
-        .set("Access-Control-Allow-Methods", "GET")
-        .set("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
-    };
-
-    return this.http.get(`${this.configService.apiDataManagerUrl}/dictionaries/operationTypes`, options)
+    return this.http.get(`${this.configService.apiDataManagerUrl}/dictionaries/operationTypes`, {})
       .pipe(
-        tap(data => {
-        }),
+        tap(data => {}),
         catchError(this.handleError)
       );
   }

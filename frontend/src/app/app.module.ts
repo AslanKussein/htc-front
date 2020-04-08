@@ -36,6 +36,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
 import { NgxMaskModule, IConfig } from 'ngx-mask'
+import {MDBBootstrapModule} from "angular-bootstrap-md";
 
 const routes: Routes = [
   {path: '', redirectTo: '/claims', pathMatch: 'full', canActivate: [AuthGuard]},
@@ -83,7 +84,8 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     BrowserAnimationsModule,
     DragDropModule,
     ToastrModule.forRoot(),
-    NgxMaskModule.forRoot(options)
+    NgxMaskModule.forRoot(options),
+    MDBBootstrapModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
