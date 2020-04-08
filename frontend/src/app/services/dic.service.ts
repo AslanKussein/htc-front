@@ -17,7 +17,8 @@ export class DicService {
     let url = this.getDicUrl(dicName);
     return this.http.get(`${this.configService.apiDataManagerUrl}/dictionaries/${url}`, {})
       .pipe(
-        tap(data => {}),
+        tap(data => {
+        }),
         catchError(this.handleError)
       );
   }
@@ -30,6 +31,22 @@ export class DicService {
         return 'objectTypes';
       case "city":
         return 'cities';
+      case "districts":
+        return 'districts';
+      case "parkingTypes":
+        return 'parking-types';
+      case "streets":
+        return 'streets';
+      case "residentialComplexes":
+        return 'residentialComplexes';
+      case "realProperties":
+        return 'real-properties';
+      case "propertyOwners":
+        return 'property-owners';
+      case "possibleReasonForBidding":
+        return 'possibleReasonForBidding';
+      case "countries":
+        return 'countries';
     }
     return null;
   }

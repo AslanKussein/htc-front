@@ -26,6 +26,14 @@ export class CreateClaimComponent implements OnInit {
   operationType: Dic[];
   objectType: Dic[];
   city: Dic[];
+  districts: Dic[];
+  parkingTypes: Dic[];
+  streets: Dic[];
+  residentialComplexes: Dic[];
+  realProperties: Dic[];
+  propertyOwners: Dic[];
+  countries: Dic[];
+  possibleReasonForBidding: Dic[];
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -100,6 +108,30 @@ export class CreateClaimComponent implements OnInit {
     });
     this.dicService.getDics('city').subscribe(data => {
       this.city = this.toSelectArray(data);
+    });
+    this.dicService.getDics('districts').subscribe(data => {
+      this.districts = this.toSelectArray(data);
+    });
+    this.dicService.getDics('parkingTypes').subscribe(data => {
+      this.parkingTypes = this.toSelectArray(data);
+    });
+    this.dicService.getDics('streets').subscribe(data => {
+      this.streets = this.toSelectArray(data);
+    });
+    this.dicService.getDics('residentialComplexes').subscribe(data => {
+      this.residentialComplexes = this.toSelectArray(data);
+    });
+    this.dicService.getDics('realProperties').subscribe(data => {
+      this.realProperties = this.toSelectArray(data);
+    });
+    this.dicService.getDics('propertyOwners').subscribe(data => {
+      this.propertyOwners = this.toSelectArray(data);
+    });
+    this.dicService.getDics('possibleReasonForBidding').subscribe(data => {
+      this.possibleReasonForBidding = this.toSelectArray(data);
+    });
+    this.dicService.getDics('countries').subscribe(data => {
+      this.countries = this.toSelectArray(data);
     });
     this.loading = false;
   }
