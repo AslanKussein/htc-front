@@ -28,10 +28,9 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/ngx-toastr/toastr.css",
               "src/styles.scss",
+              "node_modules/ngx-toastr/toastr.css",
               "node_modules/font-awesome/css/font-awesome.css",
-              "node_modules/angular-bootstrap-md/assets/scss/mdb.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css"
             ],

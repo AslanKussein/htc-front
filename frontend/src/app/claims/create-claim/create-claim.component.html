@@ -44,15 +44,20 @@
                         <span class="text-danger" *ngIf="!applicationForm.operationTypeId">&nbsp;*</span>
                         <div class="row">
                           <div class="col-sm">
-                            <ng-select
-                              [allowClear]="true"
-                              [options]="operationType"
-                              class="form-control"
-                              [(ngModel)]="applicationForm.operationTypeId"
-                              [ngClass]="{'border-danger': !applicationForm.operationTypeId}"
-                              formControlName="operationTypeId"
-                              placeholder="{{ 'patterns.chooseElement' | translate }}">
-                            </ng-select>
+                            <select formControlName="operationTypeId" [(ngModel)]="applicationForm.operationTypeId"
+                                    [ngClass]="{'border-danger': !applicationForm.operationTypeId}"
+                                    class="browser-default custom-select">
+                              <option translate selected >patterns.chooseElement</option>
+                              <option *ngFor="let suit of operationType">{{suit.label}}</option>
+                            </select>
+
+<!--                            <ng-select-->
+<!--                              [items]="operationType"-->
+<!--                              [(ngModel)]="applicationForm.operationTypeId"-->
+<!--                              [ngClass]="{'border-danger': !applicationForm.operationTypeId}"-->
+<!--                              formControlName="operationTypeId"-->
+<!--                              placeholder="{{ 'patterns.chooseElement' | translate }}">-->
+<!--                            </ng-select>-->
                             <div *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid" class="text-danger">
                               <div *ngIf="f.operationTypeId.errors.required" translate>claim.requiredField</div>
                             </div>
@@ -64,8 +69,10 @@
                         <span class="text-danger" *ngIf="!applicationForm.objectTypeId">&nbsp;*</span>
                         <div class="row">
                           <div class="col-sm">
+
                             <ng-select
                               class="form-control"
+                              [items]="objectType"
                               [(ngModel)]="applicationForm.objectTypeId"
                               [ngClass]="{'border-danger': !applicationForm.objectTypeId}"
                               formControlName="objectTypeId"
@@ -188,7 +195,8 @@
                     <div class="row">
                       <div class="col-sm">
                         <div class="form-group row">
-                          <label for="name" class="col-sm-6 col-form-label" translate>claim.probabilityBargaining</label>
+                          <label for="name" class="col-sm-6 col-form-label"
+                                 translate>claim.probabilityBargaining</label>
                           <div class="col-sm">
                             <div class="row">
                               <select class="browser-default custom-select"
@@ -238,7 +246,8 @@
                       <div class="col-sm-4">
                         <div class="custom-control custom-checkbox">
                           <input type="checkbox" class="custom-control-input" id="lowDemand">
-                          <label class="custom-control-label" for="lowDemand" translate>claim.theSizeOfTrades.lowDemand</label>
+                          <label class="custom-control-label" for="lowDemand"
+                                 translate>claim.theSizeOfTrades.lowDemand</label>
                         </div>
                       </div>
                     </div>
@@ -252,7 +261,8 @@
                       <div class="col-sm-4">
                         <div class="custom-control custom-checkbox">
                           <input type="checkbox" class="custom-control-input" id="fastSell">
-                          <label class="custom-control-label" for="fastSell" translate>claim.theSizeOfTrades.fastSell</label>
+                          <label class="custom-control-label" for="fastSell"
+                                 translate>claim.theSizeOfTrades.fastSell</label>
                         </div>
                       </div>
                       <div class="col-sm-4">

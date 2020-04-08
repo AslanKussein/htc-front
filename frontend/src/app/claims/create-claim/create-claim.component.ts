@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ApplicationDto} from "../../models/applicationDto";
 import {Util} from "../../services/util";
 import {NotificationService} from "../../services/notification.service";
@@ -24,6 +24,8 @@ export class CreateClaimComponent implements OnInit {
   loading = false;
   file: any;
   operationType: Dic[];
+  objectType: Dic[];
+  city: Dic[];
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -37,7 +39,7 @@ export class CreateClaimComponent implements OnInit {
 
   applicationForm: any;
 
-  get f(){
+  get f() {
     return this.applicationForm.controls;
   }
 
@@ -90,14 +92,19 @@ export class CreateClaimComponent implements OnInit {
   }
 
   loadDictionary() {
-    this.dicService.getOperationType()
-      .subscribe(data => {
-        this.operationType = this.toSelectArray(data.dmember);
-        this.loading = false;
-      });
+    this.dicService.getDics('operationType').subscribe(data => {
+      this.operationType = this.toSelectArray(data);
+    });
+    this.dicService.getDics('objectType').subscribe(data => {
+      this.objectType = this.toSelectArray(data);
+    });
+    this.dicService.getDics('city').subscribe(data => {
+      this.city = this.toSelectArray(data);
+    });
+    this.loading = false;
   }
 
-  toSelectArray(data, idField = 'id', labelField = this._language.language = 'ru' ? 'nameRu' : 'nameRu') {
+  toSelectArray(data, idField = 'id', labelField = this._language.language = 'ru' ? 'nameRu' : 'nameKz') {
     const list = [];
     if (data) {
       const len = data.length;
@@ -121,7 +128,7 @@ export class CreateClaimComponent implements OnInit {
     this.loading = false;
   }
 
-  submit(){
+  submit() {
     this.application = this.applicationForm.value;
     console.log(this.application);
 
