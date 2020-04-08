@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BoardComponent} from './board/board.component';
@@ -24,7 +24,6 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CreateClaimComponent} from "./claims/create-claim/create-claim.component";
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import {ClaimService} from "./services/claim.service";
 import {AuthGuard} from "./helpers/auth.guard";
 import {LoginComponent} from "./login/login.component";
 import {ErrorInterceptor} from "./helpers/error.interceptor";
@@ -97,7 +96,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
   entryComponents: [
     CreateClaimComponent
   ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [ NO_ERRORS_SCHEMA ],
 
 })
 export class AppModule {

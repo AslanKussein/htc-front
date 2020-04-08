@@ -121,12 +121,6 @@ export class CreateClaimComponent implements OnInit {
     this.dicService.getDics('residentialComplexes').subscribe(data => {
       this.residentialComplexes = this.toSelectArray(data);
     });
-    this.dicService.getDics('realProperties').subscribe(data => {
-      this.realProperties = this.toSelectArray(data);
-    });
-    this.dicService.getDics('propertyOwners').subscribe(data => {
-      this.propertyOwners = this.toSelectArray(data);
-    });
     this.dicService.getDics('possibleReasonForBidding').subscribe(data => {
       this.possibleReasonForBidding = this.toSelectArray(data);
     });
@@ -136,15 +130,35 @@ export class CreateClaimComponent implements OnInit {
     this.loading = false;
   }
 
-  toSelectArray(data, idField = 'id', labelField = this._language.language = 'ru' ? 'nameRu' : 'nameKz') {
+  toSelectArray(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
     const list = [];
     if (data) {
       const len = data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value: '' + data[i][idField], label: data[i][labelField]});
+        list.push({value: '' + data[i][idField], label: data[i][labelField], code: data[i]['code']});
       }
     }
     return list;
+  }
+
+  getDicNameByLanguage() {
+    let fieldName;
+    switch (this._language.language) {
+      case "kz":
+        fieldName = 'nameKz';
+        break;
+      case "en":
+        fieldName = 'nameEn';
+        break;
+      default:
+        fieldName = 'nameRu';
+        break;
+    }
+    return fieldName;
+  }
+
+  setOperationType(event) {
+    console.log(this.applicationForm.operationTypeId)
   }
 
   onFileChanged(event) {
