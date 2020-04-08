@@ -43,13 +43,14 @@
                         <label class="control-labels" translate>claim.operation</label>
                         <span class="text-danger" *ngIf="!applicationForm.operationTypeId">&nbsp;*</span>
                         <div class="row">
-                          <div class="col-sm">
+                          <div class="col-sm"  id="operationTypeId">
                             <ng-select
                               [items]="operationType"
                               (click)="setOperationType($event)"
                               [(ngModel)]="applicationForm.operationTypeId"
                               [ngClass]="{'border-danger': !applicationForm.operationTypeId}"
                               formControlName="operationTypeId"
+                              #operationTypeId
                               placeholder="{{ 'patterns.chooseElement' | translate }}">
                             </ng-select>
                             <div *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid" class="text-danger">
@@ -63,12 +64,12 @@
                         <span class="text-danger" *ngIf="!applicationForm.objectTypeId">&nbsp;*</span>
                         <div class="row">
                           <div class="col-sm">
-                            <select formControlName="objectTypeId" [(ngModel)]="applicationForm.objectTypeId"
-                                    [ngClass]="{'border-danger': !applicationForm.objectTypeId}"
-                                    class="browser-default custom-select">
-                              <option  [ngValue]="null"translate selected >patterns.chooseElement</option>
-                              <option *ngFor="let suit of objectType">{{suit.label}}</option>
-                            </select>
+                            <ng-select
+                              [items]="objectType"
+                              [(ngModel)]="applicationForm.objectTypeId"
+                              formControlName="objectTypeId"
+                              placeholder="{{ 'patterns.chooseElement' | translate }}">
+                            </ng-select>
                             <div *ngIf="f.objectTypeId.touched && f.objectTypeId.invalid" class="text-danger">
                               <div *ngIf="f.objectTypeId.errors.required" translate>claim.requiredField</div>
                             </div>
@@ -82,8 +83,7 @@
                           <div class="col-sm">
                             <input type="number" class="form-control" id="objectPrice"
                                    [(ngModel)]="applicationForm.objectPrice"
-                                   [ngClass]="{'border-danger': !applicationForm.objectPrice}"
-                                   formControlName="objectPrice"
+                                   formControlName="objectPrice" min="0"
                             />
                             <div *ngIf="f.objectPrice.touched && f.objectPrice.invalid" class="text-danger">
                               <div *ngIf="f.objectPrice.errors.required" translate>claim.requiredField</div>
@@ -101,7 +101,6 @@
                           <div class="row">
                             <select class="browser-default custom-select"
                                     [(ngModel)]="applicationForm.mortgage"
-                                    [ngClass]="{'border-danger': !applicationForm.mortgage}"
                                     formControlName="mortgage"
                             >
                               <option [ngValue]="null" selected [disabled]="true" translate>patterns.chooseElement
@@ -122,7 +121,6 @@
                           <div class="row">
                             <select class="browser-default custom-select"
                                     [(ngModel)]="applicationForm.encumbrance"
-                                    [ngClass]="{'border-danger': !applicationForm.encumbrance}"
                                     formControlName="encumbrance"
                             >
                               <option [ngValue]="null" selected [disabled]="true" translate>patterns.chooseElement
@@ -145,7 +143,6 @@
                           <div class="row">
                             <select class="browser-default custom-select"
                                     [(ngModel)]="applicationForm.exchange"
-                                    [ngClass]="{'border-danger': !applicationForm.exchange}"
                                     formControlName="exchange"
                             >
                               <option [ngValue]="null" selected [disabled]="true" translate>patterns.chooseElement
@@ -166,7 +163,6 @@
                           <div class="row">
                             <select class="browser-default custom-select"
                                     [(ngModel)]="applicationForm.sharedOwnershipProperty"
-                                    [ngClass]="{'border-danger': !applicationForm.sharedOwnershipProperty}"
                                     formControlName="sharedOwnershipProperty"
                             >
                               <option [ngValue]="null" selected [disabled]="true" translate>patterns.chooseElement
@@ -279,6 +275,32 @@
                         </div>
                       </div>
                     </div>
+                    <div class="row">
+                      <div class="col-sm">
+                        <label class="control-labels" for="fillFromAndTo">Срок действия договора</label>
+                        <div class="row">
+                          <div class="col-sm">
+                            <input placeholder="{{'patterns.fillFromAndTo' | translate}}"
+                                   id="fillFromAndTo" type="text" class="form-control" bsDatepicker #ru="bsDatepicker">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <label class="control-labels" for="fillFromAndTo">Сумма по договору</label>
+                        <div class="row">
+                          <div class="col-sm">
+                            <input placeholder="{{'patterns.fillFromAndTo' | translate}}"
+                                   id="fillFromAndTo" type="text" class="form-control" bsDatepicker #ru="bsDatepicker">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+                          <label class="custom-control-label" for="defaultUnchecked">Комиссия включена в стоимость</label>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -307,7 +329,6 @@
                           <div class="col-sm-9">
                             <input type="text" class="form-control" id="name"
                                    [(ngModel)]="applicationForm.firstName"
-                                   [ngClass]="{'border-danger': !applicationForm.firstName}"
                                    formControlName="firstName"
                             />
                             <div *ngIf="f.firstName.touched && f.firstName.invalid" class="text-danger">
@@ -321,8 +342,7 @@
                           </label>
                           <div class="col-sm-9">
                             <input type="text" class="form-control" id="surname" formControlName="surname"
-                                   [(ngModel)]="applicationForm.surname"
-                                   [ngClass]="{'border-danger': !applicationForm.surname}"/>
+                                   [(ngModel)]="applicationForm.surname"/>
                             <div *ngIf="f.surname.touched && f.surname.invalid" class="text-danger">
                               <div *ngIf="f.surname.errors.required" translate>claim.requiredField</div>
                             </div>
@@ -337,19 +357,13 @@
                             />
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <label for="clientID" class="col-sm-3 col-form-label" translate>claim.clientID
-                            <span class="text-danger" *ngIf="!applicationForm.clientId">*</span>
-                          </label>
+                        <div class="form-group row" *ngIf="applicationForm.clientId">
+                          <label for="clientID" class="col-sm-3 col-form-label" translate>claim.clientID</label>
                           <div class="col-sm-9">
                             <input type="text" class="form-control" id="clientID"
                                    [(ngModel)]="applicationForm.clientId"
-                                   [ngClass]="{'border-danger': !applicationForm.clientId}"
-                                   formControlName="clientId"
+                                   formControlName="clientId" readonly (ngModelChange)="searchByClientId()"
                             />
-                            <div *ngIf="f.clientId.touched && f.clientId.invalid" class="text-danger">
-                              <div *ngIf="f.clientId.errors.required" translate>claim.requiredField</div>
-                            </div>
                           </div>
                         </div>
                       </div>
@@ -361,9 +375,8 @@
                           <div class="col-sm-9">
                             <input type="text" class="form-control" id="contacts"
                                    [(ngModel)]="applicationForm.phoneNumber"
-                                   [ngClass]="{'border-danger': !applicationForm.phoneNumber}"
                                    formControlName="phoneNumber"
-                                   prefix="+7" mask="(000) 000 00 00"
+                                   prefix="+7" mask="(000) 000 00 00" (ngModelChange)="searchByPhone()"
                             />
                             <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
                               <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>
@@ -464,7 +477,6 @@
                               </label>
                               <div class="col-sm-9">
                                 <select formControlName="cityId" [(ngModel)]="applicationForm.cityId"
-                                        [ngClass]="{'border-danger': !applicationForm.cityId}"
                                         class="browser-default custom-select">
                                   <option  [ngValue]="null" translate selected >patterns.chooseElement</option>
                                   <option *ngFor="let suit of city">{{suit.label}}</option>
@@ -480,7 +492,6 @@
                               <label for="name" class="col-sm-4 col-form-label" translate>claim.building</label>
                               <div class="col-sm-8">
                                 <select formControlName="residentialComplexId" [(ngModel)]="applicationForm.residentialComplexId"
-                                        [ngClass]="{'border-danger': !applicationForm.residentialComplexId}"
                                         class="browser-default custom-select">
                                   <option  [ngValue]="null" translate selected >patterns.chooseElement</option>
                                   <option *ngFor="let suit of residentialComplexes">{{suit.label}}</option>
@@ -498,7 +509,6 @@
                               </label>
                               <div class="col-sm-9">
                                 <select formControlName="streetId" [(ngModel)]="applicationForm.streetId"
-                                        [ngClass]="{'border-danger': !applicationForm.streetId}"
                                         class="browser-default custom-select">
                                   <option  [ngValue]="null" translate selected >patterns.chooseElement</option>
                                   <option *ngFor="let suit of streets">{{suit.label}}</option>
@@ -516,9 +526,7 @@
                               </label>
                               <div class="col-sm-8">
                                 <ng-select
-                                  class="form-control"
                                   [(ngModel)]="applicationForm.houseNumber"
-                                  [ngClass]="{'border-danger': !applicationForm.houseNumber}"
                                   formControlName="houseNumber"
                                   placeholder="{{ 'patterns.chooseElement' | translate }}">
                                 </ng-select>
@@ -537,13 +545,19 @@
                                 <span class="text-danger" *ngIf="!applicationForm.numberOfRooms">*</span>
                               </label>
                               <div class="col-sm-9">
-                                <ng-select
-                                  class="form-control"
-                                  [(ngModel)]="applicationForm.numberOfRooms"
-                                  [ngClass]="{'border-danger': !applicationForm.numberOfRooms}"
-                                  formControlName="numberOfRooms"
-                                  placeholder="{{ 'patterns.chooseElement' | translate }}">
-                                </ng-select>
+                                <select class="browser-default custom-select"
+                                        [(ngModel)]="applicationForm.numberOfRooms"
+                                        formControlName="numberOfRooms"
+                                >
+                                  <option [ngValue]="null" selected translate>
+                                    patterns.chooseElement
+                                  </option>
+                                  <option value="1" translate>1</option>
+                                  <option value="2" translate>2</option>
+                                  <option value="3" translate>3</option>
+                                  <option value="4" translate>4</option>
+                                  <option value="5" translate>claim.more</option>
+                                </select>
                                 <div *ngIf="f.numberOfRooms.touched && f.numberOfRooms.invalid" class="text-danger">
                                   <div *ngIf="f.numberOfRooms.errors.required" translate>claim.requiredField</div>
                                 </div>
@@ -563,7 +577,6 @@
                                   <div class="col-sm">
                                     <input type="number" class="form-control"
                                            [(ngModel)]="applicationForm.totalArea"
-                                           [ngClass]="{'border-danger': !applicationForm.totalArea}"
                                            formControlName="totalArea" min="0"
                                     />
                                     <div *ngIf="f.totalArea.touched && f.totalArea.invalid" class="text-danger">
@@ -579,7 +592,6 @@
                                   <div class="col-sm">
                                     <input type="number" class="form-control"
                                            [(ngModel)]="applicationForm.livingArea"
-                                           [ngClass]="{'border-danger': !applicationForm.totalArea}"
                                            formControlName="totalArea" min="0"
                                     />
                                     <div *ngIf="f.livingArea.touched && f.livingArea.invalid" class="text-danger">
@@ -595,7 +607,6 @@
                                   <div class="col-sm">
                                     <input type="number" class="form-control"
                                            [(ngModel)]="applicationForm.kitchenArea"
-                                           [ngClass]="{'border-danger': !applicationForm.kitchenArea}"
                                            formControlName="kitchenArea" min="0"
                                     />
                                     <div *ngIf="f.kitchenArea.touched && f.kitchenArea.invalid" class="text-danger">
@@ -611,7 +622,6 @@
                                   <div class="col-sm">
                                     <input type="number" class="form-control"
                                            [(ngModel)]="applicationForm.balconyArea"
-                                           [ngClass]="{'border-danger': !applicationForm.balconyArea}"
                                            formControlName="balconyArea" min="0"
                                     />
                                     <div *ngIf="f.balconyArea.touched && f.balconyArea.invalid" class="text-danger">
@@ -627,7 +637,6 @@
                                   <div class="col-sm">
                                     <input type="number" class="form-control"
                                            [(ngModel)]="applicationForm.ceilingHeight"
-                                           [ngClass]="{'border-danger': !applicationForm.ceilingHeight}"
                                            formControlName="ceilingHeight" min="0"
                                     />
                                     <div *ngIf="f.ceilingHeight.touched && f.ceilingHeight.invalid" class="text-danger">
@@ -645,7 +654,6 @@
                                   <div class="col-sm">
                                     <input type="number" class="form-control"
                                            [(ngModel)]="applicationForm.numberOfBedrooms"
-                                           [ngClass]="{'border-danger': !applicationForm.numberOfBedrooms}"
                                            formControlName="numberOfBedrooms" min="0"
                                     />
                                     <div *ngIf="f.numberOfBedrooms.touched && f.numberOfBedrooms.invalid"
@@ -697,12 +705,12 @@
                                     <span class="text-danger" *ngIf="!applicationForm.districtId">*</span>
                                   </label>
                                   <div class="col-sm-7">
-                                    <select formControlName="districtId" [(ngModel)]="applicationForm.districtId"
-                                            [ngClass]="{'border-danger': !applicationForm.districtId}"
-                                            class="browser-default custom-select">
-                                      <option  [ngValue]="null" translate selected >patterns.chooseElement</option>
-                                      <option *ngFor="let suit of districts">{{suit.label}}</option>
-                                    </select>
+                                    <ng-select
+                                      [items]="districts"
+                                      [(ngModel)]="applicationForm.districtId"
+                                      formControlName="districtId"
+                                      placeholder="{{ 'patterns.chooseElement' | translate }}">
+                                    </ng-select>
                                     <div *ngIf="f.districtId.touched && f.districtId.invalid" class="text-danger">
                                       <div *ngIf="f.districtId.errors.required" translate>claim.requiredField</div>
                                     </div>
@@ -739,7 +747,6 @@
                                   <label for="name" class="col-sm-5 col-form-label" translate>claim.material</label>
                                   <div class="col-sm-7">
                                     <ng-select
-                                      class="form-control"
                                       [(ngModel)]="applicationForm.materialOfConstruction"
                                       formControlName="materialOfConstruction"
                                       placeholder="{{ 'patterns.chooseElement' | translate }}">
@@ -763,7 +770,6 @@
                                   <label for="name" class="col-sm-7 col-form-label" translate>claim.lift</label>
                                   <div class="col-sm-5">
                                     <ng-select
-                                      class="form-control"
                                       [(ngModel)]="applicationForm.typeOfElevator"
                                       formControlName="typeOfElevator"
                                       placeholder="{{ 'patterns.chooseElement' | translate }}">
@@ -823,11 +829,12 @@
                                 <label class="col-sm-6 col-form-label" translate>claim.parking</label>
                                 <div class="col-sm-10">
                                   <div class="row">
-                                    <select formControlName="parkingTypeId" [(ngModel)]="applicationForm.parkingTypeId"
-                                            class="browser-default custom-select">
-                                      <option  [ngValue]="null" translate selected >patterns.chooseElement</option>
-                                      <option *ngFor="let suit of parkingTypes">{{suit.label}}</option>
-                                    </select>
+                                    <ng-select
+                                      [items]="parkingTypes"
+                                      [(ngModel)]="applicationForm.parkingTypeId"
+                                      formControlName="parkingTypeId"
+                                      placeholder="{{ 'patterns.chooseElement' | translate }}">
+                                    </ng-select>
                                   </div>
                                 </div>
                               </div>

@@ -1,8 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ApplicationDto} from "../../models/applicationDto";
 import {Util} from "../../services/util";
 import {NotificationService} from "../../services/notification.service";
-import * as $ from 'jquery';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ClaimService} from "../../services/claim.service";
 import {NgSelectConfig} from "@ng-select/ng-select";
@@ -10,6 +9,11 @@ import {UploaderService} from "../../services/uploader.service";
 import {DicService} from "../../services/dic.service";
 import {Dic} from "../../models/dic";
 import {language} from "../../../environments/language";
+import {TranslateService} from "@ngx-translate/core";
+import {defineLocale} from "ngx-bootstrap/chronos";
+import {ruLocale} from "ngx-bootstrap/locale";
+import {BsLocaleService} from "ngx-bootstrap";
+import {OwnerService} from "../../services/owner.service";
 
 @Component({
   selector: 'app-create-claim',
@@ -34,6 +38,7 @@ export class CreateClaimComponent implements OnInit {
   propertyOwners: Dic[];
   countries: Dic[];
   possibleReasonForBidding: Dic[];
+  applicationForm: any;
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -41,11 +46,15 @@ export class CreateClaimComponent implements OnInit {
               private claimService: ClaimService,
               private config: NgSelectConfig,
               private uploader: UploaderService,
-              private dicService: DicService) {
+              private dicService: DicService,
+              private translate: TranslateService,
+              private localeService: BsLocaleService,
+              private ownerService: OwnerService) {
     this.config.notFoundText = 'Данные не найдены';
+    defineLocale('ru', ruLocale);
+    this.localeService.use('ru');
   }
 
-  applicationForm: any;
 
   get f() {
     return this.applicationForm.controls;
@@ -174,9 +183,39 @@ export class CreateClaimComponent implements OnInit {
     this.loading = false;
   }
 
+  searchByPhone() {
+    if (this.applicationForm.phoneNumber != null && this.applicationForm.phoneNumber.length == 10) {
+      this.loading = true;
+      this.ownerService.searchByPhone('+7' + this.applicationForm.phoneNumber)
+        .subscribe(res => {
+          console.log(res.content)
+        });
+      this.loading = false;
+    }
+  }
+
+  searchByClientId() {
+    if (this.applicationForm.clientId != null && this.applicationForm.clientId.length == 10) {
+      this.loading = true;
+      this.ownerService.searchByClientId(this.applicationForm.clientId)
+        .subscribe(res => {
+          console.log(res.content)
+        });
+      this.loading = false;
+    }
+  }
+
   submit() {
     this.application = this.applicationForm.value;
-    console.log(this.application);
+    const controls = this.applicationForm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.translate.get('claim.operation').subscribe((text: string) => {
+          this.notifyService.showInfo("Ошибка", "Поле " + name + " не заполнено!!!");
+        });
+        return
+      }
+    }
 
     // this.loading = true;
     this.claimService.saveClaim('{\n' +
@@ -269,7 +308,6 @@ export class CreateClaimComponent implements OnInit {
       xColumn = 'surname';
     }
     if (!xResult) {
-      $("#" + xColumn).focus();
       this.xVal = xColumn;
       this.notifyService.showError("Ошибка", "Поле " + xColumn + " не заполнено!!!")
       return xResult;
