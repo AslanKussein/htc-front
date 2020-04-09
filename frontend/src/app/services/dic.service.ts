@@ -48,7 +48,7 @@ export class DicService {
       case "countries":
         return 'countries';
       case "materials":
-        return '/material-of-constructions';
+        return 'material-of-constructions';
     }
     return null;
   }
