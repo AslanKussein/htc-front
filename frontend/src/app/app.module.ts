@@ -36,6 +36,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 }
 import { NgxMaskModule, IConfig } from 'ngx-mask'
 import {MDBBootstrapModule} from "angular-bootstrap-md";
+import {ShowImageComponent} from "./claims/create-claim/show-image/show-image.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/claims', pathMatch: 'full', canActivate: [AuthGuard]},
@@ -61,6 +62,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     StaffsComponent,
     CreateClaimComponent,
     LoginComponent,
+    ShowImageComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,7 +86,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     DragDropModule,
     ToastrModule.forRoot(),
     NgxMaskModule.forRoot(options),
-    MDBBootstrapModule.forRoot()
+    MDBBootstrapModule.forRoot(),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
@@ -94,7 +96,8 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
   ],
   bootstrap: [AppComponent],
   entryComponents: [
-    CreateClaimComponent
+    CreateClaimComponent,
+    ShowImageComponent
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
 

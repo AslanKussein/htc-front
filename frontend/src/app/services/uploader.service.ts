@@ -14,7 +14,7 @@ export class UploaderService {
 
   public uploadData(selectedFile: File): Observable<any> {
     const uploadData = new FormData();
-    uploadData.append('upload', selectedFile, selectedFile.name);
+    uploadData.append('file', selectedFile, selectedFile.name);
 
     return this.http.post<any>(`${this.configService.apiFileManagerUrl}/upload`, uploadData)
       .pipe(

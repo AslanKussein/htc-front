@@ -47,6 +47,8 @@ export class DicService {
         return 'possibleReasonForBidding';
       case "countries":
         return 'countries';
+      case "materials":
+        return '/material-of-constructions';
     }
     return null;
   }

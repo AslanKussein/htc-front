@@ -43,7 +43,7 @@
                         <label class="control-labels" translate>claim.operation</label>
                         <span class="text-danger" *ngIf="!applicationForm.operationTypeId">&nbsp;*</span>
                         <div class="row">
-                          <div class="col-sm"  id="operationTypeId">
+                          <div class="col-sm" id="operationTypeId">
                             <ng-select
                               [items]="operationType"
                               (click)="setOperationType($event)"
@@ -297,7 +297,8 @@
                       <div class="col-sm">
                         <div class="custom-control custom-checkbox">
                           <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
-                          <label class="custom-control-label" for="defaultUnchecked">Комиссия включена в стоимость</label>
+                          <label class="custom-control-label" for="defaultUnchecked">Комиссия включена в
+                            стоимость</label>
                         </div>
                       </div>
                     </div>
@@ -412,17 +413,142 @@
                       <fieldset class="scheduler-border col-sm">
                         <legend class="scheduler-border" translate>claim.photo</legend>
                         <div class="row">
-                          <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                            <div class="btn-group" role="group">
-                              <button id="btnGroupDrop1" type="button" class="btn btn-info dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-haspopup="true" aria-expanded="false" translate>
-                                claim.photo
-                              </button>
-                              <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                <a class="dropdown-item" translate>claim.uploadPhoto</a>
-                                <a class="dropdown-item" translate>claim.uploadPlan</a>
-                                <a class="dropdown-item" translate>claim.upload3D</a>
+
+                          <label class="btn btn-info btn-sm" translate>claim.uploadPhoto
+                            <i class="fa fa-upload"></i>
+                            <input type="file" hidden (change)="onFileChanged($event)">
+                          </label>
+
+                          <label class="btn btn-info btn-sm" translate>claim.uploadPlan
+                            <i class="fa fa-upload"></i>
+                            <input type="file" hidden (change)="onFileChanged($event)">
+                          </label>
+
+                          <label class="btn btn-info btn-sm" translate>claim.upload3D
+                            <i class="fa fa-upload"></i>
+                            <input type="file" hidden (change)="onFileChanged($event)">
+                          </label>
+
+                        </div>
+                        <!--                        <div class="row">-->
+                        <!--                          <div class="col-md-2 text-right">-->
+                        <!--                            <div href="#" class="site-statement__upload-block" hidden="{{objectPhoto}}">-->
+                        <!--                              <i class="fa fa-user-circle-o fa-5x"></i>-->
+                        <!--                            </div>-->
+
+                        <!--                            <img class="avatar" src="data:image/png;base64,{{objectPhoto}}" *ngIf="objectPhoto"-->
+                        <!--                                 alt="resumePhoto"/>-->
+                        <!--                          </div>-->
+                        <!--                        </div>-->
+                        <div class="row">
+                          <!--Carousel Wrapper-->
+                          <div id="carousel-with-lb" class="carousel slide carousel-multi-item" data-ride="carousel">
+
+                            <!--Controls-->
+                            <div class="controls-top text-center">
+                              <a class="btn-floating" href="#carousel-with-lb" data-slide="prev">
+                                <i class="fa fa-chevron-left text-secondary"></i></a>
+                              <a class="btn-floating" href="#carousel-with-lb" data-slide="next">
+                                <i class="fa fa-chevron-right text-secondary"></i></a>
+                            </div>
+
+                            <!--Indicators-->
+                            <ol class="carousel-indicators">
+                              <li data-target="#carousel-with-lb" data-slide-to="0" class="active secondary-color"></li>
+                              <li data-target="#carousel-with-lb" data-slide-to="1" class="secondary-color"></li>
+                              <li data-target="#carousel-with-lb" data-slide-to="2" class="secondary-color"></li>
+                            </ol>
+                            <!--/.Indicators-->
+
+                            <!--Slides and lightbox-->
+
+                            <div class="carousel-inner mdb-lightbox" role="listbox">
+                              <div id="mdb-lightbox-ui"></div>
+                              <!--First slide-->
+                              <div class=" carousel-item active text-center">
+
+                                <figure class="col-md-4 d-md-inline-block">
+                                  <a
+                                     data-size="1600x1067" >
+                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(2).jpg"
+                                         class="img-fluid" (click)="showPhotoFull('https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(2).jpg')">
+                                  </a>
+                                </figure>
+
+                                <figure class="col-md-4 d-md-inline-block">
+                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(4).jpg"
+                                     data-size="1600x1067">
+                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(4).jpg"
+                                         class="img-fluid">
+                                  </a>
+                                </figure>
+
+                                <figure class="col-md-4 d-md-inline-block">
+                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(6).jpg"
+                                     data-size="1600x1067">
+                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(6).jpg"
+                                         class="img-fluid">
+                                  </a>
+                                </figure>
+                              </div>
+                              <!--/.First slide-->
+
+                              <!--Second slide-->
+                              <div class="carousel-item text-center">
+
+                                <figure class="col-md-4 d-md-inline-block">
+                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(22).jpg"
+                                     data-size="1600x1067">
+                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(22).jpg"
+                                         class="img-fluid">
+                                  </a>
+                                </figure>
+
+                                <figure class="col-md-4 d-md-inline-block">
+                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(25).jpg"
+                                     data-size="1600x1067">
+                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(25).jpg"
+                                         class="img-fluid">
+                                  </a>
+                                </figure>
+
+                                <figure class="col-md-4 d-md-inline-block">
+                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(29).jpg"
+                                     data-size="1600x1067">
+                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(29).jpg"
+                                         class="img-fluid">
+                                  </a>
+                                </figure>
+
+                              </div>
+                              <!--/.Second slide-->
+
+                              <!--Third slide-->
+                              <div class="carousel-item text-center">
+
+                                <figure class="col-md-4 d-md-inline-block">
+                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(44).jpg"
+                                     data-size="1600x1067">
+                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(44).jpg"
+                                         class="img-fluid">
+                                  </a>
+                                </figure>
+
+                                <figure class="col-md-4 d-md-inline-block">
+                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(45).jpg"
+                                     data-size="1600x1067">
+                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(45).jpg"
+                                         class="img-fluid">
+                                  </a>
+                                </figure>
+
+                                <figure class="col-md-4 d-md-inline-block">
+                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(66).jpg"
+                                     data-size="1600x1067">
+                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(66).jpg"
+                                         class="img-fluid">
+                                  </a>
+                                </figure>
                               </div>
                             </div>
                           </div>
@@ -478,7 +604,7 @@
                               <div class="col-sm-9">
                                 <select formControlName="cityId" [(ngModel)]="applicationForm.cityId"
                                         class="browser-default custom-select">
-                                  <option  [ngValue]="null" translate selected >patterns.chooseElement</option>
+                                  <option [ngValue]="null" translate selected>patterns.chooseElement</option>
                                   <option *ngFor="let suit of city">{{suit.label}}</option>
                                 </select>
                                 <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">
@@ -491,9 +617,10 @@
                             <div class="form-group row">
                               <label for="name" class="col-sm-4 col-form-label" translate>claim.building</label>
                               <div class="col-sm-8">
-                                <select formControlName="residentialComplexId" [(ngModel)]="applicationForm.residentialComplexId"
+                                <select formControlName="residentialComplexId"
+                                        [(ngModel)]="applicationForm.residentialComplexId"
                                         class="browser-default custom-select">
-                                  <option  [ngValue]="null" translate selected >patterns.chooseElement</option>
+                                  <option [ngValue]="null" translate selected>patterns.chooseElement</option>
                                   <option *ngFor="let suit of residentialComplexes">{{suit.label}}</option>
                                 </select>
                               </div>
@@ -510,7 +637,7 @@
                               <div class="col-sm-9">
                                 <select formControlName="streetId" [(ngModel)]="applicationForm.streetId"
                                         class="browser-default custom-select">
-                                  <option  [ngValue]="null" translate selected >patterns.chooseElement</option>
+                                  <option [ngValue]="null" translate selected>patterns.chooseElement</option>
                                   <option *ngFor="let suit of streets">{{suit.label}}</option>
                                 </select>
                                 <div *ngIf="f.streetId.touched && f.streetId.invalid" class="text-danger">
@@ -909,3 +1036,5 @@
     </div>
   </div>
 </div>
+
+<show-image [show]="showModalWin" [act]="image" (onHide)="showModalWin"></show-image>

@@ -37,8 +37,12 @@ export class CreateClaimComponent implements OnInit {
   realProperties: Dic[];
   propertyOwners: Dic[];
   countries: Dic[];
+  materials: Dic[];
   possibleReasonForBidding: Dic[];
   applicationForm: any;
+  showModalWin: boolean = false;
+  image: any;
+  objectPhoto;
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -136,6 +140,9 @@ export class CreateClaimComponent implements OnInit {
     this.dicService.getDics('countries').subscribe(data => {
       this.countries = this.toSelectArray(data);
     });
+    this.dicService.getDics('materials').subscribe(data => {
+      this.materials = this.toSelectArray(data);
+    });
     this.loading = false;
   }
 
@@ -205,17 +212,22 @@ export class CreateClaimComponent implements OnInit {
     }
   }
 
+  showPhotoFull(xIndex: any) {
+    this.image = xIndex;
+    this.showModalWin = true;
+  }
+
   submit() {
     this.application = this.applicationForm.value;
     const controls = this.applicationForm.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        this.translate.get('claim.operation').subscribe((text: string) => {
-          this.notifyService.showInfo("Ошибка", "Поле " + name + " не заполнено!!!");
-        });
-        return
-      }
-    }
+      // for (const name in controls) {
+      //   if (controls[name].invalid) {
+      //     this.translate.get('claim.operation').subscribe((text: string) => {
+      //       this.notifyService.showInfo("Ошибка", "Поле " + name + " не заполнено!!!");
+      //     });
+      //     return
+      //   }
+      // }
 
     // this.loading = true;
     this.claimService.saveClaim('{\n' +
