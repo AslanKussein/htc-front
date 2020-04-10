@@ -151,7 +151,7 @@ export class CreateClaimComponent implements OnInit {
     if (data) {
       const len = data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value: '' + data[i][idField], label: data[i][labelField], code: data[i]['code']});
+        list.push({value: '' + data[i][idField], label: data[i].multiLang[labelField], code: data[i]['code']});
       }
     }
     return list;
