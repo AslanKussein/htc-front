@@ -37,8 +37,20 @@
     "aboutObject": "Об Объекте",
     "searchClaim": "Поиск заявки",
     "crDateFrom": "Дата создания",
+    "crDateFromR": {
+      "from": "Дата создания с",
+      "to": "Дата создания по"
+    },
     "lastModifyDate": "Дата последнего изменения",
+    "lastModifyDateR": {
+      "from": "Дата последнего изменения с",
+      "to": "Дата последнего изменения по"
+    },
     "lastCommentDate": "Дата последнего комментирования",
+    "lastCommentDateR": {
+      "from": "Дата последнего комментирования с",
+      "to": "Дата последнего комментирования по"
+    },
     "textSearch": "Поиск по тексту",
     "claimType": "Тип заявки",
     "addToShow": "Добавить на показ",
@@ -108,15 +120,6 @@
     "probabilityBargaining": "Вероятность торга",
     "bidAmount": "Размер торга",
     "possibleBargaining": "Возможные причины торга",
-    "theSizeOfTrades": {
-      "meet": "Встреча",
-      "cashPayment": "Оплата наличными",
-      "lowDemand": "Низкий спрос",
-      "giff": "Наследство/Подарок",
-      "fastSell": "Срочная продажа",
-      "mortgageProblems": "Проблемы с выплатами по ипотеке",
-      "other": "Другое"
-    },
     "comments": "Комментарий",
     "more": "более"
   },

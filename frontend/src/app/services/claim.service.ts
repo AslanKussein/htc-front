@@ -16,35 +16,34 @@ export class ClaimService {
   getClaims(start: number, length: number, search: any): Observable<any> {
     let params = new HttpParams();
 
-    params = params.append('start', String(start));
-    params = params.append('length', String(length));
+    params = params.append('pageNumber', String(start));
+    params = params.append('pageSize', String(length));
+    params = params.append('sortBy', String('id'));
+    params = params.append('direction', String('ASC'));
 
     if (search.resumeStatus !== undefined) {
-      params = params.append('resumeStatus', String(search.resumeStatus));
+      params = params.append('applicationTypeId', String(search.claimType));
     }
-    if (search.post !== undefined) {
-      params = params.append('post', String(search.post));
+    if (search.authorId !== undefined) {
+      params = params.append('authorId', String(search.claimType));
     }
-    if (search.iin !== undefined) {
-      params = params.append('iin', String(search.iin));
+    if (search.crDateFrom !== undefined) {
+      params = params.append('creationDateFrom', String(search.crDateFrom));
     }
-    if (search.surname !== undefined) {
-      params = params.append('surname', String(search.surname));
+    if (search.crDateTo !== undefined) {
+      params = params.append('creationDateTo', String(search.crDateTo));
     }
-    if (search.firstName !== undefined) {
-      params = params.append('firstName', String(search.firstName));
+    if (search.lastModifyDateFrom !== undefined) {
+      params = params.append('changeDateFrom', String(search.lastModifyDateFrom));
     }
-    if (search.patronymic !== undefined) {
-      params = params.append('patronymic', String(search.patronymic));
+    if (search.lastModifyDateTo !== undefined) {
+      params = params.append('changeDateTo', String(search.lastModifyDateTo));
     }
-    // return this.http.get<any>(`htc/applications`, {params: params})
-    //   .pipe(
-    //     tap(data => {
-    //       console.log('saved');
-    //     }),
-    //     catchError(this.handleError)
-    //   );
-    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/applications`, {params: params});
+    if (search.textSearch !== undefined) {
+      params = params.append('text', search.textSearch);
+    }
+
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getApplicationList`, params);
   }
 
   public saveClaim(obj): Observable<any> {

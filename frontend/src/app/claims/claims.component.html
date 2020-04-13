@@ -5,51 +5,57 @@
       <br/>
       <div class="row">
         <div class="col-sm">
-          <label class="control-labels" translate>claim.claimType</label>
-          <div class="row">
-            <div class="col-sm">
-              <ng-select
-                         placeholder="{{ 'patterns.chooseElement' | translate }}">
-              </ng-select>
-            </div>
+          <ng-select
+            [items]="operationType"
+            placeholder="{{ 'claim.claimType' | translate }}">
+          </ng-select>
+        </div>
+        <div class="col-sm">
+          <div class="md-form">
+            <input type="text" id="crDateFrom" class="form-control" bsDatepicker #ru="bsDatepicker"
+                   [(ngModel)]="formData.crDateFrom">
+            <label for="crDateFrom" translate>claim.crDateFromR.from</label>
           </div>
         </div>
         <div class="col-sm">
-          <label class="control-labels" for="fillFromAndTo" translate>claim.crDateFrom</label>
-          <div class="row">
-            <div class="col-sm">
-              <input placeholder="{{'patterns.fillFromAndTo' | translate}}" [(ngModel)]="formData.lastModifyDateRange"
-                     id="fillFromAndTo" type="text" class="form-control" bsDaterangepicker #ru="bsDaterangepicker">
-            </div>
+          <div class="md-form">
+            <input type="text" id="crDateTo" class="form-control" bsDatepicker #ru="bsDatepicker"
+                   [(ngModel)]="formData.crDateTo">
+            <label for="crDateTo" translate>claim.crDateFromR.to</label>
           </div>
         </div>
         <div class="col-sm">
-          <label class="control-labels" for="lastModifyDate" translate>claim.lastModifyDate</label>
-          <div class="row">
-            <div class="col-sm">
-              <input placeholder="{{'patterns.fillFromAndTo' | translate}}" [(ngModel)]="formData.crDateRange"
-                     id="lastModifyDate" type="text" class="form-control" bsDaterangepicker #ru="bsDaterangepicker">
-            </div>
+          <div class="md-form">
+            <input type="text" id="lastModifyDateFrom" class="form-control" [(ngModel)]="formData.lastModifyDateFrom"
+                   bsDatepicker #ru="bsDatepicker">
+            <label for="lastModifyDateFrom" translate>claim.lastModifyDateR.from</label>
           </div>
         </div>
         <div class="col-sm">
-          <label class="control-labels" for="lastCommentDateRange" translate>claim.lastCommentDate</label>
-          <div class="row">
-            <div class="col-sm">
-              <input placeholder="{{'patterns.fillFromAndTo' | translate}}" [(ngModel)]="formData.lastCommentDateRange"
-                     id="lastCommentDateRange" type="text" class="form-control" bsDaterangepicker
-                     #ru="bsDaterangepicker">
-            </div>
+          <div class="md-form">
+            <input type="text" id="lastModifyDateTo" class="form-control" [(ngModel)]="formData.lastModifyDateTo"
+                   bsDatepicker #ru="bsDatepicker">
+            <label for="lastModifyDateTo" translate>claim.lastModifyDateR.to</label>
           </div>
         </div>
-
         <div class="col-sm">
-          <label class="control-labels" for="textSearch" translate>claim.textSearch</label>
-          <div class="row">
-            <div class="col-sm">
-              <input type="text" style="width: 300px" id="textSearch" [(ngModel)]="formData.textSearch"
-                     class="form-control"/>
-            </div>
+          <div class="md-form">
+            <input type="text" id="lastCommentDateFrom" class="form-control" [(ngModel)]="formData.lastCommentDateFrom"
+                   bsDatepicker #ru="bsDatepicker">
+            <label for="lastCommentDateFrom" translate>claim.lastCommentDateR.from</label>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="md-form">
+            <input type="text" id="lastCommentDateTo" class="form-control" [(ngModel)]="formData.lastCommentDateTo"
+                   bsDatepicker #ru="bsDatepicker">
+            <label for="lastCommentDateTo" translate>claim.lastCommentDateR.to</label>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="md-form">
+            <input type="text" id="form1" class="form-control" [(ngModel)]="formData.textSearch">
+            <label for="form1" translate>claim.textSearch</label>
           </div>
         </div>
       </div>
@@ -62,11 +68,13 @@
       <div class="row">
         <div class="col-sm">
 
-          <button type="button" mdbBtn color="success" (click)="findClaims(1)" class="btn btn-sm btn-info" style="width: 200px; float: right"
+          <button type="button" mdbBtn color="success" (click)="findClaims(1)" class="btn btn-sm btn-info"
+                  style="width: 200px; float: right"
                   mdbWavesEffect>
             <span class="fa fa-search" translate> search</span>
           </button>
-          <button type="button" class="btn btn-sm btn-link" (click)="clearForm()" style="width: 200px;float: right" translate>
+          <button type="button" class="btn btn-sm btn-link" (click)="clearForm()" style="width: 200px;float: right"
+                  translate>
             clear
           </button>
         </div>
@@ -77,27 +85,27 @@
           <li class="nav-item">
             <a class="nav-link active" id="open-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open"
                aria-selected="true" translate>claim.opening
-              <span>(0 в т.ч)</span>
+              <span class="badge badge-info ml-2">0 в т.ч</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" id="open-sell-tab" data-toggle="tab" href="#open-sell" role="tab"
                aria-controls="open-sell"
                aria-selected="false" translate>claim.openingSell
-              <span>(0)</span>
+              <span class="badge badge-info ml-2">0</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" id="open-buy-tab" data-toggle="tab" href="#open-buy" role="tab"
                aria-controls="open-buy"
                aria-selected="false" translate>claim.openingBuy
-              <span>(0)</span>
+              <span class="badge badge-info ml-2">0</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" id="closed-tab" data-toggle="tab" href="#closed" role="tab" aria-controls="closed"
                aria-selected="false" translate>claim.closed
-              <span>(0)</span>
+              <span class="badge badge-info ml-2">0</span>
             </a>
           </li>
         </ul>
@@ -136,56 +144,29 @@
               <th translate>Комментарий</th>
             </tr>
             </thead>
-            <!--            <tbody style="cursor: pointer">-->
-            <!--            <tr *ngFor="let node of actData;let i = index"-->
-            <!--                (click)="setClickedRow(i, node)"-->
-            <!--                [class.active]="i == selectedRow"-->
-            <!--                [className]="node.blacklist == true ? 'text-left rgba-indigo-slight' : 'text-left'">-->
-            <!--              <td [hidden]="tblColumn.DateEntry">{{node.appDate}}</td>-->
-            <!--              <td [hidden]="tblColumn.ShortFullName">-->
-            <!--                <a style="color: #01A9C3;text-decoration: underline; font-weight: bold"-->
-            <!--                   (click)="basicModal.show()">-->
-            <!--                  {{node.personData.surname}} {{node.personData.name}} {{node.personData.patronymic}}-->
-
-            <!--                </a>-->
-            <!--              </td>-->
-            <!--              <td [hidden]="tblColumn.LiveCity">{{node.personData.birthCity}}</td>-->
-            <!--              <td [hidden]="tblColumn.Position">-->
-            <!--                <div *ngFor="let staff of node.resumeStaffs">-->
-            <!--                  <span>{{staff.staffId.post.nameRu}}</span>-->
-            <!--                </div>-->
-            <!--              </td>-->
-            <!--              <td [hidden]="tblColumn.ResumeStatus">{{node.status.nameRu}}</td>-->
-            <!--              <td class="text-center">-->
-            <!--                <div class="btn-group" *ngIf="!node.status?.dresumeStatusChanges?.length < 1">-->
-            <!--                  <button type="button" class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown"-->
-            <!--                          aria-haspopup="false" aria-expanded="false"-->
-            <!--                          (click)="panelExpanded = !panelExpanded" translate>Route-->
-            <!--                  </button>-->
-            <!--                  <div class="dropdown-menu">-->
-            <!--                    <div *ngFor="let statused of node.status?.dresumeStatusChanges;">-->
-            <!--                      <div (click)="changeStatus(statused, node)"-->
-            <!--                           class="dropdown-item clearfix"> {{statused.buttonNameRu}}</div>-->
-            <!--                      <div class="dropdown-divider"></div>-->
-            <!--                    </div>-->
-            <!--                  </div>-->
-            <!--                </div>-->
-            <!--              </td>-->
-            <!--              <td class="text-center">-->
-            <!--                <div class="custom-control custom-checkbox" [hidden]="node.check?.id">-->
-            <!--                  <input type="checkbox" [(ngModel)]="node.check" class="custom-control-input"-->
-            <!--                         id="defaultChecked+{{i}}">-->
-            <!--                  <label class="custom-control-label" for="defaultChecked+{{i}}"></label>-->
-            <!--                </div>-->
-            <!--              </td>-->
-            <!--            </tr>-->
-            <!--            </tbody>-->
+            <tbody style="cursor: pointer">
+            <tr *ngFor="let claim of claimData;let i = index">
+              <td>{{claim.id}}</td>
+              <td>{{claim.operationType.value.valueRu}}</td>
+              <td>{{claim.creationDate}}</td>
+              <td>{{claim.fullname}}</td>
+              <td>{{claim.phone}}</td>
+              <td>{{claim.email}}</td>
+              <td>{{claim.district.value.valueRu}}</td>
+              <td>{{claim.district.value.valueRu}}</td>
+              <td>{{claim.numberOfRooms}}</td>
+              <td>{{claim.price}}</td>
+              <td>{{claim.paymentType.valueRu}}</td>
+              <td>{{claim.paymentType.valueRu}}</td>
+              <td>{{claim.floor}}</td>
+              <td>{{claim.comment}}</td>
+            </tr>
+            </tbody>
           </table>
           <div class="position-static createClaimBtn">
             <button type="button" class="btn btn-success btn-circle btn-xl" (click)="dnHref('create-claim')"><i
               class="fa fa-plus"></i>
             </button>
-
           </div>
 
           <pagination [(ngModel)]="currentPage"

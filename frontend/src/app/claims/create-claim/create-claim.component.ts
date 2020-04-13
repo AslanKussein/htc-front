@@ -42,7 +42,8 @@ export class CreateClaimComponent implements OnInit {
   applicationForm: any;
   showModalWin: boolean = false;
   image: any;
-  objectPhoto;
+  dicDynamic: Dic[];
+  dic: Dic;
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -107,6 +108,7 @@ export class CreateClaimComponent implements OnInit {
       parkingTypeId: ['', Validators.nullValidator],
       probabilityOfBidding: ['', Validators.nullValidator],
       theSizeOfTrades: ['', Validators.nullValidator],
+      possibleReasonForBiddingId: ['', Validators.nullValidator],
     })
 
     this.loadDictionary();
@@ -114,63 +116,50 @@ export class CreateClaimComponent implements OnInit {
 
   loadDictionary() {
     this.dicService.getDics('operationType').subscribe(data => {
-      this.operationType = this.toSelectArray(data);
+      this.operationType = this.util.toSelectArray(data);
     });
     this.dicService.getDics('objectType').subscribe(data => {
-      this.objectType = this.toSelectArray(data);
+      this.objectType = this.util.toSelectArray(data);
     });
     this.dicService.getDics('city').subscribe(data => {
-      this.city = this.toSelectArray(data);
+      this.city = this.util.toSelectArray(data);
     });
     this.dicService.getDics('districts').subscribe(data => {
-      this.districts = this.toSelectArray(data);
+      this.districts = this.util.toSelectArray(data);
     });
     this.dicService.getDics('parkingTypes').subscribe(data => {
-      this.parkingTypes = this.toSelectArray(data);
+      this.parkingTypes = this.util.toSelectArray(data);
     });
     this.dicService.getDics('streets').subscribe(data => {
-      this.streets = this.toSelectArray(data);
+      this.streets = this.util.toSelectArray(data);
     });
     this.dicService.getDics('residentialComplexes').subscribe(data => {
-      this.residentialComplexes = this.toSelectArray(data);
+      this.residentialComplexes = this.util.toSelectArray(data);
     });
     this.dicService.getDics('possibleReasonForBidding').subscribe(data => {
-      this.possibleReasonForBidding = this.toSelectArray(data);
+      this.possibleReasonForBidding = this.util.toSelectArray(data);
     });
     this.dicService.getDics('countries').subscribe(data => {
-      this.countries = this.toSelectArray(data);
+      this.countries = this.util.toSelectArray(data);
     });
     this.dicService.getDics('materials').subscribe(data => {
-      this.materials = this.toSelectArray(data);
+      this.materials = this.util.toSelectArray(data);
     });
     this.loading = false;
-  }
-
-  toSelectArray(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
-    const list = [];
-    if (data) {
-      const len = data.length;
-      for (let i = 0; i < len; i++) {
-        list.push({value: '' + data[i][idField], label: data[i].multiLang[labelField], code: data[i]['code']});
-      }
-    }
-    return list;
-  }
-
-  getDicNameByLanguage() {
-    let fieldName;
-    switch (this._language.language) {
-      case "kz":
-        fieldName = 'nameKz';
-        break;
-      case "en":
-        fieldName = 'nameEn';
-        break;
-      default:
-        fieldName = 'nameRu';
-        break;
-    }
-    return fieldName;
+    this.dicDynamic = [];
+    this.dic = new Dic();
+    this.dic.code = 'true';
+    this.dic.nameEn = 'Да';
+    this.dic.nameKz = 'Да';
+    this.dic.nameRu = 'Да';
+    this.dicDynamic.push(this.dic);
+    this.dic = new Dic();
+    this.dic.code = 'false';
+    this.dic.nameEn = 'Нет';
+    this.dic.nameKz = 'Нет';
+    this.dic.nameRu = 'Нет';
+    this.dicDynamic.push(this.dic);
+    console.log(this.dicDynamic)
   }
 
   setOperationType(event) {
@@ -193,7 +182,7 @@ export class CreateClaimComponent implements OnInit {
   searchByPhone() {
     if (this.applicationForm.phoneNumber != null && this.applicationForm.phoneNumber.length == 10) {
       this.loading = true;
-      this.ownerService.searchByPhone('+7' + this.applicationForm.phoneNumber)
+      this.ownerService.searchByPhone(this.applicationForm.phoneNumber)
         .subscribe(res => {
           console.log(res.content)
         });
@@ -220,14 +209,14 @@ export class CreateClaimComponent implements OnInit {
   submit() {
     this.application = this.applicationForm.value;
     const controls = this.applicationForm.controls;
-      // for (const name in controls) {
-      //   if (controls[name].invalid) {
-      //     this.translate.get('claim.operation').subscribe((text: string) => {
-      //       this.notifyService.showInfo("Ошибка", "Поле " + name + " не заполнено!!!");
-      //     });
-      //     return
-      //   }
-      // }
+    // for (const name in controls) {
+    //   if (controls[name].invalid) {
+    //     this.translate.get('claim.operation').subscribe((text: string) => {
+    //       this.notifyService.showInfo("Ошибка", "Поле " + name + " не заполнено!!!");
+    //     });
+    //     return
+    //   }
+    // }
 
     // this.loading = true;
     this.claimService.saveClaim('{\n' +
