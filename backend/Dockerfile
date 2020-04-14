@@ -1,6 +1,6 @@
 FROM openjdk:8-alpine
 
-ARG DEPENDENCY=./target/htc
+ARG DEPENDENCY=./target/htc-front
 
 COPY ${DEPENDENCY}/BOOT-INF/lib /usr/app/BOOT-INF/lib
 COPY ${DEPENDENCY}/org /usr/app/org
