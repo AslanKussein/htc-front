@@ -9,4 +9,4 @@ COPY ${DEPENDENCY}/META-INF /usr/app/META-INF
 COPY ${PATH}/htc.war /usr/app/
 
 WORKDIR /usr/app
-ENTRYPOINT ["java", "-cp", "./", "org.springframework.boot.loader.JarLauncher"]
+ENTRYPOINT ["java", "-jar", "./htc.war"]
