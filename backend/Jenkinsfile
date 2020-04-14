@@ -19,13 +19,13 @@ pipeline {
                 }
             }
         }
-/*
+
         stage('Build') {
             steps {
                 sh 'mvn clean package'
             }
         }
-*/
+
         stage('Building image') {
             steps {
                 script {
