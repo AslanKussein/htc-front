@@ -7,7 +7,16 @@
         <div class="col-sm">
           <ng-select
             [items]="operationType"
+            [(ngModel)]="formData.typeId"
             placeholder="{{ 'claim.claimType' | translate }}">
+          </ng-select>
+        </div>
+        <div class="col-sm">
+          <ng-select
+            [items]="appStatuses"
+            [multiple]="true"
+            [(ngModel)]="formData.applicationStatuses"
+            placeholder="{{ 'claim.claimStatus' | translate }}">
           </ng-select>
         </div>
         <div class="col-sm">
@@ -38,6 +47,8 @@
             <label for="lastModifyDateTo" translate>claim.lastModifyDateR.to</label>
           </div>
         </div>
+      </div>
+      <div class="row">
         <div class="col-sm">
           <div class="md-form">
             <input type="text" id="lastCommentDateFrom" class="form-control" [(ngModel)]="formData.lastCommentDateFrom"
@@ -85,7 +96,7 @@
           <li class="nav-item">
             <a class="nav-link active" id="open-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open"
                aria-selected="true" translate>claim.opening
-              <span class="badge badge-info ml-2">0 в т.ч</span>
+              <span class="badge badge-info ml-2">{{totalItems}}</span>
             </a>
           </li>
           <li class="nav-item">

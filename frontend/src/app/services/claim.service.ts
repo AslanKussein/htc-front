@@ -13,37 +13,8 @@ export class ClaimService {
               private http: HttpClient) {
   }
 
-  getClaims(start: number, length: number, search: any): Observable<any> {
-    let params = new HttpParams();
-
-    params = params.append('pageNumber', String(start));
-    params = params.append('pageSize', String(length));
-    params = params.append('sortBy', String('id'));
-    params = params.append('direction', String('ASC'));
-
-    if (search.resumeStatus !== undefined) {
-      params = params.append('applicationTypeId', String(search.claimType));
-    }
-    if (search.authorId !== undefined) {
-      params = params.append('authorId', String(search.claimType));
-    }
-    if (search.crDateFrom !== undefined) {
-      params = params.append('creationDateFrom', String(search.crDateFrom));
-    }
-    if (search.crDateTo !== undefined) {
-      params = params.append('creationDateTo', String(search.crDateTo));
-    }
-    if (search.lastModifyDateFrom !== undefined) {
-      params = params.append('changeDateFrom', String(search.lastModifyDateFrom));
-    }
-    if (search.lastModifyDateTo !== undefined) {
-      params = params.append('changeDateTo', String(search.lastModifyDateTo));
-    }
-    if (search.textSearch !== undefined) {
-      params = params.append('text', search.textSearch);
-    }
-
-    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getApplicationList`, params);
+  getClaims(search: any): Observable<any> {
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getApplicationList`, search);
   }
 
   public saveClaim(obj): Observable<any> {

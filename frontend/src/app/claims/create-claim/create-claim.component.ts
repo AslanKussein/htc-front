@@ -115,34 +115,34 @@ export class CreateClaimComponent implements OnInit {
   }
 
   loadDictionary() {
-    this.dicService.getDics('operationType').subscribe(data => {
+    this.dicService.getDics('OPERATION_TYPES').subscribe(data => {
       this.operationType = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('objectType').subscribe(data => {
+    this.dicService.getDics('OBJECT_TYPES').subscribe(data => {
       this.objectType = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('city').subscribe(data => {
+    this.dicService.getDics('CITIES').subscribe(data => {
       this.city = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('districts').subscribe(data => {
+    this.dicService.getDics('DISTRICTS').subscribe(data => {
       this.districts = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('parkingTypes').subscribe(data => {
+    this.dicService.getDics('PARKING_TYPES').subscribe(data => {
       this.parkingTypes = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('streets').subscribe(data => {
+    this.dicService.getDics('STREETS').subscribe(data => {
       this.streets = this.util.toSelectArray(data);
     });
     this.dicService.getDics('residentialComplexes').subscribe(data => {
       this.residentialComplexes = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('possibleReasonForBidding').subscribe(data => {
+    this.dicService.getDics('POSSIBLE_REASONS_FOR_BIDDING').subscribe(data => {
       this.possibleReasonForBidding = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('countries').subscribe(data => {
+    this.dicService.getDics('COUNTRIES').subscribe(data => {
       this.countries = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('materials').subscribe(data => {
+    this.dicService.getDics('MATERIALS_OF_CONSTRUCTION').subscribe(data => {
       this.materials = this.util.toSelectArray(data);
     });
     this.loading = false;

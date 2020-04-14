@@ -53,6 +53,7 @@
     },
     "textSearch": "Поиск по тексту",
     "claimType": "Тип заявки",
+    "claimStatus": "Статус заявки",
     "addToShow": "Добавить на показ",
     "opening": "Открытые",
     "openingSell": "Открытые продать",
