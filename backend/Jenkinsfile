@@ -1,10 +1,10 @@
 pipeline {
     agent any
     environment {
-        IMAGE_NAME = 'htc-front-manager'
+        IMAGE_NAME = 'htc-front'
         REGISTRY_NAME = 'registry-htc.dilau.kz'
-        SERVICE_NAME = 'htc-front-manager'
-        SERVICE_PORT = '6001'
+        SERVICE_NAME = 'htc-front'
+        SERVICE_PORT = '6010'
         registry = 'https://registry-htc.dilau.kz'
         registryCredential = 'registry-user'
     }
