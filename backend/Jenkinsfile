@@ -30,7 +30,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry(registry, registryCredential) {
-                        def customImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}")
+                        def dockerfile = 'Dockerfile.test'
+                        def customImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}", "-f backend/Dockerfile .")
                         customImage.push()
                     }
                 }

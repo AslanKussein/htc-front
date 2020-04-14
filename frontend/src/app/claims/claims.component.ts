@@ -27,15 +27,16 @@ export class ClaimsComponent implements OnInit {
   }
 
   formData = {
-    typeId: '',
-    applicationStatuses: '',
-    crDateFrom: null,
-    crDateTo: null,
-    lastModifyDateFrom: null,
-    lastModifyDateTo: null,
-    lastCommentDateFrom: null,
-    lastCommentDateTo: null,
-    textSearch: null
+    typeId: null,
+    applicationStatuses: null,
+    crDateFrom: '',
+    crDateTo: '',
+    lastModifyDateFrom: '',
+    lastModifyDateTo: '',
+    lastCommentDateFrom: '',
+    lastCommentDateTo: '',
+    textSearch: null,
+    myClaim: false
   };
 
   operationType: Dic[];
@@ -53,15 +54,16 @@ export class ClaimsComponent implements OnInit {
 
   clearForm() {
     this.formData = {
-      typeId: '',
-      applicationStatuses: '',
-      crDateFrom: null,
-      crDateTo: null,
-      lastModifyDateFrom: null,
-      lastModifyDateTo: null,
-      lastCommentDateFrom: null,
-      lastCommentDateTo: null,
-      textSearch: null
+      typeId: null,
+      applicationStatuses: null,
+      crDateFrom: '',
+      crDateTo: '',
+      lastModifyDateFrom: '',
+      lastModifyDateTo: '',
+      lastCommentDateFrom: '',
+      lastCommentDateTo: '',
+      textSearch: null,
+      myClaim: false
     };
   }
 
@@ -114,13 +116,20 @@ export class ClaimsComponent implements OnInit {
     if (this.util.getObjectLength(obj) > 0) {
       searchFilter['commentDate'] = obj;
     }
-
-    searchFilter['applicationTypeId'] = this.util.getValueByKey(this.formData.typeId, 'value');
-    let app = [];
-    for (const utilElement of this.formData.applicationStatuses) {
-      app.push(this.util.getValueByKey(utilElement, 'value'));
+    if (!this.util.isNullOrEmpty(this.formData.typeId)) {
+      searchFilter['applicationTypeId'] = this.util.getValueByKey(this.formData.typeId, 'value');
     }
-    searchFilter['applicationStatusList'] = app;
+    if (this.formData.myClaim) {
+      // searchFilter['author'] = this.util.getValueByKey(this.formData.typeId, 'value');
+    }
+    if (!this.util.isNullOrEmpty(this.formData.applicationStatuses)) {
+      let app = [];
+      for (const utilElement of this.formData.applicationStatuses) {
+        app.push(this.util.getValueByKey(utilElement, 'value'));
+      }
+      searchFilter['applicationStatusList'] = app;
+    }
+
     searchFilter['pageNumber'] = pageNo;
     searchFilter['pageSize'] = this.itemsPerPage;
     this.claimService.getClaims(searchFilter).subscribe(res => {

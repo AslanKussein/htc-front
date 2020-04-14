@@ -49,18 +49,24 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm">
+        <div class="col-sm-2">
           <div class="md-form">
             <input type="text" id="lastCommentDateFrom" class="form-control" [(ngModel)]="formData.lastCommentDateFrom"
                    bsDatepicker #ru="bsDatepicker">
             <label for="lastCommentDateFrom" translate>claim.lastCommentDateR.from</label>
           </div>
         </div>
-        <div class="col-sm">
+        <div class="col-sm-2">
           <div class="md-form">
             <input type="text" id="lastCommentDateTo" class="form-control" [(ngModel)]="formData.lastCommentDateTo"
                    bsDatepicker #ru="bsDatepicker">
             <label for="lastCommentDateTo" translate>claim.lastCommentDateR.to</label>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="custom-control custom-checkbox myClaim">
+            <input type="checkbox" class="custom-control-input" id="defaultUnchecked" [(ngModel)]="formData.myClaim">
+            <label class="custom-control-label" for="defaultUnchecked">Мои заявки</label>
           </div>
         </div>
         <div class="col-sm">
@@ -78,13 +84,11 @@
 
       <div class="row">
         <div class="col-sm">
-
-          <button type="button" mdbBtn color="success" (click)="findClaims(1)" class="btn btn-sm btn-info"
-                  style="width: 200px; float: right"
+          <button type="button" mdbBtn color="success" (click)="findClaims(1)" class="btn btn-sm btn-info float-right btn2"
                   mdbWavesEffect>
             <span class="fa fa-search" translate> search</span>
           </button>
-          <button type="button" class="btn btn-sm btn-link" (click)="clearForm()" style="width: 200px;float: right"
+          <button type="button" class="btn btn-sm btn-link float-right btn2" (click)="clearForm()"
                   translate>
             clear
           </button>
