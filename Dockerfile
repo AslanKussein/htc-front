@@ -2,7 +2,6 @@ FROM openjdk:8-alpine
 
 ARG DEPENDENCY=./target/htc
 
-COPY ${DEPENDENCY}/BOOT-INF/lib /usr/app/BOOT-INF/lib
 COPY ${DEPENDENCY}/org /usr/app/org
 COPY ${DEPENDENCY}/META-INF /usr/app/META-INF
 COPY ./target/htc.war /usr/app/
