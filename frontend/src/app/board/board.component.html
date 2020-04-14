@@ -51,8 +51,8 @@
       </div>
       <br>
       <div class="row" cdkDropListGroup>
-        <div class="col-sm blockItem">
-          <div class="alert bg-primary text-white font-weight-bolder" role="alert" translate>board.firstContact</div>
+        <div class="col-sm">
+          <div class="alert bg-primary text-white font-weight-bolder " role="alert" translate>board.firstContact</div>
           <br/>
           <div
             cdkDropList
@@ -60,7 +60,7 @@
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of firstContact" cdkDrag>
-              <div class="card" style="width: 15rem;">
+              <div class="card">
                 <h5 class="card-header bg-info">{{item}}</h5>
                 <div class="card-body">
                   <p class="card-text"></p>
@@ -73,7 +73,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm blockItem">
+        <div class="col-sm">
           <div class="alert alert-success" role="alert" translate>board.meet</div>
           <br/>
           <div
@@ -82,7 +82,7 @@
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of meet" cdkDrag>
-              <div class="card" style="width: 15rem;">
+              <div class="card">
                 <h5 class="card-header bg-info">{{item}}</h5>
                 <div class="card-body">
                   <p class="card-text"></p>
@@ -95,7 +95,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm blockItem">
+        <div class="col-sm">
           <div class="alert alert-info" role="alert" translate>board.dvou</div>
           <br/>
           <div
@@ -104,7 +104,7 @@
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of dvou" cdkDrag>
-              <div class="card" style="width: 15rem;">
+              <div class="card">
                 <h5 class="card-header bg-info">{{item}}</h5>
                 <div class="card-body">
                   <p class="card-text"></p>
@@ -117,7 +117,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm blockItem">
+        <div class="col-sm">
           <div class="alert alert-dark" role="alert" translate>board.adv</div>
           <br/>
           <div
@@ -126,7 +126,7 @@
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of blockItem" cdkDrag>
-              <div class="card" style="width: 15rem;">
+              <div class="card">
                 <h5 class="card-header bg-info">{{item}}</h5>
                 <div class="card-body">
                   <p class="card-text"></p>
@@ -139,7 +139,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm blockItem">
+        <div class="col-sm">
           <div class="alert alert-warning" role="alert" translate>board.photoset</div>
           <br/>
           <div
@@ -148,7 +148,7 @@
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of photoset" cdkDrag>
-              <div class="card" style="width: 15rem;">
+              <div class="card">
                 <h5 class="card-header bg-info">{{item}}</h5>
                 <div class="card-body">
                   <p class="card-text"></p>
@@ -161,7 +161,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm blockItem">
+        <div class="col-sm">
           <div class="alert alert-danger" role="alert" translate>board.show</div>
           <br/>
           <div
@@ -170,7 +170,7 @@
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of show" cdkDrag>
-              <div class="card" style="width: 15rem;">
+              <div class="card">
                 <h5 class="card-header bg-info">{{item}}</h5>
                 <div class="card-body">
                   <p class="card-text"></p>
@@ -183,7 +183,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm blockItem">
+        <div class="col-sm">
           <div class="alert alert-light" role="alert" translate>board.closedContract</div>
           <br/>
           <div
@@ -192,7 +192,7 @@
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of closedContract" cdkDrag>
-              <div class="card" style="width: 15rem;">
+              <div class="card">
                 <h5 class="card-header bg-info">{{item}}</h5>
                 <div class="card-body">
                   <p class="card-text"></p>
