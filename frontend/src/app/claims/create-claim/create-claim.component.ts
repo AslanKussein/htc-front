@@ -109,6 +109,7 @@ export class CreateClaimComponent implements OnInit {
       probabilityOfBidding: ['', Validators.nullValidator],
       theSizeOfTrades: ['', Validators.nullValidator],
       possibleReasonForBiddingId: ['', Validators.nullValidator],
+      note: ['', Validators.nullValidator],
     })
 
     this.loadDictionary();
@@ -134,7 +135,7 @@ export class CreateClaimComponent implements OnInit {
       this.streets = this.util.toSelectArray(data);
     });
     this.dicService.getDics('residentialComplexes').subscribe(data => {
-      this.residentialComplexes = this.util.toSelectArray(data);
+      this.residentialComplexes = this.util.toSelectArrayResidenceComplex(data);
     });
     this.dicService.getDics('POSSIBLE_REASONS_FOR_BIDDING').subscribe(data => {
       this.possibleReasonForBidding = this.util.toSelectArray(data);
@@ -145,25 +146,13 @@ export class CreateClaimComponent implements OnInit {
     this.dicService.getDics('MATERIALS_OF_CONSTRUCTION').subscribe(data => {
       this.materials = this.util.toSelectArray(data);
     });
-    this.loading = false;
-    this.dicDynamic = [];
-    this.dic = new Dic();
-    this.dic.code = 'true';
-    this.dic.nameEn = 'Да';
-    this.dic.nameKz = 'Да';
-    this.dic.nameRu = 'Да';
-    this.dicDynamic.push(this.dic);
-    this.dic = new Dic();
-    this.dic.code = 'false';
-    this.dic.nameEn = 'Нет';
-    this.dic.nameKz = 'Нет';
-    this.dic.nameRu = 'Нет';
-    this.dicDynamic.push(this.dic);
-    console.log(this.dicDynamic)
+    this.dicService.getDics('YES_NO').subscribe(data => {
+      this.dicDynamic = this.util.toSelectArray(data);
+    });
   }
 
-  setOperationType(event) {
-    console.log(this.applicationForm.operationTypeId)
+  setResidenceComplexType(event) {
+    console.log(this.applicationForm.residentialComplexId)
   }
 
   onFileChanged(event) {
@@ -208,6 +197,9 @@ export class CreateClaimComponent implements OnInit {
 
   submit() {
     this.application = this.applicationForm.value;
+
+    console.log(this.application)
+
     const controls = this.applicationForm.controls;
     // for (const name in controls) {
     //   if (controls[name].invalid) {
@@ -218,8 +210,12 @@ export class CreateClaimComponent implements OnInit {
     //   }
     // }
 
+
+
+
     // this.loading = true;
-    this.claimService.saveClaim('{\n' +
+    this.claimService.saveClaim('' +
+      '{\n' +
       '  "amount": 0,\n' +
       '  "apartmentNumber": "string",\n' +
       '  "apartmentsOnTheSite": "string",\n' +
@@ -235,12 +231,15 @@ export class CreateClaimComponent implements OnInit {
       '  "clientId": 0,\n' +
       '  "commissionIncludedInThePrice": true,\n' +
       '  "concierge": true,\n' +
-      '  "contractPeriod": "2020-04-02T16:45:06.072Z",\n' +
+      '  "contractPeriod": "2020-04-14T15:11:02.003Z",\n' +
       '  "district": "string",\n' +
       '  "districtId": 0,\n' +
       '  "email": "string",\n' +
       '  "encumbrance": true,\n' +
       '  "exchange": true,\n' +
+      '  "filesIds": [\n' +
+      '    "string"\n' +
+      '  ],\n' +
       '  "firstName": "string",\n' +
       '  "floor": 0,\n' +
       '  "floorFrom": 0,\n' +
@@ -290,7 +289,8 @@ export class CreateClaimComponent implements OnInit {
       '  "wheelchair": true,\n' +
       '  "yardType": "PRIVATE",\n' +
       '  "yearOfConstruction": 0\n' +
-      '}')
+      '}' +
+      '')
       .subscribe(data => {
         if (data != null) {
           // this.resumeModel = data;

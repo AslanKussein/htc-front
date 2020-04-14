@@ -7,6 +7,7 @@
         <div class="col-sm">
           <ng-select
             [items]="operationType"
+            bindValue="value"
             [(ngModel)]="formData.typeId"
             placeholder="{{ 'claim.claimType' | translate }}">
           </ng-select>
@@ -15,6 +16,7 @@
           <ng-select
             [items]="appStatuses"
             [multiple]="true"
+            bindValue="value"
             [(ngModel)]="formData.applicationStatuses"
             placeholder="{{ 'claim.claimStatus' | translate }}">
           </ng-select>

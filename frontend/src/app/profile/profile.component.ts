@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Util} from "../services/util";
 
 @Component({
   selector: 'app-profile',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() { }
+  constructor(private util: Util) { }
+
+  dnHref(href) {
+    this.util.dnHref(href);
+  }
 
   ngOnInit(): void {
   }

@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {language} from "../../environments/language";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,12 @@ import {language} from "../../environments/language";
 export class Util {
   _language = language;
 
-  constructor() {
+  constructor(private router: Router) {
+  }
+
+  dnHref(href) {
+    localStorage.setItem('url', href);
+    this.router.navigate([href]);
   }
 
   isNullOrEmpty(e: any) {
@@ -39,6 +45,27 @@ export class Util {
         break;
     }
     return fieldName;
+  }
+
+  toSelectArrayResidenceComplex(data) {
+    const list = [];
+    if (data) {
+      const len = data.length;
+      for (let i = 0; i < len; i++) {
+        list.push({
+          value: '' + data[i]['id'],
+          label: data[i]['houseName'],
+          countryId: data[i]['countryId'],
+          houseName: data[i]['houseName'],
+          propertyDeveloperId: data[i]['propertyDeveloperId'],
+          numberOfEntrances: data[i]['numberOfEntrances'],
+          numberOfApartments: data[i]['numberOfApartments'],
+          housingClass: data[i]['housingClass'],
+          housingCondition: data[i]['housingCondition'],
+        });
+      }
+    }
+    return list;
   }
 
   getValueByKey(data: any, key: any) {

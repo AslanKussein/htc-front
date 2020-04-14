@@ -17,8 +17,7 @@ import {Util} from "../services/util";
 export class ClaimsComponent implements OnInit {
   env = language;
 
-  constructor(private router: Router,
-              private localeService: BsLocaleService,
+  constructor(private localeService: BsLocaleService,
               private claimService: ClaimService,
               private dicService: DicService,
               private util: Util) {
@@ -48,8 +47,7 @@ export class ClaimsComponent implements OnInit {
   currentPage = 1;
 
   dnHref(href) {
-    localStorage.setItem('url', href);
-    this.router.navigate([href]);
+    this.util.dnHref(href);
   }
 
   clearForm() {
@@ -117,17 +115,11 @@ export class ClaimsComponent implements OnInit {
       searchFilter['commentDate'] = obj;
     }
     if (!this.util.isNullOrEmpty(this.formData.typeId)) {
-      searchFilter['applicationTypeId'] = this.util.getValueByKey(this.formData.typeId, 'value');
+      searchFilter['applicationTypeId'] = this.formData.typeId;
     }
-    if (this.formData.myClaim) {
-      // searchFilter['author'] = this.util.getValueByKey(this.formData.typeId, 'value');
-    }
+    searchFilter['my'] = this.formData.myClaim;
     if (!this.util.isNullOrEmpty(this.formData.applicationStatuses)) {
-      let app = [];
-      for (const utilElement of this.formData.applicationStatuses) {
-        app.push(this.util.getValueByKey(utilElement, 'value'));
-      }
-      searchFilter['applicationStatusList'] = app;
+      searchFilter['applicationStatusList'] = this.formData.applicationStatuses;
     }
 
     searchFilter['pageNumber'] = pageNo;

@@ -1,1 +1,144 @@
-<p>profile works!</p>
+<div class="card-body card-bg">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm">
+          <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail"
+               alt="avatar">
+          <br>
+          <br>
+          <label class="btn btn-info btn-sm" translate>claim.uploadPhoto
+            <i class="fa fa-upload"></i>
+            <input type="file" hidden>
+          </label>
+        </div>
+        <div class="col-sm-5">
+          <h5>Специалист по недвижимости - RT554</h5>
+          <h4 class="font-weight-bolder">Иванов Иван Иванович</h4>
+          <p class="grey-text">последний раз был (а) 17:00 23 декабря 2019 года</p>
+          <p>Группа продажи - Руководитель группы Асем Аскаровна</p>
+          <p>Рабочее состояние: в отпуске с 1 января - 15 января 2019 года</p>
+          <p>Телефон: +7 777 77 77
+            &nbsp;<i aria-hidden="true" class="fa fa-whatsapp text-success"></i>&nbsp;
+            &nbsp;<i aria-hidden="true" class="fa fa-telegram text-primary"></i>&nbsp;
+            &nbsp;<i aria-hidden="true" class="fa fa-skype text-info"></i>
+          </p>
+          <p>e-mail: <a href="mailto:vlad@htmlbook.ru?subject=Вопрос по HTML">asd@asd.kz</a></p>
+          <div>Адрес: Нурсултан
+            <fieldset class="col-md-6">
+              <legend>Транспорт</legend>
+
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <p>D 789 UKM</p>
+                </div>
+              </div>
+
+            </fieldset>
+
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <h5><i class="fa fa-arrow-up text-success" aria-hidden="true"></i>&nbsp;<span class="text-primary">Рейтинг риэлтора: 8,7 баллов</span>
+          </h5>
+          <br>
+          <p>Агентские договра: 8,7 баллов</p>
+          <p>Сумма задатков: 8,7 баллов</p>
+          <p>Сумма продаж: 8,7 баллов</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="open-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open"
+               aria-selected="true">Мои клиенты
+              <span class="badge badge-info ml-2">1</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="open-sell-tab" data-toggle="tab" href="#open-sell" role="tab"
+               aria-controls="open-sell"
+               aria-selected="false">Мои объекты
+              <span class="badge badge-info ml-2">0</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="open-buy-tab" data-toggle="tab" href="#open-buy" role="tab"
+               aria-controls="open-buy"
+               aria-selected="false">Мои сделки
+              <span class="badge badge-info ml-2">0</span>
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="open" role="tabpanel" aria-labelledby="open-tab">
+          </div>
+          <div class="tab-pane fade" id="open-sell" role="tabpanel" aria-labelledby="open-sell-tab">
+
+          </div>
+          <div class="tab-pane fade" id="open-buy" role="tabpanel" aria-labelledby="open-buy-tab">
+          </div>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm">
+          <table class="table table-bordered text-center table-sm">
+            <thead class="text-center">
+            <tr>
+              <th>Id</th>
+              <th>Имя Фамилия</th>
+              <th>Номер тел</th>
+              <th>Цель</th>
+              <th>Статус</th>
+            </tr>
+            </thead>
+            <tbody style="cursor: pointer">
+            <!--            <tr *ngFor="let claim of claimData;let i = index">-->
+            <!--              <td>{{claim.id}}</td>-->
+            <!--              <td>{{claim.operationType.value.valueRu}}</td>-->
+            <!--              <td>{{claim.creationDate}}</td>-->
+            <!--              <td>{{claim.fullname}}</td>-->
+            <!--              <td>{{claim.phone}}</td>-->
+            <!--              <td>{{claim.email}}</td>-->
+            <!--              <td>{{claim.district.value.valueRu}}</td>-->
+            <!--              <td>{{claim.district.value.valueRu}}</td>-->
+            <!--              <td>{{claim.numberOfRooms}}</td>-->
+            <!--              <td>{{claim.price}}</td>-->
+            <!--              <td>{{claim.paymentType.valueRu}}</td>-->
+            <!--              <td>{{claim.paymentType.valueRu}}</td>-->
+            <!--              <td>{{claim.floor}}</td>-->
+            <!--              <td>{{claim.comment}}</td>-->
+            <!--            </tr>-->
+            </tbody>
+          </table>
+          <!--          <div class="position-static createClaimBtn">-->
+          <!--            <button type="button" class="btn btn-success btn-circle btn-xl" (click)="dnHref('create-claim')"><i-->
+          <!--              class="fa fa-plus"></i>-->
+          <!--            </button>-->
+          <!--          </div>-->
+          <div class="position-static createClaimBtn">
+            <button type="button" class="btn btn-success btn-circle btn-xl" (click)="dnHref('create-claim')"><i
+              class="fa fa-plus"></i>
+            </button>
+          </div>
+          <!--          <pagination [(ngModel)]="currentPage"-->
+          <!--                      [totalItems]="totalItems"-->
+          <!--                      [itemsPerPage]="itemsPerPage"-->
+          <!--                      [maxSize]="10"-->
+          <!--                      [rotate]="true"-->
+          <!--                      [boundaryLinks]="true"-->
+          <!--                      previousText="&lsaquo;"-->
+          <!--                      nextText="&rsaquo;"-->
+          <!--                      firstText="&laquo;"-->
+          <!--                      lastText="&raquo;"-->
+          <!--                      (pageChanged)="pageChanged($event)">-->
+          <!--          </pagination>-->
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
