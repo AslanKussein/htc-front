@@ -125,13 +125,13 @@ export class ClaimsComponent implements OnInit {
     searchFilter['pageNumber'] = pageNo;
     searchFilter['pageSize'] = this.itemsPerPage;
     this.claimService.getClaims(searchFilter).subscribe(res => {
-      // if (res != null && res.data != null) {
-      //
-      //   this.claimData = res.data.data.data;
-      //   this.totalItems = res.data.totalElements;
-      //   this.itemsPerPage = res.data.size;
-      //   this.currentPage = res.data.number + 1;
-      // }
+      if (res != null && res.data != null && !res.data.data.empty) {
+
+        this.claimData = res.data.data.data;
+        this.totalItems = res.data.totalElements;
+        this.itemsPerPage = res.data.size;
+        this.currentPage = res.data.number + 1;
+      }
     });
     this.loading = false;
   }
