@@ -1,6 +1,6 @@
-//@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~@ng-select/ng-select/themes/default.theme.css";
 @import "~angular-notifier/styles";
-@import "~@ng-select/ng-select/themes/material.theme.css";
+//@import "~@ng-select/ng-select/themes/material.theme.css";
 
 /* You can add global styles to this file, and also import other style files */
 body {
@@ -47,10 +47,7 @@ body {
   float: right
 }
 
-ng-select {
-  margin-top: 10px;
+.form-control{
+  height: calc(1.5em + 0.75rem + 0px) !important;
 }
 
-.md-form {
-  margin-bottom: 1rem;
-}

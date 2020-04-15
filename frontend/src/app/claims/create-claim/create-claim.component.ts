@@ -153,6 +153,10 @@ export class CreateClaimComponent implements OnInit {
 
   setResidenceComplexType(event) {
     console.log(this.applicationForm.residentialComplexId)
+    if (!this.util.isNullOrEmpty(this.applicationForm.residentialComplexId)) {
+      this.applicationForm.yearOfConstruction = this.applicationForm.residentialComplexId;
+      this.applicationForm.yearOfConstruction = 2019;
+    }
   }
 
   onFileChanged(event) {

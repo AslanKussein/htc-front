@@ -62,6 +62,21 @@ export class Util {
           numberOfApartments: data[i]['numberOfApartments'],
           housingClass: data[i]['housingClass'],
           housingCondition: data[i]['housingCondition'],
+          apartmentsOnTheSite: data[i]['apartmentsOnTheSite'],
+          ceilingHeight: data[i]['ceilingHeight'],
+          concierge: data[i]['concierge'],
+          districtId: data[i]['districtId'],
+          houseNumber: data[i]['houseNumber'],
+          houseNumberFraction: data[i]['houseNumberFraction'],
+          materialOfConstructionId: data[i]['materialOfConstructionId'],
+          numberOfFloors: data[i]['numberOfFloors'],
+          parkingTypeId: data[i]['parkingTypeId'],
+          playground: data[i]['playground'],
+          streetId: data[i]['streetId'],
+          typeOfElevator: data[i]['typeOfElevator'],
+          wheelchair: data[i]['wheelchair'],
+          yardType: data[i]['yardType'],
+          yearOfConstruction: data[i]['yearOfConstruction'],
         });
       }
     }

@@ -5,6 +5,7 @@
       <br/>
       <div class="row">
         <div class="col-sm">
+          <label translate>claim.claimType</label>
           <ng-select
             [items]="operationType"
             bindValue="value"
@@ -13,6 +14,7 @@
           </ng-select>
         </div>
         <div class="col-sm">
+          <label translate>claim.claimStatus</label>
           <ng-select
             [items]="appStatuses"
             [multiple]="true"
@@ -22,48 +24,37 @@
           </ng-select>
         </div>
         <div class="col-sm">
-          <div class="md-form">
-            <input type="text" id="crDateFrom" class="form-control" bsDatepicker #ru="bsDatepicker"
-                   [(ngModel)]="formData.crDateFrom">
-            <label for="crDateFrom" translate>claim.crDateFromR.from</label>
-          </div>
+          <label translate>claim.crDateFromR.from</label>
+          <input placeholder="{{'claim.crDateFromR.from' | translate}}" type="text" id="crDateFrom" class="form-control"
+                 bsDatepicker #ru="bsDatepicker"
+                 [(ngModel)]="formData.crDateFrom">
         </div>
         <div class="col-sm">
-          <div class="md-form">
-            <input type="text" id="crDateTo" class="form-control" bsDatepicker #ru="bsDatepicker"
-                   [(ngModel)]="formData.crDateTo">
-            <label for="crDateTo" translate>claim.crDateFromR.to</label>
-          </div>
+          <label translate>claim.crDateFromR.to</label>
+          <input type="text" id="crDateTo" class="form-control" bsDatepicker #ru="bsDatepicker"
+                 [(ngModel)]="formData.crDateTo">
         </div>
         <div class="col-sm">
-          <div class="md-form">
-            <input type="text" id="lastModifyDateFrom" class="form-control" [(ngModel)]="formData.lastModifyDateFrom"
-                   bsDatepicker #ru="bsDatepicker">
-            <label for="lastModifyDateFrom" translate>claim.lastModifyDateR.from</label>
-          </div>
+          <label translate>claim.crDateFromR.from</label>
+          <input type="text" id="lastModifyDateFrom" class="form-control" [(ngModel)]="formData.lastModifyDateFrom"
+                 bsDatepicker #ru="bsDatepicker">
         </div>
         <div class="col-sm">
-          <div class="md-form">
-            <input type="text" id="lastModifyDateTo" class="form-control" [(ngModel)]="formData.lastModifyDateTo"
-                   bsDatepicker #ru="bsDatepicker">
-            <label for="lastModifyDateTo" translate>claim.lastModifyDateR.to</label>
-          </div>
+          <label translate>claim.lastModifyDateR.to</label>
+          <input type="text" id="lastModifyDateTo" class="form-control" [(ngModel)]="formData.lastModifyDateTo"
+                 bsDatepicker #ru="bsDatepicker">
         </div>
       </div>
       <div class="row">
         <div class="col-sm-2">
-          <div class="md-form">
-            <input type="text" id="lastCommentDateFrom" class="form-control" [(ngModel)]="formData.lastCommentDateFrom"
-                   bsDatepicker #ru="bsDatepicker">
-            <label for="lastCommentDateFrom" translate>claim.lastCommentDateR.from</label>
-          </div>
+          <label translate>claim.lastCommentDateR.from</label>
+          <input type="text" id="lastCommentDateFrom" class="form-control" [(ngModel)]="formData.lastCommentDateFrom"
+                 bsDatepicker #ru="bsDatepicker">
         </div>
         <div class="col-sm-2">
-          <div class="md-form">
-            <input type="text" id="lastCommentDateTo" class="form-control" [(ngModel)]="formData.lastCommentDateTo"
-                   bsDatepicker #ru="bsDatepicker">
-            <label for="lastCommentDateTo" translate>claim.lastCommentDateR.to</label>
-          </div>
+          <label translate>claim.lastCommentDateR.to</label>
+          <input type="text" id="lastCommentDateTo" class="form-control" [(ngModel)]="formData.lastCommentDateTo"
+                 bsDatepicker #ru="bsDatepicker">
         </div>
         <div class="col-sm-2">
           <div class="custom-control custom-checkbox myClaim">
@@ -72,10 +63,8 @@
           </div>
         </div>
         <div class="col-sm">
-          <div class="md-form">
+          <label translate>claim.textSearch</label>
             <input type="text" id="form1" class="form-control" [(ngModel)]="formData.textSearch">
-            <label for="form1" translate>claim.textSearch</label>
-          </div>
         </div>
       </div>
 
@@ -86,7 +75,8 @@
 
       <div class="row">
         <div class="col-sm">
-          <button type="button" mdbBtn color="success" (click)="findClaims(1)" class="btn btn-sm btn-info float-right btn2"
+          <button type="button" mdbBtn color="success" (click)="findClaims(1)"
+                  class="btn btn-sm btn-info float-right btn2"
                   mdbWavesEffect>
             <span class="fa fa-search" translate> search</span>
           </button>
