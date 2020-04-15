@@ -112,6 +112,9 @@ export class CreateClaimComponent implements OnInit {
       theSizeOfTrades: ['', Validators.nullValidator],
       possibleReasonForBiddingId: ['', Validators.nullValidator],
       note: ['', Validators.nullValidator],
+      contractPeriod: ['', Validators.nullValidator],
+      isCommissionIncludedInThePrice: ['', Validators.nullValidator],
+      amount: ['', Validators.nullValidator],
     });
 
     this.loadDictionary();
@@ -149,7 +152,7 @@ export class CreateClaimComponent implements OnInit {
       this.materials = this.util.toSelectArray(data);
     });
     this.dicService.getDics('YES_NO').subscribe(data => {
-      this.dicDynamic = this.util.toSelectArray(data);
+      this.dicDynamic = this.util.toSelectArray(data, 'code');
     });
     this.dicService.getDics('TYPE_OF_ELEVATOR').subscribe(data => {
       this.elevatorType = this.util.toSelectArray(data);
@@ -171,11 +174,11 @@ export class CreateClaimComponent implements OnInit {
     this.applicationForm.materialOfConstruction = this.applicationForm.residentialComplexId?.materialOfConstructionId;//Материал
     this.applicationForm.yearOfConstruction = this.applicationForm.residentialComplexId?.yearOfConstruction;//Год постройки
     this.applicationForm.typeOfElevator = this.applicationForm.residentialComplexId?.yearOfConstruction;//Лифт
-    this.applicationForm.concierge = this.applicationForm.residentialComplexId?.concierge ? "1" : "2";//Консьерж
-    this.applicationForm.wheelchair = this.applicationForm.residentialComplexId?.wheelchair ? "1" : "2";//Колясочная
+    this.applicationForm.concierge = this.applicationForm.residentialComplexId?.concierge;//Консьерж
+    this.applicationForm.wheelchair = this.applicationForm.residentialComplexId?.wheelchair;//Колясочная
     this.applicationForm.parkingTypeId = this.applicationForm.residentialComplexId?.parkingTypeId;///Парковка
     this.applicationForm.yardType = this.applicationForm.residentialComplexId?.yardType;//Двор
-    this.applicationForm.playground = this.applicationForm.residentialComplexId?.playground ? "1" : "2";//Детская площадка
+    this.applicationForm.playground = this.applicationForm.residentialComplexId?.playground;//Детская площадка
     this.readonlyChooseJK = !this.util.isNullOrEmpty(this.applicationForm.residentialComplexId);
   }
 
@@ -221,7 +224,7 @@ export class CreateClaimComponent implements OnInit {
 
   submit() {
     this.application = this.applicationForm.value;
-
+    this.application.operationTypeId = this.applicationForm.operationTypeId.value;
     console.log(this.application)
 
     const controls = this.applicationForm.controls;

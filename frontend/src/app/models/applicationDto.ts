@@ -52,7 +52,7 @@ export class ApplicationDto implements BaseEntity {
   public typeOfElevator?: string;//Тип лифта
   public concierge?: boolean;//Консьерж
   public wheelchair?: boolean;//Колясочная
-  public yardType?: 'PRIVATE' | 'OPEN';//Двор(закрытый/открытый)
+  public yardType?: any;//Двор(закрытый/открытый)
   public playground?: boolean;//Детская площадка
   public parkingTypeId?: number;//ID вида паркинга
   public floorFrom?: number;//Этаж от
@@ -71,5 +71,5 @@ export class ApplicationDto implements BaseEntity {
   public ceilingHeightTo?: number;//Высота потолков до
   public numberOfBedroomsFrom?: number;//Количество спален от
   public numberOfBedroomsTo?: number;//Количество спален до
-
+  private filesIds?: any;//"ID фотографии"
 }

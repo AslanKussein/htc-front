@@ -64,6 +64,7 @@
                         <ng-select
                           [items]="objectType"
                           [(ngModel)]="applicationForm.objectTypeId"
+                          bindValue="value"
                           formControlName="objectTypeId"
                           placeholder="{{ 'claim.objectType' | translate }}">
                         </ng-select>
@@ -89,6 +90,7 @@
                         </label>
                         <ng-select
                           [items]="dicDynamic"
+                          bindValue="value"
                           [(ngModel)]="applicationForm.mortgage"
                           formControlName="mortgage"
                           placeholder="{{'claim.ipoteka' | translate}}">
@@ -103,6 +105,7 @@
                         </label>
                         <ng-select
                           [items]="dicDynamic"
+                          bindValue="value"
                           [(ngModel)]="applicationForm.encumbrance"
                           formControlName="encumbrance"
                           placeholder="{{ 'claim.encumbrance' | translate }}">
@@ -119,6 +122,7 @@
                         </label>
                         <ng-select
                           [items]="dicDynamic"
+                          bindValue="value"
                           [(ngModel)]="applicationForm.exchange"
                           formControlName="encumbrance"
                           placeholder="{{ 'claim.barter' | translate }}">
@@ -133,6 +137,7 @@
                         </label>
                         <ng-select
                           [items]="dicDynamic"
+                          bindValue="value"
                           [(ngModel)]="applicationForm.sharedOwnershipProperty"
                           formControlName="sharedOwnershipProperty"
                           placeholder="{{ 'claim.commonOwnership' | translate }}">
@@ -151,6 +156,7 @@
                         <ng-select
                           [items]="dicDynamic"
                           [(ngModel)]="applicationForm.probabilityOfBidding"
+                          bindValue="value"
                           formControlName="probabilityOfBidding"
                           placeholder="{{ 'claim.probabilityBargaining' | translate }}">
                         </ng-select>
@@ -167,6 +173,7 @@
                         <label translate>claim.possibleBargaining</label>
                         <ng-select
                           [multiple]="true"
+                          bindValue="value"
                           [items]="possibleReasonForBidding"
                           [(ngModel)]="applicationForm.possibleReasonForBiddingId"
                           formControlName="possibleReasonForBiddingId"
@@ -186,15 +193,17 @@
                     <div class="row">
                       <div class="col-sm">
                         <label for="fillFromAndTo">Срок действия договора</label>
-                        <input type="text" id="fillFromAndTo" class="form-control" bsDatepicker #ru="bsDatepicker"/>
+                        <input type="text" id="fillFromAndTo" class="form-control" bsDatepicker #ru="bsDatepicker" [(ngModel)]="applicationForm.contractPeriod"
+                         formControlName="contractPeriod"/>
                       </div>
                       <div class="col-sm">
                         <label for="fillFromAnd" translate>Сумма по договору</label>
-                        <input type="text" id="fillFromAnd" class="form-control" bsDatepicker #ru="bsDatepicker"/>
+                        <input type="number" id="fillFromAnd" class="form-control" [(ngModel)]="applicationForm.amount"
+                               formControlName="contractPeriod" min="0"/>
                       </div>
                       <div class="col-sm">
                         <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+                          <input type="checkbox" class="custom-control-input" id="defaultUnchecked" [(ngModel)]="applicationForm.isCommissionIncludedInThePrice">
                           <label class="custom-control-label" for="defaultUnchecked">Комиссия включена в
                             стоимость</label>
                         </div>
@@ -276,8 +285,6 @@
                                formControlName="email"/>
                       </div>
                     </div>
-
-
                     <div class="row">
                       <div class="col-sm">
                         <label translate>gender</label>
@@ -499,6 +506,7 @@
                               [items]="dicDynamic"
                               [(ngModel)]="applicationForm.cityId"
                               formControlName="cityId"
+                              bindValue="value"
                               placeholder="{{ 'claim.city' | translate }}">
                             </ng-select>
                             <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">
@@ -524,6 +532,7 @@
                           <div class="col-sm form-group required">
                             <label for="patronymic" translate>claim.street</label>
                             <ng-select
+                              bindValue="value"
                               [items]="streets"
                               [(ngModel)]="applicationForm.streetId"
                               formControlName="streetId"
@@ -548,6 +557,7 @@
                           <div class="col-sm form-group required">
                             <label for="patronymic" translate>claim.roomCount</label>
                             <ng-select
+                              bindValue="value"
                               [items]="dicDynamic"
                               [(ngModel)]="applicationForm.numberOfRooms"
                               formControlName="numberOfRooms"
