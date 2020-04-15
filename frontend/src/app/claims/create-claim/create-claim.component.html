@@ -46,10 +46,9 @@
                         <div class="row">
                           <div class="col-sm">
                             <ng-select
-                              [(ngModel)]="applicationForm.operationTypeId"
-                              [ngClass]="{'border-danger': !applicationForm.operationTypeId}"
-                              formControlName="operationTypeId"
                               [items]="operationType"
+                              [(ngModel)]="applicationForm.operationTypeId"
+                              formControlName="operationTypeId"
                               placeholder="{{ 'patterns.chooseElement' | translate }}">
                             </ng-select>
                             <div *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid" class="text-danger">
@@ -511,7 +510,7 @@
                             <ng-select
                               [items]="residentialComplexes"
                               [(ngModel)]="applicationForm.residentialComplexId"
-                              (ngModelChange)="setResidenceComplexType($event)"
+                              (ngModelChange)="setResidenceComplexType()"
                               formControlName="residentialComplexId"
                               placeholder="{{ 'claim.building' | translate }}">
                             </ng-select>
@@ -528,6 +527,7 @@
                               [items]="streets"
                               [(ngModel)]="applicationForm.streetId"
                               formControlName="streetId"
+                              [readonly]="readonlyChooseJK"
                               placeholder="{{ 'claim.street' | translate }}">
                             </ng-select>
                             <div *ngIf="f.streetId.touched && f.streetId.invalid" class="text-danger">
@@ -536,18 +536,17 @@
                           </div>
                           <div class="col-sm form-group required">
                             <label for="patronymic" translate>claim.numberHouse</label>
-                            <ng-select
-                              [items]="dicDynamic"
-                              [(ngModel)]="applicationForm.houseNumber"
-                              formControlName="houseNumber"
-                              placeholder="{{ 'claim.numberHouse' | translate }}">
-                            </ng-select>
+
+                            <input type="text" id="houseNumber" class="form-control"
+                                   [(ngModel)]="applicationForm.houseNumber"
+                                   [readonly]="readonlyChooseJK"
+                                   formControlName="houseNumber"/>
                             <div *ngIf="f.houseNumber.touched && f.houseNumber.invalid" class="text-danger">
                               <div *ngIf="f.houseNumber.errors.required" translate>claim.requiredField</div>
                             </div>
                           </div>
                           <div class="col-sm form-group required">
-                            <label for="patronymic" translate>claim.numberOfRooms</label>
+                            <label for="patronymic" translate>claim.roomCount</label>
                             <ng-select
                               [items]="dicDynamic"
                               [(ngModel)]="applicationForm.numberOfRooms"
@@ -586,9 +585,9 @@
                               <div class="col-sm">
                                 <label for="kitchenArea" translate>claim.kitchen <span class="text-danger"
                                                                                        *ngIf="!applicationForm.kitchenArea">&nbsp;*</span></label>
-                                  <input type="number" id="kitchenArea" class="form-control"
-                                         [(ngModel)]="applicationForm.kitchenArea"
-                                         formControlName="kitchenArea" min="0"/>
+                                <input type="number" id="kitchenArea" class="form-control"
+                                       [(ngModel)]="applicationForm.kitchenArea"
+                                       formControlName="kitchenArea" min="0"/>
 
                                 <div *ngIf="f.kitchenArea.touched && f.kitchenArea.invalid" class="text-danger">
                                   <div *ngIf="f.kitchenArea.errors.required" translate>claim.requiredField</div>
@@ -597,9 +596,9 @@
                               <div class="col-sm">
                                 <label for="balconyArea" translate>claim.balcony <span class="text-danger"
                                                                                        *ngIf="!applicationForm.balconyArea">&nbsp;*</span></label>
-                                  <input type="number" id="balconyArea" class="form-control"
-                                         [(ngModel)]="applicationForm.balconyArea"
-                                         formControlName="balconyArea" min="0"/>
+                                <input type="number" id="balconyArea" class="form-control"
+                                       [(ngModel)]="applicationForm.balconyArea"
+                                       formControlName="balconyArea" min="0"/>
                                 <div *ngIf="f.balconyArea.touched && f.balconyArea.invalid" class="text-danger">
                                   <div *ngIf="f.balconyArea.errors.required" translate>claim.requiredField</div>
                                 </div>
@@ -607,9 +606,9 @@
                               <div class="col-sm">
                                 <label for="ceilingHeight" translate>claim.heightWall <span class="text-danger"
                                                                                             *ngIf="!applicationForm.ceilingHeight">&nbsp;*</span></label>
-                                  <input type="number" id="ceilingHeight" class="form-control"
-                                         [(ngModel)]="applicationForm.ceilingHeight"
-                                         formControlName="ceilingHeight" min="0"/>
+                                <input type="number" id="ceilingHeight" class="form-control"
+                                       [(ngModel)]="applicationForm.ceilingHeight"
+                                       formControlName="ceilingHeight" min="0"/>
                                 <div *ngIf="f.ceilingHeight.touched && f.ceilingHeight.invalid" class="text-danger">
                                   <div *ngIf="f.ceilingHeight.errors.required" translate>claim.requiredField</div>
                                 </div>
@@ -619,9 +618,9 @@
                               <div class="col-sm">
                                 <label for="numberOfBedrooms" translate>claim.badRoomCount <span class="text-danger"
                                                                                                  *ngIf="!applicationForm.numberOfBedrooms">&nbsp;*</span></label>
-                                  <input type="number" id="numberOfBedrooms" class="form-control"
-                                         [(ngModel)]="applicationForm.numberOfBedrooms"
-                                         formControlName="numberOfBedrooms" min="0"/>
+                                <input type="number" id="numberOfBedrooms" class="form-control"
+                                       [(ngModel)]="applicationForm.numberOfBedrooms"
+                                       formControlName="numberOfBedrooms" min="0"/>
                                 <div *ngIf="f.numberOfBedrooms.touched && f.numberOfBedrooms.invalid"
                                      class="text-danger">
                                   <div *ngIf="f.numberOfBedrooms.errors.required" translate>claim.requiredField</div>
@@ -666,6 +665,8 @@
                                 <label class="control-labels" translate>claim.district</label>
                                 <ng-select
                                   [items]="districts"
+                                  bindValue="value"
+                                  [readonly]="readonlyChooseJK"
                                   [(ngModel)]="applicationForm.districtId"
                                   formControlName="districtId"
                                   placeholder="{{ 'claim.district' | translate }}">
@@ -677,9 +678,9 @@
                               <div class="col-sm">
                                 <label for="numberOfFloors" translate>claim.flatHouse <span class="text-danger"
                                                                                             *ngIf="!applicationForm.numberOfFloors">&nbsp;*</span></label>
-                                  <input type="number" id="numberOfFloors" class="form-control"
-                                         [(ngModel)]="applicationForm.numberOfFloors"
-                                         formControlName="numberOfFloors" min="0"/>
+                                <input type="number" id="numberOfFloors" class="form-control"
+                                       [(ngModel)]="applicationForm.numberOfFloors" [readonly]="readonlyChooseJK"
+                                       formControlName="numberOfFloors" min="0"/>
                                 <div *ngIf="f.numberOfFloors.touched && f.numberOfFloors.invalid" class="text-danger">
                                   <div *ngIf="f.numberOfFloors.errors.required" translate>claim.requiredField</div>
                                 </div>
@@ -687,9 +688,9 @@
                               <div class="col-sm">
                                 <label for="apartmentsOnTheSite" translate>claim.appInFlat <span class="text-danger"
                                                                                                  *ngIf="!applicationForm.apartmentsOnTheSite">&nbsp;*</span></label>
-                                  <input type="number" id="apartmentsOnTheSite" class="form-control"
-                                         [(ngModel)]="applicationForm.apartmentsOnTheSite"
-                                         formControlName="numberOfFloors" min="1"/>
+                                <input type="number" id="apartmentsOnTheSite" class="form-control"
+                                       [(ngModel)]="applicationForm.apartmentsOnTheSite" [readonly]="readonlyChooseJK"
+                                       formControlName="numberOfFloors" min="1"/>
                                 <div *ngIf="f.apartmentsOnTheSite.touched && f.apartmentsOnTheSite.invalid"
                                      class="text-danger">
                                   <div *ngIf="f.apartmentsOnTheSite.errors.required" translate>claim.requiredField
@@ -704,6 +705,8 @@
                                   [items]="materials"
                                   [(ngModel)]="applicationForm.materialOfConstruction"
                                   formControlName="districtId"
+                                  [readonly]="readonlyChooseJK"
+                                  bindValue="value"
                                   placeholder="{{ 'claim.material' | translate }}">
                                 </ng-select>
                               </div>
@@ -711,7 +714,7 @@
                                 <label for="yearOfConstruction" translate>claim.buildYear <span class="text-danger"
                                                                                                 *ngIf="!applicationForm.yearOfConstruction">&nbsp;*</span></label>
                                 <input type="number" id="yearOfConstruction" class="form-control"
-                                       [(ngModel)]="applicationForm.yearOfConstruction"
+                                       [(ngModel)]="applicationForm.yearOfConstruction" [readonly]="readonlyChooseJK"
                                        formControlName="yearOfConstruction" min="1"/>
 
                                 <div *ngIf="f.yearOfConstruction.touched && f.yearOfConstruction.invalid"
@@ -723,9 +726,11 @@
                               <div class="col-sm">
                                 <label class="control-labels" translate>claim.lift</label>
                                 <ng-select
-                                  [items]="materials"
+                                  [items]="elevatorType"
                                   [(ngModel)]="applicationForm.typeOfElevator"
+                                  [readonly]="readonlyChooseJK"
                                   formControlName="typeOfElevator"
+                                  bindValue="value"
                                   placeholder="{{ 'claim.lift' | translate }}">
                                 </ng-select>
                               </div>
@@ -739,8 +744,10 @@
                               <div class="col-sm">
                                 <label class="control-labels" translate>claim.concierge</label>
                                 <ng-select
-                                  [items]="materials"
+                                  [items]="dicDynamic"
                                   [(ngModel)]="applicationForm.concierge"
+                                  [readonly]="readonlyChooseJK"
+                                  bindValue="value"
                                   formControlName="concierge"
                                   placeholder="{{ 'claim.concierge' | translate }}">
                                 </ng-select>
@@ -748,8 +755,10 @@
                               <div class="col-sm">
                                 <label class="control-labels" translate>claim.stroller</label>
                                 <ng-select
-                                  [items]="materials"
+                                  [items]="dicDynamic"
+                                  bindValue="value"
                                   [(ngModel)]="applicationForm.wheelchair"
+                                  [readonly]="readonlyChooseJK"
                                   formControlName="wheelchair"
                                   placeholder="{{ 'claim.stroller' | translate }}">
                                 </ng-select>
@@ -766,6 +775,8 @@
                                 <ng-select
                                   [items]="parkingTypes"
                                   [(ngModel)]="applicationForm.parkingTypeId"
+                                  [readonly]="readonlyChooseJK"
+                                  bindValue="value"
                                   formControlName="parkingTypeId"
                                   placeholder="{{ 'claim.parking' | translate }}">
                                 </ng-select>
@@ -773,8 +784,10 @@
                               <div class="col-sm">
                                 <label class="control-labels" translate>claim.yard</label>
                                 <ng-select
-                                  [items]="materials"
+                                  [items]="yardTypes"
+                                  bindValue="value"
                                   [(ngModel)]="applicationForm.yardType"
+                                  [readonly]="readonlyChooseJK"
                                   formControlName="yardType"
                                   placeholder="{{ 'claim.yard' | translate }}">
                                 </ng-select>
@@ -782,11 +795,16 @@
                               <div class="col-sm">
                                 <label class="control-labels" translate>claim.childYard</label>
                                 <ng-select
-                                  [items]="materials"
+                                  [items]="dicDynamic"
+                                  bindValue="value"
                                   [(ngModel)]="applicationForm.playground"
+                                  [readonly]="readonlyChooseJK"
                                   formControlName="playground"
                                   placeholder="{{ 'claim.childYard' | translate }}">
                                 </ng-select>
+                                <br/>
+                                <br/>
+                                <br/>
                               </div>
                             </div>
                           </fieldset>
@@ -798,6 +816,7 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>

@@ -43,7 +43,9 @@ export class CreateClaimComponent implements OnInit {
   showModalWin: boolean = false;
   image: any;
   dicDynamic: Dic[];
-  dic: Dic;
+  elevatorType: Dic[];
+  yardTypes: Dic[];
+  readonlyChooseJK: boolean = false;
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -110,7 +112,7 @@ export class CreateClaimComponent implements OnInit {
       theSizeOfTrades: ['', Validators.nullValidator],
       possibleReasonForBiddingId: ['', Validators.nullValidator],
       note: ['', Validators.nullValidator],
-    })
+    });
 
     this.loadDictionary();
   }
@@ -149,14 +151,32 @@ export class CreateClaimComponent implements OnInit {
     this.dicService.getDics('YES_NO').subscribe(data => {
       this.dicDynamic = this.util.toSelectArray(data);
     });
+    this.dicService.getDics('TYPE_OF_ELEVATOR').subscribe(data => {
+      this.elevatorType = this.util.toSelectArray(data);
+    });
+    this.dicService.getDics('TYPE_OF_ELEVATOR').subscribe(data => {
+      this.elevatorType = this.util.toSelectArray(data);
+    });
+    this.dicService.getDics('YARD_TYPES').subscribe(data => {
+      this.yardTypes = this.util.toSelectArray(data);
+    });
   }
 
-  setResidenceComplexType(event) {
-    console.log(this.applicationForm.residentialComplexId)
-    if (!this.util.isNullOrEmpty(this.applicationForm.residentialComplexId)) {
-      this.applicationForm.yearOfConstruction = this.applicationForm.residentialComplexId;
-      this.applicationForm.yearOfConstruction = 2019;
-    }
+  setResidenceComplexType() {
+    this.applicationForm.streetId = this.applicationForm.residentialComplexId?.streetId;//Улица
+    this.applicationForm.houseNumber = this.applicationForm.residentialComplexId?.houseNumber;//Номер дома
+    this.applicationForm.districtId = this.applicationForm.residentialComplexId?.districtId;//Район
+    this.applicationForm.numberOfFloors = this.applicationForm.residentialComplexId?.numberOfFloors;//Этажность дома
+    this.applicationForm.apartmentsOnTheSite = this.applicationForm.residentialComplexId?.apartmentsOnTheSite;//Кв. на площадке
+    this.applicationForm.materialOfConstruction = this.applicationForm.residentialComplexId?.materialOfConstructionId;//Материал
+    this.applicationForm.yearOfConstruction = this.applicationForm.residentialComplexId?.yearOfConstruction;//Год постройки
+    this.applicationForm.typeOfElevator = this.applicationForm.residentialComplexId?.yearOfConstruction;//Лифт
+    this.applicationForm.concierge = this.applicationForm.residentialComplexId?.concierge ? "1" : "2";//Консьерж
+    this.applicationForm.wheelchair = this.applicationForm.residentialComplexId?.wheelchair ? "1" : "2";//Колясочная
+    this.applicationForm.parkingTypeId = this.applicationForm.residentialComplexId?.parkingTypeId;///Парковка
+    this.applicationForm.yardType = this.applicationForm.residentialComplexId?.yardType;//Двор
+    this.applicationForm.playground = this.applicationForm.residentialComplexId?.playground ? "1" : "2";//Детская площадка
+    this.readonlyChooseJK = !this.util.isNullOrEmpty(this.applicationForm.residentialComplexId);
   }
 
   onFileChanged(event) {
@@ -215,86 +235,8 @@ export class CreateClaimComponent implements OnInit {
     // }
 
 
-
-
     // this.loading = true;
-    this.claimService.saveClaim('' +
-      '{\n' +
-      '  "amount": 0,\n' +
-      '  "apartmentNumber": "string",\n' +
-      '  "apartmentsOnTheSite": "string",\n' +
-      '  "atelier": true,\n' +
-      '  "balconyArea": 0,\n' +
-      '  "balconyAreaFrom": 0,\n' +
-      '  "balconyAreaTo": 0,\n' +
-      '  "cadastralNumber": "string",\n' +
-      '  "ceilingHeight": 0,\n' +
-      '  "ceilingHeightFrom": 0,\n' +
-      '  "ceilingHeightTo": 0,\n' +
-      '  "cityId": 0,\n' +
-      '  "clientId": 0,\n' +
-      '  "commissionIncludedInThePrice": true,\n' +
-      '  "concierge": true,\n' +
-      '  "contractPeriod": "2020-04-14T15:11:02.003Z",\n' +
-      '  "district": "string",\n' +
-      '  "districtId": 0,\n' +
-      '  "email": "string",\n' +
-      '  "encumbrance": true,\n' +
-      '  "exchange": true,\n' +
-      '  "filesIds": [\n' +
-      '    "string"\n' +
-      '  ],\n' +
-      '  "firstName": "string",\n' +
-      '  "floor": 0,\n' +
-      '  "floorFrom": 0,\n' +
-      '  "floorTo": 0,\n' +
-      '  "gender": "MALE",\n' +
-      '  "houseNumber": 0,\n' +
-      '  "houseNumberFraction": "string",\n' +
-      '  "id": 0,\n' +
-      '  "kitchenArea": 0,\n' +
-      '  "kitchenAreaFrom": 0,\n' +
-      '  "kitchenAreaTo": 0,\n' +
-      '  "livingArea": 0,\n' +
-      '  "livingAreaFrom": 0,\n' +
-      '  "livingAreaTo": 0,\n' +
-      '  "materialOfConstruction": "string",\n' +
-      '  "mortgage": true,\n' +
-      '  "note": "string",\n' +
-      '  "numberOfBedrooms": 0,\n' +
-      '  "numberOfBedroomsFrom": 0,\n' +
-      '  "numberOfBedroomsTo": 0,\n' +
-      '  "numberOfFloors": 0,\n' +
-      '  "numberOfRooms": 0,\n' +
-      '  "numberOfRoomsFrom": 0,\n' +
-      '  "numberOfRoomsTo": 0,\n' +
-      '  "objectPrice": 0,\n' +
-      '  "objectPriceFrom": 0,\n' +
-      '  "objectPriceTo": 0,\n' +
-      '  "objectTypeId": 0,\n' +
-      '  "operationTypeId": 0,\n' +
-      '  "parkingTypeId": 0,\n' +
-      '  "patronymic": "string",\n' +
-      '  "phoneNumber": "string",\n' +
-      '  "playground": true,\n' +
-      '  "possibleReasonForBiddingId": 0,\n' +
-      '  "probabilityOfBidding": true,\n' +
-      '  "residentialComplexId": 0,\n' +
-      '  "separateBathroom": true,\n' +
-      '  "sharedOwnershipProperty": true,\n' +
-      '  "street": "string",\n' +
-      '  "streetId": 0,\n' +
-      '  "surname": "string",\n' +
-      '  "theSizeOfTrades": "string",\n' +
-      '  "totalArea": 0,\n' +
-      '  "totalAreaFrom": 0,\n' +
-      '  "totalAreaTo": 0,\n' +
-      '  "typeOfElevator": "string",\n' +
-      '  "wheelchair": true,\n' +
-      '  "yardType": "PRIVATE",\n' +
-      '  "yearOfConstruction": 0\n' +
-      '}' +
-      '')
+    this.claimService.saveClaim(this.application)
       .subscribe(data => {
         if (data != null) {
           // this.resumeModel = data;
