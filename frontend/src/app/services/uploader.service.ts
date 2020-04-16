@@ -24,6 +24,15 @@ export class UploaderService {
       );
   }
 
+  public getPhotoById(guid): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/download/` + guid, {})
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+
 
   public getResumePhoto(getPhotoById): Observable<any> {
     // let params = new HttpParams();

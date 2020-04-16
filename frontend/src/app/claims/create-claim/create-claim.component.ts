@@ -14,19 +14,21 @@ import {defineLocale} from "ngx-bootstrap/chronos";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {BsLocaleService} from "ngx-bootstrap";
 import {OwnerService} from "../../services/owner.service";
+import {Observable} from "rxjs";
+import {ComponentCanDeactivate} from "../../canDeactivate/componentCanDeactivate";
 
 @Component({
   selector: 'app-create-claim',
   templateUrl: './create-claim.component.html',
   styleUrls: ['./create-claim.component.scss']
 })
-export class CreateClaimComponent implements OnInit {
+export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   _language = language;
   application: ApplicationDto;
   xVal: string;
   selectedFile: File;
   loading = false;
-  file: any;
+  photo: any[] = [];
   operationType: Dic[];
   objectType: Dic[];
   city: Dic[];
@@ -46,6 +48,7 @@ export class CreateClaimComponent implements OnInit {
   elevatorType: Dic[];
   yardTypes: Dic[];
   readonlyChooseJK: boolean = false;
+  saved: boolean = false;
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -61,7 +64,6 @@ export class CreateClaimComponent implements OnInit {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
   }
-
 
   get f() {
     return this.applicationForm.controls;
@@ -100,21 +102,22 @@ export class CreateClaimComponent implements OnInit {
       districtId: ['', Validators.required],
       numberOfFloors: ['', Validators.nullValidator],
       apartmentsOnTheSite: ['', Validators.nullValidator],
-      materialOfConstruction: ['', Validators.nullValidator],
+      materialOfConstructionId: ['', Validators.nullValidator],
       yearOfConstruction: ['', Validators.nullValidator],
-      typeOfElevator: ['', Validators.nullValidator],
+      typeOfElevatorList: ['', Validators.nullValidator],
       concierge: ['', Validators.nullValidator],
       wheelchair: ['', Validators.nullValidator],
       playground: ['', Validators.nullValidator],
-      yardType: ['', Validators.nullValidator],
+      yardTypeId: ['', Validators.nullValidator],
       parkingTypeId: ['', Validators.nullValidator],
       probabilityOfBidding: ['', Validators.nullValidator],
       theSizeOfTrades: ['', Validators.nullValidator],
-      possibleReasonForBiddingId: ['', Validators.nullValidator],
+      possibleReasonForBiddingIdList: ['', Validators.nullValidator],
       note: ['', Validators.nullValidator],
       contractPeriod: ['', Validators.nullValidator],
       isCommissionIncludedInThePrice: ['', Validators.nullValidator],
       amount: ['', Validators.nullValidator],
+      cadastralNumber: ['', Validators.nullValidator],
     });
 
     this.loadDictionary();
@@ -165,34 +168,50 @@ export class CreateClaimComponent implements OnInit {
     });
   }
 
+  setOperationTypeId() {
+    this.photo.push("3a774224-e85e-4d56-8341-cc3fe892195c")
+    this.photo.push("1cebd27e-6872-4468-b4cd-3f36b605fd80")
+  }
+
   setResidenceComplexType() {
     this.applicationForm.streetId = this.applicationForm.residentialComplexId?.streetId;//Улица
     this.applicationForm.houseNumber = this.applicationForm.residentialComplexId?.houseNumber;//Номер дома
     this.applicationForm.districtId = this.applicationForm.residentialComplexId?.districtId;//Район
     this.applicationForm.numberOfFloors = this.applicationForm.residentialComplexId?.numberOfFloors;//Этажность дома
     this.applicationForm.apartmentsOnTheSite = this.applicationForm.residentialComplexId?.apartmentsOnTheSite;//Кв. на площадке
-    this.applicationForm.materialOfConstruction = this.applicationForm.residentialComplexId?.materialOfConstructionId;//Материал
+    this.applicationForm.materialOfConstructionId = this.applicationForm.residentialComplexId?.materialOfConstructionId;//Материал
     this.applicationForm.yearOfConstruction = this.applicationForm.residentialComplexId?.yearOfConstruction;//Год постройки
-    this.applicationForm.typeOfElevator = this.applicationForm.residentialComplexId?.yearOfConstruction;//Лифт
+    this.applicationForm.typeOfElevatorList = this.applicationForm.residentialComplexId?.yearOfConstruction;//Лифт
     this.applicationForm.concierge = this.applicationForm.residentialComplexId?.concierge;//Консьерж
     this.applicationForm.wheelchair = this.applicationForm.residentialComplexId?.wheelchair;//Колясочная
     this.applicationForm.parkingTypeId = this.applicationForm.residentialComplexId?.parkingTypeId;///Парковка
-    this.applicationForm.yardType = this.applicationForm.residentialComplexId?.yardType;//Двор
+    this.applicationForm.yardTypeId = this.applicationForm.residentialComplexId?.yardType;//Двор
     this.applicationForm.playground = this.applicationForm.residentialComplexId?.playground;//Детская площадка
     this.readonlyChooseJK = !this.util.isNullOrEmpty(this.applicationForm.residentialComplexId);
   }
 
-  onFileChanged(event) {
+  onFileChanged(event, id: number) {
     this.selectedFile = event.target.files[0];
-
     this.loading = true;
+    console.log(this.photo)
     this.uploader.uploadData(this.selectedFile)
       .subscribe(data => {
         if (data != null) {
-          this.file = data.fileBody;
+          if (id == 1) {
+            this.photo.push(data)
+          }
         }
       });
     this.loading = false;
+  }
+
+  getPhotoById(guid: string) {
+    // console.log(guid)
+    // this.uploader.getPhotoById(guid)
+    //   .subscribe(data => {
+    //     if (data != null) {
+    //     }
+    //   });
   }
 
   searchByPhone() {
@@ -224,8 +243,21 @@ export class CreateClaimComponent implements OnInit {
 
   submit() {
     this.application = this.applicationForm.value;
-    this.application.operationTypeId = this.applicationForm.operationTypeId.value;
+    this.application.operationTypeId = this.applicationForm.operationTypeId?.value;
     console.log(this.application)
+    if (!this.util.isNullOrEmpty(this.application.cadastralNumber)) {
+      if (this.application.cadastralNumber.length != 21) {
+        this.notifyService.showError("Ошибка", "Длина поле кадастровый номер не верно");
+        return;
+      }
+    }
+    if (!this.util.isNullOrEmpty(this.application.parkingTypeId)) {
+      console.log(this.application.parkingTypeId.indexOf("1"))
+      if (this.application.parkingTypeId.indexOf("1") == 0) {
+        this.application.parkingTypeId = [];
+        this.application.parkingTypeId.push("1");
+      }
+    }
 
     const controls = this.applicationForm.controls;
     // for (const name in controls) {
@@ -249,6 +281,15 @@ export class CreateClaimComponent implements OnInit {
         this.notifyService.showError('warning', err.message);
       });
     // this.loading = false;
+    this.saved = true;
+  }
+
+  canDeactivate(): boolean | Observable<boolean> {
+    if (!this.saved) {
+      return confirm("Вы хотите покинуть страницу?");
+    } else {
+      return true;
+    }
   }
 
   validator() {

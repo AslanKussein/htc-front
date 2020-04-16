@@ -49,6 +49,7 @@
                               [items]="operationType"
                               [(ngModel)]="applicationForm.operationTypeId"
                               formControlName="operationTypeId"
+                              (ngModelChange)="setOperationTypeId()"
                               placeholder="{{ 'patterns.chooseElement' | translate }}">
                             </ng-select>
                             <div *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid" class="text-danger">
@@ -175,8 +176,8 @@
                           [multiple]="true"
                           bindValue="value"
                           [items]="possibleReasonForBidding"
-                          [(ngModel)]="applicationForm.possibleReasonForBiddingId"
-                          formControlName="possibleReasonForBiddingId"
+                          [(ngModel)]="applicationForm.possibleReasonForBiddingIdList"
+                          formControlName="possibleReasonForBiddingIdList"
                           placeholder="{{ 'claim.possibleBargaining' | translate }}">
                         </ng-select>
                       </div>
@@ -193,17 +194,20 @@
                     <div class="row">
                       <div class="col-sm">
                         <label for="fillFromAndTo">Срок действия договора</label>
-                        <input type="text" id="fillFromAndTo" class="form-control" bsDatepicker #ru="bsDatepicker" [(ngModel)]="applicationForm.contractPeriod"
-                         formControlName="contractPeriod"/>
+                        <input type="text" id="fillFromAndTo" class="form-control" bsDatepicker #ru="bsDatepicker"
+                               [(ngModel)]="applicationForm.contractPeriod"
+                               formControlName="contractPeriod"/>
                       </div>
                       <div class="col-sm">
                         <label for="fillFromAnd" translate>Сумма по договору</label>
                         <input type="number" id="fillFromAnd" class="form-control" [(ngModel)]="applicationForm.amount"
-                               formControlName="contractPeriod" min="0"/>
+                               formControlName="amount" min="0"/>
                       </div>
                       <div class="col-sm">
                         <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input" id="defaultUnchecked" [(ngModel)]="applicationForm.isCommissionIncludedInThePrice">
+                          <input type="checkbox" class="custom-control-input" id="defaultUnchecked"
+                                 [(ngModel)]="applicationForm.isCommissionIncludedInThePrice"
+                                 formControlName="isCommissionIncludedInThePrice"/>
                           <label class="custom-control-label" for="defaultUnchecked">Комиссия включена в
                             стоимость</label>
                         </div>
@@ -235,7 +239,6 @@
                         </label>
                         <input type="text" class="form-control" id="name"
                                [(ngModel)]="applicationForm.firstName"
-                               [ngClass]="{'border-danger': !applicationForm.firstName}"
                                formControlName="firstName"
                         />
                         <div *ngIf="f.firstName.touched && f.firstName.invalid" class="text-danger">
@@ -247,8 +250,7 @@
                           <span class="text-danger" *ngIf="!applicationForm.surname">&nbsp;*</span>
                         </label>
                         <input type="text" class="form-control" id="surname" formControlName="surname"
-                               [(ngModel)]="applicationForm.surname"
-                               [ngClass]="{'border-danger': !applicationForm.surname}"/>
+                               [(ngModel)]="applicationForm.surname"/>
                         <div *ngIf="f.surname.touched && f.surname.invalid" class="text-danger">
                           <div *ngIf="f.surname.errors.required" translate>claim.requiredField</div>
                         </div>
@@ -306,20 +308,20 @@
                       <fieldset class="scheduler-border col-sm">
                         <legend class="scheduler-border" translate>claim.photo</legend>
                         <div class="row">
-
+                          {{photo}}
                           <label class="btn btn-info btn-sm" translate>claim.uploadPhoto
                             <i class="fa fa-upload"></i>
-                            <input type="file" hidden (change)="onFileChanged($event)">
+                            <input type="file" hidden (change)="onFileChanged($event, 1)">
                           </label>
 
                           <label class="btn btn-info btn-sm" translate>claim.uploadPlan
                             <i class="fa fa-upload"></i>
-                            <input type="file" hidden (change)="onFileChanged($event)">
+                            <input type="file" hidden (change)="onFileChanged($event, 2)">
                           </label>
 
                           <label class="btn btn-info btn-sm" translate>claim.upload3D
                             <i class="fa fa-upload"></i>
-                            <input type="file" hidden (change)="onFileChanged($event)">
+                            <input type="file" hidden (change)="onFileChanged($event, 3)">
                           </label>
 
                         </div>
@@ -334,128 +336,52 @@
                         <!--                          </div>-->
                         <!--                        </div>-->
                         <div class="row">
-                          <!--Carousel Wrapper-->
-                          <div id="carousel-with-lb" class="carousel slide carousel-multi-item" data-ride="carousel">
 
-                            <!--Controls-->
-                            <div class="controls-top text-center">
-                              <a class="btn-floating" href="#carousel-with-lb" data-slide="prev">
-                                <i class="fa fa-chevron-left text-secondary"></i></a>
-                              <a class="btn-floating" href="#carousel-with-lb" data-slide="next">
-                                <i class="fa fa-chevron-right text-secondary"></i></a>
-                            </div>
 
-                            <!--Indicators-->
+                          <div id="carousel-example-2" class="carousel slide carousel-fade" data-ride="carousel">
                             <ol class="carousel-indicators">
-                              <li data-target="#carousel-with-lb" data-slide-to="0"
-                                  class="active secondary-color"></li>
-                              <li data-target="#carousel-with-lb" data-slide-to="1" class="secondary-color"></li>
-                              <li data-target="#carousel-with-lb" data-slide-to="2" class="secondary-color"></li>
+                              <li data-target="#carousel-example-2" attr.data-slide-to="{{i}}"
+                                  [class]="i==0 ? 'active': ''"
+                                  *ngFor="let claim of photo;let i = index"></li>
                             </ol>
-                            <!--/.Indicators-->
-
-                            <!--Slides and lightbox-->
-
-                            <div class="carousel-inner mdb-lightbox" role="listbox">
-                              <div id="mdb-lightbox-ui"></div>
-                              <!--First slide-->
-                              <div class=" carousel-item active text-center">
-
-                                <figure class="col-md-4 d-md-inline-block">
-                                  <a
-                                    data-size="1600x1067">
-                                    <img
-                                      src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(2).jpg"
-                                      class="img-fluid"
-                                      (click)="showPhotoFull('https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(2).jpg')">
-                                  </a>
-                                </figure>
-
-                                <figure class="col-md-4 d-md-inline-block">
-                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(4).jpg"
-                                     data-size="1600x1067">
-                                    <img
-                                      src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(4).jpg"
-                                      class="img-fluid">
-                                  </a>
-                                </figure>
-
-                                <figure class="col-md-4 d-md-inline-block">
-                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(6).jpg"
-                                     data-size="1600x1067">
-                                    <img
-                                      src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(6).jpg"
-                                      class="img-fluid">
-                                  </a>
-                                </figure>
+                            <div class="carousel-inner" role="listbox">
+                              <div class="carousel-item" [class]="i==0 ? 'active': ''"
+                                   *ngFor="let claim of photo;let i = index">
+                                <div class="view">
+                                  <img class="d-block w-100"
+                                       [src]="getPhotoById(claim)"
+                                       alt="First slide">
+                                  <div class="mask rgba-black-light"></div>
+                                </div>
+                                <div class="carousel-caption">
+                                  <h3 class="h3-responsive">Light mask</h3>
+                                  <p>{{i}} text</p>
+                                </div>
                               </div>
-                              <!--/.First slide-->
-
-                              <!--Second slide-->
-                              <div class="carousel-item text-center">
-
-                                <figure class="col-md-4 d-md-inline-block">
-                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(22).jpg"
-                                     data-size="1600x1067">
-                                    <img
-                                      src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(22).jpg"
-                                      class="img-fluid">
-                                  </a>
-                                </figure>
-
-                                <figure class="col-md-4 d-md-inline-block">
-                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(25).jpg"
-                                     data-size="1600x1067">
-                                    <img
-                                      src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(25).jpg"
-                                      class="img-fluid">
-                                  </a>
-                                </figure>
-
-                                <figure class="col-md-4 d-md-inline-block">
-                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(29).jpg"
-                                     data-size="1600x1067">
-                                    <img
-                                      src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(29).jpg"
-                                      class="img-fluid">
-                                  </a>
-                                </figure>
-
-                              </div>
-                              <!--/.Second slide-->
-
-                              <!--Third slide-->
-                              <div class="carousel-item text-center">
-
-                                <figure class="col-md-4 d-md-inline-block">
-                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(44).jpg"
-                                     data-size="1600x1067">
-                                    <img
-                                      src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(44).jpg"
-                                      class="img-fluid">
-                                  </a>
-                                </figure>
-
-                                <figure class="col-md-4 d-md-inline-block">
-                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(45).jpg"
-                                     data-size="1600x1067">
-                                    <img
-                                      src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(45).jpg"
-                                      class="img-fluid">
-                                  </a>
-                                </figure>
-
-                                <figure class="col-md-4 d-md-inline-block">
-                                  <a href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(66).jpg"
-                                     data-size="1600x1067">
-                                    <img
-                                      src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(66).jpg"
-                                      class="img-fluid">
-                                  </a>
-                                </figure>
-                              </div>
+                              <!--                              <div class="carousel-item">-->
+                              <!--                                &lt;!&ndash;Mask color&ndash;&gt;-->
+                              <!--                                <div class="view">-->
+                              <!--                                  <img class="d-block w-100"-->
+                              <!--                                       src="https://mdbootstrap.com/img/Photos/Slides/img%20(6).jpg"-->
+                              <!--                                       alt="Second slide">-->
+                              <!--                                  <div class="mask rgba-black-strong"></div>-->
+                              <!--                                </div>-->
+                              <!--                                <div class="carousel-caption">-->
+                              <!--                                  <h3 class="h3-responsive">Strong mask</h3>-->
+                              <!--                                  <p>Secondary text</p>-->
+                              <!--                                </div>-->
+                              <!--                              </div>-->
                             </div>
+                            <a class="carousel-control-prev" href="#carousel-example-2" role="button" data-slide="prev">
+                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carousel-example-2" role="button" data-slide="next">
+                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span class="sr-only">Next</span>
+                            </a>
                           </div>
+
                         </div>
                         <div class="row">
                           <h5 translate>claim.photoLegend</h5>
@@ -503,7 +429,7 @@
                           <div class="col-sm form-group required">
                             <label for="patronymic" translate>claim.city</label>
                             <ng-select
-                              [items]="dicDynamic"
+                              [items]="city"
                               [(ngModel)]="applicationForm.cityId"
                               formControlName="cityId"
                               bindValue="value"
@@ -566,6 +492,15 @@
                             <div *ngIf="f.numberOfRooms.touched && f.numberOfRooms.invalid" class="text-danger">
                               <div *ngIf="f.numberOfRooms.errors.required" translate>claim.requiredField</div>
                             </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm form-group required">
+                            <label for="cadastralNumber">Кадастровый номер</label>
+                            <input type="text" id="cadastralNumber" class="form-control"
+                                   [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber?.length != 16)}"
+                                   [(ngModel)]="applicationForm.cadastralNumber" mask="00:000:000:000:00:000"
+                                   formControlName="cadastralNumber" min="21"/>
                           </div>
                         </div>
                         <div class="row">
@@ -713,8 +648,8 @@
                                 <label class="control-labels" translate>claim.material</label>
                                 <ng-select
                                   [items]="materials"
-                                  [(ngModel)]="applicationForm.materialOfConstruction"
-                                  formControlName="districtId"
+                                  [(ngModel)]="applicationForm.materialOfConstructionId"
+                                  formControlName="materialOfConstructionId"
                                   [readonly]="readonlyChooseJK"
                                   bindValue="value"
                                   placeholder="{{ 'claim.material' | translate }}">
@@ -737,9 +672,9 @@
                                 <label class="control-labels" translate>claim.lift</label>
                                 <ng-select
                                   [items]="elevatorType"
-                                  [(ngModel)]="applicationForm.typeOfElevator"
+                                  [(ngModel)]="applicationForm.typeOfElevatorList"
                                   [readonly]="readonlyChooseJK"
-                                  formControlName="typeOfElevator"
+                                  formControlName="typeOfElevatorList"
                                   bindValue="value"
                                   placeholder="{{ 'claim.lift' | translate }}">
                                 </ng-select>
@@ -784,6 +719,7 @@
                                 <label class="control-labels" translate>claim.parking</label>
                                 <ng-select
                                   [items]="parkingTypes"
+                                  [multiple]="true"
                                   [(ngModel)]="applicationForm.parkingTypeId"
                                   [readonly]="readonlyChooseJK"
                                   bindValue="value"
@@ -796,9 +732,9 @@
                                 <ng-select
                                   [items]="yardTypes"
                                   bindValue="value"
-                                  [(ngModel)]="applicationForm.yardType"
+                                  [(ngModel)]="applicationForm.yardTypeId"
                                   [readonly]="readonlyChooseJK"
-                                  formControlName="yardType"
+                                  formControlName="yardTypeId"
                                   placeholder="{{ 'claim.yard' | translate }}">
                                 </ng-select>
                               </div>

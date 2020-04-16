@@ -20,7 +20,7 @@ export class ApplicationDto implements BaseEntity {
   public exchange?: boolean;//Обмен
   public probabilityOfBidding?: boolean;//Вероятность торга
   public theSizeOfTrades?: string;//Размер торга
-  public possibleReasonForBiddingId?: number;//ID возможной причины торга
+  public possibleReasonForBiddingIdList?: number;//ID возможной причины торга
   public contractPeriod?: any;//Срок действия договора
   public amount?: number;//Сумма по договору
   public isCommissionIncludedInThePrice?: boolean;//Комиссия включена в стоимость
@@ -47,14 +47,14 @@ export class ApplicationDto implements BaseEntity {
   public district?: string;//Район
   public numberOfFloors?: number;//Этажность дома
   public apartmentsOnTheSite?: string;//Квартир на площадке
-  public materialOfConstruction?: string;//Материал постройки
+  public materialOfConstructionId?: string;//Материал постройки
   public yearOfConstruction?: number;//Год постройки
-  public typeOfElevator?: string;//Тип лифта
+  public typeOfElevatorList?: string;//Тип лифта
   public concierge?: boolean;//Консьерж
   public wheelchair?: boolean;//Колясочная
-  public yardType?: any;//Двор(закрытый/открытый)
+  public yardTypeId?: any;//Двор(закрытый/открытый)
   public playground?: boolean;//Детская площадка
-  public parkingTypeId?: number;//ID вида паркинга
+  public parkingTypeId?: any;//ID вида паркинга
   public floorFrom?: number;//Этаж от
   public floorTo?: number;//Этаж до
   public numberOfRoomsFrom?: number;//Количество комнат от
@@ -71,5 +71,5 @@ export class ApplicationDto implements BaseEntity {
   public ceilingHeightTo?: number;//Высота потолков до
   public numberOfBedroomsFrom?: number;//Количество спален от
   public numberOfBedroomsTo?: number;//Количество спален до
-  private filesIds?: any;//"ID фотографии"
+  private fileIdList?: any;//"ID фотографии"
 }
