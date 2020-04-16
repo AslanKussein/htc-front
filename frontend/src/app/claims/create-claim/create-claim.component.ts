@@ -82,6 +82,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       operationTypeId: ['', Validators.required],
       objectTypeId: ['', Validators.required],
       objectPrice: ['', Validators.required],
+      objectPriceFrom: ['', Validators.required],
+      objectPriceTo: ['', Validators.required],
       mortgage: ['', Validators.required],
       encumbrance: ['', Validators.required],
       exchange: ['', Validators.required],

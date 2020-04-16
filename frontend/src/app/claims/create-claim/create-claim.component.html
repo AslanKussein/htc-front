@@ -72,22 +72,19 @@
                           <div *ngIf="f.objectTypeId.errors.required" translate>claim.requiredField</div>
                         </div>
                       </div>
-                      <div class="col-sm">
+                      <div class="col-sm-5">
                         <label translate>claim.objectPriceInLim
-                          <span class="text-danger" *ngIf="!applicationForm.objectPrice">&nbsp;*</span>
+                          <span class="text-danger" *ngIf="!(applicationForm.objectPriceFrom && applicationForm.objectPriceTo)">&nbsp;*</span>
                         </label>
-<!--                        <div>-->
-                        <!--                          <div class="coll-sm">-->
-                        <!--                            <input type="number" id="form1" class="form-control" *ngIf="applicationForm.operationTypeId?.code == '001001'"-->
-                        <!--                                   [(ngModel)]="applicationForm.objectPrice" formControlName="objectPrice" min="0">-->
-                        <!--                          </div>-->
-                        <!--                          <div class="coll-sm">-->
-                        <!--                            <input type="number" id="form1" class="form-control" *ngIf="applicationForm.operationTypeId?.code == '001001'"-->
-                        <!--                                   [(ngModel)]="applicationForm.objectPrice" formControlName="objectPrice" min="0">-->
-                        <!--                          </div>-->
-                        <!--                        </div>-->
-
-
+                        <div class="input-group" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                          <input type="number" min="0" class="form-control" placeholder="{{'patterns.from' | translate}}"
+                            [(ngModel)]="applicationForm.objectPriceFrom" formControlName="objectPriceFrom"/>
+                          <input type="number" min="0" class="form-control" placeholder="{{'patterns.to' | translate}}"
+                                 [(ngModel)]="applicationForm.objectPriceTo" formControlName="objectPriceTo"/>
+                        </div>
+<!--                        <div *ngIf="(f.objectPriceFrom.touched && f.objectPriceFrom.invalid) || f.objectPriceTo.touched && f.objectPriceTo.invalid" class="text-danger">-->
+<!--                          <div *ngIf="(f.objectPriceFrom?.errors.required) || f.objectPriceTo?.errors.required" translate>claim.requiredField</div>-->
+<!--                        </div>-->
                         <input type="number" id="form1" class="form-control" *ngIf="applicationForm.operationTypeId?.code != '001001'"
                                [(ngModel)]="applicationForm.objectPrice" formControlName="objectPrice" min="0">
                         <div *ngIf="f.objectPrice.touched && f.objectPrice.invalid" class="text-danger">
