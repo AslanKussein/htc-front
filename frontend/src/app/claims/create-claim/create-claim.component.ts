@@ -28,7 +28,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   xVal: string;
   selectedFile: File;
   loading = false;
-  photo: any[] = [];
+  photo: any[] = ["3a774224-e85e-4d56-8341-cc3fe892195c", "1cebd27e-6872-4468-b4cd-3f36b605fd80"];
   operationType: Dic[];
   objectType: Dic[];
   city: Dic[];
@@ -37,9 +37,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   streets: Dic[];
   residentialComplexes: Dic[];
   realProperties: Dic[];
-  propertyOwners: Dic[];
+  propertyDevelopers: Dic[];
   countries: Dic[];
   materials: Dic[];
+  roomCountDic: Dic[];
   possibleReasonForBidding: Dic[];
   applicationForm: any;
   showModalWin: boolean = false;
@@ -104,7 +105,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       apartmentsOnTheSite: ['', Validators.nullValidator],
       materialOfConstructionId: ['', Validators.nullValidator],
       yearOfConstruction: ['', Validators.nullValidator],
-      typeOfElevatorList: ['', Validators.nullValidator],
+      typeOfElevatorList: [[], Validators.nullValidator],
       concierge: ['', Validators.nullValidator],
       wheelchair: ['', Validators.nullValidator],
       playground: ['', Validators.nullValidator],
@@ -118,6 +119,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       isCommissionIncludedInThePrice: ['', Validators.nullValidator],
       amount: ['', Validators.nullValidator],
       cadastralNumber: ['', Validators.nullValidator],
+      propertyDeveloperId: ['', Validators.nullValidator],
+      housingClass: ['', Validators.nullValidator],
+      housingCondition: ['', Validators.nullValidator],
+      numberOfApartments: ['', Validators.nullValidator],
     });
 
     this.loadDictionary();
@@ -166,11 +171,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.dicService.getDics('YARD_TYPES').subscribe(data => {
       this.yardTypes = this.util.toSelectArray(data);
     });
-  }
-
-  setOperationTypeId() {
-    this.photo.push("3a774224-e85e-4d56-8341-cc3fe892195c")
-    this.photo.push("1cebd27e-6872-4468-b4cd-3f36b605fd80")
+    this.dicService.getDics('PROPERTY_DEVELOPERS').subscribe(data => {
+      this.propertyDevelopers = this.util.toSelectArray(data);
+    });
+    this.roomCountDic = this.util.roomCountDictionary();
   }
 
   setResidenceComplexType() {
@@ -187,6 +191,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.applicationForm.parkingTypeId = this.applicationForm.residentialComplexId?.parkingTypeId;///Парковка
     this.applicationForm.yardTypeId = this.applicationForm.residentialComplexId?.yardType;//Двор
     this.applicationForm.playground = this.applicationForm.residentialComplexId?.playground;//Детская площадка
+    this.applicationForm.propertyDeveloperId = this.applicationForm.residentialComplexId?.propertyDeveloperId;//Затройщик
+    this.applicationForm.housingClass = this.applicationForm.residentialComplexId?.housingClass;//Класс жилья
+    this.applicationForm.housingCondition = this.applicationForm.residentialComplexId?.housingCondition;//Состояния
+    this.applicationForm.numberOfApartments = this.applicationForm.residentialComplexId?.numberOfApartments;//Кол-во кв
     this.readonlyChooseJK = !this.util.isNullOrEmpty(this.applicationForm.residentialComplexId);
   }
 
@@ -244,9 +252,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   submit() {
     this.application = this.applicationForm.value;
     this.application.operationTypeId = this.applicationForm.operationTypeId?.value;
+    this.application.residentialComplexId = this.applicationForm.residentialComplexId?.value;
+    this.application.photoIdList = this.photo;
     console.log(this.application)
     if (!this.util.isNullOrEmpty(this.application.cadastralNumber)) {
-      if (this.application.cadastralNumber.length != 21) {
+      if (this.application.cadastralNumber.length != 16) {
         this.notifyService.showError("Ошибка", "Длина поле кадастровый номер не верно");
         return;
       }

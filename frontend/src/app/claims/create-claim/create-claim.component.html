@@ -49,7 +49,6 @@
                               [items]="operationType"
                               [(ngModel)]="applicationForm.operationTypeId"
                               formControlName="operationTypeId"
-                              (ngModelChange)="setOperationTypeId()"
                               placeholder="{{ 'patterns.chooseElement' | translate }}">
                             </ng-select>
                             <div *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid" class="text-danger">
@@ -77,7 +76,19 @@
                         <label translate>claim.objectPriceInLim
                           <span class="text-danger" *ngIf="!applicationForm.objectPrice">&nbsp;*</span>
                         </label>
-                        <input type="text" id="form1" class="form-control"
+<!--                        <div>-->
+                        <!--                          <div class="coll-sm">-->
+                        <!--                            <input type="number" id="form1" class="form-control" *ngIf="applicationForm.operationTypeId?.code == '001001'"-->
+                        <!--                                   [(ngModel)]="applicationForm.objectPrice" formControlName="objectPrice" min="0">-->
+                        <!--                          </div>-->
+                        <!--                          <div class="coll-sm">-->
+                        <!--                            <input type="number" id="form1" class="form-control" *ngIf="applicationForm.operationTypeId?.code == '001001'"-->
+                        <!--                                   [(ngModel)]="applicationForm.objectPrice" formControlName="objectPrice" min="0">-->
+                        <!--                          </div>-->
+                        <!--                        </div>-->
+
+
+                        <input type="number" id="form1" class="form-control" *ngIf="applicationForm.operationTypeId?.code != '001001'"
                                [(ngModel)]="applicationForm.objectPrice" formControlName="objectPrice" min="0">
                         <div *ngIf="f.objectPrice.touched && f.objectPrice.invalid" class="text-danger">
                           <div *ngIf="f.objectPrice.errors.required" translate>claim.requiredField</div>
@@ -308,7 +319,6 @@
                       <fieldset class="scheduler-border col-sm">
                         <legend class="scheduler-border" translate>claim.photo</legend>
                         <div class="row">
-                          {{photo}}
                           <label class="btn btn-info btn-sm" translate>claim.uploadPhoto
                             <i class="fa fa-upload"></i>
                             <input type="file" hidden (change)="onFileChanged($event, 1)">
@@ -323,20 +333,8 @@
                             <i class="fa fa-upload"></i>
                             <input type="file" hidden (change)="onFileChanged($event, 3)">
                           </label>
-
                         </div>
-                        <!--                        <div class="row">-->
-                        <!--                          <div class="col-md-2 text-right">-->
-                        <!--                            <div href="#" class="site-statement__upload-block" hidden="{{objectPhoto}}">-->
-                        <!--                              <i class="fa fa-user-circle-o fa-5x"></i>-->
-                        <!--                            </div>-->
-
-                        <!--                            <img class="avatar" src="data:image/png;base64,{{objectPhoto}}" *ngIf="objectPhoto"-->
-                        <!--                                 alt="resumePhoto"/>-->
-                        <!--                          </div>-->
-                        <!--                        </div>-->
                         <div class="row">
-
 
                           <div id="carousel-example-2" class="carousel slide carousel-fade" data-ride="carousel">
                             <ol class="carousel-indicators">
@@ -349,7 +347,7 @@
                                    *ngFor="let claim of photo;let i = index">
                                 <div class="view">
                                   <img class="d-block w-100"
-                                       [src]="getPhotoById(claim)"
+                                       src="{{getPhotoById(claim)}}"
                                        alt="First slide">
                                   <div class="mask rgba-black-light"></div>
                                 </div>
@@ -484,7 +482,7 @@
                             <label for="patronymic" translate>claim.roomCount</label>
                             <ng-select
                               bindValue="value"
-                              [items]="dicDynamic"
+                              [items]="roomCountDic"
                               [(ngModel)]="applicationForm.numberOfRooms"
                               formControlName="numberOfRooms"
                               placeholder="{{ 'claim.roomCount' | translate }}">
@@ -565,7 +563,7 @@
                                                                                                  *ngIf="!applicationForm.numberOfBedrooms">&nbsp;*</span></label>
                                 <input type="number" id="numberOfBedrooms" class="form-control"
                                        [(ngModel)]="applicationForm.numberOfBedrooms"
-                                       formControlName="numberOfBedrooms" min="0"/>
+                                       formControlName="numberOfBedrooms" min="0" pattern="\d*"/>
                                 <div *ngIf="f.numberOfBedrooms.touched && f.numberOfBedrooms.invalid"
                                      class="text-danger">
                                   <div *ngIf="f.numberOfBedrooms.errors.required" translate>claim.requiredField</div>
@@ -641,6 +639,37 @@
                                   <div *ngIf="f.apartmentsOnTheSite.errors.required" translate>claim.requiredField
                                   </div>
                                 </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm">
+                                <label class="control-labels">Застройщик</label>
+                                <ng-select
+                                  [items]="propertyDevelopers"
+                                  [(ngModel)]="applicationForm.propertyDeveloperId"
+                                  formControlName="propertyDeveloperId"
+                                  [readonly]="readonlyChooseJK"
+                                  bindValue="value"
+                                  placeholder="{{ 'claim.material' | translate }}">
+                                </ng-select>
+                              </div>
+                              <div class="col-sm">
+                                <label class="control-labels" for="housingClass">Класс жилья</label>
+                                <input type="text" id="housingClass" class="form-control"
+                                       [(ngModel)]="applicationForm.housingClass" [readonly]="readonlyChooseJK"
+                                       formControlName="housingClass"/>
+                              </div>
+                              <div class="col-sm">
+                                <label class="control-labels">Состояние</label>
+                                <input type="text" id="housingCondition" class="form-control"
+                                       [(ngModel)]="applicationForm.housingCondition" [readonly]="readonlyChooseJK"
+                                       formControlName="housingCondition"/>
+                              </div>
+                              <div class="col-sm">
+                                <label class="control-labels">Кол-во кв</label>
+                                <input type="number" id="numberOfApartments" class="form-control"
+                                       [(ngModel)]="applicationForm.numberOfApartments" [readonly]="readonlyChooseJK"
+                                       formControlName="numberOfApartments" min="1"/>
                               </div>
                             </div>
                             <div class="row">

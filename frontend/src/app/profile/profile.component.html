@@ -96,46 +96,32 @@
             </tr>
             </thead>
             <tbody style="cursor: pointer">
-            <!--            <tr *ngFor="let claim of claimData;let i = index">-->
-            <!--              <td>{{claim.id}}</td>-->
-            <!--              <td>{{claim.operationType.value.valueRu}}</td>-->
-            <!--              <td>{{claim.creationDate}}</td>-->
-            <!--              <td>{{claim.fullname}}</td>-->
-            <!--              <td>{{claim.phone}}</td>-->
-            <!--              <td>{{claim.email}}</td>-->
-            <!--              <td>{{claim.district.value.valueRu}}</td>-->
-            <!--              <td>{{claim.district.value.valueRu}}</td>-->
-            <!--              <td>{{claim.numberOfRooms}}</td>-->
-            <!--              <td>{{claim.price}}</td>-->
-            <!--              <td>{{claim.paymentType.valueRu}}</td>-->
-            <!--              <td>{{claim.paymentType.valueRu}}</td>-->
-            <!--              <td>{{claim.floor}}</td>-->
-            <!--              <td>{{claim.comment}}</td>-->
-            <!--            </tr>-->
+            <tr *ngFor="let claim of clientsData;let i = index">
+              <td>{{claim.clientId}}</td>
+              <td>{{claim.fullname}}</td>
+              <td>{{claim.phoneNumber}}</td>
+              <td>{{claim.status}}</td>
+              <td>{{claim.target[getDicNameByLanguage()]}}</td>
+            </tr>
             </tbody>
           </table>
-          <!--          <div class="position-static createClaimBtn">-->
-          <!--            <button type="button" class="btn btn-success btn-circle btn-xl" (click)="dnHref('create-claim')"><i-->
-          <!--              class="fa fa-plus"></i>-->
-          <!--            </button>-->
-          <!--          </div>-->
           <div class="position-static createClaimBtn">
             <button type="button" class="btn btn-success btn-circle btn-xl" (click)="dnHref('create-claim')"><i
               class="fa fa-plus"></i>
             </button>
           </div>
-          <!--          <pagination [(ngModel)]="currentPage"-->
-          <!--                      [totalItems]="totalItems"-->
-          <!--                      [itemsPerPage]="itemsPerPage"-->
-          <!--                      [maxSize]="10"-->
-          <!--                      [rotate]="true"-->
-          <!--                      [boundaryLinks]="true"-->
-          <!--                      previousText="&lsaquo;"-->
-          <!--                      nextText="&rsaquo;"-->
-          <!--                      firstText="&laquo;"-->
-          <!--                      lastText="&raquo;"-->
-          <!--                      (pageChanged)="pageChanged($event)">-->
-          <!--          </pagination>-->
+          <pagination [(ngModel)]="currentPage"
+                      [totalItems]="totalItems"
+                      [itemsPerPage]="itemsPerPage"
+                      [maxSize]="10"
+                      [rotate]="true"
+                      [boundaryLinks]="true"
+                      previousText="&lsaquo;"
+                      nextText="&rsaquo;"
+                      firstText="&laquo;"
+                      lastText="&raquo;"
+                      (pageChanged)="pageChanged($event)">
+          </pagination>
         </div>
       </div>
     </div>

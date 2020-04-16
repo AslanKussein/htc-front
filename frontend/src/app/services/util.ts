@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {language} from "../../environments/language";
 import {Router} from "@angular/router";
+import {Dic} from "../models/dic";
 
 @Injectable({
   providedIn: 'root'
@@ -89,5 +90,16 @@ export class Util {
 
   getObjectLength(obj: any) {
     return Object.keys(obj).length;
+  }
+
+  roomCountDictionary() {
+    let dic_ = [];
+    for (let i = 1; i <= 6; i++) {
+      let dic = new Dic();
+      dic['value'] = i;
+      dic['label'] = i == 6 ? "более" : i;
+      dic_.push(dic);
+    }
+    return dic_;
   }
 }

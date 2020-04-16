@@ -49,7 +49,7 @@ export class ApplicationDto implements BaseEntity {
   public apartmentsOnTheSite?: string;//Квартир на площадке
   public materialOfConstructionId?: string;//Материал постройки
   public yearOfConstruction?: number;//Год постройки
-  public typeOfElevatorList?: string;//Тип лифта
+  public typeOfElevatorList?: [];//Тип лифта
   public concierge?: boolean;//Консьерж
   public wheelchair?: boolean;//Колясочная
   public yardTypeId?: any;//Двор(закрытый/открытый)
@@ -71,5 +71,11 @@ export class ApplicationDto implements BaseEntity {
   public ceilingHeightTo?: number;//Высота потолков до
   public numberOfBedroomsFrom?: number;//Количество спален от
   public numberOfBedroomsTo?: number;//Количество спален до
-  private fileIdList?: any;//"ID фотографии"
+  public photoIdList?: any;//"ID фотографии"
+  public housingPlanImageIdList?: any;//"ID фотографии"
+  public virtualTourImageIdList?: any;//"ID фотографии"
+  public propertyDeveloperId?: number;//"Застройщик "
+  public housingClass?: string;//"Класс жилья"
+  public housingCondition?: string;//"Состояние жилья"
+  public numberOfApartments?: number;//""Общее количество квартир"
 }
