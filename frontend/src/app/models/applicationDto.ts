@@ -78,4 +78,6 @@ export class ApplicationDto implements BaseEntity {
   public housingClass?: string;//"Класс жилья"
   public housingCondition?: string;//"Состояние жилья"
   public numberOfApartments?: number;//""Общее количество квартир"
+  public sewerageId?: number;//""Отопительная система"
+  public heatingSystemId?: number;//""Канализация"
 }

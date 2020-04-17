@@ -73,19 +73,16 @@
                         </div>
                       </div>
                       <div class="col-sm-5">
-                        <label translate>claim.objectPriceInLim
-                          <span class="text-danger" *ngIf="!(applicationForm.objectPriceFrom && applicationForm.objectPriceTo)">&nbsp;*</span>
-                        </label>
+                        <label translate>claim.objectPriceInLim</label>
                         <div class="input-group" *ngIf="applicationForm.operationTypeId?.code == '001001'">
-                          <input type="number" min="0" class="form-control" placeholder="{{'patterns.from' | translate}}"
-                            [(ngModel)]="applicationForm.objectPriceFrom" formControlName="objectPriceFrom"/>
+                          <input type="number" min="0" class="form-control"
+                                 placeholder="{{'patterns.from' | translate}}"
+                                 [(ngModel)]="applicationForm.objectPriceFrom" formControlName="objectPriceFrom"/>
                           <input type="number" min="0" class="form-control" placeholder="{{'patterns.to' | translate}}"
                                  [(ngModel)]="applicationForm.objectPriceTo" formControlName="objectPriceTo"/>
                         </div>
-<!--                        <div *ngIf="(f.objectPriceFrom.touched && f.objectPriceFrom.invalid) || f.objectPriceTo.touched && f.objectPriceTo.invalid" class="text-danger">-->
-<!--                          <div *ngIf="(f.objectPriceFrom?.errors.required) || f.objectPriceTo?.errors.required" translate>claim.requiredField</div>-->
-<!--                        </div>-->
-                        <input type="number" id="form1" class="form-control" *ngIf="applicationForm.operationTypeId?.code != '001001'"
+                        <input type="number" id="form1" class="form-control"
+                               *ngIf="applicationForm.operationTypeId?.code != '001001'"
                                [(ngModel)]="applicationForm.objectPrice" formControlName="objectPrice" min="0">
                         <div *ngIf="f.objectPrice.touched && f.objectPrice.invalid" class="text-danger">
                           <div *ngIf="f.objectPrice.errors.required" translate>claim.requiredField</div>
@@ -403,7 +400,7 @@
           </div>
         </div>
         <br/>
-        <div class="row" *ngIf="applicationForm.operationTypeId?.code == '001002'">
+        <div class="row" *ngIf="applicationForm.operationTypeId">
           <div class="col-sm">
             <div class="accordion" id="accordionAboutObject">
               <div class="card z-depth-0 bordered">
@@ -475,7 +472,20 @@
                               <div *ngIf="f.houseNumber.errors.required" translate>claim.requiredField</div>
                             </div>
                           </div>
-                          <div class="col-sm form-group required">
+                          <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                            <label translate>claim.roomCount </label>
+                            <div class="input-group">
+                              <input type="number" min="0" class="form-control"
+                                     placeholder="{{'patterns.from2' | translate}}"
+                                     [(ngModel)]="applicationForm.numberOfRoomsFrom"
+                                     formControlName="numberOfRoomsFrom"/>
+                              <input type="number" min="0" class="form-control"
+                                     placeholder="{{'patterns.to2' | translate}}"
+                                     [(ngModel)]="applicationForm.numberOfRoomsTo" formControlName="numberOfRoomsTo"/>
+                            </div>
+                          </div>
+                          <div class="col-sm form-group required"
+                               *ngIf="applicationForm.operationTypeId?.code != '001001'">
                             <label for="patronymic" translate>claim.roomCount</label>
                             <ng-select
                               bindValue="value"
@@ -497,12 +507,34 @@
                                    [(ngModel)]="applicationForm.cadastralNumber" mask="00:000:000:000:00:000"
                                    formControlName="cadastralNumber" min="21"/>
                           </div>
+                          <div class="col-sm-5">
+                            <label>Этаж</label>
+                            <div class="input-group" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                              <input type="number" min="0" class="form-control"
+                                     placeholder="{{'patterns.from2' | translate}}"
+                                     [(ngModel)]="applicationForm.floorFrom" formControlName="floorFrom"/>
+                              <input type="number" min="0" class="form-control"
+                                     placeholder="{{'patterns.to2' | translate}}"
+                                     [(ngModel)]="applicationForm.floorTo" formControlName="floorTo"/>
+                            </div>
+                          </div>
                         </div>
                         <div class="row">
                           <fieldset class="scheduler-border col-sm">
                             <legend class="scheduler-border" translate>claim.quadrature</legend>
                             <div class="row">
-                              <div class="col-sm">
+                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                                <label translate>claim.square</label>
+                                <div class="input-group">
+                                  <input type="number" min="0" class="form-control"
+                                         placeholder="{{'patterns.from2' | translate}}"
+                                         [(ngModel)]="applicationForm.totalAreaFrom" formControlName="totalAreaFrom"/>
+                                  <input type="number" min="0" class="form-control"
+                                         placeholder="{{'patterns.to2' | translate}}"
+                                         [(ngModel)]="applicationForm.totalAreaTo" formControlName="totalAreaTo"/>
+                                </div>
+                              </div>
+                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code != '001001'">
                                 <label for="square" translate>claim.square <span class="text-danger"
                                                                                  *ngIf="!applicationForm.totalArea">&nbsp;*</span></label>
                                 <input type="number" id="square" class="form-control"
@@ -512,7 +544,18 @@
                                   <div *ngIf="f.totalArea.errors.required" translate>claim.requiredField</div>
                                 </div>
                               </div>
-                              <div class="col-sm">
+                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                                <label translate>claim.live</label>
+                                <div class="input-group">
+                                  <input type="number" min="0" class="form-control"
+                                         placeholder="{{'patterns.from2' | translate}}"
+                                         [(ngModel)]="applicationForm.livingAreaFrom" formControlName="livingAreaFrom"/>
+                                  <input type="number" min="0" class="form-control"
+                                         placeholder="{{'patterns.to2' | translate}}"
+                                         [(ngModel)]="applicationForm.livingAreaTo" formControlName="livingAreaTo"/>
+                                </div>
+                              </div>
+                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code != '001001'">
                                 <label for="livingArea" translate>claim.live <span class="text-danger"
                                                                                    *ngIf="!applicationForm.livingArea">&nbsp;*</span></label>
                                 <input type="number" id="livingArea" class="form-control"
@@ -522,7 +565,19 @@
                                   <div *ngIf="f.livingArea.errors.required" translate>claim.requiredField</div>
                                 </div>
                               </div>
-                              <div class="col-sm">
+                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                                <label translate>claim.kitchen</label>
+                                <div class="input-group">
+                                  <input type="number" min="0" class="form-control"
+                                         placeholder="{{'patterns.from2' | translate}}"
+                                         [(ngModel)]="applicationForm.kitchenAreaFrom"
+                                         formControlName="kitchenAreaFrom"/>
+                                  <input type="number" min="0" class="form-control"
+                                         placeholder="{{'patterns.to2' | translate}}"
+                                         [(ngModel)]="applicationForm.kitchenAreaTo" formControlName="kitchenAreaTo"/>
+                                </div>
+                              </div>
+                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code != '001001'">
                                 <label for="kitchenArea" translate>claim.kitchen <span class="text-danger"
                                                                                        *ngIf="!applicationForm.kitchenArea">&nbsp;*</span></label>
                                 <input type="number" id="kitchenArea" class="form-control"
@@ -533,7 +588,19 @@
                                   <div *ngIf="f.kitchenArea.errors.required" translate>claim.requiredField</div>
                                 </div>
                               </div>
-                              <div class="col-sm">
+                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                                <label translate>claim.balcony</label>
+                                <div class="input-group">
+                                  <input type="number" min="0" class="form-control"
+                                         placeholder="{{'patterns.from2' | translate}}"
+                                         [(ngModel)]="applicationForm.balconyAreaFrom"
+                                         formControlName="balconyAreaFrom"/>
+                                  <input type="number" min="0" class="form-control"
+                                         placeholder="{{'patterns.to2' | translate}}"
+                                         [(ngModel)]="applicationForm.balconyAreaTo" formControlName="balconyAreaTo"/>
+                                </div>
+                              </div>
+                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code != '001001'">
                                 <label for="balconyArea" translate>claim.balcony <span class="text-danger"
                                                                                        *ngIf="!applicationForm.balconyArea">&nbsp;*</span></label>
                                 <input type="number" id="balconyArea" class="form-control"
@@ -543,7 +610,19 @@
                                   <div *ngIf="f.balconyArea.errors.required" translate>claim.requiredField</div>
                                 </div>
                               </div>
-                              <div class="col-sm">
+                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                                <label translate>claim.heightWall</label>
+                                <div class="input-group">
+                                  <input type="number" min="0" class="form-control"
+                                         placeholder="{{'patterns.from2' | translate}}"
+                                         [(ngModel)]="applicationForm.ceilingHeightFrom"
+                                         formControlName="ceilingHeightFrom"/>
+                                  <input type="number" min="0" class="form-control"
+                                         placeholder="{{'patterns.to2' | translate}}"
+                                         [(ngModel)]="applicationForm.ceilingHeightTo" formControlName="ceilingHeightTo"/>
+                                </div>
+                              </div>
+                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code != '001001'">
                                 <label for="ceilingHeight" translate>claim.heightWall <span class="text-danger"
                                                                                             *ngIf="!applicationForm.ceilingHeight">&nbsp;*</span></label>
                                 <input type="number" id="ceilingHeight" class="form-control"
@@ -555,7 +634,19 @@
                               </div>
                             </div>
                             <div class="row">
-                              <div class="col-sm">
+                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                                <label translate>claim.badRoomCount</label>
+                                <div class="input-group">
+                                  <input type="number" min="0" class="form-control"
+                                         placeholder="{{'patterns.from2' | translate}}"
+                                         [(ngModel)]="applicationForm.numberOfBedroomsFrom"
+                                         formControlName="numberOfBedroomsFrom"/>
+                                  <input type="number" min="0" class="form-control"
+                                         placeholder="{{'patterns.to2' | translate}}"
+                                         [(ngModel)]="applicationForm.numberOfBedroomsTo" formControlName="numberOfBedroomsTo"/>
+                                </div>
+                              </div>
+                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code != '001001'">
                                 <label for="numberOfBedrooms" translate>claim.badRoomCount <span class="text-danger"
                                                                                                  *ngIf="!applicationForm.numberOfBedrooms">&nbsp;*</span></label>
                                 <input type="number" id="numberOfBedrooms" class="form-control"
