@@ -127,7 +127,11 @@ export class StaffsComponent implements OnInit {
 
   editData(user: any){
     this.actions='EDIT';
-     this.formData=user;
+    this.staffService.getUserById(user)
+      .subscribe(data => {
+        this.formData=data;
+        this.formData.roles.value =  data.roles;
+      });
   }
 
   addUser(){
