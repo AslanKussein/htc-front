@@ -32,6 +32,23 @@ export class Util {
     return list;
   }
 
+  toSelectArrayRoles(data, idField = 'id', labelField = this.getDicName()) {
+    const list = [];
+    if (data) {
+      const len = data.data.length;
+      for (let i = 0; i < len; i++) {
+        list.push({value: '' + data.data[i][idField], label: data.data[i][labelField], description: data.data[i]['description']});
+      }
+    }
+    return list;
+  }
+
+  getDicName() {
+    let fieldName;
+   fieldName = 'name';
+    return fieldName;
+  }
+
   getDicNameByLanguage() {
     let fieldName;
     switch (this._language.language) {

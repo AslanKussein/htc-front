@@ -1,1 +1,155 @@
-<p>staffs works!</p>
+<div class="card-body card-bg">
+  <div class="card">
+    <div class="card-body">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-sm row">
+            <div class="col-sm">
+              <input type="text" class="form-control">
+            </div>
+            <div class="col-sm">
+              <button type="button" class="btn btn-primary">
+                View all users
+              </button>
+            </div>
+          </div>
+          <div class="col-sm"></div>
+          <div class="col-sm row" style="text-align: right">
+
+
+
+
+          </div>
+          <button type="button" class="btn btn-primary" style="    right: 10px;">
+            Unblock users
+          </button>
+          <button type="button" class="btn btn-primary" (click)="openModal(template); addUser()">     Add user</button>
+
+
+
+
+
+
+          <ng-template #template>
+            <div class="modal-header">
+              <h4 class="modal-title pull-left">Add user</h4>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="col-sm">
+                <label class="col-sm col-form-label">Login<span class="text-danger">&nbsp;*</span></label>
+                <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="Username" [(ngModel)]="formData.login">
+              </div>
+              <div class="col-sm">
+                <label class="col-sm col-form-label">Password<span class="text-danger">&nbsp;*</span></label>
+                <input type="password" class="col-sm form-control" name="Password" [(ngModel)]="formData.pass">
+              </div>
+              <div class="col-sm">
+                <label class="col-sm col-form-label">Имя<span class="text-danger">&nbsp;*</span></label>
+                <input type="text" class="col-sm form-control"  name="First" [(ngModel)]="formData.name">
+              </div>
+              <div class="col-sm">
+                <label class="col-sm col-form-label">Фамилия<span class="text-danger">&nbsp;*</span></label>
+                <input type="text" class="col-sm form-control" name="Last" [(ngModel)]="formData.surname">
+              </div>
+              <div class="col-sm">
+                <label class="col-sm col-form-label">Активность<span class="text-danger">&nbsp;*</span></label>
+                <div class="btn-group">
+                  <label class="btn btn-primary" [(ngModel)]="formData.isActive" ngDefaultControl
+                         btnRadio="true" tabindex="0" role="button">On</label>
+                  <label class="btn btn-primary" [(ngModel)]="formData.isActive" ngDefaultControl
+                         btnRadio="false" tabindex="0" role="button">Off</label>
+                </div>
+              </div>
+              <div class="col-sm">
+                <label class="col-sm col-form-label">Роль<span class="text-danger">&nbsp;*</span></label>
+                <ng-select name="roles"
+                           [items]="roles"
+                           bindValue="value"
+                           [(ngModel)]="formData.roles">
+                </ng-select>
+              </div>
+
+              <div class="col-sm">
+                <label class="col-sm col-form-label">Группа<span class="text-danger">&nbsp;*</span></label>
+                <ng-select name="residentialComplexes"
+                           [items]="residentialComplexes"
+                           bindValue="value"
+                           [(ngModel)]="formData.residentialComplexes">
+                </ng-select>
+              </div>
+              <div class="col-sm" style="text-align: right">
+
+                <button type="button" class="btn btn-primary" (click)="submit()" style="margin: 10px">
+                 Сохранить
+                </button>
+                <button type="button" class="btn btn-light" style="margin: 10px">
+                  Отмена
+                </button>
+
+              </div>
+
+              </div>
+          </ng-template>
+
+        </div>
+
+
+        <div class="row">
+          <div class="col-sm">
+            <table class="table table-bordered text-center table-sm">
+              <thead class="text-center">
+              <tr>
+                <th>Id</th>
+                <th translate>Login</th>
+                <th translate>Имя</th>
+                <th translate>Фамилия</th>
+                <th translate>Роль</th>
+                <th translate>Группа</th>
+                <th translate>Действия</th>
+              </tr>
+              </thead>
+              <tbody style="cursor: pointer">
+              <tr *ngFor="let user of users;let i = index">
+                <td>{{user.id}}</td>
+                <td>{{user.login}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.surname}}</td>
+                <td>{{user.roles}}</td>
+                <td>{{user.group}}</td>
+                <td> <button type="button" class="btn btn-light" style="margin: 10px" (click)="editData(user);openModal(template)">
+                  Редактировать
+                </button></td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="row">
+              <div class="col-sm">
+                <pagination [(ngModel)]="currentPage"
+                            [totalItems]="totalItems"
+                            [itemsPerPage]="itemsPerPage"
+                            [maxSize]="10"
+                            [rotate]="true"
+                            [boundaryLinks]="true"
+                            previousText="&lsaquo;"
+                            nextText="&rsaquo;"
+                            firstText="&laquo;"
+                            lastText="&raquo;"
+                            (pageChanged)="pageChanged($event)">
+                </pagination>
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -8,6 +8,8 @@ export class ConfigService {
   apiDataManagerUrl = ' https://dm-htc.dilau.kz';
   apiFileManagerUrl = ' https://fm-htc.dilau.kz';
   apiViewManagerUrl = ' https://vm-htc.dilau.kz';
+  apiUserManagerUrl = ' https://um-htc.dilau.kz';
+  apiRoleManagerUrl = ' https://rm-htc.dilau.kz';
 
   constructor() {
   }
