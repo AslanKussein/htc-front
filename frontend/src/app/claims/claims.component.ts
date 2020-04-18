@@ -117,7 +117,7 @@ export class ClaimsComponent implements OnInit {
       searchFilter['commentDate'] = obj;
     }
     if (!this.util.isNullOrEmpty(this.formData.typeId)) {
-      searchFilter['applicationTypeId'] = this.formData.typeId;
+      searchFilter['operationTypeId'] = this.formData.typeId;
     }
     searchFilter['my'] = this.formData.myClaim;
     if (!this.util.isNullOrEmpty(this.formData.applicationStatuses)) {
