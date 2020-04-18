@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {language} from "../../environments/language";
-import {Router} from "@angular/router";
+import {formatDate} from '@angular/common';
 import {defineLocale} from 'ngx-bootstrap/chronos';
 import {ruLocale} from 'ngx-bootstrap/locale';
 import {BsLocaleService} from "ngx-bootstrap";
@@ -143,5 +143,9 @@ export class ClaimsComponent implements OnInit {
   getDicNameByLanguage(claim: any, column: string) {
     let x = this.util.getDicNameByLanguage();
     return claim[column]?.name[x];
+  }
+
+  formatDate(claim: any) {
+    return  formatDate(claim.creationDate, 'dd.MM.yyyy HH:mm', 'en-US');
   }
 }

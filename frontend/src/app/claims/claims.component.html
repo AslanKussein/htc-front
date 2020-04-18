@@ -155,7 +155,7 @@
             <tr *ngFor="let claim of claimData;let i = index">
               <td>{{claim.id}}</td>
               <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
-              <td>{{claim.creationDate}}</td>
+              <td>{{formatDate(claim)}}</td>
               <td>{{claim.fullname}}</td>
               <td><span>{{claim.phone | mask: '+0 (000) 000-0000'}}</span></td>
               <td>{{claim.email}}</td>
