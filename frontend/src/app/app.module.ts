@@ -51,7 +51,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     StaffsComponent,
     CreateClaimComponent,
     LoginComponent,
-    ShowImageComponent,
+    ShowImageComponent
   ],
   imports: [
     BrowserModule,

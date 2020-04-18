@@ -66,7 +66,8 @@ export class ClaimsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.findClaims(1);
+
+    this.findClaims(0);
     this.dicService.getDics('OPERATION_TYPES').subscribe(data => {
       this.operationType = this.util.toSelectArray(data);
     });
@@ -82,6 +83,7 @@ export class ClaimsComponent implements OnInit {
   }
 
   findClaims(pageNo: number) {
+    this.itemsPerPage = 30;
     this.loading = true;
     let searchFilter = {};
     let obj = {};
@@ -122,6 +124,8 @@ export class ClaimsComponent implements OnInit {
       searchFilter['applicationStatusList'] = this.formData.applicationStatuses;
     }
 
+    searchFilter['direction'] = 'ASC';
+    searchFilter['sortBy'] = 'id';
     searchFilter['pageNumber'] = pageNo;
     searchFilter['pageSize'] = this.itemsPerPage;
     this.claimService.getClaims(searchFilter).subscribe(res => {
@@ -129,10 +133,15 @@ export class ClaimsComponent implements OnInit {
 
         this.claimData = res.data.data.data;
         this.totalItems = res.data.totalElements;
-        this.itemsPerPage = res.data.size;
+        this.itemsPerPage = res.data.data.size;
         this.currentPage = res.data.number + 1;
       }
     });
     this.loading = false;
+  }
+
+  getDicNameByLanguage(claim: any, column: string) {
+    let x = this.util.getDicNameByLanguage();
+    return claim[column]?.name[x];
   }
 }

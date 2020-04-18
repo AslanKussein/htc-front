@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Injectable, OnInit, ViewChild} from '@angular/core';
 import {ApplicationDto} from "../../models/applicationDto";
 import {Util} from "../../services/util";
 import {NotificationService} from "../../services/notification.service";
@@ -12,10 +12,15 @@ import {language} from "../../../environments/language";
 import {TranslateService} from "@ngx-translate/core";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ruLocale} from "ngx-bootstrap/locale";
-import {BsLocaleService} from "ngx-bootstrap";
+import {BsLocaleService, BsModalRef, BsModalService} from "ngx-bootstrap";
 import {OwnerService} from "../../services/owner.service";
 import {Observable} from "rxjs";
 import {ComponentCanDeactivate} from "../../canDeactivate/componentCanDeactivate";
+import {ModalDirective} from "angular-bootstrap-md";
+
+@Injectable({
+  providedIn: 'root'
+})
 
 @Component({
   selector: 'app-create-claim',
@@ -23,6 +28,10 @@ import {ComponentCanDeactivate} from "../../canDeactivate/componentCanDeactivate
   styleUrls: ['./create-claim.component.scss']
 })
 export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
+
+  @ViewChild('showHideModal')
+  public modalActAgree: ModalDirective;
+
   _language = language;
   application: ApplicationDto;
   xVal: string;
@@ -50,6 +59,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   yardTypes: Dic[];
   readonlyChooseJK: boolean = false;
   saved: boolean = false;
+  confirmBlock: boolean;
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -60,7 +70,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
               private dicService: DicService,
               private translate: TranslateService,
               private localeService: BsLocaleService,
-              private ownerService: OwnerService) {
+              private ownerService: OwnerService,
+              private modalService: BsModalService) {
     this.config.notFoundText = 'Данные не найдены';
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
@@ -314,7 +325,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   canDeactivate(): boolean | Observable<boolean> {
     if (!this.saved) {
-      return confirm("Вы хотите покинуть страницу?");
+      let result = confirm("Вы хотите покинуть страницу?");
+      console.log('result ', result)
+      return result;
     } else {
       return true;
     }

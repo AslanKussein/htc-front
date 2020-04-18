@@ -75,7 +75,7 @@
 
       <div class="row">
         <div class="col-sm">
-          <button type="button" mdbBtn color="success" (click)="findClaims(1)"
+          <button type="button" mdbBtn color="success" (click)="findClaims(0)"
                   class="btn btn-sm btn-info float-right btn2"
                   mdbWavesEffect>
             <span class="fa fa-search" translate> search</span>
@@ -132,40 +132,40 @@
 
       <div class="row">
         <div class="col-sm">
-          <table class="table table-bordered text-center table-sm">
+          <table class="table table-bordered table-sm">
             <thead class="text-center">
             <tr>
-              <th>№</th>
-              <th translate>claim.transactionType</th>
+              <th>ID заявки</th>
+              <th>Операция</th>
               <th translate>claim.crDateFrom</th>
               <th translate>fio</th>
               <th translate>phone</th>
               <th translate>e-mail</th>
               <th translate>Район</th>
-              <th translate>Код обьекта</th>
               <th translate>Количество комнат</th>
               <th translate>Цена</th>
               <th translate>Вид расчета</th>
               <th translate>Прошадь</th>
               <th translate>Этаж</th>
+              <th translate>Статус</th>
               <th translate>Комментарий</th>
             </tr>
             </thead>
             <tbody style="cursor: pointer">
             <tr *ngFor="let claim of claimData;let i = index">
               <td>{{claim.id}}</td>
-              <td>{{claim.operationType.value.valueRu}}</td>
+              <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
               <td>{{claim.creationDate}}</td>
               <td>{{claim.fullname}}</td>
-              <td>{{claim.phone}}</td>
+              <td><span>{{claim.phone | mask: '+0 (000) 000-0000'}}</span></td>
               <td>{{claim.email}}</td>
-              <td>{{claim.district.value.valueRu}}</td>
-              <td>{{claim.district.value.valueRu}}</td>
+              <td>{{claim.district?.value.valueRu}}</td>
               <td>{{claim.numberOfRooms}}</td>
               <td>{{claim.price}}</td>
-              <td>{{claim.paymentType.valueRu}}</td>
-              <td>{{claim.paymentType.valueRu}}</td>
+              <td></td>
+              <td>{{claim.totalArea}}</td>
               <td>{{claim.floor}}</td>
+              <td>{{getDicNameByLanguage(claim, 'status')}}</td>
               <td>{{claim.comment}}</td>
             </tr>
             </tbody>

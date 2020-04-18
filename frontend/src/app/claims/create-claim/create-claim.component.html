@@ -507,9 +507,9 @@
                                    [(ngModel)]="applicationForm.cadastralNumber" mask="00:000:000:000:00:000"
                                    formControlName="cadastralNumber" min="21"/>
                           </div>
-                          <div class="col-sm-5">
+                          <div class="col-sm-5" *ngIf="applicationForm.operationTypeId?.code == '001001'">
                             <label>Этаж</label>
-                            <div class="input-group" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                            <div class="input-group">
                               <input type="number" min="0" class="form-control"
                                      placeholder="{{'patterns.from2' | translate}}"
                                      [(ngModel)]="applicationForm.floorFrom" formControlName="floorFrom"/>
@@ -619,7 +619,8 @@
                                          formControlName="ceilingHeightFrom"/>
                                   <input type="number" min="0" class="form-control"
                                          placeholder="{{'patterns.to2' | translate}}"
-                                         [(ngModel)]="applicationForm.ceilingHeightTo" formControlName="ceilingHeightTo"/>
+                                         [(ngModel)]="applicationForm.ceilingHeightTo"
+                                         formControlName="ceilingHeightTo"/>
                                 </div>
                               </div>
                               <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code != '001001'">
@@ -643,7 +644,8 @@
                                          formControlName="numberOfBedroomsFrom"/>
                                   <input type="number" min="0" class="form-control"
                                          placeholder="{{'patterns.to2' | translate}}"
-                                         [(ngModel)]="applicationForm.numberOfBedroomsTo" formControlName="numberOfBedroomsTo"/>
+                                         [(ngModel)]="applicationForm.numberOfBedroomsTo"
+                                         formControlName="numberOfBedroomsTo"/>
                                 </div>
                               </div>
                               <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code != '001001'">
@@ -909,3 +911,22 @@
 </div>
 
 <show-image [show]="showModalWin" [act]="image" (onHide)="showModalWin"></show-image>
+
+<!--<div mdbModal #showHideModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"-->
+<!--     aria-labelledby="myBasicModalLabel" aria-hidden="true">-->
+<!--  <div class="modal-dialog" role="document">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header">-->
+<!--        Вы уверены что хотите покинуть страницу-->
+<!--        <button type="button" class="close pull-right" aria-label="Close" (click)="showHideModal.hide()">-->
+<!--          <span aria-hidden="true">×</span>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <div class="modal-footer">-->
+<!--        <button type="button" class="btn btn-primary">Save changes</button>-->
+<!--        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
