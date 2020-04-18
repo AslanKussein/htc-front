@@ -83,7 +83,7 @@ export class ClaimsComponent implements OnInit {
   }
 
   findClaims(pageNo: number) {
-    this.itemsPerPage = 30;
+    // this.itemsPerPage = 30;
     this.loading = true;
     let searchFilter = {};
     let obj = {};
@@ -134,7 +134,7 @@ export class ClaimsComponent implements OnInit {
         this.claimData = res.data.data.data;
         this.totalItems = res.data.totalElements;
         this.itemsPerPage = res.data.data.size;
-        this.currentPage = res.data.number + 1;
+        // this.currentPage = res.data.number + 1;
       }
     });
     this.loading = false;
@@ -146,6 +146,6 @@ export class ClaimsComponent implements OnInit {
   }
 
   formatDate(claim: any) {
-    return  formatDate(claim.creationDate, 'dd.MM.yyyy HH:mm', 'en-US');
+    return formatDate(claim.creationDate, 'dd.MM.yyyy HH:mm', 'en-US');
   }
 }
