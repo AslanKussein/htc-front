@@ -33,8 +33,8 @@ export class ShowImageComponent implements OnInit, OnChanges {
 
   @Input()
   set act(act: any) {
-    this.preview = 'https://fm-htc.dilau.kz/download/' + act + '?access_token=' + this.util.getToken().access_token;
-    console.log(act)
+    if (!this.util.isNullOrEmpty(act))
+      this.preview = 'https://fm-htc.dilau.kz/download/' + act + '?access_token=' + this.util.getToken().access_token;
   }
 
 

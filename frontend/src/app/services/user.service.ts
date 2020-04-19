@@ -3,6 +3,7 @@ import {ConfigService} from './config.service';
 import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, tap} from "rxjs/operators";
+import {NotificationService} from "./notification.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import {catchError, tap} from "rxjs/operators";
 export class UserService {
 
   constructor(private configService: ConfigService,
+              private noticeService: NotificationService,
               private http: HttpClient) {
   }
 
@@ -17,7 +19,21 @@ export class UserService {
    * findUserByLogin
    */
   findUserByLogin(): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/users/info`, {});
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/users/info`, {}).pipe(
+      tap(data => {
+        console.log(data)
+      }),
+      catchError(this.handleError)
+    );
   }
 
+  private handleError(error: HttpErrorResponse) {
+    if (error instanceof ErrorEvent) {
+      console.error('An error occurred:', error.message);
+    } else {
+      this.noticeService.showInfo('Ошибка', error)
+    }
+    return throwError(
+      error);
+  }
 }

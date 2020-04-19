@@ -255,15 +255,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.readonlyChooseJK = !this.util.isNullOrEmpty(this.applicationForm.residentialComplexId);
   }
 
-  getPhotoById(guid: string) {
-    // console.log(guid)
-    // this.uploader.getPhotoById(guid)
-    //   .subscribe(data => {
-    //     if (data != null) {
-    //     }
-    //   });
-  }
-
   searchByPhone() {
     if (this.applicationForm.phoneNumber != null && this.applicationForm.phoneNumber.length == 10) {
       this.loading = true;
@@ -355,15 +346,18 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   submit() {
     this.validate();
-
+    let result = false;
     const controls = this.applicationForm.controls;
     for (const name in controls) {
       if (controls[name].invalid) {
         this.translate.get('claim.validator.' + name).subscribe((text: string) => {
           this.notifyService.showInfo("Ошибка", "Поле " + text + " не заполнено!!!");
         });
+        result = true;
       }
     }
+
+    if (result) return;
 
     this.application = this.applicationForm.value;
 
@@ -401,13 +395,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       .subscribe(data => {
         if (data != null) {
           // this.resumeModel = data;
+          this.saved = true;
           this.notifyService.showSuccess('success', 'Успешно сохранено');
         }
       }, err => {
         this.notifyService.showError('warning', err.message);
       });
-    // this.loading = false;
-    this.saved = true;
+    this.loading = false;
   }
 
   canDeactivate(): boolean | Observable<boolean> {

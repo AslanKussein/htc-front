@@ -37,6 +37,8 @@ import {NgxMaskModule, IConfig} from 'ngx-mask'
 import {MDBBootstrapModule} from "angular-bootstrap-md";
 import {ShowImageComponent} from "./claims/create-claim/show-image/show-image.component";
 import {ExitDeactivate} from "./canDeactivate/exitDeactivate";
+import {UserService} from "./services/user.service";
+import {NotificationService} from "./services/notification.service";
 
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
@@ -81,7 +83,9 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     UploaderService,
     DicService,
-    ExitDeactivate
+    ExitDeactivate,
+    UserService,
+    NotificationService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
