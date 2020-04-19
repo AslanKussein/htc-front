@@ -34,7 +34,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getDicNameByLanguage() {
-    return this.util.getDicNameByLanguage();
+    return this.util.getDicNameByLanguage()
   }
 
   findClientsData(pageNo: number) {
@@ -47,7 +47,7 @@ export class ProfileComponent implements OnInit {
         this.clientsData = res.data.data.data;
         this.totalItems = res.data.totalElements;
         this.itemsPerPage = res.data.size;
-        this.currentPage = res.data.number + 1;
+        // this.currentPage = res.data.number + 1;
       }
     });
     this.loading = false;
