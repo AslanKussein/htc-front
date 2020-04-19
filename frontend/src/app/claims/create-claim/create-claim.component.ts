@@ -1,4 +1,4 @@
-import {Component, ElementRef, Injectable, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Injectable, OnInit, ViewChild} from '@angular/core';
 import {ApplicationDto} from "../../models/applicationDto";
 import {Util} from "../../services/util";
 import {NotificationService} from "../../services/notification.service";
@@ -17,6 +17,7 @@ import {OwnerService} from "../../services/owner.service";
 import {Observable} from "rxjs";
 import {ComponentCanDeactivate} from "../../canDeactivate/componentCanDeactivate";
 import {ModalDirective} from "angular-bootstrap-md";
+import {ConfigService} from "../../services/config.service";
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,15 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   xVal: string;
   selectedFile: File;
   loading = false;
-  photo: any[] = ["3a774224-e85e-4d56-8341-cc3fe892195c", "1cebd27e-6872-4468-b4cd-3f36b605fd80"];
+  photoList: any[] = [];
+  photoPlanList: any[] = [];
+  photo3DList: any[] = [];
+  imgSrc: Observable<string>;
+  // photo: any[] = [
+  //   "1", "2","3", "4",
+  //   "5", "6","7", "8",
+  //   "9", "10","11", "12"
+  // ];
   operationType: Dic[];
   objectType: Dic[];
   city: Dic[];
@@ -47,6 +56,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   residentialComplexes: Dic[];
   realProperties: Dic[];
   propertyDevelopers: Dic[];
+  heatingSystems: Dic[];
+  sewerageSystems: Dic[];
   countries: Dic[];
   materials: Dic[];
   roomCountDic: Dic[];
@@ -59,7 +70,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   yardTypes: Dic[];
   readonlyChooseJK: boolean = false;
   saved: boolean = false;
-  confirmBlock: boolean;
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -71,7 +81,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
               private translate: TranslateService,
               private localeService: BsLocaleService,
               private ownerService: OwnerService,
-              private modalService: BsModalService) {
+              private configService: ConfigService,
+              private cdRef: ChangeDetectorRef) {
     this.config.notFoundText = 'Данные не найдены';
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
@@ -83,77 +94,88 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   ngOnInit(): void {
     this.applicationForm = this.formBuilder.group({
-      id: ['', Validators.nullValidator],
-      surname: ['', Validators.required],
-      firstName: ['', Validators.required],
-      patronymic: ['', Validators.nullValidator],
-      clientId: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
-      email: ['', Validators.nullValidator],
+      id: [null, Validators.nullValidator],
       operationTypeId: ['', Validators.required],
-      objectTypeId: ['', Validators.required],
-      objectPrice: ['', Validators.required],
-      objectPriceFrom: ['', Validators.nullValidator],
-      objectPriceTo: ['', Validators.nullValidator],
-      mortgage: ['', Validators.required],
-      encumbrance: ['', Validators.required],
-      exchange: ['', Validators.required],
-      sharedOwnershipProperty: ['', Validators.required],
-      gender: ['', Validators.nullValidator],
-      cityId: ['', Validators.required],
-      residentialComplexId: ['', Validators.nullValidator],
-      streetId: ['', Validators.required],
-      houseNumber: ['', Validators.required],
-      numberOfRooms: ['', Validators.required],
-      totalArea: ['', Validators.required],
-      livingArea: ['', Validators.required],
-      kitchenArea: ['', Validators.required],
-      balconyArea: ['', Validators.required],
-      ceilingHeight: ['', Validators.required],
-      numberOfBedrooms: ['', Validators.required],
-      atelier: ['', Validators.nullValidator],
-      separateBathroom: ['', Validators.nullValidator],
-      districtId: ['', Validators.required],
-      numberOfFloors: ['', Validators.nullValidator],
-      apartmentsOnTheSite: ['', Validators.nullValidator],
-      materialOfConstructionId: ['', Validators.nullValidator],
-      yearOfConstruction: ['', Validators.nullValidator],
+      objectTypeId: [null, Validators.required],
+      objectPrice: [null, Validators.nullValidator],
+      surname: [null, Validators.required],
+      firstName: [null, Validators.required],
+      patronymic: [null, Validators.nullValidator],
+      clientId: [null, Validators.nullValidator],
+      phoneNumber: [null, Validators.required],
+      email: [null, Validators.nullValidator],
+      objectPriceFrom: [null, Validators.nullValidator],
+      objectPriceTo: [null, Validators.nullValidator],
+      mortgage: [null, Validators.nullValidator],
+      encumbrance: [null, Validators.nullValidator],
+      exchange: [null, Validators.nullValidator],
+      sharedOwnershipProperty: [null, Validators.nullValidator],
+      gender: [null, Validators.nullValidator],
+      cityId: [null, Validators.required],
+      residentialComplexId: [null, Validators.nullValidator],
+      streetId: [null, Validators.nullValidator],
+      houseNumber: [null, Validators.nullValidator],
+      houseNumberFraction: [null, Validators.nullValidator],
+      numberOfRooms: [null, Validators.nullValidator],
+      totalArea: [null, Validators.nullValidator],
+      livingArea: [null, Validators.nullValidator],
+      kitchenArea: [null, Validators.nullValidator],
+      balconyArea: [null, Validators.nullValidator],
+      ceilingHeight: [null, Validators.nullValidator],
+      numberOfBedrooms: [null, Validators.nullValidator],
+      atelier: [null, Validators.nullValidator],
+      separateBathroom: [null, Validators.nullValidator],
+      districtId: [null, Validators.nullValidator],
+      numberOfFloors: [null, Validators.nullValidator],
+      apartmentsOnTheSite: [null, Validators.nullValidator],
+      materialOfConstructionId: [null, Validators.nullValidator],
+      yearOfConstruction: [null, Validators.nullValidator],
       typeOfElevatorList: [[], Validators.nullValidator],
-      concierge: ['', Validators.nullValidator],
-      wheelchair: ['', Validators.nullValidator],
-      playground: ['', Validators.nullValidator],
-      yardTypeId: ['', Validators.nullValidator],
-      parkingTypeId: ['', Validators.nullValidator],
-      probabilityOfBidding: ['', Validators.nullValidator],
-      theSizeOfTrades: ['', Validators.nullValidator],
-      possibleReasonForBiddingIdList: ['', Validators.nullValidator],
-      note: ['', Validators.nullValidator],
-      contractPeriod: ['', Validators.nullValidator],
-      isCommissionIncludedInThePrice: ['', Validators.nullValidator],
-      amount: ['', Validators.nullValidator],
-      cadastralNumber: ['', Validators.nullValidator],
-      propertyDeveloperId: ['', Validators.nullValidator],
-      housingClass: ['', Validators.nullValidator],
-      housingCondition: ['', Validators.nullValidator],
-      numberOfApartments: ['', Validators.nullValidator],
-      floorFrom: ['', Validators.nullValidator],
-      floorTo: ['', Validators.nullValidator],
-      numberOfRoomsFrom: ['', Validators.nullValidator],
-      numberOfRoomsTo: ['', Validators.nullValidator],
-      totalAreaFrom: ['', Validators.nullValidator],
-      totalAreaTo: ['', Validators.nullValidator],
-      livingAreaFrom: ['', Validators.nullValidator],
-      livingAreaTo: ['', Validators.nullValidator],
-      kitchenAreaFrom: ['', Validators.nullValidator],
-      kitchenAreaTo: ['', Validators.nullValidator],
-      balconyAreaFrom: ['', Validators.nullValidator],
-      balconyAreaTo: ['', Validators.nullValidator],
-      ceilingHeightFrom: ['', Validators.nullValidator],
-      ceilingHeightTo: ['', Validators.nullValidator],
-      numberOfBedroomsFrom: ['', Validators.nullValidator],
-      numberOfBedroomsTo: ['', Validators.nullValidator],
+      concierge: [null, Validators.nullValidator],
+      wheelchair: [null, Validators.nullValidator],
+      playground: [null, Validators.nullValidator],
+      yardTypeId: [null, Validators.nullValidator],
+      parkingTypeId: [null, Validators.nullValidator],
+      probabilityOfBidding: [null, Validators.nullValidator],
+      theSizeOfTrades: [null, Validators.nullValidator],
+      possibleReasonForBiddingIdList: [null, Validators.nullValidator],
+      note: [null, Validators.nullValidator],
+      contractPeriod: [null, Validators.required],
+      isCommissionIncludedInThePrice: [null, Validators.nullValidator],
+      amount: [null, Validators.required],
+      cadastralNumber: [null, Validators.nullValidator],
+      propertyDeveloperId: [null, Validators.nullValidator],
+      housingClass: [null, Validators.nullValidator],
+      housingCondition: [null, Validators.nullValidator],
+      numberOfApartments: [null, Validators.nullValidator],
+      floor: [null, Validators.nullValidator],
+      floorFrom: [null, Validators.nullValidator],
+      floorTo: [null, Validators.nullValidator],
+      numberOfRoomsFrom: [null, Validators.nullValidator],
+      numberOfRoomsTo: [null, Validators.nullValidator],
+      totalAreaFrom: [null, Validators.nullValidator],
+      totalAreaTo: [null, Validators.nullValidator],
+      livingAreaFrom: [null, Validators.nullValidator],
+      livingAreaTo: [null, Validators.nullValidator],
+      kitchenAreaFrom: [null, Validators.nullValidator],
+      kitchenAreaTo: [null, Validators.nullValidator],
+      balconyAreaFrom: [null, Validators.nullValidator],
+      balconyAreaTo: [null, Validators.nullValidator],
+      ceilingHeightFrom: [null, Validators.nullValidator],
+      ceilingHeightTo: [null, Validators.nullValidator],
+      numberOfBedroomsFrom: [null, Validators.nullValidator],
+      numberOfBedroomsTo: [null, Validators.nullValidator],
+      landArea: [null, Validators.nullValidator],
+      landAreaFrom: [null, Validators.nullValidator],
+      landAreaTo: [null, Validators.nullValidator],
+      numberOfFloorsFrom: [null, Validators.nullValidator],
+      numberOfFloorsTo: [null, Validators.nullValidator],
+      heatingSystemId: [null, Validators.nullValidator],
+      sewerageId: [null, Validators.nullValidator],
+      photoIdList: [[], Validators.nullValidator],
+      housingPlanImageIdList: [[], Validators.nullValidator],
     });
-
+    this.cdRef.detectChanges();
     this.loadDictionary();
   }
 
@@ -203,6 +225,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.dicService.getDics('PROPERTY_DEVELOPERS').subscribe(data => {
       this.propertyDevelopers = this.util.toSelectArray(data);
     });
+    this.dicService.getDics('SEWERAGE_SYSTEMS').subscribe(data => {
+      this.sewerageSystems = this.util.toSelectArray(data);
+    });
+    this.dicService.getDics('HEATING_SYSTEMS').subscribe(data => {
+      this.heatingSystems = this.util.toSelectArray(data);
+    });
     this.roomCountDic = this.util.roomCountDictionary();
   }
 
@@ -225,21 +253,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.applicationForm.housingCondition = this.applicationForm.residentialComplexId?.housingCondition;//Состояния
     this.applicationForm.numberOfApartments = this.applicationForm.residentialComplexId?.numberOfApartments;//Кол-во кв
     this.readonlyChooseJK = !this.util.isNullOrEmpty(this.applicationForm.residentialComplexId);
-  }
-
-  onFileChanged(event, id: number) {
-    this.selectedFile = event.target.files[0];
-    this.loading = true;
-    console.log(this.photo)
-    this.uploader.uploadData(this.selectedFile)
-      .subscribe(data => {
-        if (data != null) {
-          if (id == 1) {
-            this.photo.push(data)
-          }
-        }
-      });
-    this.loading = false;
   }
 
   getPhotoById(guid: string) {
@@ -278,18 +291,103 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.showModalWin = true;
   }
 
+  validate() {
+    if (this.applicationForm?.objectTypeId?.code == '003001') { //кв
+      if (this.applicationForm?.operationTypeId?.code == '001002') {//продать
+        if (this.util.isNullOrEmpty(this.applicationForm?.residentialComplexId)) {
+          this.applicationForm.controls['streetId'].setValidators([Validators.required]);
+          this.applicationForm.controls["streetId"].updateValueAndValidity();
+          this.applicationForm.controls['houseNumber'].setValidators([Validators.required]);
+          this.applicationForm.controls["houseNumber"].updateValueAndValidity();
+          this.applicationForm.controls['ceilingHeight'].setValidators([Validators.required]);
+          this.applicationForm.controls["ceilingHeight"].updateValueAndValidity();
+          this.applicationForm.controls['districtId'].setValidators([Validators.required]);
+          this.applicationForm.controls["districtId"].updateValueAndValidity();
+        } else {
+          this.applicationForm.controls['streetId'].setValidators([Validators.nullValidator]);
+          this.applicationForm.controls["streetId"].updateValueAndValidity();
+          this.applicationForm.controls['houseNumber'].setValidators([Validators.nullValidator]);
+          this.applicationForm.controls["houseNumber"].updateValueAndValidity();
+          this.applicationForm.controls['ceilingHeight'].setValidators([Validators.nullValidator]);
+          this.applicationForm.controls["ceilingHeight"].updateValueAndValidity();
+          this.applicationForm.controls['districtId'].setValidators([Validators.nullValidator]);
+          this.applicationForm.controls["districtId"].updateValueAndValidity();
+        }
+        this.applicationForm.controls['objectPrice'].setValidators([Validators.required]);
+        this.applicationForm.controls["objectPrice"].updateValueAndValidity();
+        this.applicationForm.controls['numberOfRooms'].setValidators([Validators.required]);
+        this.applicationForm.controls["numberOfRooms"].updateValueAndValidity();
+        this.applicationForm.controls['totalArea'].setValidators([Validators.required]);
+        this.applicationForm.controls["totalArea"].updateValueAndValidity();
+        this.applicationForm.controls['livingArea'].setValidators([Validators.required]);
+        this.applicationForm.controls["livingArea"].updateValueAndValidity();
+        this.applicationForm.controls['kitchenArea'].setValidators([Validators.required]);
+        this.applicationForm.controls["kitchenArea"].updateValueAndValidity();
+        this.applicationForm.controls['ceilingHeight'].setValidators([Validators.required]);
+        this.applicationForm.controls["ceilingHeight"].updateValueAndValidity();
+        this.applicationForm.controls['numberOfBedrooms'].setValidators([Validators.required]);
+        this.applicationForm.controls["numberOfBedrooms"].updateValueAndValidity();
+      } else if (this.applicationForm?.operationTypeId?.code == '001001') { //купить
+        this.applicationForm.controls['districtId'].setValidators([Validators.required]);
+        this.applicationForm.controls["districtId"].updateValueAndValidity();
+        this.applicationForm.controls['objectPrice'].setValidators([Validators.nullValidator]);
+        this.applicationForm.controls["objectPrice"].updateValueAndValidity();
+      }
+    } else if (this.applicationForm?.objectTypeId?.code == '003002') {//дом
+      this.applicationForm.controls['districtId'].setValidators([Validators.required]);
+      this.applicationForm.controls["districtId"].updateValueAndValidity();
+      if (this.applicationForm?.operationTypeId?.code == '001002') {//продать
+        this.applicationForm.controls['streetId'].setValidators([Validators.required]);
+        this.applicationForm.controls["streetId"].updateValueAndValidity();
+        this.applicationForm.controls['houseNumber'].setValidators([Validators.required]);
+        this.applicationForm.controls["houseNumber"].updateValueAndValidity();
+        this.applicationForm.controls['landArea'].setValidators([Validators.required]);
+        this.applicationForm.controls["landArea"].updateValueAndValidity();
+        this.applicationForm.controls['totalArea'].setValidators([Validators.required]);
+        this.applicationForm.controls["totalArea"].updateValueAndValidity();
+        this.applicationForm.controls['livingArea'].setValidators([Validators.required]);
+        this.applicationForm.controls["livingArea"].updateValueAndValidity();
+        this.applicationForm.controls['kitchenArea'].setValidators([Validators.required]);
+        this.applicationForm.controls["kitchenArea"].updateValueAndValidity();
+      }
+    }
+  }
+
   submit() {
+    this.validate();
+
+    const controls = this.applicationForm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.translate.get('claim.validator.' + name).subscribe((text: string) => {
+          this.notifyService.showInfo("Ошибка", "Поле " + text + " не заполнено!!!");
+        });
+      }
+    }
+
     this.application = this.applicationForm.value;
-    this.application.operationTypeId = this.applicationForm.operationTypeId?.value;
-    this.application.residentialComplexId = this.applicationForm.residentialComplexId?.value;
-    this.application.photoIdList = this.photo;
-    console.log(this.application)
+
     if (!this.util.isNullOrEmpty(this.application.cadastralNumber)) {
       if (this.application.cadastralNumber.length != 16) {
         this.notifyService.showError("Ошибка", "Длина поле кадастровый номер не верно");
         return;
       }
     }
+
+    this.application.operationTypeId = this.applicationForm.operationTypeId?.value;
+    this.application.objectTypeId = this.applicationForm.objectTypeId?.value;
+    if (!this.util.isNullOrEmpty(this.applicationForm.residentialComplexId?.value)) {
+      this.application.residentialComplexId = this.applicationForm.residentialComplexId?.value;
+    }
+    for (const ph of this.photoList) {
+      this.application.photoIdList.push(ph.guid);
+    }
+    for (const ph of this.photoPlanList) {
+      this.application.housingPlanImageIdList.push(ph.guid);
+    }
+
+    console.log(this.application)
+
     if (!this.util.isNullOrEmpty(this.application.parkingTypeId)) {
       console.log(this.application.parkingTypeId.indexOf("1"))
       if (this.application.parkingTypeId.indexOf("1") == 0) {
@@ -298,18 +396,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       }
     }
 
-    const controls = this.applicationForm.controls;
-    // for (const name in controls) {
-    //   if (controls[name].invalid) {
-    //     this.translate.get('claim.operation').subscribe((text: string) => {
-    //       this.notifyService.showInfo("Ошибка", "Поле " + name + " не заполнено!!!");
-    //     });
-    //     return
-    //   }
-    // }
-
-
-    // this.loading = true;
+    this.loading = true;
     this.claimService.saveClaim(this.application)
       .subscribe(data => {
         if (data != null) {
@@ -346,4 +433,30 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
+  onFileChanged(event, id: number) {
+    this.selectedFile = event.target.files[0];
+    this.loading = true;
+    this.uploader.uploadData(this.selectedFile)
+      .subscribe(data => {
+        if (data != null) {
+          this.fillPicture(data, id);
+        }
+      });
+    this.loading = false;
+  }
+
+  fillPicture(guid: any, id: number) {
+    let fm = `${this.configService.apiFileManagerUrl}`;
+    let obj = {};
+    obj['guid'] = guid.uuid;
+    obj['image'] = 'https://fm-htc.dilau.kz/download/' + guid.uuid + '/preview?access_token=' + this.util.getToken().access_token;
+    // obj['image'] = fm.toString() + '/download/' + guid.uuid + '/preview?access_token=' + this.util.getToken().access_token;
+    if (id == 1) {
+      this.photoList.push(obj)
+    } else if (id == 2) {
+      this.photoPlanList.push(obj)
+    } else if (id == 3) {
+      this.photo3DList.push(obj)
+    }
+  }
 }

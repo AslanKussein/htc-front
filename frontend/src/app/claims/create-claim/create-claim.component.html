@@ -64,7 +64,6 @@
                         <ng-select
                           [items]="objectType"
                           [(ngModel)]="applicationForm.objectTypeId"
-                          bindValue="value"
                           formControlName="objectTypeId"
                           placeholder="{{ 'claim.objectType' | translate }}">
                         </ng-select>
@@ -73,7 +72,10 @@
                         </div>
                       </div>
                       <div class="col-sm-5">
-                        <label translate>claim.objectPriceInLim</label>
+                        <label translate>claim.objectPriceInLim
+                          <span class="text-danger"
+                                *ngIf="(applicationForm.operationTypeId?.code == '001002' && !applicationForm.objectPrice)">&nbsp;*</span>
+                        </label>
                         <div class="input-group" *ngIf="applicationForm.operationTypeId?.code == '001001'">
                           <input type="number" min="0" class="form-control"
                                  placeholder="{{'patterns.from' | translate}}"
@@ -84,16 +86,16 @@
                         <input type="number" id="form1" class="form-control"
                                *ngIf="applicationForm.operationTypeId?.code != '001001'"
                                [(ngModel)]="applicationForm.objectPrice" formControlName="objectPrice" min="0">
-                        <div *ngIf="f.objectPrice.touched && f.objectPrice.invalid" class="text-danger">
+                        <div
+                          *ngIf="applicationForm.operationTypeId?.code == '001002' && f.objectPrice.touched && f.objectPrice.invalid"
+                          class="text-danger">
                           <div *ngIf="f.objectPrice.errors.required" translate>claim.requiredField</div>
                         </div>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-sm form-group required">
-                        <label translate>claim.ipoteka
-                          <span class="text-danger" *ngIf="!applicationForm.mortgage">&nbsp;*</span>
-                        </label>
+                      <div class="col-sm">
+                        <label translate>claim.ipoteka</label>
                         <ng-select
                           [items]="dicDynamic"
                           bindValue="value"
@@ -101,14 +103,9 @@
                           formControlName="mortgage"
                           placeholder="{{'claim.ipoteka' | translate}}">
                         </ng-select>
-                        <div *ngIf="f.mortgage.touched && f.mortgage.invalid" class="text-danger">
-                          <div *ngIf="f.mortgage.errors.required" translate>claim.requiredField</div>
-                        </div>
                       </div>
-                      <div class="col-sm form-group required" *ngIf="applicationForm.operationTypeId?.code == '001002'">
-                        <label translate>claim.encumbrance
-                          <span class="text-danger" *ngIf="!applicationForm.encumbrance">&nbsp;*</span>
-                        </label>
+                      <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code == '001002'">
+                        <label translate>claim.encumbrance</label>
                         <ng-select
                           [items]="dicDynamic"
                           bindValue="value"
@@ -116,16 +113,11 @@
                           formControlName="encumbrance"
                           placeholder="{{ 'claim.encumbrance' | translate }}">
                         </ng-select>
-                        <div *ngIf="f.encumbrance.touched && f.encumbrance.invalid" class="text-danger">
-                          <div *ngIf="f.encumbrance.errors.required" translate>claim.requiredField</div>
-                        </div>
                       </div>
                     </div>
                     <div class="row" *ngIf="applicationForm.operationTypeId?.code == '001002'">
-                      <div class="col-sm form-group required">
-                        <label translate>claim.barter
-                          <span class="text-danger" *ngIf="!applicationForm.exchange">&nbsp;*</span>
-                        </label>
+                      <div class="col-sm">
+                        <label translate>claim.barter</label>
                         <ng-select
                           [items]="dicDynamic"
                           bindValue="value"
@@ -133,14 +125,9 @@
                           formControlName="encumbrance"
                           placeholder="{{ 'claim.barter' | translate }}">
                         </ng-select>
-                        <div *ngIf="f.exchange.touched && f.exchange.invalid" class="text-danger">
-                          <div *ngIf="f.exchange.errors.required" translate>claim.requiredField</div>
-                        </div>
                       </div>
-                      <div class="col-sm form-group required">
-                        <label translate>claim.commonOwnership
-                          <span class="text-danger" *ngIf="!applicationForm.sharedOwnershipProperty">&nbsp;*</span>
-                        </label>
+                      <div class="col-sm">
+                        <label translate>claim.commonOwnership</label>
                         <ng-select
                           [items]="dicDynamic"
                           bindValue="value"
@@ -148,17 +135,11 @@
                           formControlName="sharedOwnershipProperty"
                           placeholder="{{ 'claim.commonOwnership' | translate }}">
                         </ng-select>
-                        <div *ngIf="f.sharedOwnershipProperty.touched && f.sharedOwnershipProperty.invalid"
-                             class="text-danger">
-                          <div *ngIf="f.sharedOwnershipProperty.errors.required" translate>claim.requiredField</div>
-                        </div>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-sm">
-                        <label translate>claim.probabilityBargaining
-                          <span class="text-danger" *ngIf="!applicationForm.probabilityOfBidding">&nbsp;*</span>
-                        </label>
+                        <label translate>claim.probabilityBargaining</label>
                         <ng-select
                           [items]="dicDynamic"
                           [(ngModel)]="applicationForm.probabilityOfBidding"
@@ -198,23 +179,36 @@
                     </div>
                     <div class="row">
                       <div class="col-sm">
-                        <label for="fillFromAndTo">Срок действия договора</label>
+                        <label for="fillFromAndTo" translate>claim.validator.contractPeriod
+                          <span class="text-danger" *ngIf="!applicationForm.contractPeriod">&nbsp;*</span>
+                        </label>
                         <input type="text" id="fillFromAndTo" class="form-control" bsDatepicker #ru="bsDatepicker"
                                [(ngModel)]="applicationForm.contractPeriod"
                                formControlName="contractPeriod"/>
+                        <div *ngIf="f.contractPeriod.touched && f.contractPeriod.invalid" class="text-danger">
+                          <div *ngIf="f.contractPeriod.errors.required" translate>claim.requiredField</div>
+                        </div>
                       </div>
                       <div class="col-sm">
-                        <label for="fillFromAnd" translate>Сумма по договору</label>
+                        <label for="fillFromAnd" translate>claim.validator.amount
+                          <span class="text-danger" *ngIf="!applicationForm.amount">&nbsp;*</span>
+                        </label>
                         <input type="number" id="fillFromAnd" class="form-control" [(ngModel)]="applicationForm.amount"
                                formControlName="amount" min="0"/>
+                        <div *ngIf="f.amount.touched && f.amount.invalid" class="text-danger">
+                          <div *ngIf="f.amount.errors.required" translate>claim.requiredField</div>
+                        </div>
                       </div>
                       <div class="col-sm">
                         <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input" id="defaultUnchecked"
+                          <input type="checkbox" class="custom-control-input" id="isCommissionIncludedInThePrice"
                                  [(ngModel)]="applicationForm.isCommissionIncludedInThePrice"
                                  formControlName="isCommissionIncludedInThePrice"/>
-                          <label class="custom-control-label" for="defaultUnchecked">Комиссия включена в
-                            стоимость</label>
+                          <label class="custom-control-label" for="isCommissionIncludedInThePrice">Комиссия включена в
+                            стоимость
+                            <span class="text-danger"
+                                  *ngIf="!applicationForm.isCommissionIncludedInThePrice">&nbsp;*</span>
+                          </label>
                         </div>
                       </div>
                     </div>
@@ -240,7 +234,7 @@
                     <div class="row">
                       <div class="col-sm">
                         <label for="name" translate>name
-                          <span class="text-danger" *ngIf="!applicationForm.sharedOwnershipProperty">&nbsp;*</span>
+                          <span class="text-danger" *ngIf="!applicationForm.firstName">&nbsp;*</span>
                         </label>
                         <input type="text" class="form-control" id="name"
                                [(ngModel)]="applicationForm.firstName"
@@ -278,8 +272,9 @@
                         <label for="phoneNumber" translate>claim.contacts <span class="text-danger"
                                                                                 *ngIf="!applicationForm.phoneNumber">&nbsp;*</span></label>
                         <input type="text" id="phoneNumber" class="form-control"
-                               [(ngModel)]="applicationForm.phoneNumber"
-                               formControlName="phoneNumber" prefix="+7" mask="(000) 000 00 00"
+                               [(ngModel)]="applicationForm.phoneNumber" name="phoneNumber"
+                               [formControl]="applicationForm.controls['phoneNumber']"
+                               prefix="+7" mask="(000) 000 00 00"
                                (ngModelChange)="searchByPhone()"/>
 
                         <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
@@ -323,57 +318,81 @@
                             <input type="file" hidden (change)="onFileChanged($event, 2)">
                           </label>
 
-                          <label class="btn btn-info btn-sm" translate>claim.upload3D
-                            <i class="fa fa-upload"></i>
-                            <input type="file" hidden (change)="onFileChanged($event, 3)">
-                          </label>
+                          <!--                          <label class="btn btn-info btn-sm" translate>claim.upload3D-->
+                          <!--                            <i class="fa fa-upload"></i>-->
+                          <!--                            <input type="file" hidden (change)="onFileChanged($event, 3)">-->
+                          <!--                          </label>-->
                         </div>
                         <div class="row">
-
-                          <div id="carousel-example-2" class="carousel slide carousel-fade" data-ride="carousel">
-                            <ol class="carousel-indicators">
-                              <li data-target="#carousel-example-2" attr.data-slide-to="{{i}}"
-                                  [class]="i==0 ? 'active': ''"
-                                  *ngFor="let claim of photo;let i = index"></li>
-                            </ol>
-                            <div class="carousel-inner" role="listbox">
-                              <div class="carousel-item" [class]="i==0 ? 'active': ''"
-                                   *ngFor="let claim of photo;let i = index">
-                                <div class="view">
-                                  <img class="d-block w-100"
-                                       src="{{getPhotoById(claim)}}"
-                                       alt="First slide">
-                                  <div class="mask rgba-black-light"></div>
-                                </div>
-                                <div class="carousel-caption">
-                                  <h3 class="h3-responsive">Light mask</h3>
-                                  <p>{{i}} text</p>
+                          <div class="col-sm" *ngIf="photoList.length > 0">
+                            <span>Фото + {{photoList.length}}</span>
+                            <div id="photoCarousel" class="carousel slide" data-ride="carousel" style="width: 302px;">
+                              <ol class="carousel-indicators">
+                                <li data-target="#photoCarousel" attr.data-slide-to="{{i}}"
+                                    [class]="i==0 ? 'active': ''"
+                                    *ngFor="let photo of photoList;let i = index">
+                                </li>
+                              </ol>
+                              <div class="carousel-inner">
+                                <div class="carousel-item" [class]="i==0 ? 'active': ''"
+                                     *ngFor="let photo of photoList;let i = index">
+                                  <img [src]="photo.image" alt="First Slide" class="photoList" width="302" height="320">
                                 </div>
                               </div>
-                              <!--                              <div class="carousel-item">-->
-                              <!--                                &lt;!&ndash;Mask color&ndash;&gt;-->
-                              <!--                                <div class="view">-->
-                              <!--                                  <img class="d-block w-100"-->
-                              <!--                                       src="https://mdbootstrap.com/img/Photos/Slides/img%20(6).jpg"-->
-                              <!--                                       alt="Second slide">-->
-                              <!--                                  <div class="mask rgba-black-strong"></div>-->
-                              <!--                                </div>-->
-                              <!--                                <div class="carousel-caption">-->
-                              <!--                                  <h3 class="h3-responsive">Strong mask</h3>-->
-                              <!--                                  <p>Secondary text</p>-->
-                              <!--                                </div>-->
-                              <!--                              </div>-->
+                              <a class="carousel-control-prev" href="#photoCarousel" data-slide="prev">
+                                <span class="carousel-control-prev-icon bg-dark"></span>
+                              </a>
+                              <a class="carousel-control-next" href="#photoCarousel" data-slide="next">
+                                <span class="carousel-control-next-icon bg-dark"></span>
+                              </a>
                             </div>
-                            <a class="carousel-control-prev" href="#carousel-example-2" role="button" data-slide="prev">
-                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                              <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#carousel-example-2" role="button" data-slide="next">
-                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                              <span class="sr-only">Next</span>
-                            </a>
                           </div>
-
+                          <div class="col-sm" *ngIf="photoPlanList.length > 0">
+                            <span>Планы + {{photoPlanList.length}}</span>
+                            <div id="planCarousel" class="carousel slide" data-ride="carousel" style="width: 302px;">
+                              <ol class="carousel-indicators">
+                                <li data-target="#planCarousel" attr.data-slide-to="{{i}}"
+                                    [class]="i==0 ? 'active': ''"
+                                    *ngFor="let plan of photoPlanList;let i = index">
+                                </li>
+                              </ol>
+                              <div class="carousel-inner">
+                                <div class="carousel-item" [class]="i==0 ? 'active': ''"
+                                     *ngFor="let plan of photoPlanList;let i = index">
+                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="302" height="320">
+                                </div>
+                              </div>
+                              <a class="carousel-control-prev" href="#planCarousel" data-slide="prev">
+                                <span class="carousel-control-prev-icon bg-dark"></span>
+                              </a>
+                              <a class="carousel-control-next" href="#planCarousel" data-slide="next">
+                                <span class="carousel-control-next-icon bg-dark"></span>
+                              </a>
+                            </div>
+                          </div>
+                          <!--                          <div class="col-sm">-->
+                          <!--                            <span>3D Туры</span>-->
+                          <!--                            <div id="3DphotoCarousel" class="carousel slide" data-ride="carousel">-->
+                          <!--                              <ol class="carousel-indicators">-->
+                          <!--                                <li data-target="#3DphotoCarousel" attr.data-slide-to="{{i}}"-->
+                          <!--                                    [class]="i==0 ? 'active': ''"-->
+                          <!--                                    *ngFor="let p of photo3DList;let i = index">-->
+                          <!--                                </li>-->
+                          <!--                              </ol>-->
+                          <!--                              <div class="carousel-inner">-->
+                          <!--                                <div class="carousel-item" [class]="i==0 ? 'active': ''"-->
+                          <!--                                     *ngFor="let p of photo3DList;let i = index">-->
+                          <!--                                  <img [src]="p.image" alt="First Slide" class="photoList" width="302" height="320">-->
+                          <!--                                </div>-->
+                          <!--                              </div>-->
+                          <!--                              <a class="carousel-control-prev" href="#3DphotoCarousel" data-slide="prev">-->
+                          <!--                                <span class="carousel-control-prev-icon bg-dark"></span>-->
+                          <!--                              </a>-->
+                          <!--                              <a class="carousel-control-next" href="#3DphotoCarousel" data-slide="next">-->
+                          <!--                                <span class="carousel-control-next-icon bg-dark"></span>-->
+                          <!--                              </a>-->
+                          <!--                            </div>-->
+                          <!--                          </div>-->
                         </div>
                         <div class="row">
                           <h5 translate>claim.photoLegend</h5>
@@ -419,7 +438,9 @@
                       <div class="col-sm-6">
                         <div class="row">
                           <div class="col-sm form-group required">
-                            <label for="patronymic" translate>claim.city</label>
+                            <label for="patronymic" translate>claim.city
+                              <span class="text-danger" *ngIf="!applicationForm.cityId">&nbsp;*</span>
+                            </label>
                             <ng-select
                               [items]="city"
                               [(ngModel)]="applicationForm.cityId"
@@ -431,7 +452,8 @@
                               <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>
                             </div>
                           </div>
-                          <div class="col-sm form-group required">
+                          <div class="col-sm"
+                               *ngIf="applicationForm.objectTypeId?.code=='003001' && applicationForm.operationTypeId?.code=='001002'">
                             <label for="patronymic" translate>claim.building</label>
                             <ng-select
                               [items]="residentialComplexes"
@@ -440,14 +462,10 @@
                               formControlName="residentialComplexId"
                               placeholder="{{ 'claim.building' | translate }}">
                             </ng-select>
-                            <div *ngIf="f.residentialComplexId.touched && f.residentialComplexId.invalid"
-                                 class="text-danger">
-                              <div *ngIf="f.residentialComplexId.errors.required" translate>claim.requiredField</div>
-                            </div>
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col-sm form-group required">
+                          <div class="col-sm form-group required" *ngIf="applicationForm.operationTypeId?.code=='001002'">
                             <label for="patronymic" translate>claim.street</label>
                             <ng-select
                               bindValue="value"
@@ -461,13 +479,20 @@
                               <div *ngIf="f.streetId.errors.required" translate>claim.requiredField</div>
                             </div>
                           </div>
-                          <div class="col-sm form-group required">
-                            <label for="patronymic" translate>claim.numberHouse</label>
-
-                            <input type="text" id="houseNumber" class="form-control"
-                                   [(ngModel)]="applicationForm.houseNumber"
-                                   [readonly]="readonlyChooseJK"
-                                   formControlName="houseNumber"/>
+                          <div class="col-sm form-group required" *ngIf="applicationForm.operationTypeId?.code=='001002'">
+                            <label for="patronymic" translate>claim.numberHouse
+                              <span class="text-danger" *ngIf="!applicationForm.houseNumber">&nbsp;*</span>
+                            </label>
+                            <div class="input-group">
+                              <input type="number" min="0" class="form-control"
+                                     placeholder="{{'claim.numberHouse' | translate}}"
+                                     [(ngModel)]="applicationForm.houseNumber"
+                                     formControlName="houseNumber"/>
+                              <input type="text" class="form-control"
+                                     placeholder="Номер дома (дробь/буква/строение)"
+                                     [(ngModel)]="applicationForm.houseNumberFraction"
+                                     formControlName="houseNumberFraction"/>
+                            </div>
                             <div *ngIf="f.houseNumber.touched && f.houseNumber.invalid" class="text-danger">
                               <div *ngIf="f.houseNumber.errors.required" translate>claim.requiredField</div>
                             </div>
@@ -507,15 +532,44 @@
                                    [(ngModel)]="applicationForm.cadastralNumber" mask="00:000:000:000:00:000"
                                    formControlName="cadastralNumber" min="21"/>
                           </div>
-                          <div class="col-sm-5" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                          <div class="col-sm-5" *ngIf="applicationForm.objectTypeId?.code == '003001'">
                             <label>Этаж</label>
-                            <div class="input-group">
+                            <div class="input-group" *ngIf="applicationForm.operationTypeId?.code == '001001'">
                               <input type="number" min="0" class="form-control"
                                      placeholder="{{'patterns.from2' | translate}}"
                                      [(ngModel)]="applicationForm.floorFrom" formControlName="floorFrom"/>
                               <input type="number" min="0" class="form-control"
                                      placeholder="{{'patterns.to2' | translate}}"
                                      [(ngModel)]="applicationForm.floorTo" formControlName="floorTo"/>
+                            </div>
+                            <div *ngIf="applicationForm.operationTypeId?.code != '001001'">
+                              <input type="number" min="0" class="form-control"
+                                     placeholder="Этаж"
+                                     [(ngModel)]="applicationForm.floor"
+                                     formControlName="floor"/>
+                            </div>
+                          </div>
+                          <div class="col-sm" *ngIf="applicationForm.objectTypeId?.code=='003002'">
+                            <label for="patronymic" translate>claim.validator.landArea
+                              <span class="text-danger" *ngIf="!applicationForm.landArea">&nbsp;*</span>
+                            </label>
+                            <div class="input-group" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                              <input type="number" min="0" class="form-control"
+                                     placeholder="{{'patterns.from2' | translate}}"
+                                     [(ngModel)]="applicationForm.landAreaFrom" formControlName="landAreaFrom"/>
+                              <input type="number" min="0" class="form-control"
+                                     placeholder="{{'patterns.to2' | translate}}"
+                                     [(ngModel)]="applicationForm.landAreaTo" formControlName="landAreaTo"/>
+                            </div>
+
+                            <div *ngIf="applicationForm.operationTypeId?.code != '001001'">
+                              <input type="number" min="0" class="form-control"
+                                     placeholder="'Площадь участка (соток)'"
+                                     [(ngModel)]="applicationForm.landArea"
+                                     formControlName="landArea"/>
+                              <div *ngIf="f.landArea.touched && f.landArea.invalid" class="text-danger">
+                                <div *ngIf="f.landArea.errors.required" translate>claim.requiredField</div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -588,7 +642,8 @@
                                   <div *ngIf="f.kitchenArea.errors.required" translate>claim.requiredField</div>
                                 </div>
                               </div>
-                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                              <div class="col-sm"
+                                   *ngIf="applicationForm.operationTypeId?.code == '001001' && applicationForm.objectTypeId?.code=='003001'">
                                 <label translate>claim.balcony</label>
                                 <div class="input-group">
                                   <input type="number" min="0" class="form-control"
@@ -600,17 +655,15 @@
                                          [(ngModel)]="applicationForm.balconyAreaTo" formControlName="balconyAreaTo"/>
                                 </div>
                               </div>
-                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code != '001001'">
-                                <label for="balconyArea" translate>claim.balcony <span class="text-danger"
-                                                                                       *ngIf="!applicationForm.balconyArea">&nbsp;*</span></label>
+                              <div class="col-sm"
+                                   *ngIf="applicationForm.operationTypeId?.code != '001001' && applicationForm.objectTypeId?.code=='003001'">
+                                <label for="balconyArea" translate>claim.balcony </label>
                                 <input type="number" id="balconyArea" class="form-control"
                                        [(ngModel)]="applicationForm.balconyArea"
                                        formControlName="balconyArea" min="0"/>
-                                <div *ngIf="f.balconyArea.touched && f.balconyArea.invalid" class="text-danger">
-                                  <div *ngIf="f.balconyArea.errors.required" translate>claim.requiredField</div>
-                                </div>
                               </div>
-                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                              <div class="col-sm"
+                                   *ngIf="applicationForm.operationTypeId?.code == '001001' && applicationForm.objectTypeId?.code=='003001'">
                                 <label translate>claim.heightWall</label>
                                 <div class="input-group">
                                   <input type="number" min="0" class="form-control"
@@ -623,7 +676,8 @@
                                          formControlName="ceilingHeightTo"/>
                                 </div>
                               </div>
-                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code != '001001'">
+                              <div class="col-sm"
+                                   *ngIf="applicationForm.operationTypeId?.code != '001001' && applicationForm.objectTypeId?.code=='003001'">
                                 <label for="ceilingHeight" translate>claim.heightWall <span class="text-danger"
                                                                                             *ngIf="!applicationForm.ceilingHeight">&nbsp;*</span></label>
                                 <input type="number" id="ceilingHeight" class="form-control"
@@ -634,7 +688,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="row">
+                            <div class="row" *ngIf="applicationForm.objectTypeId?.code=='003001'">
                               <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code == '001001'">
                                 <label translate>claim.badRoomCount</label>
                                 <div class="input-group">
@@ -679,8 +733,7 @@
                                     <div class="col-sm">
                                       <input type="checkbox" class="form-control"
                                              [(ngModel)]="applicationForm.separateBathroom"
-                                             formControlName="separateBathroom"
-                                      />
+                                             formControlName="separateBathroom"/>
                                     </div>
                                   </div>
                                 </div>
@@ -695,44 +748,50 @@
                             <legend class="scheduler-border" translate>claim.characterHouse</legend>
                             <div class="row">
                               <div class="col-sm form-group required">
-                                <label class="control-labels" translate>claim.district</label>
+                                <label class="control-labels" translate>claim.validator.districtId</label>
                                 <ng-select
                                   [items]="districts"
                                   bindValue="value"
                                   [readonly]="readonlyChooseJK"
                                   [(ngModel)]="applicationForm.districtId"
                                   formControlName="districtId"
-                                  placeholder="{{ 'claim.district' | translate }}">
+                                  placeholder="{{ 'claim.validator.districtId' | translate }}">
                                 </ng-select>
                                 <div *ngIf="f.districtId.touched && f.districtId.invalid" class="text-danger">
                                   <div *ngIf="f.districtId.errors.required" translate>claim.requiredField</div>
                                 </div>
                               </div>
                               <div class="col-sm">
-                                <label for="numberOfFloors" translate>claim.flatHouse <span class="text-danger"
-                                                                                            *ngIf="!applicationForm.numberOfFloors">&nbsp;*</span></label>
-                                <input type="number" id="numberOfFloors" class="form-control"
-                                       [(ngModel)]="applicationForm.numberOfFloors" [readonly]="readonlyChooseJK"
-                                       formControlName="numberOfFloors" min="0"/>
-                                <div *ngIf="f.numberOfFloors.touched && f.numberOfFloors.invalid" class="text-danger">
-                                  <div *ngIf="f.numberOfFloors.errors.required" translate>claim.requiredField</div>
+                                <label for="numberOfFloors" translate>claim.flatHouse</label>
+                                <div class="input-group" *ngIf="applicationForm.operationTypeId?.code == '001001'">
+                                  <input type="number" min="0" class="form-control"
+                                         placeholder="{{'patterns.from2' | translate}}"
+                                         [(ngModel)]="applicationForm.numberOfFloorsFrom"
+                                         formControlName="numberOfFloorsFrom"/>
+                                  <input type="number" min="0" class="form-control"
+                                         placeholder="{{'patterns.to2' | translate}}"
+                                         [(ngModel)]="applicationForm.numberOfFloorsTo"
+                                         formControlName="numberOfFloorsTo"/>
                                 </div>
-                              </div>
-                              <div class="col-sm">
-                                <label for="apartmentsOnTheSite" translate>claim.appInFlat <span class="text-danger"
-                                                                                                 *ngIf="!applicationForm.apartmentsOnTheSite">&nbsp;*</span></label>
-                                <input type="number" id="apartmentsOnTheSite" class="form-control"
-                                       [(ngModel)]="applicationForm.apartmentsOnTheSite" [readonly]="readonlyChooseJK"
-                                       formControlName="numberOfFloors" min="1"/>
-                                <div *ngIf="f.apartmentsOnTheSite.touched && f.apartmentsOnTheSite.invalid"
-                                     class="text-danger">
-                                  <div *ngIf="f.apartmentsOnTheSite.errors.required" translate>claim.requiredField
+
+                                <div *ngIf="applicationForm.operationTypeId?.code != '001001'">
+                                  <input type="number" id="numberOfFloors" class="form-control"
+                                         [(ngModel)]="applicationForm.numberOfFloors" [readonly]="readonlyChooseJK"
+                                         formControlName="numberOfFloors" min="0"/>
+                                  <div *ngIf="f.numberOfFloors.touched && f.numberOfFloors.invalid" class="text-danger">
+                                    <div *ngIf="f.numberOfFloors.errors.required" translate>claim.requiredField</div>
                                   </div>
                                 </div>
                               </div>
+                              <div class="col-sm" *ngIf="applicationForm.objectTypeId?.code=='003001'">
+                                <label for="apartmentsOnTheSite" translate>claim.appInFlat</label>
+                                <input type="number" id="apartmentsOnTheSite" class="form-control"
+                                       [(ngModel)]="applicationForm.apartmentsOnTheSite" [readonly]="readonlyChooseJK"
+                                       formControlName="numberOfFloors" min="1"/>
+                              </div>
                             </div>
                             <div class="row">
-                              <div class="col-sm">
+                              <div class="col-sm" *ngIf="applicationForm.objectTypeId?.code=='003001' && applicationForm.operationTypeId?.code=='001002'">
                                 <label class="control-labels">Застройщик</label>
                                 <ng-select
                                   [items]="propertyDevelopers"
@@ -743,19 +802,39 @@
                                   placeholder="{{ 'claim.material' | translate }}">
                                 </ng-select>
                               </div>
-                              <div class="col-sm">
+                              <div class="col-sm" *ngIf="applicationForm.objectTypeId?.code=='003001' && applicationForm.operationTypeId?.code=='001002'">
                                 <label class="control-labels" for="housingClass">Класс жилья</label>
                                 <input type="text" id="housingClass" class="form-control"
                                        [(ngModel)]="applicationForm.housingClass" [readonly]="readonlyChooseJK"
                                        formControlName="housingClass"/>
                               </div>
-                              <div class="col-sm">
+                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code != '001002' && applicationForm.objectTypeId?.code != '003001' ">
                                 <label class="control-labels">Состояние</label>
                                 <input type="text" id="housingCondition" class="form-control"
                                        [(ngModel)]="applicationForm.housingCondition" [readonly]="readonlyChooseJK"
                                        formControlName="housingCondition"/>
                               </div>
-                              <div class="col-sm">
+                              <div class="col-sm" *ngIf="this.applicationForm?.objectTypeId?.code == '003002'">
+                                <label class="control-labels">Канализация</label>
+                                <ng-select
+                                  [items]="heatingSystems"
+                                  [(ngModel)]="applicationForm.heatingSystemId"
+                                  formControlName="heatingSystemId"
+                                  bindValue="value"
+                                  placeholder="Канализация">
+                                </ng-select>
+                              </div>
+                              <div class="col-sm" *ngIf="this.applicationForm?.objectTypeId?.code == '003002'">
+                                <label class="control-labels">Отопление</label>
+                                <ng-select
+                                  [items]="sewerageSystems"
+                                  [(ngModel)]="applicationForm.sewerageId"
+                                  formControlName="sewerageId"
+                                  bindValue="value"
+                                  placeholder="Отопление">
+                                </ng-select>
+                              </div>
+                              <div class="col-sm" *ngIf="applicationForm.objectTypeId?.code=='003001' && applicationForm.operationTypeId?.code=='001002'">
                                 <label class="control-labels">Кол-во кв</label>
                                 <input type="number" id="numberOfApartments" class="form-control"
                                        [(ngModel)]="applicationForm.numberOfApartments" [readonly]="readonlyChooseJK"
@@ -774,20 +853,13 @@
                                   placeholder="{{ 'claim.material' | translate }}">
                                 </ng-select>
                               </div>
-                              <div class="col-sm">
-                                <label for="yearOfConstruction" translate>claim.buildYear <span class="text-danger"
-                                                                                                *ngIf="!applicationForm.yearOfConstruction">&nbsp;*</span></label>
+                              <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code != '001002' && applicationForm.objectTypeId?.code != '003001'">
+                                <label for="yearOfConstruction" translate>claim.buildYear</label>
                                 <input type="number" id="yearOfConstruction" class="form-control"
                                        [(ngModel)]="applicationForm.yearOfConstruction" [readonly]="readonlyChooseJK"
                                        formControlName="yearOfConstruction" min="1"/>
-
-                                <div *ngIf="f.yearOfConstruction.touched && f.yearOfConstruction.invalid"
-                                     class="text-danger">
-                                  <div *ngIf="f.yearOfConstruction.errors.required" translate>claim.requiredField
-                                  </div>
-                                </div>
                               </div>
-                              <div class="col-sm">
+                              <div class="col-sm" *ngIf="applicationForm.objectTypeId?.code=='003001'">
                                 <label class="control-labels" translate>claim.lift</label>
                                 <ng-select
                                   [items]="elevatorType"
@@ -801,7 +873,7 @@
                             </div>
                           </fieldset>
                         </div>
-                        <div class="row">
+                        <div class="row" *ngIf="applicationForm.objectTypeId?.code=='003001'">
                           <fieldset class="scheduler-border col-sm-11">
                             <legend class="scheduler-border" translate>claim.porch</legend>
                             <div class="row">
@@ -830,7 +902,7 @@
                             </div>
                           </fieldset>
                         </div>
-                        <div class="row">
+                        <div class="row" *ngIf="applicationForm.objectTypeId?.code=='003001'">
                           <fieldset class="scheduler-border col-sm-11">
                             <legend class="scheduler-border" translate>claim.territory</legend>
                             <div class="row">
@@ -899,11 +971,11 @@
   <div class="row">
     <div class="col-sm">
 
-      <button type="button" mdbBtn color="success" class="btn btn-sm btn-info" style="width: 200px; float: right"
-              mdbWavesEffect (click)="submit()">
-        <span class="fa fa-save" translate> claim.saveClaim</span>
+      <button type="button" mdbBtn color="success" class="btn btn-info btn2" style="width: 200px; float: right"
+              mdbWavesEffect (click)="submit()" [disabled]="!this.applicationForm?.operationTypeId && !this.applicationForm?.objectTypeId">
+        <span class="fa fa-save" translate> patterns.save</span>
       </button>
-      <button type="button" class="btn btn-sm btn-success" style="width: 200px;float: right" translate>
+      <button type="button" class="btn btn-success btn2" style="width: 200px;float: right" translate>
         claim.generateContract
       </button>
     </div>

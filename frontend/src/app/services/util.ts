@@ -119,4 +119,8 @@ export class Util {
     }
     return dic_;
   }
+
+  getToken() {
+    return JSON.parse(localStorage.getItem('currentUser'))
+  }
 }

@@ -46,6 +46,8 @@ export class ApplicationDto implements BaseEntity {
   public districtId?: number;//ID района
   public district?: string;//Район
   public numberOfFloors?: number;//Этажность дома
+  public numberOfFloorsFrom?: number;//Этажность дома с
+  public numberOfFloorsTo?: number;//Этажность дома по
   public apartmentsOnTheSite?: string;//Квартир на площадке
   public materialOfConstructionId?: string;//Материал постройки
   public yearOfConstruction?: number;//Год постройки
@@ -80,4 +82,7 @@ export class ApplicationDto implements BaseEntity {
   public numberOfApartments?: number;//""Общее количество квартир"
   public sewerageId?: number;//""Отопительная система"
   public heatingSystemId?: number;//""Канализация"
+  public landArea?: number;//""Площадь участка"
+  public landAreaFrom?: number;//""Площадь участка от"
+  public landAreaTo?: number;//""Площадь участка до"
 }

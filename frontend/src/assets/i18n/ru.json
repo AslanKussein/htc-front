@@ -22,12 +22,32 @@
     "chooseElement": "Выберите данные",
     "noDataFount": "Данные не найдены",
     "from2": "от",
-    "to2": "до"
+    "to2": "до",
+    "save": "Сохранить"
   },
   "news": {
     "title": "Новости"
   },
   "claim": {
+    "validator": {
+      "landArea": "Площадь участка",
+      "districtId": "Район",
+      "cityId": "Город",
+      "contractPeriod": "Срок действия договора",
+      "amount": "Сумма по договору",
+      "firstName": "Имя",
+      "surname": "Фамилия",
+      "phoneNumber": "Контакты",
+      "objectPrice": "Цена объекта (млн/тг)",
+      "streetId": "Улица",
+      "houseNumber": "Номер дома",
+      "numberOfRooms": "Количество комнат",
+      "totalArea": "Площадь",
+      "livingArea": "Жилая",
+      "kitchenArea": "Кухня",
+      "ceilingHeight": "Высота потолков",
+      "numberOfBedrooms": "Количество спален"
+    },
     "title": "Заявки",
     "step": "Шаг",
     "fillClaims": "Заполните заявку",
@@ -101,7 +121,6 @@
     "withoutParking": "Отсутствует парковка",
     "overgroundParking": "Надземный паркинг",
     "undergroundParking": "Подземный паркинг",
-    "district": "Район",
     "flatHouse": "Этажность дома",
     "appInFlat": "Кв. на площадке",
     "material": "Материал",

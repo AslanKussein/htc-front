@@ -3,6 +3,7 @@ import {ConfigService} from './config.service';
 import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs/index';
 import {catchError, tap} from 'rxjs/internal/operators';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,18 @@ export class UploaderService {
         }),
         catchError(this.handleError)
       );
+  }
+
+  /**
+   * downloadPreview
+   * @param guid
+   * временно
+   */
+  public getPhotoByIdPreview(guid: string): Observable<string> {
+    return this.http.get<string>(`${this.configService.apiFileManagerUrl}/download/${guid}/preview`).pipe(
+      map((res) => res)
+    )
+
   }
 
   public removePhotoById(guid): Observable<any> {

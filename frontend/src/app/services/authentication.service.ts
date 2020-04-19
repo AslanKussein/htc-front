@@ -4,6 +4,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {User} from "../models/users";
 import {ConfigService} from "./config.service";
+import {Util} from "./util";
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService {
@@ -12,8 +13,9 @@ export class AuthenticationService {
   public currentUser: Observable<User>;
 
   constructor(private http: HttpClient,
-              private configService: ConfigService) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+              private configService: ConfigService,
+              private util: Util) {
+    this.currentUserSubject = new BehaviorSubject<User>(this.util.getToken());
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
