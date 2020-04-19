@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, ViewChild} from '@angular/core';
 import {BsLocaleService, defineLocale, ModalDirective, ruLocale} from 'ngx-bootstrap';
 import {FormBuilder, Validators} from "@angular/forms";
+import {Util} from "../../../services/util";
 
 @Component({
   selector: 'show-image',
@@ -17,9 +18,9 @@ export class ShowImageComponent implements OnInit, OnChanges {
   isShow = false;
   submitted;
   changed = false;
-  image: any;
+  preview: any;
 
-  constructor() {
+  constructor(private util: Util) {
   }
 
   ngOnInit() {
@@ -32,7 +33,7 @@ export class ShowImageComponent implements OnInit, OnChanges {
 
   @Input()
   set act(act: any) {
-    console.log(this.image)
+    this.preview = 'https://fm-htc.dilau.kz/download/' + act + '?access_token=' + this.util.getToken().access_token;
     console.log(act)
   }
 

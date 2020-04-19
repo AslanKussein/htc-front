@@ -329,14 +329,15 @@
                             <div id="photoCarousel" class="carousel slide" data-ride="carousel" style="width: 302px;">
                               <ol class="carousel-indicators">
                                 <li data-target="#photoCarousel" attr.data-slide-to="{{i}}"
-                                    [class]="i==0 ? 'active': ''"
+                                    class="bg-dark" [class]="i==0 ? 'active': ''"
                                     *ngFor="let photo of photoList;let i = index">
                                 </li>
                               </ol>
                               <div class="carousel-inner">
                                 <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                      *ngFor="let photo of photoList;let i = index">
-                                  <img [src]="photo.image" alt="First Slide" class="photoList" width="302" height="320">
+                                  <img [src]="photo.image" alt="First Slide" class="photoList" width="302" height="320"
+                                  (click)="showPhotoFull(photo.guid)">
                                 </div>
                               </div>
                               <a class="carousel-control-prev" href="#photoCarousel" data-slide="prev">
