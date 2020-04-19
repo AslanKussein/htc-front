@@ -24,7 +24,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.findClientsData(1);
+    this.findClientsData(0);
   }
 
   pageChanged(event: any): void {
