@@ -3,6 +3,7 @@ import {ConfigService} from './config.service';
 import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, tap} from "rxjs/operators";
+import {NotificationService} from "./notification.service";
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +25,15 @@ export class ClaimService {
         tap(data => {
           console.log(data)
         }),
-        // catchError(this.handleError)
       );
   }
 
+  private handleError(error: HttpErrorResponse) {
+    if (error instanceof ErrorEvent) {
+      console.error('An error occurred:', error.message);
+    } else {
+    }
+    return throwError(
+      error);
+  }
 }

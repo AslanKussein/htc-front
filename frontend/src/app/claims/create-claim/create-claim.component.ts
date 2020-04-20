@@ -399,7 +399,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
           this.notifyService.showSuccess('success', 'Успешно сохранено');
         }
       }, err => {
-        this.notifyService.showError('warning', err.message);
+        this.notifyService.showWarning('warning', err);
       });
     this.loading = false;
   }
