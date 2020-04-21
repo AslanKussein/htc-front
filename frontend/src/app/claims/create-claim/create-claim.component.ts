@@ -8,7 +8,6 @@ import {NgSelectConfig} from "@ng-select/ng-select";
 import {UploaderService} from "../../services/uploader.service";
 import {DicService} from "../../services/dic.service";
 import {Dic} from "../../models/dic";
-import {language} from "../../../environments/language";
 import {TranslateService} from "@ngx-translate/core";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ruLocale} from "ngx-bootstrap/locale";
@@ -16,7 +15,6 @@ import {BsLocaleService, BsModalRef, BsModalService} from "ngx-bootstrap";
 import {OwnerService} from "../../services/owner.service";
 import {Observable} from "rxjs";
 import {ComponentCanDeactivate} from "../../canDeactivate/componentCanDeactivate";
-import {ModalDirective} from "angular-bootstrap-md";
 import {ConfigService} from "../../services/config.service";
 import {ModalComponent} from "./modal.window/modal.component";
 
@@ -30,7 +28,6 @@ import {ModalComponent} from "./modal.window/modal.component";
   styleUrls: ['./create-claim.component.scss']
 })
 export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
-
 
   application: ApplicationDto;
   xVal: string;
@@ -434,10 +431,27 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   canDeactivate(): boolean | Observable<boolean> {
     if (!this.saved) {
       let result = confirm("Вы хотите покинуть страницу?");
-      console.log('result ', result)
+      if (result) {
+        if (this.photoList.length > 0) {
+          this.removePhoto(this.photoList);
+        }
+        if (this.photoPlanList.length > 0) {
+          this.removePhoto(this.photoPlanList);
+        }
+        if (this.photo3DList.length > 0) {
+          this.removePhoto(this.photo3DList);
+        }
+      }
       return result;
     } else {
       return true;
+    }
+  }
+
+  removePhoto(data: any) {
+    for (const element of data) {
+      this.uploader.removePhotoById(element.guid)
+        .subscribe(data => {});
     }
   }
 

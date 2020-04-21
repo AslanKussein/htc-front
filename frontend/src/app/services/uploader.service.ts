@@ -47,7 +47,7 @@ export class UploaderService {
   }
 
   public removePhotoById(guid): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/download/` + guid, {})
+    return this.http.delete<any>(`${this.configService.apiFileManagerUrl}/delete/` + guid, {})
       .pipe(
         tap(data => {
         }),
