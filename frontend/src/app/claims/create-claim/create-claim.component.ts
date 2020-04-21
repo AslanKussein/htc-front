@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, ElementRef, Injectable, OnInit, ViewChild} from '@angular/core';
-import {ApplicationDto} from "../../models/applicationDto";
+import {ApplicationDto} from "../../models/createClaim/applicationDto";
 import {Util} from "../../services/util";
 import {NotificationService} from "../../services/notification.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -17,6 +17,10 @@ import {Observable} from "rxjs";
 import {ComponentCanDeactivate} from "../../canDeactivate/componentCanDeactivate";
 import {ConfigService} from "../../services/config.service";
 import {ModalComponent} from "./modal.window/modal.component";
+import {RealPropertyRequestDto} from "../../models/createClaim/realPropertyRequestDto";
+import {RealPropertyOwnerDto} from "../../models/createClaim/realPropertyOwnerDto";
+import {PurchaseInfoDto} from "../../models/createClaim/purchaseInfoDto";
+import {BigDecimalPeriod} from "../../models/common/bigDecimalPeriod";
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +34,6 @@ import {ModalComponent} from "./modal.window/modal.component";
 export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   application: ApplicationDto;
-  xVal: string;
   selectedFile: File;
   loading = false;
   photoList: any[] = [];
@@ -43,7 +46,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   parkingTypes: Dic[];
   streets: Dic[];
   residentialComplexes: Dic[];
-  realProperties: Dic[];
   propertyDevelopers: Dic[];
   heatingSystems: Dic[];
   sewerageSystems: Dic[];
@@ -60,7 +62,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   readonlyChooseJK: boolean = false;
   saved: boolean = false;
   modalRef: BsModalRef;
-
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -87,7 +88,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   ngOnInit(): void {
     this.applicationForm = this.formBuilder.group({
       id: [null, Validators.nullValidator],
-      operationTypeId: ['', Validators.required],
+      operationTypeId: [null, Validators.required],
       objectTypeId: [null, Validators.required],
       objectPrice: [null, Validators.nullValidator],
       surname: [null, Validators.required],
@@ -166,6 +167,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       sewerageId: [null, Validators.nullValidator],
       photoIdList: [[], Validators.nullValidator],
       housingPlanImageIdList: [[], Validators.nullValidator],
+      realPropertyRequestDto: [new RealPropertyRequestDto(), Validators.nullValidator],
+      realPropertyOwnerDto: [new RealPropertyOwnerDto(), Validators.nullValidator],
+      purchaseInfoDto: [new PurchaseInfoDto(), Validators.nullValidator],
     });
     this.cdRef.detectChanges();
     this.loadDictionary();
@@ -190,7 +194,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.dicService.getDics('STREETS').subscribe(data => {
       this.streets = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('residentialComplexes').subscribe(data => {
+    this.dicService.getResidentialComplexes().subscribe(data => {
       this.residentialComplexes = this.util.toSelectArrayResidenceComplex(data);
     });
     this.dicService.getDics('POSSIBLE_REASONS_FOR_BIDDING').subscribe(data => {
@@ -252,11 +256,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.applicationForm.apartmentsOnTheSite = this.applicationForm.residentialComplexId?.apartmentsOnTheSite;//Кв. на площадке
     this.applicationForm.materialOfConstructionId = this.applicationForm.residentialComplexId?.materialOfConstructionId;//Материал
     this.applicationForm.yearOfConstruction = this.applicationForm.residentialComplexId?.yearOfConstruction;//Год постройки
-    this.applicationForm.typeOfElevatorList = this.applicationForm.residentialComplexId?.yearOfConstruction;//Лифт
+    this.applicationForm.typeOfElevatorList = this.applicationForm.residentialComplexId?.typeOfElevatorIdList;//Лифт
     this.applicationForm.concierge = this.applicationForm.residentialComplexId?.concierge;//Консьерж
     this.applicationForm.wheelchair = this.applicationForm.residentialComplexId?.wheelchair;//Колясочная
-    this.applicationForm.parkingTypeId = this.applicationForm.residentialComplexId?.parkingTypeId;///Парковка
-    this.applicationForm.yardTypeId = this.applicationForm.residentialComplexId?.yardType;//Двор
+    // this.applicationForm.parkingTypeId = [this.applicationForm.residentialComplexId?.parkingTypeId];///Парковка
+    this.applicationForm.parkingTypeId = [1];///Парковка
+    this.applicationForm.yardTypeId = this.applicationForm.residentialComplexId?.yardTypeId;//Двор
     this.applicationForm.playground = this.applicationForm.residentialComplexId?.playground;//Детская площадка
     this.applicationForm.propertyDeveloperId = this.applicationForm.residentialComplexId?.propertyDeveloperId;//Затройщик
     this.applicationForm.housingClass = this.applicationForm.residentialComplexId?.housingClass;//Класс жилья
@@ -296,14 +301,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
         centered: true
       }
     });
-
-    // this.modalRef = this.modalService.show(ModalComponent,  {
-    //   initialState: {
-    //     title: 'Просмотр',
-    //     size: 'xl',
-    //     centered: true
-    //   }
-    // });
   }
 
   validate() {
@@ -368,8 +365,112 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
+  fillApplication() {
+    this.application = new ApplicationDto();
+    this.application.operationTypeId = this.applicationForm.operationTypeId?.value;
+    this.application.mortgage = this.applicationForm.mortgage;
+    this.application.encumbrance = this.applicationForm.encumbrance;
+    this.application.sharedOwnershipProperty = this.applicationForm.sharedOwnershipProperty;
+    this.application.exchange = this.applicationForm.exchange;
+    this.application.probabilityOfBidding = this.applicationForm.probabilityOfBidding;
+    this.application.theSizeOfTrades = this.applicationForm.theSizeOfTrades;
+    this.application.possibleReasonForBiddingIdList = this.applicationForm.possibleReasonForBiddingIdList;
+    this.application.contractPeriod = this.applicationForm.contractPeriod;
+    this.application.amount = this.applicationForm.amount;
+    this.application.isCommissionIncludedInThePrice = this.applicationForm.isCommissionIncludedInThePrice;
+    this.application.note = this.applicationForm.note;
+  }
+
+  fillPurchaseInfoDto() {
+    this.application.realPropertyRequestDto.purchaseInfoDto = new PurchaseInfoDto();
+    this.application.realPropertyRequestDto.purchaseInfoDto.objectPricePeriod = new BigDecimalPeriod(this.applicationForm?.objectPriceFrom, this.applicationForm?.objectPriceTo);
+    this.application.realPropertyRequestDto.purchaseInfoDto.numberOfFloorsPeriod = new BigDecimalPeriod(this.applicationForm?.numberOfFloorsFrom, this.applicationForm?.numberOfFloorsTo);
+    this.application.realPropertyRequestDto.purchaseInfoDto.floorPeriod = new BigDecimalPeriod(this.applicationForm?.floorFrom, this.applicationForm?.floorTo);
+    this.application.realPropertyRequestDto.purchaseInfoDto.numberOfRoomsPeriod = new BigDecimalPeriod(this.applicationForm?.numberOfRoomsFrom, this.applicationForm?.numberOfRoomsTo);
+    this.application.realPropertyRequestDto.purchaseInfoDto.totalAreaPeriod = new BigDecimalPeriod(this.applicationForm?.totalAreaFrom, this.applicationForm?.totalAreaTo);
+    this.application.realPropertyRequestDto.purchaseInfoDto.livingAreaPeriod = new BigDecimalPeriod(this.applicationForm?.livingAreaFrom, this.applicationForm?.livingAreaTo);
+    this.application.realPropertyRequestDto.purchaseInfoDto.kitchenAreaPeriod = new BigDecimalPeriod(this.applicationForm?.kitchenAreaFrom, this.applicationForm?.kitchenAreaTo);
+    this.application.realPropertyRequestDto.purchaseInfoDto.balconyAreaPeriod = new BigDecimalPeriod(this.applicationForm?.balconyAreaFrom, this.applicationForm?.balconyAreaTo);
+    this.application.realPropertyRequestDto.purchaseInfoDto.ceilingHeightPeriod = new BigDecimalPeriod(this.applicationForm?.ceilingHeightFrom, this.applicationForm?.ceilingHeightTo);
+    this.application.realPropertyRequestDto.purchaseInfoDto.numberOfBedroomsPeriod = new BigDecimalPeriod(this.applicationForm?.numberOfBedroomsFrom, this.applicationForm?.numberOfBedroomsTo);
+    this.application.realPropertyRequestDto.purchaseInfoDto.landAreaPeriod = new BigDecimalPeriod(this.applicationForm?.landAreaFrom, this.applicationForm?.landAreaTo);
+  }
+
+  fillRealPropertyRequestDto() {
+    this.application.realPropertyRequestDto = new RealPropertyRequestDto();
+    this.application.realPropertyRequestDto.objectTypeId = this.applicationForm.objectTypeId?.value;
+    this.application.realPropertyRequestDto.cityId = this.applicationForm.cityId;
+    this.application.realPropertyRequestDto.cadastralNumber = this.applicationForm.cadastralNumber;
+    this.application.realPropertyRequestDto.residentialComplexId = this.applicationForm.residentialComplexId?.value;
+    this.application.realPropertyRequestDto.streetId = this.applicationForm.streetId;
+    this.application.realPropertyRequestDto.houseNumber = this.applicationForm.houseNumber;
+    this.application.realPropertyRequestDto.houseNumberFraction = this.applicationForm.houseNumberFraction;
+    this.application.realPropertyRequestDto.floor = this.applicationForm.floor;
+    this.application.realPropertyRequestDto.apartmentNumber = this.applicationForm.houseNumber
+    this.application.realPropertyRequestDto.numberOfRooms = this.applicationForm.numberOfRooms;
+    this.application.realPropertyRequestDto.totalArea = this.applicationForm.totalArea;
+    this.application.realPropertyRequestDto.livingArea = this.applicationForm.livingArea;
+    this.application.realPropertyRequestDto.kitchenArea = this.applicationForm.kitchenArea;
+    this.application.realPropertyRequestDto.balconyArea = this.applicationForm.balconyArea;
+    this.application.realPropertyRequestDto.ceilingHeight = this.applicationForm.ceilingHeight;
+    this.application.realPropertyRequestDto.numberOfBedrooms = this.applicationForm.numberOfBedrooms;
+    this.application.realPropertyRequestDto.atelier = this.applicationForm.atelier;
+    this.application.realPropertyRequestDto.separateBathroom = this.applicationForm.separateBathroom;
+    this.application.realPropertyRequestDto.districtId = this.applicationForm.districtId;
+    this.application.realPropertyRequestDto.numberOfFloors = this.applicationForm.numberOfFloors;
+    this.application.realPropertyRequestDto.apartmentsOnTheSite = this.applicationForm.apartmentsOnTheSite;
+    this.application.realPropertyRequestDto.materialOfConstructionId = this.applicationForm.materialOfConstructionId;
+    this.application.realPropertyRequestDto.yearOfConstruction = this.applicationForm.yearOfConstruction;
+    this.application.realPropertyRequestDto.typeOfElevatorList = this.applicationForm.typeOfElevatorList;
+    this.application.realPropertyRequestDto.concierge = this.applicationForm.concierge;
+    this.application.realPropertyRequestDto.wheelchair = this.applicationForm.wheelchair;
+    this.application.realPropertyRequestDto.yardTypeId = this.applicationForm.yardTypeId;
+    this.application.realPropertyRequestDto.playground = this.applicationForm.playground;
+    this.application.realPropertyRequestDto.parkingTypeId = this.applicationForm.parkingTypeId;
+    this.application.realPropertyRequestDto.propertyDeveloperId = this.applicationForm.propertyDeveloperId;
+    this.application.realPropertyRequestDto.housingClass = this.applicationForm.housingClass;
+    this.application.realPropertyRequestDto.housingCondition = this.applicationForm.housingCondition;
+    for (const ph of this.photoList) {
+      this.application.realPropertyRequestDto.photoIdList = [];
+      this.application.realPropertyRequestDto.photoIdList.push(ph.guid);
+    }
+    for (const ph of this.photoPlanList) {
+      this.application.realPropertyRequestDto.housingPlanImageIdList = [];
+      this.application.realPropertyRequestDto.housingPlanImageIdList.push(ph.guid);
+    }
+    for (const ph of this.photo3DList) {
+      this.application.realPropertyRequestDto.virtualTourImageIdList = [];
+      this.application.realPropertyRequestDto.virtualTourImageIdList.push(ph.guid);
+    }
+    this.application.realPropertyRequestDto.sewerageId = this.applicationForm.sewerageId;
+    this.application.realPropertyRequestDto.heatingSystemId = this.applicationForm.heatingSystemId;
+    this.application.realPropertyRequestDto.numberOfApartments = this.applicationForm.numberOfApartments;
+    this.application.realPropertyRequestDto.landArea = this.applicationForm.landArea;
+  }
+
+  fillRealPropertyOwnerDto() {
+    this.application.realPropertyOwnerDto = new RealPropertyOwnerDto();
+    this.application.realPropertyOwnerDto.id = this.applicationForm.clientId;
+    this.application.realPropertyOwnerDto.firstName = this.applicationForm.firstName;
+    this.application.realPropertyOwnerDto.surname = this.applicationForm.surname;
+    this.application.realPropertyOwnerDto.patronymic = this.applicationForm.patronymic;
+    this.application.realPropertyOwnerDto.phoneNumber = '+7' + this.applicationForm.phoneNumber;
+    this.application.realPropertyOwnerDto.email = this.applicationForm.email;
+    this.application.realPropertyOwnerDto.gender = this.applicationForm.gender;
+  }
+
   submit() {
     this.validate();
+
+    this.fillApplication();
+    this.fillRealPropertyRequestDto();
+    this.fillRealPropertyOwnerDto();
+    if (this.applicationForm?.operationTypeId?.code == '001001') {
+      this.fillPurchaseInfoDto();
+    }
+
+    console.log(this.application.realPropertyOwnerDto)
+
     let result = false;
     const controls = this.applicationForm.controls;
     for (const name in controls) {
@@ -383,34 +484,17 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
     if (result) return;
 
-    this.application = this.applicationForm.value;
-
-    if (!this.util.isNullOrEmpty(this.application.cadastralNumber)) {
-      if (this.application.cadastralNumber.length != 16) {
+    if (!this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber)) {
+      if (this.applicationForm?.cadastralNumber.length != 16) {
         this.notifyService.showError("Ошибка", "Длина поле кадастровый номер не верно");
         return;
       }
     }
 
-    this.application.operationTypeId = this.applicationForm.operationTypeId?.value;
-    this.application.objectTypeId = this.applicationForm.objectTypeId?.value;
-    if (!this.util.isNullOrEmpty(this.applicationForm.residentialComplexId?.value)) {
-      this.application.residentialComplexId = this.applicationForm.residentialComplexId?.value;
-    }
-    for (const ph of this.photoList) {
-      this.application.photoIdList.push(ph.guid);
-    }
-    for (const ph of this.photoPlanList) {
-      this.application.housingPlanImageIdList.push(ph.guid);
-    }
-
-    console.log(this.application)
-
-    if (!this.util.isNullOrEmpty(this.application.parkingTypeId)) {
-      console.log(this.application.parkingTypeId.indexOf("1"))
-      if (this.application.parkingTypeId.indexOf("1") == 0) {
-        this.application.parkingTypeId = [];
-        this.application.parkingTypeId.push("1");
+    if (!this.util.isNullOrEmpty(this.application.realPropertyRequestDto.parkingTypeId)) {
+      if (this.application.realPropertyRequestDto.parkingTypeId.indexOf("1") == 0) {
+        this.application.realPropertyRequestDto.parkingTypeId = [];
+        this.application.realPropertyRequestDto.parkingTypeId.push("1");
       }
     }
 
@@ -451,20 +535,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   removePhoto(data: any) {
     for (const element of data) {
       this.uploader.removePhotoById(element.guid)
-        .subscribe(data => {});
-    }
-  }
-
-  validator() {
-    let xResult = true, xColumn, xId;
-    if (this.util.isNullOrEmpty(this.application.surname)) {
-      xResult = false;
-      xColumn = 'surname';
-    }
-    if (!xResult) {
-      this.xVal = xColumn;
-      this.notifyService.showError("Ошибка", "Поле " + xColumn + " не заполнено!!!")
-      return xResult;
+        .subscribe(data => {
+        });
     }
   }
 

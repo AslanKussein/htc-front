@@ -26,7 +26,7 @@ export class Util {
     if (data) {
       const len = data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value: '' + data[i][idField], label: data[i][labelField], code: data[i]['code']});
+        list.push({value: data[i][idField], label: data[i][labelField], code: data[i]['code']});
       }
     }
     return list;
@@ -37,7 +37,11 @@ export class Util {
     if (data) {
       const len = data.data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value: '' + data.data[i][idField], label: data.data[i][labelField], description: data.data[i]['description']});
+        list.push({
+          value: '' + data.data[i][idField],
+          label: data.data[i][labelField],
+          description: data.data[i]['description']
+        });
       }
     }
     return list;
@@ -45,7 +49,7 @@ export class Util {
 
   getDicName() {
     let fieldName;
-   fieldName = 'name';
+    fieldName = 'name';
     return fieldName;
   }
 
@@ -82,18 +86,18 @@ export class Util {
           housingCondition: data[i]['housingCondition'],
           apartmentsOnTheSite: data[i]['apartmentsOnTheSite'],
           ceilingHeight: data[i]['ceilingHeight'],
-          concierge: data[i]['concierge'],
+          concierge: data[i]['concierge'].toString(),
           districtId: data[i]['districtId'],
           houseNumber: data[i]['houseNumber'],
           houseNumberFraction: data[i]['houseNumberFraction'],
           materialOfConstructionId: data[i]['materialOfConstructionId'],
           numberOfFloors: data[i]['numberOfFloors'],
           parkingTypeId: data[i]['parkingTypeId'],
-          playground: data[i]['playground'],
+          playground: data[i]['playground'].toString(),
           streetId: data[i]['streetId'],
-          typeOfElevator: data[i]['typeOfElevator'],
-          wheelchair: data[i]['wheelchair'],
-          yardType: data[i]['yardType'],
+          typeOfElevator: data[i]['typeOfElevatorIdList'],
+          wheelchair: data[i]['wheelchair'].toString(),
+          yardTypeId: data[i]['yardTypeId'],
           yearOfConstruction: data[i]['yearOfConstruction'],
         });
       }
