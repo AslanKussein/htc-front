@@ -11,7 +11,6 @@ import {NotificationService} from "./notification.service";
 export class UserService {
 
   constructor(private configService: ConfigService,
-              private noticeService: NotificationService,
               private http: HttpClient) {
   }
 
@@ -21,7 +20,6 @@ export class UserService {
   findUserByLogin(): Observable<any> {
     return this.http.get<any>(`${this.configService.apiUserManagerUrl}/users/info`, {}).pipe(
       tap(data => {
-        console.log(data)
       }),
       catchError(this.handleError)
     );
@@ -31,7 +29,6 @@ export class UserService {
     if (error instanceof ErrorEvent) {
       console.error('An error occurred:', error.message);
     } else {
-      this.noticeService.showInfo('Ошибка', error)
     }
     return throwError(
       error);

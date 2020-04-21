@@ -82,6 +82,26 @@
 
         </div>
       </div>
+      <div class="row">
+        <table id="tableSortExample" mdbTable class="z-depth-1">
+          <thead>
+          <tr>
+            <th *ngFor="let head of clientsData; let i = index" aria-controls="tableSortExample" scope="col" [mdbTableSort]="clientsData" [sortBy]="clientsData[i]">{{head | titlecase}}
+              <mdb-icon fas icon="sort"></mdb-icon>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let client of clientsData;let i = index">
+            <td>{{client.clientId}}</td>
+            <td>{{client.fullname}}</td>
+            <td>{{client.phoneNumber}}</td>
+            <td>{{client.target[getDicNameByLanguage()]}}</td>
+            <td>{{client.status[getDicNameByLanguage()]}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
 
       <div class="row">
         <div class="col-sm">
