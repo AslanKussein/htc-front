@@ -372,46 +372,24 @@
                               </a>
                             </div>
                           </div>
-                          <!--                          <div class="col-sm">-->
-                          <!--                            <span>3D Туры</span>-->
-                          <!--                            <div id="3DphotoCarousel" class="carousel slide" data-ride="carousel">-->
-                          <!--                              <ol class="carousel-indicators">-->
-                          <!--                                <li data-target="#3DphotoCarousel" attr.data-slide-to="{{i}}"-->
-                          <!--                                    [class]="i==0 ? 'active': ''"-->
-                          <!--                                    *ngFor="let p of photo3DList;let i = index">-->
-                          <!--                                </li>-->
-                          <!--                              </ol>-->
-                          <!--                              <div class="carousel-inner">-->
-                          <!--                                <div class="carousel-item" [class]="i==0 ? 'active': ''"-->
-                          <!--                                     *ngFor="let p of photo3DList;let i = index">-->
-                          <!--                                  <img [src]="p.image" alt="First Slide" class="photoList" width="302" height="320">-->
-                          <!--                                </div>-->
-                          <!--                              </div>-->
-                          <!--                              <a class="carousel-control-prev" href="#3DphotoCarousel" data-slide="prev">-->
-                          <!--                                <span class="carousel-control-prev-icon bg-dark"></span>-->
-                          <!--                              </a>-->
-                          <!--                              <a class="carousel-control-next" href="#3DphotoCarousel" data-slide="next">-->
-                          <!--                                <span class="carousel-control-next-icon bg-dark"></span>-->
-                          <!--                              </a>-->
-                          <!--                            </div>-->
-                          <!--                          </div>-->
+
                         </div>
-                        <div class="row">
-                          <h5 translate>claim.photoLegend</h5>
-                        </div>
-                        <div class="row">
-                          <div class="col-sm-4" translate>claim.photoset</div>
-                          <div class="col-sm-4">
-                            <button type="button" class="btn btn-primary" translate>claim.createPhotoset</button>
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="custom-control custom-checkbox">
-                              <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
-                              <label class="custom-control-label" for="defaultUnchecked"
-                                     translate>claim.isSendPhotoset</label>
-                            </div>
-                          </div>
-                        </div>
+<!--                        <div class="row">-->
+<!--                          <h5 translate>claim.photoLegend</h5>-->
+<!--                        </div>-->
+<!--                        <div class="row">-->
+<!--                          <div class="col-sm-4" translate>claim.photoset</div>-->
+<!--                          <div class="col-sm-4">-->
+<!--                            <button type="button" class="btn btn-primary" translate>claim.createPhotoset</button>-->
+<!--                          </div>-->
+<!--                          <div class="col-sm-4">-->
+<!--                            <div class="custom-control custom-checkbox">-->
+<!--                              <input type="checkbox" class="custom-control-input" id="defaultUnchecked">-->
+<!--                              <label class="custom-control-label" for="defaultUnchecked"-->
+<!--                                     translate>claim.isSendPhotoset</label>-->
+<!--                            </div>-->
+<!--                          </div>-->
+<!--                        </div>-->
                       </fieldset>
                     </div>
                   </div>
@@ -957,7 +935,20 @@
           </div>
 
         </div>
+        <div class="row">
+          <div class="col-sm">
+
+            <button type="button" mdbBtn color="success" class="btn btn-info btn2" style="width: 200px; float: right"
+                    mdbWavesEffect (click)="submit()" [disabled]="!this.applicationForm?.operationTypeId && !this.applicationForm?.objectTypeId">
+              <span class="fa fa-save" translate> patterns.save</span>
+            </button>
+            <button type="button" class="btn btn-success btn2" style="width: 200px;float: right" translate>
+              claim.generateContract
+            </button>
+          </div>
+        </div>
       </div>
+
     </div>
     <div class="tab-pane fade" id="contractOU" role="tabpanel" aria-labelledby="contractOU-tab">
       2
@@ -969,20 +960,8 @@
       3
     </div>
   </div>
-
-  <div class="row">
-    <div class="col-sm">
-
-      <button type="button" mdbBtn color="success" class="btn btn-info btn2" style="width: 200px; float: right"
-              mdbWavesEffect (click)="submit()" [disabled]="!this.applicationForm?.operationTypeId && !this.applicationForm?.objectTypeId">
-        <span class="fa fa-save" translate> patterns.save</span>
-      </button>
-      <button type="button" class="btn btn-success btn2" style="width: 200px;float: right" translate>
-        claim.generateContract
-      </button>
-    </div>
-  </div>
 </div>
+<br/>
 
 <!--<div mdbModal #showHideModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"-->
 <!--     aria-labelledby="myBasicModalLabel" aria-hidden="true">-->

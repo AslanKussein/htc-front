@@ -156,7 +156,9 @@
     "adv": "Реклама",
     "photoset": "Фотосет",
     "show": "Показ",
-    "closedContract": "Закрытие сделки"
+    "closedContract": "Закрытие сделки",
+    "commission": "Комиссия",
+    "avanse": "Задаток/аванс"
   },
   "objects": {
     "title": "Обьекты"

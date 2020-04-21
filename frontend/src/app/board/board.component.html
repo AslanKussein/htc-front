@@ -1,21 +1,9 @@
 <div class="card-body card-bg">
 
   <div class="row">
-    <div class="font-up-bold text-uppercase">
-
-      <nav aria-label="breadcrumb" style="color: blue">
-        <ol class="breadcrumb card-bg">
-          <li class="breadcrumb-item">
-            <a href="#">Home</a>
-            <i class="fa fa-caret-right mx-2" aria-hidden="true"></i>
-          </li>
-          <li class="breadcrumb-item">
-            <a href="#" translate>board.title</a>
-            <i class="fa fa-caret-right mx-2" aria-hidden="true"></i>
-          </li>
-        </ol>
-      </nav>
-
+    <div class="btn-group btn-breadcrumb">
+      <a href="#" class="btn btn-primary"><i class="fa fa-home"></i></a>
+      <a href="#" class="btn btn-primary active">Личный кабинет</a>
     </div>
   </div>
   <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -52,7 +40,9 @@
       <br>
       <div class="row" cdkDropListGroup>
         <div class="col-sm">
-          <div class="alert bg-primary text-white font-weight-bolder boardTitle" role="alert" translate>board.firstContact</div>
+          <div class="alert bg-primary text-white font-weight-bolder boardTitle" role="alert" translate>
+            board.firstContact
+          </div>
           <br/>
           <div
             cdkDropList
@@ -205,13 +195,136 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-      3
+      <div class="text-center" style="font-size: 18px">
+        <span><i class="fa fa-lightbulb-o" style="color: orange"></i> Всего в активе 18 сделок</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span><i class="fa fa-money" style="color: green"></i>  Общая комиссия 1 750 000 тг</span>
+      </div>
+      <br>
+      <div class="row">
+        <span>Фильтры:</span>
+        <button type="button" class="btn btn-sm btn-link">Все</button>
+        <button type="button" class="btn btn-sm btn-link">Адам</button>
+        <button type="button" class="btn btn-sm btn-link">Юрий</button>
+      </div>
+      <br>
+      <div class="row" cdkDropListGroup>
+        <div class="col-sm">
+          <div class="alert bg-primary text-white font-weight-bolder boardTitle" role="alert" translate>
+            board.firstContact
+          </div>
+          <br/>
+          <div
+            cdkDropList
+            [cdkDropListData]="firstContact"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div *ngFor="let item of firstContact" cdkDrag>
+              <div class="card">
+                <h5 class="card-header bg-info">{{item}}</h5>
+                <div class="card-body">
+                  <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                  <i class="fa fa-phone"><a href="tel:870778945612"> 870778945612</a></i>
+                </div>
+              </div>
+              <br/>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="alert alert-success boardTitle" role="alert" translate>board.dvou</div>
+          <br/>
+          <div
+            cdkDropList
+            [cdkDropListData]="meet"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div *ngFor="let item of meet" cdkDrag>
+              <div class="card">
+                <h5 class="card-header bg-info">{{item}}</h5>
+                <div class="card-body">
+                  <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                  <i class="fa fa-phone"><a href="tel:870778945612"> 870778945612</a></i>
+                </div>
+              </div>
+              <br/>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="alert alert-info boardTitle" role="alert" translate>board.show</div>
+          <br/>
+          <div
+            cdkDropList
+            [cdkDropListData]="dvou"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div *ngFor="let item of dvou" cdkDrag>
+              <div class="card">
+                <h5 class="card-header bg-info">{{item}}</h5>
+                <div class="card-body">
+                  <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                  <i class="fa fa-phone"><a href="tel:870778945612"> 870778945612</a></i>
+                </div>
+              </div>
+              <br/>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="alert alert-dark boardTitle" role="alert" translate>board.avanse</div>
+          <br/>
+          <div
+            cdkDropList
+            [cdkDropListData]="blockItem"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div *ngFor="let item of blockItem" cdkDrag>
+              <div class="card">
+                <h5 class="card-header bg-info">{{item}}</h5>
+                <div class="card-body">
+                  <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                  <i class="fa fa-phone"><a href="tel:870778945612"> 870778945612</a></i>
+                </div>
+              </div>
+              <br/>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="alert alert-warning boardTitle" role="alert" translate>board.closedContract</div>
+          <br/>
+          <div
+            cdkDropList
+            [cdkDropListData]="photoset"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div *ngFor="let item of photoset" cdkDrag>
+              <div class="card">
+                <h5 class="card-header bg-info">{{item}}</h5>
+                <div class="card-body">
+                  <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                  <i class="fa fa-phone"><a href="tel:870778945612"> 870778945612</a></i>
+                </div>
+              </div>
+              <br/>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-
 </div>
