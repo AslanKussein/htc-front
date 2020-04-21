@@ -16,6 +16,7 @@ export class AppComponent {
 
   public loading = false;
   currentUser: User;
+  year: number;
 
   constructor(public translate: TranslateService,
               private router: Router,
@@ -23,6 +24,7 @@ export class AppComponent {
     translate.setDefaultLang(this._language.language);
     translate.use(this._language.language);
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    this.year = new Date().getFullYear();
   }
 
   dnHref(href) {

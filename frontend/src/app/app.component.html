@@ -1,6 +1,6 @@
 <div class="wrapper">
   <!--Navbar -->
-  <nav class="mb navbar navbar-expand-lg" *ngIf="currentUser">
+  <nav class="navbar navbar-expand-lg navbar-dark primary-color" *ngIf="currentUser">
     <a class="navbar-brand" href="#">HTC</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
             aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +34,7 @@
 
           <a class="nav-link dropdown-toggle text-uppercase" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-user"></i>{{currentUser?.surname}} {{currentUser?.name}}
+            <i class="fa fa-user"></i> {{currentUser?.surname}} {{currentUser?.name}}
           </a>
           <div class="dropdown-menu dropdown-menu-right dropdown-default"
                aria-labelledby="navbarDropdownMenuLink-333">
@@ -73,6 +73,18 @@
 
   <router-outlet [hidden]="loading"></router-outlet>
   <toast-messages></toast-messages>
+
+  <!-- Footer -->
+  <footer class="page-footer font-small blue fixed-bottom" *ngIf="currentUser">
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© {{year}} Copyright:
+      <a > htc.dilau.kz</a>
+    </div>
+    <!-- Copyright -->
+
+  </footer>
+  <!-- Footer -->
   <!-- Footer -->
 <!--  <footer class="page-footer font-small cyan darken-3 fixed-bottom" *ngIf="currentUser">-->
 

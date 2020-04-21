@@ -4,7 +4,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BoardComponent} from './board/board.component';
 import {ClaimsComponent} from './claims/claims.component';
-import {RouterModule, Routes} from "@angular/router";
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {
@@ -35,10 +34,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 
 import {NgxMaskModule, IConfig} from 'ngx-mask'
 import {MDBBootstrapModule} from "angular-bootstrap-md";
-import {ShowImageComponent} from "./claims/create-claim/show-image/show-image.component";
 import {ExitDeactivate} from "./canDeactivate/exitDeactivate";
 import {UserService} from "./services/user.service";
 import {NotificationService} from "./services/notification.service";
+import {ModalComponent} from "./claims/create-claim/modal.window/modal.component";
 
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
@@ -53,7 +52,6 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     StaffsComponent,
     CreateClaimComponent,
     LoginComponent,
-    ShowImageComponent
   ],
   imports: [
     BrowserModule,
@@ -90,7 +88,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
   bootstrap: [AppComponent],
   entryComponents: [
     CreateClaimComponent,
-    ShowImageComponent
+    ModalComponent
   ],
   schemas: [NO_ERRORS_SCHEMA],
 

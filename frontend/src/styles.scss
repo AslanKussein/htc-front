@@ -50,3 +50,16 @@ body {
   height: calc(1.5em + 0.75rem + 0px) !important;
 }
 
+/**
+/** The Magic **/
+
+/** The Spacing **/
+.btn-breadcrumb .btn {
+  padding:6px 12px 6px 24px!important;;
+}
+.btn-breadcrumb .btn:first-child {
+  padding:6px 6px 6px 10px!important;;
+}
+.btn-breadcrumb .btn:last-child {
+  padding:6px 18px 6px 24px!important;;
+}

@@ -18,6 +18,7 @@ import {Observable} from "rxjs";
 import {ComponentCanDeactivate} from "../../canDeactivate/componentCanDeactivate";
 import {ModalDirective} from "angular-bootstrap-md";
 import {ConfigService} from "../../services/config.service";
+import {ModalComponent} from "./modal.window/modal.component";
 
 @Injectable({
   providedIn: 'root'
@@ -30,10 +31,7 @@ import {ConfigService} from "../../services/config.service";
 })
 export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
-  @ViewChild('showHideModal')
-  public modalActAgree: ModalDirective;
 
-  _language = language;
   application: ApplicationDto;
   xVal: string;
   selectedFile: File;
@@ -58,13 +56,14 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   roomCountDic: Dic[];
   possibleReasonForBidding: Dic[];
   applicationForm: any;
-  showModalWin: boolean = false;
   image: any;
   dicDynamic: Dic[];
   elevatorType: Dic[];
   yardTypes: Dic[];
   readonlyChooseJK: boolean = false;
   saved: boolean = false;
+  modalRef: BsModalRef;
+
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -77,7 +76,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
               private localeService: BsLocaleService,
               private ownerService: OwnerService,
               private configService: ConfigService,
-              private cdRef: ChangeDetectorRef) {
+              private cdRef: ChangeDetectorRef,
+              private modalService: BsModalService) {
     this.config.notFoundText = 'Данные не найдены';
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
@@ -290,9 +290,23 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
-  showPhotoFull(xIndex: any) {
-    this.image = xIndex;
-    this.showModalWin = true;
+  showPhotoFull(url: any) {
+    this.modalRef = this.modalService.show(ModalComponent, {
+      class: 'modal-xl',
+      initialState: {
+        title: 'Просмотр',
+        data: url,
+        centered: true
+      }
+    });
+
+    // this.modalRef = this.modalService.show(ModalComponent,  {
+    //   initialState: {
+    //     title: 'Просмотр',
+    //     size: 'xl',
+    //     centered: true
+    //   }
+    // });
   }
 
   validate() {
