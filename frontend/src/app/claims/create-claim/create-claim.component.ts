@@ -41,12 +41,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   photoList: any[] = [];
   photoPlanList: any[] = [];
   photo3DList: any[] = [];
-  imgSrc: Observable<string>;
-  // photo: any[] = [
-  //   "1", "2","3", "4",
-  //   "5", "6","7", "8",
-  //   "9", "10","11", "12"
-  // ];
   operationType: Dic[];
   objectType: Dic[];
   city: Dic[];
@@ -60,6 +54,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   sewerageSystems: Dic[];
   countries: Dic[];
   materials: Dic[];
+  sortMaterials: Dic[] = [];
   roomCountDic: Dic[];
   possibleReasonForBidding: Dic[];
   applicationForm: any;
@@ -232,6 +227,24 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       this.heatingSystems = this.util.toSelectArray(data);
     });
     this.roomCountDic = this.util.roomCountDictionary();
+  }
+
+  setHouseOrApartmentsForMaterials() {
+    this.sortMaterials = [];
+    if (this.applicationForm?.objectTypeId?.code == '003001') {//кв
+      this.sortMaterials = this.materials;
+    } else if (this.applicationForm?.objectTypeId?.code == '003002') {//дом
+      for (const matreialElement of this.materials) {
+        if (matreialElement['code'] == 'house') {
+          let m = {};
+          m['value'] = matreialElement['value'];
+          m['label'] = matreialElement['label'];
+          m['code'] = matreialElement['code'];
+          this.sortMaterials.push(m)
+        }
+
+      }
+    }
   }
 
   setResidenceComplexType() {
@@ -444,7 +457,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     let obj = {};
     obj['guid'] = guid.uuid;
     obj['image'] = 'https://fm-htc.dilau.kz/download/' + guid.uuid + '/preview?access_token=' + this.util.getToken().access_token;
-    // obj['image'] = fm.toString() + '/download/' + guid.uuid + '/preview?access_token=' + this.util.getToken().access_token;
+    obj['fullImage'] = 'https://fm-htc.dilau.kz/download/' + guid.uuid + '?access_token=' + this.util.getToken().access_token;
     if (id == 1) {
       this.photoList.push(obj)
     } else if (id == 2) {

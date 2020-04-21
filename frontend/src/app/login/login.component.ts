@@ -5,7 +5,6 @@ import {AuthenticationService} from "../services/authentication.service";
 import {first, map} from "rxjs/operators";
 import {NotificationService} from "../services/notification.service";
 import {UserService} from "../services/user.service";
-import {User} from "../models/users";
 
 @Component({
   selector: 'app-login',
@@ -72,6 +71,9 @@ export class LoginComponent implements OnInit {
               datax.name = data.name
               datax.surname = data.surname
               datax.login = data.login
+              datax.roles = data.roles
+              datax.group = data.group
+              datax.id = data.id
               console.log(this.authenticationService.currentUser)
               localStorage.setItem('currentUser', JSON.stringify(datax));
             }

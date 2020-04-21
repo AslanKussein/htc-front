@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Util} from "../services/util";
 import {ClientsService} from "../services/clients.service";
+import {User} from "../models/users";
+import {AuthenticationService} from "../services/authentication.service";
 
 @Component({
   selector: 'app-profile',
@@ -9,6 +11,8 @@ import {ClientsService} from "../services/clients.service";
 })
 export class ProfileComponent implements OnInit {
 
+  currentUser: User;
+
   loading: boolean = false;
   clientsData = [];
   totalItems = 0;
@@ -16,7 +20,9 @@ export class ProfileComponent implements OnInit {
   currentPage = 1;
 
   constructor(private util: Util,
-              private clientsService: ClientsService) {
+              private clientsService: ClientsService,
+              private authenticationService: AuthenticationService) {
+    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
   dnHref(href) {

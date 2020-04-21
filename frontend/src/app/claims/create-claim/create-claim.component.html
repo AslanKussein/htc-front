@@ -64,6 +64,7 @@
                         <ng-select
                           [items]="objectType"
                           [(ngModel)]="applicationForm.objectTypeId"
+                          (ngModelChange)="setHouseOrApartmentsForMaterials()"
                           formControlName="objectTypeId"
                           placeholder="{{ 'claim.objectType' | translate }}">
                         </ng-select>
@@ -337,7 +338,7 @@
                                 <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                      *ngFor="let photo of photoList;let i = index">
                                   <img [src]="photo.image" alt="First Slide" class="photoList" width="302" height="320"
-                                  (click)="showPhotoFull(photo.guid)">
+                                  (click)="showPhotoFull(photo.fullImage)">
                                 </div>
                               </div>
                               <a class="carousel-control-prev" href="#photoCarousel" data-slide="prev">
@@ -800,7 +801,7 @@
                                   formControlName="propertyDeveloperId"
                                   [readonly]="readonlyChooseJK"
                                   bindValue="value"
-                                  placeholder="{{ 'claim.material' | translate }}">
+                                  placeholder="Застройщик">
                                 </ng-select>
                               </div>
                               <div class="col-sm" *ngIf="applicationForm.objectTypeId?.code=='003001' && applicationForm.operationTypeId?.code=='001002'">
@@ -846,7 +847,7 @@
                               <div class="col-sm">
                                 <label class="control-labels" translate>claim.material</label>
                                 <ng-select
-                                  [items]="materials"
+                                  [items]="sortMaterials"
                                   [(ngModel)]="applicationForm.materialOfConstructionId"
                                   formControlName="materialOfConstructionId"
                                   [readonly]="readonlyChooseJK"
