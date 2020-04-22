@@ -5,11 +5,17 @@
       <div class="container">
         <div class="row">
           <div class="col-sm row">
-            <div class="col-sm">
-              <input type="text" class="form-control">
+            <div class="col-sm-7 input-group">
+              <input class="form-control" type="text" [(ngModel)]="search" placeholder="Search" aria-label="Search">
+              <div class="input-group-append">
+                <button type="button" (click)="getUserInfo()">
+                  <span class="input-group-text " id="basic-text"><i class="fa fa-search"
+                                                                     aria-hidden="true"></i></span>
+                </button>
+              </div>
             </div>
             <div class="col-sm">
-              <button type="button" class="btn btn-primary">
+              <button type="button" class="btn btn-sm btn-primary" (click)="findObjects(1)">
                 View all users
               </button>
             </div>
@@ -18,22 +24,17 @@
           <div class="col-sm row" style="text-align: right">
 
 
-
-
           </div>
-          <button type="button" class="btn btn-primary" style="    right: 10px;">
-            Unblock users
-          </button>
-          <button type="button" class="btn btn-primary" (click)="openModal(template); addUser()">     Add user</button>
-
-
-
-
+          <!--<button type="button" class="btn btn-primary" style="    right: 10px;">-->
+          <!--Unblock users-->
+          <!--</button>-->
+          <button type="button" class="btn btn-primary" (click)="openModal(template); addUser()"> Add user</button>
 
 
           <ng-template #template>
             <div class="modal-header">
-              <h4 class="modal-title pull-left">Add user</h4>
+              <h4 class="modal-title pull-left" *ngIf="actions=='ADD'">Add user</h4>
+              <h4 class="modal-title pull-left" *ngIf="actions=='EDIT'">Edit user</h4>
               <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -41,15 +42,21 @@
             <div class="modal-body">
               <div class="col-sm">
                 <label class="col-sm col-form-label">Login<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="Username" [(ngModel)]="formData.login">
+                <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="Username"
+                       [(ngModel)]="formData.login">
               </div>
-              <div class="col-sm">
-                <label class="col-sm col-form-label">Password<span class="text-danger">&nbsp;*</span></label>
-                <input type="password" class="col-sm form-control" name="Password" [(ngModel)]="formData.pass">
+              <div class="col-sm" *ngIf="actions=='EDIT'">
+                <label class="col-sm col-form-label">Новый пароль<span class="text-danger">&nbsp;*</span></label>
+                <input type="password" class="col-sm form-control" name="passNew" [(ngModel)]="formData.passNew">
+              </div>
+              <div class="col-sm" *ngIf="actions=='EDIT'">
+                <label class="col-sm col-form-label">Подтверждения пароль<span
+                  class="text-danger">&nbsp;*</span></label>
+                <input type="password" class="col-sm form-control" name="passNew2" [(ngModel)]="formData.passNew2">
               </div>
               <div class="col-sm">
                 <label class="col-sm col-form-label">Имя<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" class="col-sm form-control"  name="First" [(ngModel)]="formData.name">
+                <input type="text" class="col-sm form-control" name="First" [(ngModel)]="formData.name">
               </div>
               <div class="col-sm">
                 <label class="col-sm col-form-label">Фамилия<span class="text-danger">&nbsp;*</span></label>
@@ -67,33 +74,33 @@
               <div class="col-sm">
                 <label class="col-sm col-form-label">Роль<span class="text-danger">&nbsp;*</span></label>
                 <ng-select
-                           [multiple]="true"
-                           bindValue="value"
-                           [items]="roles"
-                           [(ngModel)]="formData.roles">
+                  [multiple]="true"
+                  bindValue="value"
+                  [items]="roles"
+                  [(ngModel)]="formData.roles">
                 </ng-select>
               </div>
 
               <div class="col-sm">
                 <label class="col-sm col-form-label">Группа<span class="text-danger">&nbsp;*</span></label>
                 <ng-select name="residentialComplexes"
-                           [items]="residentialComplexes"
+                           [items]="groups"
                            bindValue="value"
-                           [(ngModel)]="formData.residentialComplexes">
+                           [(ngModel)]="formData.groups">
                 </ng-select>
               </div>
               <div class="col-sm" style="text-align: right">
 
                 <button type="button" class="btn btn-primary" (click)="submit()" style="margin: 10px">
-                 Сохранить
+                  Сохранить
                 </button>
-                <button type="button" class="btn btn-light" style="margin: 10px">
+                <button type="button" class="btn btn-light" (click)="modalRef.hide()" style="margin: 10px" >
                   Отмена
                 </button>
 
               </div>
 
-              </div>
+            </div>
           </ng-template>
 
         </div>
@@ -121,9 +128,16 @@
                 <td>{{user.surname}}</td>
                 <td>{{user.roles}}</td>
                 <td>{{user.group}}</td>
-                <td> <button type="button" class="btn btn-light" style="margin: 10px" (click)="editData(user);openModal(template)">
-                  Редактировать
-                </button></td>
+                <td>
+                  <button type="button" class="btn btn-sm btn-light" style="margin: 10px"
+                          (click)="editData(user);openModal(template)">
+                    Редактировать
+                  </button>
+                  <button type="button" class="btn btn-sm btn-light" style="margin: 10px"
+                          (click)="delUser(user)">
+                    Удалить
+                  </button>
+                </td>
               </tr>
               </tbody>
             </table>

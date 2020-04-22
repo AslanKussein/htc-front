@@ -1,3 +1,4 @@
+
 <div class="card-body card-bg">
   <div class="card">
     <div class="card-body">
@@ -27,12 +28,14 @@
                 <div class="form-group row">
                   <label class="col-sm col-form-label" style="text-align: right">Комнаты</label>
                   <div class="col-sm">
-                    <div class="btn-toolbar d-flex" role="toolbar" aria-label="Toolbar with button groups">
+
+
+                    <div class="btn-toolbar d-flex" role="toolbar" aria-label="Toolbar with button groups" [(ngModel)]="model">
                       <div class="btn-group mr-auto mb-3 mb-md-0" role="group" aria-label="First group"
                       >
-                        <button type="button" class="btn btn-primary ">1</button>
-                        <button type="button" class="btn btn-primary ">2</button>
-                        <button type="button" class="btn btn-primary ">3</button>
+                        <button type="button" [value]="1" class="btn btn-primary ">1</button>
+                        <button type="button" [value]="2" class="btn btn-primary ">2</button>
+                        <button type="button" [value]="3" class="btn btn-primary ">3</button>
                         <button type="button" class="btn btn-primary ">4</button>
                         <button type="button" class="btn btn-primary ">5+</button>
                       </div>
@@ -93,7 +96,7 @@
                 <div class="form-group row">
                   <label class="col-sm col-form-label" style="text-align: right">Цена</label>
                   <div class="col-sm row">
-                    <input type="number" class="col-sm form-control" [(ngModel)]="formData.priceFrom"
+                    <input type="number" mino class="col-sm form-control" [(ngModel)]="formData.priceFrom"
                            [ngModelOptions]="{standalone: true}">
                     -
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.priceTo"
@@ -509,7 +512,7 @@
           <div class="col-sm-3">
             <div class="form-group row">
               <div class="col-sm">
-                <button type="button" class="btn btn-primary" (click)="findObjects(1)"><i class="fa fa-search"
+                <button type="button" class="btn btn-primary" (click)="findObjects(0)"><i class="fa fa-search"
                                                                                           aria-hidden="true"></i>
                   Показать результаты
                 </button>
@@ -559,12 +562,14 @@
             </thead>
             <tbody style="cursor: pointer">
             <tr *ngFor="let object of objectsData;let i = index">
-              <td>{{object.id}}</td>
-              <td></td>
+              <td>{{object.realPropertyId}}</td>
+              <td> <img [src]="getImgUrl(object.photos.PHOTO[0])" alt="First Slide" class="photoList" width="302" height="320"></td>
               <td>{{object.address.nameRu}}</td>
               <td>{{object.price}}</td>
               <td>{{object.numberOfRooms}}</td>
-              <td>{{object.photos.data}}</td>
+              <td>
+                {{getCountFoto(object.photos)}}
+              </td>
               <td>{{object.encumbrance}}</td>
               <td>{{object.priceAnalytics}}</td>
               <td>{{object.contactsOfAgent}}</td>
