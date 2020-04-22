@@ -33,11 +33,11 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  getBoardData() {
+  getBoardData(tab: number, ids: number) {
     let searchFilter = {};
-    searchFilter['agentLoginList'] = ['admin', 'system'];
-    searchFilter['applicationStatusList'] = [2, 1];
-    searchFilter['operationTypeId'] = 1;
+    searchFilter['agentLoginList'] = this.util.getCurrentUser().roles;
+    searchFilter['applicationStatusList'] = ids;
+    searchFilter['operationTypeId'] = tab;
     this.boardService.getBoard(searchFilter).subscribe(res => {
       if (res.code == 200 && res.data.applicationMap != null) {
         this.appStatusesData = [];
@@ -75,7 +75,7 @@ export class BoardComponent implements OnInit {
         this.appStatusesSort.push(m)
       }
     }
-    this.getBoardData();
+    this.getBoardData(tab, ids);
   }
 
   drop(event: CdkDragDrop<string[]>) {

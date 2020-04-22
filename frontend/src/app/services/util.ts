@@ -135,7 +135,7 @@ export class Util {
     return dic_;
   }
 
-  getToken() {
+  getCurrentUser() {
     return JSON.parse(localStorage.getItem('currentUser'))
   }
 }

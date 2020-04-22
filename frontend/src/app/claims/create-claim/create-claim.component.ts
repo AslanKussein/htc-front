@@ -564,8 +564,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     let fm = `${this.configService.apiFileManagerUrl}`;
     let obj = {};
     obj['guid'] = guid.uuid;
-    obj['image'] = 'https://fm-htc.dilau.kz/download/' + guid.uuid + '/preview?access_token=' + this.util.getToken().access_token;
-    obj['fullImage'] = 'https://fm-htc.dilau.kz/download/' + guid.uuid + '?access_token=' + this.util.getToken().access_token;
+    obj['image'] = 'https://fm-htc.dilau.kz/download/' + guid.uuid + '/preview?access_token=' + this.util.getCurrentUser().access_token;
+    obj['fullImage'] = 'https://fm-htc.dilau.kz/download/' + guid.uuid + '?access_token=' + this.util.getCurrentUser().access_token;
     if (id == 1) {
       this.photoList.push(obj)
     } else if (id == 2) {

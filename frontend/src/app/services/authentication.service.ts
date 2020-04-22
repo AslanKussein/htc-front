@@ -16,7 +16,7 @@ export class AuthenticationService {
   constructor(private http: HttpClient,
               private configService: ConfigService,
               private util: Util) {
-    this.currentUserSubject = new BehaviorSubject<User>(this.util.getToken());
+    this.currentUserSubject = new BehaviorSubject<User>(this.util.getCurrentUser());
     this.currentUser = this.currentUserSubject.asObservable();
   }
 

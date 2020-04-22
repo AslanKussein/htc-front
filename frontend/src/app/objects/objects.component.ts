@@ -205,7 +205,7 @@ export class ObjectsComponent implements OnInit {
   }
 
   getImgUrl(uiid:string){
-    return 'https://fm-htc.dilau.kz/download/' + '98d3a7fe-01f4-460e-9a99-300cb8c66d8c'+ '/preview?access_token=' + this.util.getToken().access_token;
+    return 'https://fm-htc.dilau.kz/download/' + '98d3a7fe-01f4-460e-9a99-300cb8c66d8c'+ '/preview?access_token=' + this.util.getCurrentUser().access_token;
   }
 
   getCountFoto(obj:any){
