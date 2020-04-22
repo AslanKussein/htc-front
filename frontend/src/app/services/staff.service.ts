@@ -24,10 +24,20 @@ export class StaffService {
     return this.http.get<any>(`${this.configService.apiUserManagerUrl}/users/`+obj.id);
   }
 
+  getUserInfo(obj): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/users/infos?login=`+obj);
+  }
+
   getRoleList(search: any): Observable<any> {
     let params = new HttpParams();
     params = params.append('locale', String(language.language));
     return this.http.get<any>(`${this.configService.apiRoleManagerUrl}/roles`, {params});
+  }
+
+  getGroupList(search: any): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('locale', String(language.language));
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/groups`, {params});
   }
 
   public createUser(obj): Observable<any> {
@@ -47,8 +57,18 @@ export class StaffService {
         }),
       );
   }
+
   public updateUserRolesById(obj): Observable<any> {
     return this.http.put(`${this.configService.apiUserManagerUrl}/users/`+obj.id+`/roles`,{roles:obj.roles} )
+      .pipe(
+        tap(data => {
+          console.log(data)
+        }),
+      );
+  }
+
+  public updatePasswordById(obj): Observable<any> {
+    return this.http.put(`${this.configService.apiUserManagerUrl}/users/`+obj.id+`/pass`,{pass:obj.passNew} )
       .pipe(
         tap(data => {
           console.log(data)

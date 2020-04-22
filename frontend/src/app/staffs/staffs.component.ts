@@ -19,6 +19,7 @@ export class StaffsComponent implements OnInit {
   modalRef: BsModalRef;
   residentialComplexes: Dic[];
   roles: Dic[];
+  groups: Dic[];
   actions:string;
 
   constructor(private modalService: BsModalService,
@@ -30,13 +31,18 @@ export class StaffsComponent implements OnInit {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
   }
+  search:'';
+
 
   formData={
     residentialComplexes:null,
     roles:null,
+    groups:null,
     isActive:true,
     login:null,
     pass:'',
+    passNew:'',
+    passNew2:'',
     name:'',
     surname:''};
 
@@ -44,6 +50,7 @@ export class StaffsComponent implements OnInit {
   ngOnInit(): void {
     this.loadDictionary();
     this.findObjects(1);
+    this.getUserInfo();
   }
 
   users = [];
@@ -57,6 +64,17 @@ export class StaffsComponent implements OnInit {
     if (this.currentPage !== event.page) {
       this.findObjects(event.page);
     }
+  }
+
+  getUserInfo(){
+    this.staffService.getUserInfo(this.search).subscribe(res => {
+
+      if (res != null) {
+        this.users = res.data;
+        console.log(this.users)
+      }
+    });
+
   }
 
   findObjects(pageNo: number) {
@@ -87,8 +105,16 @@ export class StaffsComponent implements OnInit {
 
 
     this.staffService.getRoleList('roles').subscribe(data => {
-      this.roles = this.util.toSelectArrayRoles(data);
+      this.roles = this.util.toSelectArrayRoles2(data);
     });
+
+    this.staffService.getGroupList('groups').subscribe(data => {
+      this.groups = this.util.toSelectArrayRoles2(data);
+    });
+  }
+
+  delUser(obj){
+
   }
 
   submit() {
@@ -98,9 +124,13 @@ export class StaffsComponent implements OnInit {
         .subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.findObjects(1);
+            this.modalRef.hide();
           }
         }, err => {
           this.notifyService.showError('warning', err.message);
+          this.findObjects(1);
+          this.modalRef.hide();
         });
 
       this.staffService.updateUserActiveById(this.formData)
@@ -110,16 +140,43 @@ export class StaffsComponent implements OnInit {
           }
         }, err => {
           this.notifyService.showError('warning', err.message);
+          this.findObjects(1);
+          this.modalRef.hide();
         });
+
+      if (this.formData.passNew !='' && this.formData.passNew2 !=''){
+        if(this.formData.passNew !=null && this.formData.passNew2 !=null){
+          if(this.formData.passNew==this.formData.passNew2){
+            this.staffService.updatePasswordById(this.formData)
+              .subscribe(data => {
+                if (data != null) {
+                  this.notifyService.showSuccess('success', 'Успешно сохранено');
+                }
+              }, err => {
+                this.notifyService.showError('warning', err.message);
+                this.findObjects(1);
+                this.modalRef.hide();
+              });
+          }
+        }
+
+      }
+
+
+
       }
     if (this.actions=='ADD'){
       this.staffService.createUser(this.formData)
         .subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.findObjects(1);
+            this.modalRef.hide();
           }
         }, err => {
           this.notifyService.showError('warning', err.message);
+          this.findObjects(1);
+          this.modalRef.hide();
         });
     }
 
@@ -130,7 +187,6 @@ export class StaffsComponent implements OnInit {
     this.staffService.getUserById(user)
       .subscribe(data => {
         this.formData=data;
-        this.formData.roles.value =  data.roles;
       });
   }
 
@@ -139,9 +195,12 @@ export class StaffsComponent implements OnInit {
     this.formData={
       residentialComplexes:null,
       roles:null,
+      groups:null,
       isActive:true,
       login:null,
       pass:'',
+      passNew:'',
+      passNew2:'',
       name:'',
       surname:''};
 

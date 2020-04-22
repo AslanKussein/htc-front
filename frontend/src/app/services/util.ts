@@ -26,7 +26,7 @@ export class Util {
     if (data) {
       const len = data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value: data[i][idField], label: data[i][labelField], code: data[i]['code']});
+        list.push({value: '' + data[i][idField], label: data[i][labelField], code: data[i]['code']});
       }
     }
     return list;
@@ -47,9 +47,20 @@ export class Util {
     return list;
   }
 
+  toSelectArrayRoles2(data, idField = 'id', labelField = this.getDicName()) {
+    const list = [];
+    if (data) {
+      const len = data.data.length;
+      for (let i = 0; i < len; i++) {
+        list.push({value: data.data[i][idField], label: data.data[i][labelField], description: data.data[i]['description']});
+      }
+    }
+    return list;
+  }
+
   getDicName() {
     let fieldName;
-    fieldName = 'name';
+   fieldName = 'name';
     return fieldName;
   }
 
@@ -86,18 +97,18 @@ export class Util {
           housingCondition: data[i]['housingCondition'],
           apartmentsOnTheSite: data[i]['apartmentsOnTheSite'],
           ceilingHeight: data[i]['ceilingHeight'],
-          concierge: data[i]['concierge'].toString(),
+          concierge: data[i]['concierge'],
           districtId: data[i]['districtId'],
           houseNumber: data[i]['houseNumber'],
           houseNumberFraction: data[i]['houseNumberFraction'],
           materialOfConstructionId: data[i]['materialOfConstructionId'],
           numberOfFloors: data[i]['numberOfFloors'],
           parkingTypeId: data[i]['parkingTypeId'],
-          playground: data[i]['playground'].toString(),
+          playground: data[i]['playground'],
           streetId: data[i]['streetId'],
-          typeOfElevator: data[i]['typeOfElevatorIdList'],
-          wheelchair: data[i]['wheelchair'].toString(),
-          yardTypeId: data[i]['yardTypeId'],
+          typeOfElevator: data[i]['typeOfElevator'],
+          wheelchair: data[i]['wheelchair'],
+          yardType: data[i]['yardType'],
           yearOfConstruction: data[i]['yearOfConstruction'],
         });
       }
