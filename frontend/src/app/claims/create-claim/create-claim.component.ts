@@ -86,6 +86,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.applicationForm = this.formBuilder.group({
       id: [null, Validators.nullValidator],
       operationTypeId: [null, Validators.required],
@@ -173,6 +174,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     });
     this.cdRef.detectChanges();
     this.loadDictionary();
+    this.loading = false;
   }
 
   loadDictionary() {
@@ -273,9 +275,15 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   searchByPhone() {
     if (this.applicationForm.phoneNumber != null && this.applicationForm.phoneNumber.length == 10) {
       this.loading = true;
-      this.ownerService.searchByPhone('+7' + this.applicationForm.phoneNumber)
+      this.ownerService.searchByPhone('7' + this.applicationForm.phoneNumber)
         .subscribe(res => {
-          console.log(res.content)
+          this.applicationForm.clientId = res.id;
+          this.applicationForm.firstName = res.firstName;
+          this.applicationForm.surname = res.surname;
+          this.applicationForm.patronymic = res.patronymic;
+          this.applicationForm.phoneNumber = res.phoneNumber;
+          this.applicationForm.email = res.email;
+          this.applicationForm.gender = res.gender;
         });
       this.loading = false;
     }
@@ -448,15 +456,15 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.application.realPropertyRequestDto.landArea = this.applicationForm.landArea;
   }
 
-  fillRealPropertyOwnerDto() {
+  fillRealPropertyOwnerDto(data: any) {
     this.application.ownerDto = new RealPropertyOwnerDto();
-    this.application.ownerDto.id = this.applicationForm.clientId;
-    this.application.ownerDto.firstName = this.applicationForm.firstName;
-    this.application.ownerDto.surname = this.applicationForm.surname;
-    this.application.ownerDto.patronymic = this.applicationForm.patronymic;
-    this.application.ownerDto.phoneNumber = '+7' + this.applicationForm.phoneNumber;
-    this.application.ownerDto.email = this.applicationForm.email;
-    this.application.ownerDto.gender = this.applicationForm.gender;
+    this.application.ownerDto.id = data.clientId;
+    this.application.ownerDto.firstName = data.firstName;
+    this.application.ownerDto.surname = data.surname;
+    this.application.ownerDto.patronymic = data.patronymic;
+    this.application.ownerDto.phoneNumber = '7' + data.phoneNumber;
+    this.application.ownerDto.email = data.email;
+    this.application.ownerDto.gender = data.gender;
   }
 
   submit() {
@@ -464,7 +472,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
     this.fillApplication();
     this.fillRealPropertyRequestDto();
-    this.fillRealPropertyOwnerDto();
+    this.fillRealPropertyOwnerDto(this.applicationForm);
     if (this.applicationForm?.operationTypeId?.code == '001001') {
       this.fillPurchaseInfoDto();
     }
