@@ -103,7 +103,7 @@ export class Util {
           houseNumberFraction: data[i]['houseNumberFraction'],
           materialOfConstructionId: data[i]['materialOfConstructionId'],
           numberOfFloors: data[i]['numberOfFloors'],
-          parkingTypeId: data[i]['parkingTypeId'],
+          parkingTypeId: data[i]['parkingTypeIds'],
           playground: data[i]['playground'],
           streetId: data[i]['streetId'],
           typeOfElevator: data[i]['typeOfElevator'],

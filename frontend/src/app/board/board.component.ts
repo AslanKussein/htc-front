@@ -1,6 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {BoardService} from "../services/board.service";
+import {DicService} from "../services/dic.service";
+import {Dic} from "../models/dic";
+import {Util} from "../services/util";
+import {NotificationService} from "../services/notification.service";
+import {Board} from "../models/board/board";
+import {BoardData} from "../models/board/board.data";
 
 @Component({
   selector: 'app-board',
@@ -9,69 +15,68 @@ import {BoardService} from "../services/board.service";
 })
 export class BoardComponent implements OnInit {
 
-  constructor(private boardService: BoardService) { }
+  appStatuses: Dic[];
+  appStatusesSort: Dic[];
+  appStatusesData: any;
+  board: Board;
+  boardData: Board[] = [];
 
-  ngOnInit(): void {
-    this.getBoardData()
+  constructor(private boardService: BoardService,
+              private dicService: DicService,
+              private util: Util,
+              private notificationService: NotificationService) {
   }
 
-  getBoardData() {
-    this.boardService.getBoard(1).subscribe(res => {
-      console.log(res)
+  ngOnInit(): void {
+    this.dicService.getDics('APPLICATION_STATUSES').subscribe(data => {
+      this.appStatuses = this.util.toSelectArray(data);
     });
   }
 
-  firstContact = [
-    'Get to work',
-    'Pick up groceries',
-    'Go home',
-    'Fall asleep'
-  ];
+  getBoardData() {
+    let searchFilter = {};
+    searchFilter['agentLoginList'] = ['admin', 'system'];
+    searchFilter['applicationStatusList'] = [2, 1];
+    searchFilter['operationTypeId'] = 1;
+    this.boardService.getBoard(searchFilter).subscribe(res => {
+      if (res.code == 200 && res.data.applicationMap != null) {
+        this.appStatusesData = [];
+        for (const argument of this.appStatusesSort) {
+          if (res.data.applicationMap[argument['code']] != null) {
+            argument['boardData'] = res.data.applicationMap[argument['code']];
+          } else {
+            this.board = new Board();
+            this.board.data = [];
+            argument['boardData'] = this.board;
+          }
+          this.appStatusesData.push(argument)
+        }
+        console.log(this.appStatusesData)
+      } else {
+        this.notificationService.showWarning('Информация', 'Техническая ошибка');
+      }
+    });
+  }
 
-  meet = [
-    '1604678 Продажа',
-    '1604688 Продажа'
-  ];
-
-  dvou = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
-  ];
-
-  blockItem = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
-  ];
-
-  photoset = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
-  ];
-
-  show = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
-  ];
-
-  closedContract = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
-  ];
+  sortStatusesDic(tab: number) {
+    this.appStatusesSort = [];
+    let ids;
+    if (tab == 2) {
+      ids = [1, 2, 3, 4, 5, 6, 7]
+    } else if (tab == 3) {
+      ids = [1, 3, 6, 7]
+    }
+    for (const status of this.appStatuses) {
+      if (ids.includes(parseInt(status['value']))) {
+        let m = {};
+        m['value'] = status['value'];
+        m['label'] = status['label'];
+        m['code'] = status['code'];
+        this.appStatusesSort.push(m)
+      }
+    }
+    this.getBoardData();
+  }
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {

@@ -15,12 +15,8 @@ export class BoardService {
   }
 
   getBoard(search: any): Observable<any> {
-    let params = new HttpParams();
-    params = params.append('agentLoginList', "['admin']");
-    params = params.append('applicationStatusList', "[2,1]");
-    params = params.append('operationTypeId', String(1));
 
-    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getKanban`, params)
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getKanban`, search)
       .pipe(
         tap(data => {
         }),

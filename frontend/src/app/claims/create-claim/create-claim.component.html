@@ -20,6 +20,10 @@
     </li>
   </ul>
   <div class="tab-content" id="myTabContent" [formGroup]="applicationForm">
+    <div class="loader" *ngIf="loading" style="text-align: center">
+      <i class="fa fa-spinner fa-pulse fa-fw fa-2x"></i>
+    </div>
+    <br>
     <div class="tab-pane fade show active" id="fillClaims" role="tabpanel" aria-labelledby="fillClaims-tab">
       <div class="card-body">
         <div class="row">
