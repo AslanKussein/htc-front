@@ -6,7 +6,6 @@ import {Dic} from "../models/dic";
 import {Util} from "../services/util";
 import {NotificationService} from "../services/notification.service";
 import {Board} from "../models/board/board";
-import {BoardData} from "../models/board/board.data";
 
 @Component({
   selector: 'app-board',
@@ -19,7 +18,7 @@ export class BoardComponent implements OnInit {
   appStatusesSort: Dic[];
   appStatusesData: any;
   board: Board;
-  boardData: Board[] = [];
+  loading: false;
 
   constructor(private boardService: BoardService,
               private dicService: DicService,
@@ -51,7 +50,6 @@ export class BoardComponent implements OnInit {
           }
           this.appStatusesData.push(argument)
         }
-        console.log(this.appStatusesData)
       } else {
         this.notificationService.showWarning('Информация', 'Техническая ошибка');
       }
@@ -78,7 +76,26 @@ export class BoardComponent implements OnInit {
     this.getBoardData(tab, ids);
   }
 
+  dnHref(href) {
+    this.util.dnHref(href);
+  }
+
+  getBgColorBySumm(price: number) {
+    let bgColor = 'bg-primary'
+    if (price > 15000000 && price < 25000000) {
+      bgColor = 'bg-warning'
+    } else if (price > 25000000 && price < 35000000) {
+      bgColor = 'bg-success'
+    } else if (price > 35000000 && price < 45000000) {
+      bgColor = 'bg-secondary'
+    }
+    return bgColor;
+  }
+
   drop(event: CdkDragDrop<string[]>) {
+    if (parseInt(event.previousContainer.id.split('cdk-drop-list-')[1]) > parseInt(event.container.id.split('cdk-drop-list-')[1])) {
+      return
+    }
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {

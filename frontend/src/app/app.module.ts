@@ -38,6 +38,7 @@ import {ExitDeactivate} from "./canDeactivate/exitDeactivate";
 import {UserService} from "./services/user.service";
 import {NotificationService} from "./services/notification.service";
 import {ModalComponent} from "./claims/create-claim/modal.window/modal.component";
+import {ActsComponent} from "./claims/create-claim/acts/acts.component";
 
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
@@ -52,6 +53,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     StaffsComponent,
     CreateClaimComponent,
     LoginComponent,
+    ActsComponent,
   ],
   imports: [
     BrowserModule,
