@@ -8,6 +8,7 @@ import {ClaimService} from "../services/claim.service";
 import {Dic} from "../models/dic";
 import {DicService} from "../services/dic.service";
 import {Util} from "../services/util";
+import {DatePeriod} from "../models/common/datePeriod";
 
 @Component({
   selector: 'app-claims',
@@ -86,36 +87,11 @@ export class ClaimsComponent implements OnInit {
     // this.itemsPerPage = 30;
     this.loading = true;
     let searchFilter = {};
-    let obj = {};
-    if (!this.util.isNullOrEmpty(this.formData.crDateFrom)) {
-      obj['from'] = this.formData.crDateFrom;
-    }
-    if (!this.util.isNullOrEmpty(this.formData.crDateTo)) {
-      obj['to'] = this.formData.crDateTo;
-    }
-    if (this.util.getObjectLength(obj) > 0) {
-      searchFilter['createDate'] = obj;
-    }
-    obj = {};
-    if (!this.util.isNullOrEmpty(this.formData.lastModifyDateFrom)) {
-      obj['from'] = this.formData.lastModifyDateFrom;
-    }
-    if (!this.util.isNullOrEmpty(this.formData.lastModifyDateFrom)) {
-      obj['to'] = this.formData.lastModifyDateTo;
-    }
-    if (this.util.getObjectLength(obj) > 0) {
-      searchFilter['changeDate'] = obj;
-    }
-    obj = {};
-    if (!this.util.isNullOrEmpty(this.formData.lastCommentDateFrom)) {
-      obj['from'] = this.formData.lastCommentDateFrom;
-    }
-    if (!this.util.isNullOrEmpty(this.formData.lastCommentDateTo)) {
-      obj['to'] = this.formData.lastCommentDateTo;
-    }
-    if (this.util.getObjectLength(obj) > 0) {
-      searchFilter['commentDate'] = obj;
-    }
+
+    searchFilter['createDate'] = new DatePeriod(this.formData.crDateFrom, this.formData.crDateTo);
+    searchFilter['changeDate'] = new DatePeriod(this.formData.lastModifyDateFrom, this.formData.lastModifyDateTo);
+    searchFilter['commentDate'] = new DatePeriod(this.formData.lastCommentDateFrom, this.formData.lastCommentDateTo);
+
     if (!this.util.isNullOrEmpty(this.formData.typeId)) {
       searchFilter['operationTypeId'] = this.formData.typeId;
     }
