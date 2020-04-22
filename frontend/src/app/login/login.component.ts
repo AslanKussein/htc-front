@@ -58,7 +58,8 @@ export class LoginComponent implements OnInit {
 
     this.loading = true;
     if (this.loginForm.value.username.toLocaleUpperCase() == 'ADMIN') {
-      this.notifyService.showError('Ошибка', 'Не корректные данные для входа учетка admin не доступен')
+      this.notifyService.showError('Ошибка', 'Не корректные данные для входа учетка admin не доступен');
+      this.loading = false;
       return;
     }
     // this.authenticationService.login('admin', 'lCogB5%U*y5v')
