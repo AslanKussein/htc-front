@@ -20,6 +20,7 @@ export class ApplicationDto implements BaseEntity {
   public isCommissionIncludedInThePrice?: boolean;//Комиссия включена в стоимость
   public note?: string;//Примечание
   public realPropertyOwnerDto?: RealPropertyOwnerDto;//Модель сущности Клиент
+  public ownerDto?: RealPropertyOwnerDto;//Модель сущности Клиент
   public realPropertyRequestDto?: RealPropertyRequestDto;//Модель сущности недвижимости
 
   public constructor(init?: Partial<ApplicationDto>) {

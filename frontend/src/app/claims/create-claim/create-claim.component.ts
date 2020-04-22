@@ -168,7 +168,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       photoIdList: [[], Validators.nullValidator],
       housingPlanImageIdList: [[], Validators.nullValidator],
       realPropertyRequestDto: [new RealPropertyRequestDto(), Validators.nullValidator],
-      realPropertyOwnerDto: [new RealPropertyOwnerDto(), Validators.nullValidator],
+      ownerDto: [new RealPropertyOwnerDto(), Validators.nullValidator],
       purchaseInfoDto: [new PurchaseInfoDto(), Validators.nullValidator],
     });
     this.cdRef.detectChanges();
@@ -273,7 +273,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   searchByPhone() {
     if (this.applicationForm.phoneNumber != null && this.applicationForm.phoneNumber.length == 10) {
       this.loading = true;
-      this.ownerService.searchByPhone(this.applicationForm.phoneNumber)
+      this.ownerService.searchByPhone('+7' + this.applicationForm.phoneNumber)
         .subscribe(res => {
           console.log(res.content)
         });
@@ -449,14 +449,14 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   fillRealPropertyOwnerDto() {
-    this.application.realPropertyOwnerDto = new RealPropertyOwnerDto();
-    this.application.realPropertyOwnerDto.id = this.applicationForm.clientId;
-    this.application.realPropertyOwnerDto.firstName = this.applicationForm.firstName;
-    this.application.realPropertyOwnerDto.surname = this.applicationForm.surname;
-    this.application.realPropertyOwnerDto.patronymic = this.applicationForm.patronymic;
-    this.application.realPropertyOwnerDto.phoneNumber = '+7' + this.applicationForm.phoneNumber;
-    this.application.realPropertyOwnerDto.email = this.applicationForm.email;
-    this.application.realPropertyOwnerDto.gender = this.applicationForm.gender;
+    this.application.ownerDto = new RealPropertyOwnerDto();
+    this.application.ownerDto.id = this.applicationForm.clientId;
+    this.application.ownerDto.firstName = this.applicationForm.firstName;
+    this.application.ownerDto.surname = this.applicationForm.surname;
+    this.application.ownerDto.patronymic = this.applicationForm.patronymic;
+    this.application.ownerDto.phoneNumber = '+7' + this.applicationForm.phoneNumber;
+    this.application.ownerDto.email = this.applicationForm.email;
+    this.application.ownerDto.gender = this.applicationForm.gender;
   }
 
   submit() {
@@ -469,7 +469,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       this.fillPurchaseInfoDto();
     }
 
-    console.log(this.application.realPropertyOwnerDto)
+    console.log(this.application.ownerDto)
 
     let result = false;
     const controls = this.applicationForm.controls;
