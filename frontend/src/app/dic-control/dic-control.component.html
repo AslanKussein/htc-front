@@ -1,0 +1,64 @@
+<div class="card-body card-bg">
+  <div class="card">
+    <div class="card-body">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-4">
+            <div style="border: solid 1px black; padding: 5px">
+              <h3>Все справочники</h3>
+            </div>
+            <div style="border: solid 1px black; padding: 5px">
+              <a (click)="loadDictionary('COUNTRIES')"><h5>Страна</h5></a>
+              <a (click)="loadDictionary('CITIES')"><h5>Город</h5></a>
+              <a (click)="loadDictionary('DISTRICTS')"><h5>Районы</h5></a>
+              <a (click)="loadDictionary('STREETS')"><h5>Улицы</h5></a>
+              <a (click)="loadDictionary('PROPERTY_DEVELOPERS')"><h5>Застройщик</h5></a>
+              <a (click)="loadDictionary('TYPE_OF_ELEVATOR')"><h5>Тип лифта</h5></a>
+              <a (click)="loadDictionary('MATERIALS_OF_CONSTRUCTION')"><h5>Материал постройки (квартира)</h5></a>
+              <a (click)="loadDictionary('MATERIALS_OF_CONSTRUCTION')"><h5>Материал постройки (дом)</h5></a>
+              <a (click)="loadDictionary('SEWERAGE_SYSTEMS')"><h5>Канализация</h5></a>
+              <a (click)="loadDictionary('HEATING_SYSTEMS')"><h5>Отопление</h5></a>
+              <a (click)="loadDictionary('PARKING_TYPES')"><h5>Парковка</h5></a>
+              <a (click)="loadDictionary('YARD_TYPES')"><h5>Двор</h5></a>
+              <a (click)="loadDictionary('POSSIBLE_REASONS_FOR_BIDDING')"><h5>Возможные причины торга</h5></a>
+            </div>
+          </div>
+
+
+          <div class="col-sm-8">
+            <div style="border: solid 1px black; padding: 5px">
+              <a><i style="color: blue" class="fa fa-edit fa-2x"></i></a>
+              <a style="margin-left: 10px"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
+              <a style="margin-left: 10px"><i style="color:red" class="fa fa-times-circle fa-2x"></i></a>
+            </div>
+
+            <div style="border: solid 1px black; padding: 5px">
+                   <table class="table table-bordered text-center table-sm">
+                <thead class="text-center">
+                <tr>
+                  <th>Код</th>
+                  <th>nameEn</th>
+                  <th>nameKz</th>
+                  <th>nameRu</th>
+                </tr>
+                </thead>
+                <tbody style="cursor: pointer">
+                <tr *ngFor="let dic of dictionary;let i = index">
+                  <td>{{dic.code}}</td>
+                  <td>{{dic.nameEn}}</td>
+                  <td>{{dic.nameKz}}</td>
+                  <td>{{dic.nameRu}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

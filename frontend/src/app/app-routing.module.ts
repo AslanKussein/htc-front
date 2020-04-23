@@ -11,6 +11,7 @@ import {StaffsComponent} from "./staffs/staffs.component";
 import {NewsComponent} from "./news/news.component";
 import {AnalyticsComponent} from "./analytics/analytics.component";
 import {CreateClaimComponent} from "./claims/create-claim/create-claim.component";
+import {DicControlComponent} from "./dic-control/dic-control.component";
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   {path: 'objects', component: ObjectsComponent, canActivate: [AuthGuard]},
   {path: 'staffs', component: StaffsComponent, canActivate: [AuthGuard]},
+  {path: 'dic-control', component: DicControlComponent, canActivate: [AuthGuard]},
   {path: 'news', component: NewsComponent, canActivate: [AuthGuard]},
   {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate]},
