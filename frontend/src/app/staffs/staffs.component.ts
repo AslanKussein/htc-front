@@ -33,11 +33,16 @@ export class StaffsComponent implements OnInit {
   }
   search:'';
 
+  filter={
+    search:'',
+    roles:null,
+    group:null
+  }
 
   formData={
     residentialComplexes:null,
     roles:null,
-    groups:null,
+    group:null,
     isActive:true,
     login:null,
     pass:'',
@@ -50,7 +55,6 @@ export class StaffsComponent implements OnInit {
   ngOnInit(): void {
     this.loadDictionary();
     this.findObjects(1);
-    this.getUserInfo();
   }
 
   users = [];
@@ -67,7 +71,7 @@ export class StaffsComponent implements OnInit {
   }
 
   getUserInfo(){
-    this.staffService.getUserInfo(this.search).subscribe(res => {
+    this.staffService.getUserInfo(this.filter).subscribe(res => {
 
       if (res != null) {
         this.users = res.data;
@@ -99,10 +103,6 @@ export class StaffsComponent implements OnInit {
   }
 
   loadDictionary() {
-    this.dicService.getDics('residentialComplexes').subscribe(data => {
-      this.residentialComplexes = this.util.toSelectArrayResidenceComplex(data);
-    });
-
 
     this.staffService.getRoleList('roles').subscribe(data => {
       this.roles = this.util.toSelectArrayRoles2(data);
@@ -187,6 +187,7 @@ export class StaffsComponent implements OnInit {
     this.staffService.getUserById(user)
       .subscribe(data => {
         this.formData=data;
+        this.formData.isActive=data.isActive.toString();
       });
   }
 
@@ -195,7 +196,7 @@ export class StaffsComponent implements OnInit {
     this.formData={
       residentialComplexes:null,
       roles:null,
-      groups:null,
+      group:null,
       isActive:true,
       login:null,
       pass:'',

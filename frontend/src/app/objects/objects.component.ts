@@ -25,6 +25,7 @@ export class ObjectsComponent implements OnInit {
   residentialComplexes: Dic[];
   dicDynamic: Dic[];
   homeTypes: Dic[];
+  myObject:boolean;
 
   constructor(private router: Router,
               private localeService: BsLocaleService,
@@ -35,6 +36,8 @@ export class ObjectsComponent implements OnInit {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
   }
+
+
 
   formData = {
     numberOfRooms:null,
@@ -57,7 +60,8 @@ export class ObjectsComponent implements OnInit {
     kitchenAreaTo: '',
     distance: '',
     garage: '',
-    attic: ''
+    attic: '',
+    my:null
   };
 
 
@@ -65,6 +69,7 @@ export class ObjectsComponent implements OnInit {
 
     this.findObjects(0);
     this.loadDictionary();
+    this.myObject=true;
   }
 
   dnHref(href) {
@@ -83,7 +88,7 @@ export class ObjectsComponent implements OnInit {
       },
       address: [],
       price: null,
-      numberOfRooms: null,
+      numberOfRooms: 0,
       photosCount: '',
       encumbrance: '',
       priceAnalytics: '',
@@ -103,6 +108,46 @@ export class ObjectsComponent implements OnInit {
     if (this.currentPage !== event.page) {
       this.findObjects(event.page);
     }
+  }
+
+  clearFilter(){
+    this.formData = {
+      numberOfRooms:null,
+      districtsId: null,
+      residentialComplexes: null,
+      zalog: null,
+      typeHome: null,
+      numKvart: '',
+      priceFrom: '',
+      priceTo: '',
+      floorFrom: '',
+      floorTo: '',
+      floorsFrom: '',
+      floorsTo: '',
+      totalAreaFrom: '',
+      totalAreaTo: '',
+      livingSpaceFrom: '',
+      livingSpaceTo: '',
+      kitchenAreaFrom: '',
+      kitchenAreaTo: '',
+      distance: '',
+      garage: '',
+      attic: '',
+      my:null
+    };
+  }
+
+  myObjects(){
+    this.formData.my=true;
+    this.myObject=false;
+
+    this.findObjects(0);
+    }
+
+  allObjects(){
+    this.formData.my=false;
+    this.myObject=true;
+    this.findObjects(0);
   }
 
   findObjects(pageNo: number) {
@@ -190,6 +235,9 @@ export class ObjectsComponent implements OnInit {
     if (!this.util.isNullOrEmpty(this.formData.numberOfRooms)) {
       searchFilter['numberOfRooms'] = parseInt(this.formData.numberOfRooms);
     }
+    if (!this.util.isNullOrEmpty(this.formData.my)) {
+      searchFilter['my'] = this.formData.my;
+    }
 
 
     this.objectService.getObjects(searchFilter).subscribe(res => {
@@ -233,7 +281,7 @@ export class ObjectsComponent implements OnInit {
       this.homeTypes = this.util.toSelectArray(data);
     });
 
-    this.dicService.getDics('residentialComplexes').subscribe(data => {
+    this.dicService.getResidentialComplexes().subscribe(data => {
       this.residentialComplexes = this.util.toSelectArrayResidenceComplex(data);
     });
 

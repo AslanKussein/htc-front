@@ -1,4 +1,3 @@
-
 <div class="card-body card-bg">
   <div class="card">
     <div class="card-body">
@@ -28,16 +27,37 @@
                 <div class="form-group row">
                   <label class="col-sm col-form-label" style="text-align: right">Комнаты</label>
                   <div class="col-sm">
+                    <div class="custom-control custom-checkbox">
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline1" value="1"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline1">1</label>
+                      </div>
 
+                      <!-- Default inline 2-->
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline2" value="2"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline2">2</label>
+                      </div>
 
-                    <div class="btn-toolbar d-flex" role="toolbar" aria-label="Toolbar with button groups" [(ngModel)]="model">
-                      <div class="btn-group mr-auto mb-3 mb-md-0" role="group" aria-label="First group"
-                      >
-                        <button type="button" [value]="1" class="btn btn-primary ">1</button>
-                        <button type="button" [value]="2" class="btn btn-primary ">2</button>
-                        <button type="button" [value]="3" class="btn btn-primary ">3</button>
-                        <button type="button" class="btn btn-primary ">4</button>
-                        <button type="button" class="btn btn-primary ">5+</button>
+                      <!-- Default inline 3-->
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline4" value="3"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline4">3</label>
+                      </div>
+
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline5" value="4"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline5">4</label>
+                      </div>
+
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline6" value="5"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline6">5</label>
                       </div>
                     </div>
                   </div>
@@ -193,16 +213,39 @@
             <div class="col-sm-4">
               <form>
                 <div class="form-group row">
-                  <label style="text-align: right" for="input1" class="col-sm col-form-label">Комнаты</label>
+                  <label class="col-sm col-form-label" style="text-align: right">Комнаты</label>
                   <div class="col-sm">
-                    <div class="btn-toolbar d-flex" role="toolbar" aria-label="Toolbar with button groups">
-                      <div class="btn-group mr-auto mb-3 mb-md-0" role="group" aria-label="First group"
-                      >
-                        <button type="button" class="btn btn-primary ">1</button>
-                        <button type="button" class="btn btn-primary ">2</button>
-                        <button type="button" class="btn btn-primary ">3</button>
-                        <button type="button" class="btn btn-primary ">4</button>
-                        <button type="button" class="btn btn-primary ">5+</button>
+                    <div class="custom-control custom-checkbox">
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline13" value="1"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline13">1</label>
+                      </div>
+
+                      <!-- Default inline 2-->
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline23" value="2"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline23">2</label>
+                      </div>
+
+                      <!-- Default inline 3-->
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline43" value="3"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline43">3</label>
+                      </div>
+
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline53" value="4"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline53">4</label>
+                      </div>
+
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline63" value="5"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline63">5</label>
                       </div>
                     </div>
                   </div>
@@ -350,16 +393,39 @@
             <div class="col-sm-4">
               <form>
                 <div class="form-group row">
-                  <label for="input1" class="col-sm col-form-label" style="text-align: right">Комнаты</label>
+                  <label class="col-sm col-form-label" style="text-align: right">Комнаты</label>
                   <div class="col-sm">
-                    <div class="btn-toolbar d-flex" role="toolbar" aria-label="Toolbar with button groups">
-                      <div class="btn-group mr-auto mb-3 mb-md-0" role="group" aria-label="First group"
-                           id="input1">
-                        <button type="button" class="btn btn-primary ">1</button>
-                        <button type="button" class="btn btn-primary ">2</button>
-                        <button type="button" class="btn btn-primary ">3</button>
-                        <button type="button" class="btn btn-primary ">4</button>
-                        <button type="button" class="btn btn-primary ">5+</button>
+                    <div class="custom-control custom-checkbox">
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline12" value="1"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline12">1</label>
+                      </div>
+
+                      <!-- Default inline 2-->
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline22" value="2"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline22">2</label>
+                      </div>
+
+                      <!-- Default inline 3-->
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline42" value="3"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline42">3</label>
+                      </div>
+
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline52" value="4"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline52">4</label>
+                      </div>
+
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline62" value="5"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline62">5</label>
                       </div>
                     </div>
                   </div>
@@ -510,21 +576,25 @@
         <div class="row ">
           <div class="col-sm-9"></div>
           <div class="col-sm-3">
-            <div class="form-group row">
-              <div class="col-sm">
-                <button type="button" class="btn btn-primary" (click)="findObjects(0)"><i class="fa fa-search"
-                                                                                          aria-hidden="true"></i>
-                  Показать результаты
-                </button>
-              </div>
-              <div class="col-sm">
-                <button type="button" class="btn btn-info"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                  Посмотреть на карте
 
+            <div class="row">
+              <div class="form-group col-sm">
+                <button type="button" mdbBtn color="success"
+                        class="btn btn-sm btn-info float-right btn2"
+                        mdbWavesEffect>
+                  <span class="fa fa-map-marker"> Посмотреть на карте</span>
+                </button>
+                <button type="button" mdbBtn color="success" (click)="findObjects(0)"
+                        class="btn btn-sm btn-info float-right btn2"
+                        mdbWavesEffect>
+                  <span class="fa fa-search" translate> search</span>
+                </button>
+                <button type="button" mdbBtn class="btn btn-sm btn-link float-right btn2" (click)="clearFilter()"
+                        translate>
+                  clear
                 </button>
               </div>
             </div>
-
           </div>
 
         </div>
@@ -539,8 +609,12 @@
 
 
 </div>
+<div class="row">
+  <h4 style="margin-left: 30px;">Найдено всего / </h4><a class="h4" *ngIf="myObject" (click)="myObjects()"> Свои
+  объекты</a><a
+  class="h4" (click)="allObjects() " *ngIf="!myObject"> Все объекты</a>
 
-<h4 style="margin-left: 30px;">Найдено всего/</h4>
+</div>
 <div class="card-body card-bg">
   <div class="card">
     <div class="card-body">
@@ -563,7 +637,8 @@
             <tbody style="cursor: pointer">
             <tr *ngFor="let object of objectsData;let i = index">
               <td>{{object.realPropertyId}}</td>
-              <td> <img [src]="getImgUrl(object.photos.PHOTO[0])" alt="First Slide" class="photoList" width="302" height="320"></td>
+              <td><img [src]="getImgUrl(object.photos.PHOTO[0])" alt="First Slide" class="photoList" width="100"
+                       height="100"></td>
               <td>{{object.address.nameRu}}</td>
               <td>{{object.price}}</td>
               <td>{{object.numberOfRooms}}</td>

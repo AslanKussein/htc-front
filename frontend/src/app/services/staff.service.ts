@@ -4,6 +4,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {language} from "../../environments/language";
 import {tap} from "rxjs/operators";
+import {Util} from "./util";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ import {tap} from "rxjs/operators";
 export class StaffService {
 
   constructor(private configService: ConfigService,
+              private util: Util,
               private http: HttpClient) {
   }
 
@@ -25,7 +27,18 @@ export class StaffService {
   }
 
   getUserInfo(obj): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/users/infos?login=`+obj);
+    let params = new HttpParams();
+    if(!this.util.isNullOrEmpty(obj.group)){
+      params = params.append('groupId',obj.group);
+    }
+    params = params.append('locale', String(language.language));
+    if(!this.util.isNullOrEmpty(obj.roles)){
+      params = params.append('roleId',obj.roles);
+    }
+    if(!this.util.isNullOrEmpty(obj.search)){
+      params = params.append('value',obj.search);
+    }
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/users/filter`,{params});
   }
 
   getRoleList(search: any): Observable<any> {
