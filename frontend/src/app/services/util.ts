@@ -26,7 +26,7 @@ export class Util {
     if (data) {
       const len = data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value: '' + data[i][idField], label: data[i][labelField], code: data[i]['code']});
+        list.push({value:  data[i][idField], label: data[i][labelField], code: data[i]['code']});
       }
     }
     return list;
@@ -89,6 +89,7 @@ export class Util {
           value: '' + data[i]['id'],
           label: data[i]['houseName'],
           countryId: data[i]['countryId'],
+          cityId: data[i]['cityId'],
           houseName: data[i]['houseName'],
           propertyDeveloperId: data[i]['propertyDeveloperId'],
           numberOfEntrances: data[i]['numberOfEntrances'],
@@ -106,9 +107,9 @@ export class Util {
           parkingTypeId: data[i]['parkingTypeIds'],
           playground: data[i]['playground'],
           streetId: data[i]['streetId'],
-          typeOfElevator: data[i]['typeOfElevator'],
+          typeOfElevator: data[i]['typeOfElevatorIdList'],
           wheelchair: data[i]['wheelchair'],
-          yardType: data[i]['yardType'],
+          yardType: data[i]['yardTypeId'],
           yearOfConstruction: data[i]['yearOfConstruction'],
         });
       }
