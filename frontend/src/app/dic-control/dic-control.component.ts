@@ -1,7 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {DicService} from "../services/dic.service";
 import {Dic} from "../models/dic";
 import {Util} from "../services/util";
+import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
+import {ruLocale} from "ngx-bootstrap/locale";
+import {defineLocale} from "ngx-bootstrap/chronos";
+import {BsLocaleService} from "ngx-bootstrap";
+import {NotificationService} from "../services/notification.service";
 
 @Component({
   selector: 'app-dic-control',
@@ -9,29 +14,120 @@ import {Util} from "../services/util";
   styleUrls: ['./dic-control.component.scss']
 })
 export class DicControlComponent implements OnInit {
+  modalRef: BsModalRef;
   dictionary: Dic[];
+  countries: Dic[];
   cities: Dic[];
   districts: Dic[];
   streets: Dic[];
   propertyDevelopers: Dic[];
   materialsOfConstruction: Dic[];
   residentialComplexes: Dic[];
-  typeOfElevator:Dic[];
-  parkingTypes:Dic[];
-  yardTypes:Dic[];
-  resident:boolean;
+  typeOfElevator: Dic[];
+  parkingTypes: Dic[];
+  yardTypes: Dic[];
+  resident: boolean;
+  editOrDelete: boolean;
+  actions: string;
+  dicName: string;
+  clickColumnDic: any;
 
   constructor(private util: Util,
+              private modalService: BsModalService,
+              private localeService: BsLocaleService,
+              private notifyService: NotificationService,
               private dicService: DicService) {
+    defineLocale('ru', ruLocale);
+    this.localeService.use('ru');
+  }
+
+
+  formData = {
+    code: '',
+    nameEn: '',
+    nameRu: '',
+    nameKz: '',
+  };
+
+  formRes = {
+    apartmentsOnTheSite: '',
+    ceilingHeight: 0,
+    cityId: 0,
+    concierge: false,
+    districtId: 0,
+    houseName: '',
+    houseNumber: 0,
+    houseNumberFraction: '',
+    housingClass: '',
+    housingCondition: '',
+    materialOfConstructionId: 0,
+    numberOfApartments: 0,
+    numberOfEntrances: 0,
+    numberOfFloors: 0,
+    parkingTypeIds: 0,
+    playground: false,
+    propertyDeveloperId: 0,
+    streetId: 0,
+    typeOfElevatorIdList: [],
+    wheelchair: false,
+    yardTypeId: 0,
+    countryId: 0,
+    yearOfConstruction: 0
+  };
+
+  clearForm() {
+    this.formData = {
+      code: '',
+      nameEn: '',
+      nameRu: '',
+      nameKz: '',
+    };
+
+    this.formRes = {
+      apartmentsOnTheSite: '',
+      ceilingHeight: 0,
+      cityId: 0,
+      concierge: false,
+      districtId: 0,
+      houseName: '',
+      houseNumber: 0,
+      houseNumberFraction: '',
+      housingClass: '',
+      housingCondition: '',
+      materialOfConstructionId: 0,
+      numberOfApartments: 0,
+      numberOfEntrances: 0,
+      numberOfFloors: 0,
+      parkingTypeIds: 0,
+      playground: false,
+      propertyDeveloperId: 0,
+      streetId: 0,
+      typeOfElevatorIdList: [],
+      wheelchair: false,
+      yardTypeId: 0,
+      countryId: 0,
+      yearOfConstruction: 0
+    };
+
+    this.clickColumnDic = null;
+
   }
 
   ngOnInit(): void {
-      this.loadDictionary();
-      this.loadDictionaryForEdit('residential-complexes');
-      this.resident=true;
+    this.loadDictionary();
+    this.loadDictionaryForEdit('residential-complexes');
+    this.resident = true;
   }
 
-  loadDictionary(){
+  openModal(template: TemplateRef<any>) {
+    console.log(template)
+    this.modalRef = this.modalService.show(template);
+  }
+
+  loadDictionary() {
+    this.dicService.getDics('COUNTRIES').subscribe(data => {
+      this.countries = this.util.toSelectArray(data);
+    });
     this.dicService.getDics('CITIES').subscribe(data => {
       this.cities = this.util.toSelectArray(data);
     });
@@ -60,17 +156,153 @@ export class DicControlComponent implements OnInit {
   }
 
   loadDictionaryForEdit(dic) {
+    this.dicName = dic;
     if (dic == 'residential-complexes') {
       this.dicService.getResidentialComplexes().subscribe(data => {
         this.residentialComplexes = this.util.toSelectArrayResidenceComplex(data);
-        console.log(this.residentialComplexes)
       });
     } else {
       this.dicService.getDics(dic).subscribe(data => {
         this.dictionary = data;
       });
     }
+    this.clickColumnDic = null;
+  }
 
+  addDic() {
+    this.actions = 'ADD';
+  }
 
+  editDic() {
+    this.actions = 'EDIT';
+    if (this.clickColumnDic == null) {
+      this.notifyService.showError('warning', 'Не выбрана запись для редактирования');
+      this.modalRef.hide();
+    } else {
+      if (this.dicName == 'residential-complexes') {
+        this.formRes = this.clickColumnDic;
+      } else {
+        this.formData = this.clickColumnDic;
+      }
+    }
+  }
+
+  deleteDic() {
+    if (this.clickColumnDic == null) {
+      this.notifyService.showError('warning', 'Не выбрана запись для удаления');
+      this.modalRef.hide();
+    } else {
+      if (this.dicName == 'residential-complexes') {
+        this.formRes = this.clickColumnDic;
+      } else {
+        this.formData = this.clickColumnDic;
+      }
+    }
+  }
+
+  deleteById(){
+    if (this.dicName == 'residential-complexes') {
+      this.dicService.deleteResidentalComplex(this.clickColumnDic).subscribe(data => {
+          if (data != null) {
+            this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.loadDictionaryForEdit(this.dicName);///////////////
+            this.modalRef.hide();
+            this.clearForm();
+          }
+        }, err => {
+          this.notifyService.showError('warning', err.message);
+          this.loadDictionaryForEdit(this.dicName);
+          this.modalRef.hide();
+          this.clearForm();
+        }
+      );
+    }else{
+      this.dicService.deleteDic(this.clickColumnDic,this.dicName).subscribe(data => {
+          if (data == null) {
+            this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.loadDictionaryForEdit(this.dicName);
+            this.modalRef.hide();
+            this.clearForm();
+          }
+        }, err => {
+          this.notifyService.showError('warning', err.message);
+          this.loadDictionaryForEdit(this.dicName);
+          this.modalRef.hide();
+          this.clearForm();
+        }
+      );
+    }
+  }
+
+  submit() {
+    if (this.actions == 'ADD') {
+      if (this.dicName == 'residential-complexes') {
+        this.dicService.saveResidentalComplex(this.formRes).subscribe(data => {
+            if (data != null) {
+              this.notifyService.showSuccess('success', 'Успешно сохранено');
+              this.loadDictionaryForEdit(this.dicName);
+              this.modalRef.hide();
+              this.clearForm();
+            }
+          }, err => {
+            this.notifyService.showError('warning', err.message);
+            this.loadDictionaryForEdit(this.dicName);
+            this.modalRef.hide();
+            this.clearForm();
+          }
+        );
+
+      } else {
+        this.dicService.saveDic(this.formData, this.dicName).subscribe(data => {
+          if (data != null) {
+            this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.loadDictionaryForEdit(this.dicName);
+            this.modalRef.hide();
+            this.clearForm();
+          }
+        }, err => {
+          this.notifyService.showError('warning', err.message);
+          this.loadDictionaryForEdit(this.dicName);
+          this.modalRef.hide();
+          this.clearForm();
+        });
+      }
+    } else {
+      if (this.dicName == 'residential-complexes') {
+        this.dicService.updateResidentalComplex(this.formRes).subscribe(data => {
+          if (data != null) {
+            this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.loadDictionaryForEdit(this.dicName);
+            this.modalRef.hide();
+            this.clearForm();
+          }
+        }, err => {
+          this.notifyService.showError('warning', err.message);
+          this.loadDictionaryForEdit(this.dicName);
+          this.modalRef.hide();
+          this.clearForm();
+        });
+
+      } else {
+        this.dicService.updateDic(this.formData, this.dicName).subscribe(data => {
+          if (data == null) {
+            this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.loadDictionaryForEdit(this.dicName);
+            this.modalRef.hide();
+            this.clearForm();
+          }
+        }, err => {
+          this.notifyService.showError('warning', err.message);
+          this.loadDictionaryForEdit(this.dicName);
+          this.modalRef.hide();
+          this.clearForm();
+        });
+      }
+    }
+  };
+
+  clickTr(obj) {
+    this.editOrDelete = true;
+    this.clickColumnDic = obj;
   }
 }
