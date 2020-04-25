@@ -457,14 +457,14 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   fillRealPropertyOwnerDto(data: any) {
-    this.application.ownerDto = new RealPropertyOwnerDto();
-    this.application.ownerDto.id = data.clientId;
-    this.application.ownerDto.firstName = data.firstName;
-    this.application.ownerDto.surname = data.surname;
-    this.application.ownerDto.patronymic = data.patronymic;
-    this.application.ownerDto.phoneNumber = '7' + data.phoneNumber;
-    this.application.ownerDto.email = data.email;
-    this.application.ownerDto.gender = data.gender;
+    this.application.clientDto = new RealPropertyOwnerDto();
+    this.application.clientDto.id = data.clientId;
+    this.application.clientDto.firstName = data.firstName;
+    this.application.clientDto.surname = data.surname;
+    this.application.clientDto.patronymic = data.patronymic;
+    this.application.clientDto.phoneNumber = '7' + data.phoneNumber;
+    this.application.clientDto.email = data.email;
+    this.application.clientDto.gender = data.gender;
   }
 
   submit() {
@@ -477,7 +477,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       this.fillPurchaseInfoDto();
     }
 
-    console.log(this.application.ownerDto)
+    console.log(this.application.clientDto)
 
     let result = false;
     const controls = this.applicationForm.controls;

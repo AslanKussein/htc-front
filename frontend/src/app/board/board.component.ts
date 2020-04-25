@@ -29,6 +29,7 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     this.dicService.getDics('APPLICATION_STATUSES').subscribe(data => {
       this.appStatuses = this.util.toSelectArray(data);
+      this.sortStatusesDic(3);
     });
   }
 
@@ -36,18 +37,24 @@ export class BoardComponent implements OnInit {
     let searchFilter = {};
     searchFilter['agentLoginList'] = this.util.getCurrentUser().roles;
     searchFilter['applicationStatusList'] = ids;
-    searchFilter['operationTypeId'] = tab;
+    searchFilter['operationTypeId'] = tab == 3 ? null : tab;
     this.boardService.getBoard(searchFilter).subscribe(res => {
       if (res.code == 200 && res.data.applicationMap != null) {
         this.appStatusesData = [];
         for (const argument of this.appStatusesSort) {
           if (res.data.applicationMap[argument['code']] != null) {
+            argument['size'] = res.data.applicationMap[argument['code']].size
             argument['boardData'] = res.data.applicationMap[argument['code']];
           } else {
             this.board = new Board();
             this.board.data = [];
             argument['boardData'] = this.board;
+            argument['size'] = 0
           }
+          if (argument.id == 1) {
+            argument['board.data.style'] = 'addRight';
+          }
+
           this.appStatusesData.push(argument)
         }
       } else {
@@ -59,9 +66,11 @@ export class BoardComponent implements OnInit {
   sortStatusesDic(tab: number) {
     this.appStatusesSort = [];
     let ids;
-    if (tab == 2) {
+    if (tab == 3) {
+      ids = [1, 2, 3, 5, 4, 6, 7];
+    } else if (tab == 2) {
       ids = [1, 2, 3, 4, 5, 6, 7]
-    } else if (tab == 3) {
+    } else if (tab == 1) {
       ids = [1, 3, 6, 7]
     }
     for (const status of this.appStatuses) {

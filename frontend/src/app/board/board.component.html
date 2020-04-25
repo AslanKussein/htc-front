@@ -1,5 +1,4 @@
 <div class="card-body card-bg">
-
   <div class="row">
     <div class="btn-group btn-breadcrumb">
       <a href="#" class="btn btn-primary"><i class="fa fa-home"></i></a>
@@ -9,7 +8,7 @@
   <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-         aria-selected="true" (click)="sortStatusesDic(1)" translate>board.commonBoard</a>
+         aria-selected="true" (click)="sortStatusesDic(3)" translate>board.commonBoard</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
@@ -17,108 +16,63 @@
     </li>
     <li class="nav-item">
       <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
-         aria-selected="false" (click)="sortStatusesDic(3)" translate>board.buyerBoard</a>
+         aria-selected="false" (click)="sortStatusesDic(1)" translate>board.buyerBoard</a>
     </li>
   </ul>
-  <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-      1
+  <div class="text-center" style="font-size: 18px">
+    <span><i class="fa fa-lightbulb-o" style="color: orange"></i> Всего в активе 18 сделок</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span><i class="fa fa-money" style="color: green"></i>  Общая комиссия 1 750 000 тг</span>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-sm">
+      <span>Фильтры:</span>
+      <button type="button" class="btn btn-sm btn-link">Все</button>
+      <button type="button" class="btn btn-sm btn-link">Адам</button>
+      <button type="button" class="btn btn-sm btn-link">Юрий</button>
     </div>
-    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-      <div class="text-center" style="font-size: 18px">
-        <span><i class="fa fa-lightbulb-o" style="color: orange"></i> Всего в активе 18 сделок</span>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <span><i class="fa fa-money" style="color: green"></i>  Общая комиссия 1 750 000 тг</span>
-      </div>
-      <br>
-      <div class="row">
-        <span>Фильтры:</span>
-        <button type="button" class="btn btn-sm btn-link">Все</button>
-        <button type="button" class="btn btn-sm btn-link">Адам</button>
-        <button type="button" class="btn btn-sm btn-link">Юрий</button>
-      </div>
-      <br>
-      <div class="row" cdkDropListGroup>
-        <div class="col-sm" *ngFor="let data of appStatusesData;let i = index">
-          <div class="alert bg-secondary text-white font-weight-bolder boardTitle text-center" role="alert" translate>
-            {{data.label}}<span
-            class="badge badge-danger ml-2">{{data.boardData?.size != null ? data.boardData?.size : 0}}</span>
-          </div>
-          <br/>
-          <div *ngIf="data.boardData"
-               cdkDropList
-               [cdkDropListData]="data.boardData.data"
-               class="example-list dropItem"
-               (cdkDropListDropped)="drop($event)">
-            <div *ngFor="let item of data.boardData.data; let i = index" cdkDrag>
-              <div class="card">
-                <h5 class="card-header">{{item.id}} &nbsp;Покупка</h5>
-                <div class="card-body" [class]="getBgColorBySumm(item.price)">
-                  <p class="card-text">{{item.numberOfRooms}} комнатная, кв {{item.totalArea}}
-                    {{item.district.name.nameRu}}
-                    цена: {{item.price}}</p>
-                </div>
-                <div class="card-footer">
-                  <i class="fa fa-phone"><a
-                    href="tel:8{{item.phone}}"> {{item.phone | mask: '+0 (000) 000-0000'}}</a><br/>{{item.fullname}}</i>
-                </div>
-              </div>
-              <br/>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-      <div class="text-center" style="font-size: 18px">
-        <span><i class="fa fa-lightbulb-o" style="color: orange"></i> Всего в активе 18 сделок</span>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <span><i class="fa fa-money" style="color: green"></i>  Общая комиссия 1 750 000 тг</span>
-      </div>
-      <br>
-      <div class="row">
-        <span>Фильтры:</span>
-        <button type="button" class="btn btn-sm btn-link">Все</button>
-        <button type="button" class="btn btn-sm btn-link">Адам</button>
-        <button type="button" class="btn btn-sm btn-link">Юрий</button>
-      </div>
-      <br>
-      <div class="row" cdkDropListGroup>
-        <div class="col-sm" *ngFor="let data of appStatusesData;let i = index">
-          <div class="alert bg-secondary text-white font-weight-bolder boardTitle text-center" role="alert" translate>
-            {{data.label}}<span
-            class="badge badge-danger ml-2">{{data.boardData?.size != null ? data.boardData?.size : 0}}</span>
-          </div>
-          <br/>
-          <div
-            cdkDropList
-            [cdkDropListData]="data.boardData.data"
-            class="example-list dropItem"
-            (cdkDropListDropped)="drop($event)">
-            <div *ngFor="let item of data.boardData.data; let i = index" cdkDrag>
-              <div class="card ">
-                <h5 class="card-header">{{item.id}} &nbsp;Покупка</h5>
-                <div class="card-body" [class]="getBgColorBySumm(item.price)">
-                  <p class="card-text">{{item.numberOfRooms}} комнатная, кв {{item.totalArea}}
-                    {{item.district.name.nameRu}}
-                    цена: {{item.price}}</p>
-                </div>
-                <div class="card-footer">
-                  <i class="fa fa-phone"><a
-                    href="tel:8{{item.phone}}"> {{item.phone | mask: '+0 (000) 000-0000'}}</a><br/>{{item.fullname}}</i>
-                </div>
-              </div>
-              <br/>
-            </div>
-          </div>
-        </div>
-      </div>
 
+  </div>
+  <br>
+  <div class="row" cdkDropListGroup>
+    <div class="col-sm" *ngFor="let data of appStatusesData;let i = index">
+      <div class="alert bg-secondary text-white font-weight-bolder boardTitle text-center" role="alert" translate>
+        {{data.label}}<span
+        class="badge badge-danger ml-2">{{data.boardData?.data.length}}</span>
+      </div>
+      <br/>
+      <div *ngIf="data.boardData"
+           cdkDropList
+           [cdkDropListData]="data.boardData.data"
+           class="example-list dropItem"
+           (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let item of data.boardData.data; let i = index" cdkDrag [class]="item.style" >
+          <div class="card">
+            <div class="card-body" [class]="getBgColorBySumm(item.price)">
+              <p class="card-text">{{item.id}} &nbsp;Покупка</p>
+              <p class="card-text">{{item.numberOfRooms}} комнатная, кв {{item.totalArea}}
+                {{item.district.name.nameRu}}
+                <br/>цена: {{item.price}}</p>
+              <i class="fa fa-phone" *ngIf="item.phone"><a href="tel:8{{item.phone}}"
+                                                           class="text-white"> {{item.phone | mask: '+0 (000) 000-0000'}}</a></i>
+            </div>
+            <div class="card-footer">
+              {{item.fullname}}
+            </div>
+          </div>
+          <br/>
+        </div>
+      </div>
+    </div>
+    <div class="position-static createClaimBtn">
+      <button type="button" class="btn btn-success btn-circle btn-xl" (click)="dnHref('create-claim')"><i
+        class="fa fa-plus"></i>
+      </button>
     </div>
   </div>
-  <div class="position-static createClaimBtn fixed-bottom">
-    <button type="button" class="btn btn-success btn-circle btn-xl" (click)="dnHref('create-claim')"><i
-      class="fa fa-plus"></i>
-    </button>
-  </div>
+
+  <br/>
+  <br/>
+  <br/>
 </div>
