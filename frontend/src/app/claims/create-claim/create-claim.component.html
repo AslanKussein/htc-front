@@ -50,6 +50,7 @@
                         <div class="row">
                           <div class="col-sm">
                             <ng-select
+                              [readonly]="this.applicationId"
                               [items]="operationType"
                               [(ngModel)]="applicationForm.operationTypeId"
                               formControlName="operationTypeId"
