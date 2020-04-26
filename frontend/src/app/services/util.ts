@@ -159,4 +159,8 @@ export class Util {
       }
     }
   }
+
+  toString(data: any) {
+    return data?.toString();
+  }
 }

@@ -32,8 +32,8 @@ export class ClaimService {
       );
   }
 
-  public updateClaim(obj): Observable<any> {
-    return this.http.put(`${this.configService.apiDataManagerUrl}/applications`, obj)
+  public updateClaim(id: number, obj: any): Observable<any> {
+    return this.http.put(`${this.configService.apiDataManagerUrl}/applications/` + id, obj)
       // return this.http.post(`/ehr/api/resume/put/resume` , obj)
       .pipe(
         tap(data => {

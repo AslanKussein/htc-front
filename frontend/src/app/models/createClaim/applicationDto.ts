@@ -24,8 +24,7 @@ export class ApplicationDto implements BaseEntity {
   public realPropertyRequestDto?: RealPropertyRequestDto;//Модель сущности недвижимости
 
 
-  constructor(id: number, operationTypeId: number, objectPrice: number, mortgage: boolean, encumbrance: boolean, sharedOwnershipProperty: boolean, exchange: boolean, probabilityOfBidding: boolean, theSizeOfTrades: number, possibleReasonForBiddingIdList: number, contractPeriod: any, amount: number, isCommissionIncludedInThePrice: boolean, note: string) {
-    this.id = id;
+  constructor(operationTypeId: number, objectPrice: number, mortgage: boolean, encumbrance: boolean, sharedOwnershipProperty: boolean, exchange: boolean, probabilityOfBidding: boolean, theSizeOfTrades: number, possibleReasonForBiddingIdList: number, contractPeriod: any, amount: number, isCommissionIncludedInThePrice: boolean, note: string) {
     this.operationTypeId = operationTypeId;
     this.objectPrice = objectPrice;
     this.mortgage = mortgage;
