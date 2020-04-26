@@ -18,8 +18,22 @@ export class ClaimService {
     return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getApplicationList`, search);
   }
 
+  getClaimById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/applications/` + id, {});
+  }
+
   public saveClaim(obj): Observable<any> {
     return this.http.post(`${this.configService.apiDataManagerUrl}/applications`, obj)
+      // return this.http.post(`/ehr/api/resume/put/resume` , obj)
+      .pipe(
+        tap(data => {
+          console.log(data)
+        }),
+      );
+  }
+
+  public updateClaim(obj): Observable<any> {
+    return this.http.put(`${this.configService.apiDataManagerUrl}/applications`, obj)
       // return this.http.post(`/ehr/api/resume/put/resume` , obj)
       .pipe(
         tap(data => {

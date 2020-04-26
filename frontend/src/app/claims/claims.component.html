@@ -64,7 +64,7 @@
         </div>
         <div class="col-sm">
           <label translate>claim.textSearch</label>
-            <input type="text" id="form1" class="form-control" [(ngModel)]="formData.textSearch">
+          <input type="text" id="form1" class="form-control" [(ngModel)]="formData.textSearch">
         </div>
       </div>
 
@@ -153,7 +153,9 @@
             </thead>
             <tbody style="cursor: pointer">
             <tr *ngFor="let claim of claimData;let i = index">
-              <td>{{claim.id}}</td>
+              <td>
+                <a [routerLink]="['/create-claim/', claim.id]">{{claim.id}}</a>
+              </td>
               <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
               <td>{{formatDate(claim)}}</td>
               <td>{{claim.fullname}}</td>

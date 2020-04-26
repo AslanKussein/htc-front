@@ -18,11 +18,21 @@ export class OwnerService {
 
     params = params.append('phoneNumber', String(number));
 
-    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/clients/search/by-phone-number`, {params: params});
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/clients/search/by-phone-number`, {params: params})
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
   }
 
   searchByClientId(clientId: number): Observable<any> {
     return this.http.get<any>(`${this.configService.apiDataManagerUrl}/clients/` + clientId, {});
   }
 
+
+  private handleError(error: HttpErrorResponse) {
+    return throwError(
+      error);
+  }
 }

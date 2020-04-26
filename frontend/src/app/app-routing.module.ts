@@ -23,6 +23,7 @@ const routes: Routes = [
   {path: 'staffs', component: StaffsComponent, canActivate: [AuthGuard]},
   {path: 'news', component: NewsComponent, canActivate: [AuthGuard]},
   {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
+  {path: 'create-claim/:id', component: CreateClaimComponent, canActivate: [AuthGuard]},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate]},
 ];
 

@@ -32,6 +32,17 @@ export class Util {
     return list;
   }
 
+  toSelectArrayId(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
+    const list = [];
+    if (data) {
+      const len = data.length;
+      for (let i = 0; i < len; i++) {
+        list.push({value: data[i][idField], label: data[i][labelField], code: data[i]['code']});
+      }
+    }
+    return list;
+  }
+
   toSelectArrayRoles(data, idField = 'id', labelField = this.getDicName()) {
     const list = [];
     if (data) {
@@ -137,5 +148,13 @@ export class Util {
 
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('currentUser'))
+  }
+
+  getDictionaryValueById(data: Dic[], id: any) {
+    for (const obj of data) {
+      if (obj['value'] == id) {
+        return obj;
+      }
+    }
   }
 }
