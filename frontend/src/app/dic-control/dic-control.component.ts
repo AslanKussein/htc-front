@@ -14,6 +14,8 @@ import {NotificationService} from "../services/notification.service";
   styleUrls: ['./dic-control.component.scss']
 })
 export class DicControlComponent implements OnInit {
+
+
   modalRef: BsModalRef;
   dictionary: Dic[];
   countries: Dic[];
@@ -64,7 +66,7 @@ export class DicControlComponent implements OnInit {
     numberOfApartments: 0,
     numberOfEntrances: 0,
     numberOfFloors: 0,
-    parkingTypeIds: null,
+    parkingTypeIds: [],
     playground: false,
     propertyDeveloperId: null,
     streetId: 0,
@@ -98,7 +100,7 @@ export class DicControlComponent implements OnInit {
       numberOfApartments: 0,
       numberOfEntrances: 0,
       numberOfFloors: 0,
-      parkingTypeIds: null,
+      parkingTypeIds: [],
       playground: false,
       propertyDeveloperId: null,
       streetId: 0,
@@ -123,11 +125,7 @@ export class DicControlComponent implements OnInit {
     console.log(template)
     this.modalRef = this.modalService.show(template);
   }
-
-  loadDictionary() {
-    this.dicService.getDics('COUNTRIES').subscribe(data => {
-      this.countries = this.util.toSelectArray(data);
-    });
+  loadDictionary(){
     this.dicService.getDics('CITIES').subscribe(data => {
       this.cities = this.util.toSelectArray(data);
     });
@@ -157,9 +155,11 @@ export class DicControlComponent implements OnInit {
 
   loadDictionaryForEdit(dic) {
     this.dicName = dic;
+
     if (dic == 'residential-complexes') {
       this.dicService.getResidentialComplexes().subscribe(data => {
         this.residentialComplexes = this.util.toSelectArrayResidenceComplex(data);
+        console.log(this.residentialComplexes)
       });
     } else {
       this.dicService.getDics(dic).subscribe(data => {
@@ -168,6 +168,7 @@ export class DicControlComponent implements OnInit {
     }
     this.clickColumnDic = null;
   }
+
 
   addDic() {
     this.actions = 'ADD';
@@ -304,5 +305,5 @@ export class DicControlComponent implements OnInit {
   clickTr(obj) {
     this.editOrDelete = true;
     this.clickColumnDic = obj;
-  }
+    }
 }

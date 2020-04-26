@@ -9,7 +9,7 @@
           </div>
           <div style="border: solid 1px black; padding: 5px">
             <a (click)="loadDictionaryForEdit('residential-complexes'); resident=true"><h5>ЖК</h5></a>
-            <a (click)="loadDictionaryForEdit('COUNTRIES'); resident=false"><h5>Страна</h5></a>
+            <a (click)="loadDictionaryForEdit('COUNTRIES'); resident=false"><h5>Страна </h5></a>
             <a (click)="loadDictionaryForEdit('CITIES'); resident=false"><h5>Город</h5></a>
             <a (click)="loadDictionaryForEdit('DISTRICTS'); resident=false"><h5>Районы</h5></a>
             <a (click)="loadDictionaryForEdit('STREETS'); resident=false"><h5>Улицы</h5></a>
@@ -73,6 +73,7 @@
                 <td>{{dic.code}}</td>
                 <td>
                   <ng-select
+                    [disabled]="true"
                     bindValue="value"
                     bindLabel="label"
                     [items]="cities"
@@ -81,6 +82,8 @@
                 </td>
                 <td>
                   <ng-select
+                    [disabled]="true"
+
                     bindValue="value"
                     bindLabel="label"
                     [items]="districts"
@@ -89,6 +92,8 @@
                 </td>
                 <td>
                   <ng-select
+                    [disabled]="true"
+
                     bindValue="value"
                     bindLabel="label"
                     [items]="streets"
@@ -109,6 +114,8 @@
                 </td>
                 <td>
                   <ng-select
+                    [disabled]="true"
+
                     bindValue="value"
                     bindLabel="label"
                     [items]="propertyDevelopers"
@@ -132,6 +139,8 @@
                 </td>
                 <td>
                   <ng-select
+                    [disabled]="true"
+
                     bindValue="value"
                     bindLabel="label"
                     [items]="materialsOfConstruction"
@@ -146,6 +155,8 @@
                 </td>
                 <td>
                   <ng-select
+                    [disabled]="true"
+
                     [multiple]="true"
                     bindValue="value"
                     bindLabel="label"
@@ -161,6 +172,8 @@
                 </td>
                 <td>
                   <ng-select
+                    [disabled]="true"
+
                     [multiple]="true"
                     bindValue="value"
                     bindLabel="label"
@@ -170,6 +183,8 @@
                 </td>
                 <td>
                   <ng-select
+                    [disabled]="true"
+
                     bindValue="value"
                     bindLabel="label"
                     [items]="yardTypes"
@@ -264,7 +279,7 @@
             <input type="text" class="col-sm form-control" name="nameKz" [(ngModel)]="formData.nameKz">
           </div>
 
-      <!--ЖК начало-->
+          <!--ЖК начало-->
           <div class="col-sm" *ngIf="resident">
             <label class="col-sm col-form-label">Страна<span class="text-danger">&nbsp;*</span></label>
             <ng-select
