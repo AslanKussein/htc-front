@@ -14,6 +14,8 @@ import {NotificationService} from "../services/notification.service";
   styleUrls: ['./dic-control.component.scss']
 })
 export class DicControlComponent implements OnInit {
+
+
   modalRef: BsModalRef;
   dictionary: Dic[];
   countries: Dic[];
@@ -51,27 +53,27 @@ export class DicControlComponent implements OnInit {
 
   formRes = {
     apartmentsOnTheSite: '',
-    ceilingHeight: 0,
-    cityId: 0,
+    ceilingHeight: null,
+    cityId: null,
     concierge: false,
-    districtId: 0,
+    districtId: null,
     houseName: '',
-    houseNumber: 0,
+    houseNumber: null,
     houseNumberFraction: '',
     housingClass: '',
     housingCondition: '',
-    materialOfConstructionId: 0,
+    materialOfConstructionId: null,
     numberOfApartments: 0,
     numberOfEntrances: 0,
     numberOfFloors: 0,
-    parkingTypeIds: 0,
+    parkingTypeIds: [],
     playground: false,
-    propertyDeveloperId: 0,
+    propertyDeveloperId: null,
     streetId: 0,
     typeOfElevatorIdList: [],
     wheelchair: false,
-    yardTypeId: 0,
-    countryId: 0,
+    yardTypeId: null,
+    countryId: null,
     yearOfConstruction: 0
   };
 
@@ -85,27 +87,27 @@ export class DicControlComponent implements OnInit {
 
     this.formRes = {
       apartmentsOnTheSite: '',
-      ceilingHeight: 0,
-      cityId: 0,
+      ceilingHeight: null,
+      cityId: null,
       concierge: false,
-      districtId: 0,
+      districtId: null,
       houseName: '',
-      houseNumber: 0,
+      houseNumber: null,
       houseNumberFraction: '',
       housingClass: '',
       housingCondition: '',
-      materialOfConstructionId: 0,
+      materialOfConstructionId: null,
       numberOfApartments: 0,
       numberOfEntrances: 0,
       numberOfFloors: 0,
-      parkingTypeIds: 0,
+      parkingTypeIds: [],
       playground: false,
-      propertyDeveloperId: 0,
+      propertyDeveloperId: null,
       streetId: 0,
       typeOfElevatorIdList: [],
       wheelchair: false,
-      yardTypeId: 0,
-      countryId: 0,
+      yardTypeId: null,
+      countryId: null,
       yearOfConstruction: 0
     };
 
@@ -123,11 +125,7 @@ export class DicControlComponent implements OnInit {
     console.log(template)
     this.modalRef = this.modalService.show(template);
   }
-
-  loadDictionary() {
-    this.dicService.getDics('COUNTRIES').subscribe(data => {
-      this.countries = this.util.toSelectArray(data);
-    });
+  loadDictionary(){
     this.dicService.getDics('CITIES').subscribe(data => {
       this.cities = this.util.toSelectArray(data);
     });
@@ -157,9 +155,11 @@ export class DicControlComponent implements OnInit {
 
   loadDictionaryForEdit(dic) {
     this.dicName = dic;
+
     if (dic == 'residential-complexes') {
       this.dicService.getResidentialComplexes().subscribe(data => {
         this.residentialComplexes = this.util.toSelectArrayResidenceComplex(data);
+        console.log(this.residentialComplexes)
       });
     } else {
       this.dicService.getDics(dic).subscribe(data => {
@@ -168,6 +168,7 @@ export class DicControlComponent implements OnInit {
     }
     this.clickColumnDic = null;
   }
+
 
   addDic() {
     this.actions = 'ADD';
@@ -304,5 +305,5 @@ export class DicControlComponent implements OnInit {
   clickTr(obj) {
     this.editOrDelete = true;
     this.clickColumnDic = obj;
-  }
+    }
 }

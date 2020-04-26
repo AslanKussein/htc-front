@@ -73,6 +73,7 @@
                 <td>{{dic.code}}</td>
                 <td>
                   <ng-select
+                    [disabled]="true"
                     bindValue="value"
                     bindLabel="label"
                     [items]="cities"
@@ -81,6 +82,8 @@
                 </td>
                 <td>
                   <ng-select
+                    [disabled]="true"
+
                     bindValue="value"
                     bindLabel="label"
                     [items]="districts"
@@ -89,6 +92,8 @@
                 </td>
                 <td>
                   <ng-select
+                    [disabled]="true"
+
                     bindValue="value"
                     bindLabel="label"
                     [items]="streets"
@@ -109,6 +114,8 @@
                 </td>
                 <td>
                   <ng-select
+                    [disabled]="true"
+
                     bindValue="value"
                     bindLabel="label"
                     [items]="propertyDevelopers"
@@ -132,6 +139,8 @@
                 </td>
                 <td>
                   <ng-select
+                    [disabled]="true"
+
                     bindValue="value"
                     bindLabel="label"
                     [items]="materialsOfConstruction"
@@ -146,6 +155,8 @@
                 </td>
                 <td>
                   <ng-select
+                    [disabled]="true"
+
                     [multiple]="true"
                     bindValue="value"
                     bindLabel="label"
@@ -161,6 +172,8 @@
                 </td>
                 <td>
                   <ng-select
+                    [disabled]="true"
+
                     [multiple]="true"
                     bindValue="value"
                     bindLabel="label"
@@ -170,6 +183,8 @@
                 </td>
                 <td>
                   <ng-select
+                    [disabled]="true"
+
                     bindValue="value"
                     bindLabel="label"
                     [items]="yardTypes"
@@ -264,7 +279,7 @@
             <input type="text" class="col-sm form-control" name="nameKz" [(ngModel)]="formData.nameKz">
           </div>
 
-      <!--ЖК начало-->
+          <!--ЖК начало-->
           <div class="col-sm" *ngIf="resident">
             <label class="col-sm col-form-label">Страна<span class="text-danger">&nbsp;*</span></label>
             <ng-select
@@ -310,7 +325,7 @@
             <input type="text"  maxlength="3"  class="col-sm form-control" name="houseNumberFraction" [(ngModel)]="formRes.houseNumberFraction">
           </div>
           <div class="col-sm" *ngIf="resident">
-            <label class="col-sm col-form-label">Название дома (ЖК)</label>
+            <label class="col-sm col-form-label">Название дома (ЖК) <span class="text-danger">&nbsp;*</span></label>
             <input type="text" maxlength="50"   class="col-sm form-control" name="houseName" [(ngModel)]="formRes.houseName">
           </div>
           <div class="col-sm" *ngIf="resident">
