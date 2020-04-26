@@ -176,6 +176,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       realPropertyRequestDto: [new RealPropertyRequestDto(), Validators.nullValidator],
       ownerDto: [null, Validators.nullValidator],
       purchaseInfoDto: [null, Validators.nullValidator],
+      apartmentNumber: [null, Validators.nullValidator],
     });
     this.cdRef.detectChanges();
     this.loadDictionary();
@@ -371,6 +372,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       this.applicationForm.houseNumber = data.houseNumber;
 
     }
+    this.applicationForm.apartmentNumber = data.apartmentNumber;
     this.applicationForm.houseNumberFraction = data.houseNumberFraction;
     this.applicationForm.floor = data.floor;
     this.applicationForm.numberOfRooms = data.numberOfRooms;
@@ -538,7 +540,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.application.realPropertyRequestDto.houseNumber = this.applicationForm.houseNumber;
     this.application.realPropertyRequestDto.houseNumberFraction = this.applicationForm.houseNumberFraction;
     this.application.realPropertyRequestDto.floor = this.applicationForm.floor;
-    this.application.realPropertyRequestDto.apartmentNumber = this.applicationForm.houseNumber
+    this.application.realPropertyRequestDto.apartmentNumber = this.applicationForm.apartmentNumber
     this.application.realPropertyRequestDto.numberOfRooms = this.applicationForm.numberOfRooms;
     this.application.realPropertyRequestDto.totalArea = this.applicationForm.totalArea;
     this.application.realPropertyRequestDto.livingArea = this.applicationForm.livingArea;
