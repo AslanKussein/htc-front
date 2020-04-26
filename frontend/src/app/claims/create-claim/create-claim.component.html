@@ -519,7 +519,7 @@
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col-sm form-group required">
+                          <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code == '001002'">
                             <label for="cadastralNumber">Кадастровый номер</label>
                             <input type="text" id="cadastralNumber" class="form-control"
                                    [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber?.length != 16)}"

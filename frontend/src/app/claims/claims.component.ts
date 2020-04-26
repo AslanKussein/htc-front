@@ -103,7 +103,7 @@ export class ClaimsComponent implements OnInit {
     searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
     searchFilter['pageNumber'] = pageNo;
-    searchFilter['pageSize'] = this.itemsPerPage;
+    searchFilter['pageSize'] = 30;
     this.claimService.getClaims(searchFilter).subscribe(res => {
       if (res != null && res.data != null && !res.data.data.empty) {
 
