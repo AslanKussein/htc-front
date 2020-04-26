@@ -42,4 +42,58 @@ export class DicService {
     return throwError(
       error);
   }
+
+  public saveDic(obj,dicName): Observable<any> {
+    return this.http.post(`${this.configService.apiDataManagerUrl}/dictionaries/`+dicName, obj)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public updateDic(obj,dicName): Observable<any> {
+    return this.http.put(`${this.configService.apiDataManagerUrl}/dictionaries/`+dicName+'/'+obj.id, obj)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public deleteDic(obj,dicName): Observable<any> {
+    return this.http.delete(`${this.configService.apiDataManagerUrl}/dictionaries/`+dicName+'/'+obj.id)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public saveResidentalComplex(obj): Observable<any> {
+    return this.http.post(`${this.configService.apiDataManagerUrl}/residential-complexes`, obj)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public updateResidentalComplex(obj): Observable<any> {
+    return this.http.put(`${this.configService.apiDataManagerUrl}/residential-complexes/`+obj.value, obj)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public deleteResidentalComplex(obj): Observable<any> {
+    return this.http.delete(`${this.configService.apiDataManagerUrl}/residential-complexes/`+obj.value)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
 }

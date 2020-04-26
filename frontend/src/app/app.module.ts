@@ -39,6 +39,7 @@ import {UserService} from "./services/user.service";
 import {NotificationService} from "./services/notification.service";
 import {ModalComponent} from "./claims/create-claim/modal.window/modal.component";
 import {ActsComponent} from "./claims/create-claim/acts/acts.component";
+import { DicControlComponent } from './dic-control/dic-control.component';
 
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
@@ -54,6 +55,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     CreateClaimComponent,
     LoginComponent,
     ActsComponent,
+    DicControlComponent,
   ],
   imports: [
     BrowserModule,
