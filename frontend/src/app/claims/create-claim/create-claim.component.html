@@ -238,6 +238,15 @@
                      data-parent="#accordionaboutOwnerOne">
                   <div class="card-body">
                     <div class="row">
+                      <div class="col-sm" >
+                        <label for="clientId" translate>claim.clientID <span class="text-danger"
+                                                                             *ngIf="!applicationForm.clientId">&nbsp;*</span></label>
+                        <input type="text" id="clientId" class="form-control" [(ngModel)]="applicationForm.clientId"
+                               formControlName="clientId" [readOnly]="applicationForm.clientId != null" (ngModelChange)="searchByClientId()"/>
+
+                      </div>
+                    </div>
+                    <div class="row">
                       <div class="col-sm">
                         <label for="name" translate>name
                           <span class="text-danger" *ngIf="!applicationForm.firstName">&nbsp;*</span>
@@ -267,13 +276,6 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-sm" *ngIf="applicationForm.clientId">
-                        <label for="clientId" translate>claim.clientID <span class="text-danger"
-                                                                             *ngIf="!applicationForm.clientId">&nbsp;*</span></label>
-                        <input type="text" id="clientId" class="form-control" [(ngModel)]="applicationForm.clientId"
-                               formControlName="clientId" readonly (ngModelChange)="searchByClientId()"/>
-
-                      </div>
                       <div class="col-sm">
                         <label for="phoneNumber" translate>claim.contacts <span class="text-danger"
                                                                                 *ngIf="!applicationForm.phoneNumber">&nbsp;*</span></label>

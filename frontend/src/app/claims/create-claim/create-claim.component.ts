@@ -404,28 +404,23 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.applicationForm.landArea = data.landArea;
     if (!this.util.isNullOrEmpty(data.photoIdList)) {
       for (const ph of data.photoIdList) {
-        console.log(1, ph)
         this.fillPicture(ph, 1);
       }
     }
     if (!this.util.isNullOrEmpty(data.housingPlanImageIdList)) {
       for (const ph of data.housingPlanImageIdList) {
-        console.log(2, ph)
-
         this.fillPicture(ph, 2);
       }
     }
     if (!this.util.isNullOrEmpty(data.virtualTourImageIdList)) {
       for (const ph of data.virtualTourImageIdList) {
-        console.log(3, ph)
-
         this.fillPicture(ph, 3);
       }
     }
   }
 
   searchByClientId() {
-    if (this.applicationForm.clientId != null && this.applicationForm.clientId.length == 10) {
+    if (this.applicationForm.clientId != null) {
       this.loading = true;
       this.ownerService.searchByClientId(this.applicationForm.clientId)
         .subscribe(res => {
