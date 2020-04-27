@@ -282,7 +282,7 @@
                         <input type="text" id="phoneNumber" class="form-control"
                                [(ngModel)]="applicationForm.phoneNumber" name="phoneNumber"
                                [formControl]="applicationForm.controls['phoneNumber']"
-                               prefix="+7" mask="(000) 000 00 00"
+                               prefix="+" mask="0 (000) 000 00 00"
                                (ngModelChange)="searchByPhone()"/>
 
                         <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
