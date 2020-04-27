@@ -368,7 +368,7 @@
                               <div class="carousel-inner">
                                 <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                      *ngFor="let plan of photoPlanList;let i = index">
-                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="302" height="320">
+                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="302" height="320" (click)="showPhotoFull(plan.fullImage)">
                                 </div>
                               </div>
                               <a class="carousel-control-prev" href="#planCarousel" data-slide="prev">
