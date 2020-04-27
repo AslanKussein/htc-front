@@ -9,6 +9,7 @@ import {Dic} from "../models/dic";
 import {DicService} from "../services/dic.service";
 import {Util} from "../services/util";
 import {DatePeriod} from "../models/common/datePeriod";
+import {NotificationService} from "../services/notification.service";
 
 @Component({
   selector: 'app-claims',
@@ -21,7 +22,8 @@ export class ClaimsComponent implements OnInit {
   constructor(private localeService: BsLocaleService,
               private claimService: ClaimService,
               private dicService: DicService,
-              private util: Util) {
+              private util: Util,
+              private notification: NotificationService) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
   }
@@ -111,6 +113,8 @@ export class ClaimsComponent implements OnInit {
         this.totalItems = res.data.totalElements;
         this.itemsPerPage = res.data.data.size;
         // this.currentPage = res.data.number + 1;
+      } else {
+        this.notification.showInfo('информация', 'Нет данных');
       }
     });
     this.loading = false;

@@ -35,7 +35,7 @@
                  [(ngModel)]="formData.crDateTo">
         </div>
         <div class="col-sm">
-          <label translate>claim.crDateFromR.from</label>
+          <label translate>claim.lastModifyDateR.from</label>
           <input type="text" id="lastModifyDateFrom" class="form-control" [(ngModel)]="formData.lastModifyDateFrom"
                  bsDatepicker #ru="bsDatepicker">
         </div>
@@ -154,7 +154,7 @@
             <tbody style="cursor: pointer">
             <tr *ngFor="let claim of claimData;let i = index">
               <td>
-                <a [routerLink]="['/create-claim/', claim.id]">{{claim.id}}</a>
+                <a [routerLink]="['/create-claim/', claim?.id]">{{claim.id}}</a>
               </td>
               <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
               <td>{{formatDate(claim)}}</td>
