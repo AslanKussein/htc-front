@@ -1,15 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {language} from "../../environments/language";
+import {language} from '../../environments/language';
 import {formatDate} from '@angular/common';
 import {defineLocale} from 'ngx-bootstrap/chronos';
 import {ruLocale} from 'ngx-bootstrap/locale';
-import {BsLocaleService} from "ngx-bootstrap";
-import {ClaimService} from "../services/claim.service";
-import {Dic} from "../models/dic";
-import {DicService} from "../services/dic.service";
-import {Util} from "../services/util";
-import {DatePeriod} from "../models/common/datePeriod";
-import {NotificationService} from "../services/notification.service";
+import {BsLocaleService} from 'ngx-bootstrap';
+import {ClaimService} from '../services/claim.service';
+import {Dic} from '../models/dic';
+import {DicService} from '../services/dic.service';
+import {Util} from '../services/util';
+import {DatePeriod} from '../models/common/datePeriod';
+import {NotificationService} from '../services/notification.service';
 
 @Component({
   selector: 'app-claims',
@@ -70,7 +70,7 @@ export class ClaimsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.findClaims(0);
+    this.findClaims(1);
     this.dicService.getDics('OPERATION_TYPES').subscribe(data => {
       this.operationType = this.util.toSelectArray(data);
     });
@@ -86,9 +86,8 @@ export class ClaimsComponent implements OnInit {
   }
 
   findClaims(pageNo: number) {
-    // this.itemsPerPage = 30;
     this.loading = true;
-    let searchFilter = {};
+    const searchFilter = {};
 
     searchFilter['createDate'] = new DatePeriod(this.formData.crDateFrom, this.formData.crDateTo);
     searchFilter['changeDate'] = new DatePeriod(this.formData.lastModifyDateFrom, this.formData.lastModifyDateTo);
@@ -97,26 +96,26 @@ export class ClaimsComponent implements OnInit {
     if (!this.util.isNullOrEmpty(this.formData.typeId)) {
       searchFilter['operationTypeId'] = this.formData.typeId;
     }
-    searchFilter['my'] = this.formData.myClaim;
+    searchFilter["my"] = this.formData.myClaim;
     if (!this.util.isNullOrEmpty(this.formData.applicationStatuses)) {
       searchFilter['applicationStatusList'] = this.formData.applicationStatuses;
     }
 
     searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
-    searchFilter['pageNumber'] = pageNo;
-    searchFilter['pageSize'] = 30;
+    searchFilter['pageNumber'] = pageNo - 1;
+    searchFilter['pageSize'] = this.itemsPerPage;
     this.claimService.getClaims(searchFilter).subscribe(res => {
       if (res != null && res.data != null) {
 
         this.claimData = res.data.data.data;
-        this.totalItems = res.data.totalElements;
-        this.itemsPerPage = res.data.data.size;
-        // this.currentPage = res.data.number + 1;
+        this.totalItems = res.data.total;
+        this.currentPage = res.data.pageNumber + 1;
+        if (res.data.data.empty) {
+          this.notification.showInfo('информация', 'Нет данных');
+        }
       }
-      if (res.data.data.empty) {
-        this.notification.showInfo('информация', 'Нет данных');
-      }
+
     });
     this.loading = false;
   }
