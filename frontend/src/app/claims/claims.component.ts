@@ -107,13 +107,14 @@ export class ClaimsComponent implements OnInit {
     searchFilter['pageNumber'] = pageNo;
     searchFilter['pageSize'] = 30;
     this.claimService.getClaims(searchFilter).subscribe(res => {
-      if (res != null && res.data != null && !res.data.data.empty) {
+      if (res != null && res.data != null) {
 
         this.claimData = res.data.data.data;
         this.totalItems = res.data.totalElements;
         this.itemsPerPage = res.data.data.size;
         // this.currentPage = res.data.number + 1;
-      } else {
+      }
+      if (res.data.data.empty) {
         this.notification.showInfo('информация', 'Нет данных');
       }
     });
