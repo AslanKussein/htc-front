@@ -398,7 +398,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.applicationForm.propertyDeveloperId = data.propertyDeveloperId;
     this.applicationForm.housingClass = data.housingClass;
     this.applicationForm.housingCondition = data.housingCondition;
-      this.applicationForm.sewerageId = data.sewerageId;
+    this.applicationForm.sewerageId = data.sewerageId;
     this.applicationForm.heatingSystemId = data.heatingSystemId;
     this.applicationForm.numberOfApartments = data.numberOfApartments;
     this.applicationForm.landArea = data.landArea;
@@ -687,12 +687,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   fillPicture(guid: any, id: number) {
-    let fm = `${this.configService.apiFileManagerUrl}`;
+    const fm = `${this.configService.apiFileManagerUrl}`;
     let uuid = guid.uuid != null ? guid.uuid : guid;
     let obj = {};
     obj['guid'] = uuid;
-    obj['image'] = 'https://fm-htc.dilau.kz/download/' + uuid + '/preview?access_token=' + this.util.getCurrentUser().access_token;
-    obj['fullImage'] = 'https://fm-htc.dilau.kz/download/' + uuid + '?access_token=' + this.util.getCurrentUser().access_token;
+    obj['image'] = fm + '/download/' + uuid + '/preview?access_token=' + this.util.getCurrentUser().access_token;
+    obj['fullImage'] = fm + '/download/' + uuid + '?access_token=' + this.util.getCurrentUser().access_token;
     if (id == 1) {
       this.photoList.push(obj)
     } else if (id == 2) {
