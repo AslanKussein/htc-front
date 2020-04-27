@@ -1,0 +1,70 @@
+<div class="card-body card-bg">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm">
+          <table class="table table-bordered text-center table-sm">
+            <thead class="text-center">
+            <tr>
+              <th>№</th>
+              <th translate>Фото</th>
+              <th translate>Адрес</th>
+              <th translate>Цена</th>
+              <th translate>Комнатность</th>
+              <th translate>Фото</th>
+              <th translate>Обременение</th>
+              <th translate>Аналитика цен</th>
+              <th translate>Контакты агента</th>
+            </tr>
+            </thead>
+            <tbody style="cursor: pointer">
+            <tr *ngFor="let object of objectsData;let i = index">
+              <td>{{object.realPropertyId}}</td>
+              <td><img [src]="getImgUrl(object)" alt="First Slide" class="photoList" width="100"
+                       height="100"></td>
+              <td>{{object.address.nameRu}}</td>
+              <td>{{object.price}}</td>
+              <td>{{object.numberOfRooms}}</td>
+              <td>
+                {{getCountFoto(object.photos)}}
+              </td>
+              <td>{{object.encumbrance}}</td>
+              <td>{{object.priceAnalytics}}</td>
+              <td>{{object.contactsOfAgent}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="row">
+            <div class="col-sm">
+              <pagination [(ngModel)]="currentPage"
+                          [totalItems]="totalItems"
+                          [itemsPerPage]="itemsPerPage"
+                          [maxSize]="10"
+                          [rotate]="true"
+                          [boundaryLinks]="true"
+                          previousText="&lsaquo;"
+                          nextText="&rsaquo;"
+                          firstText="&laquo;"
+                          lastText="&raquo;"
+                          (pageChanged)="pageChanged($event)">
+              </pagination>
+            </div>
+            <div class="col-sm">
+              <div class="position-static createClaimBtn">
+                <button type="button" class="btn btn-success btn-circle btn-xl" (click)="dnHref('create-claim')"><i
+                  class="fa fa-plus"></i>
+                </button>
+
+              </div>
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
