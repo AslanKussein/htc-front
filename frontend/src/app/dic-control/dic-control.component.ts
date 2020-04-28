@@ -7,6 +7,10 @@ import {ruLocale} from "ngx-bootstrap/locale";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {BsLocaleService} from "ngx-bootstrap";
 import {NotificationService} from "../services/notification.service";
+import {User} from "../models/users";
+import {AuthenticationService} from "../services/authentication.service";
+
+
 
 @Component({
   selector: 'app-dic-control',
@@ -17,6 +21,7 @@ export class DicControlComponent implements OnInit {
 
 
   modalRef: BsModalRef;
+  modalRef2: BsModalRef;
   dictionary: Dic[];
   countries: Dic[];
   cities: Dic[];
@@ -33,23 +38,31 @@ export class DicControlComponent implements OnInit {
   actions: string;
   dicName: string;
   clickColumnDic: any;
+  currentUser: User;
+  adminRoles:boolean
+
+
 
   constructor(private util: Util,
               private modalService: BsModalService,
               private localeService: BsLocaleService,
               private notifyService: NotificationService,
+              private authenticationService: AuthenticationService,
               private dicService: DicService) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
+    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+     if(this.currentUser.roles!=null){
+       this.adminRoles=false;
+       for (const role of this.currentUser.roles) {
+           if(role=='Administrator resursa'){
+             this.adminRoles=true;
+             return;
+           }
+       }
+       }
   }
 
-
-  formData = {
-    code: '',
-    nameEn: '',
-    nameRu: '',
-    nameKz: '',
-  };
 
   formRes = {
     apartmentsOnTheSite: '',
@@ -66,16 +79,26 @@ export class DicControlComponent implements OnInit {
     numberOfApartments: 0,
     numberOfEntrances: 0,
     numberOfFloors: 0,
-    parkingTypeIds: [],
     playground: false,
     propertyDeveloperId: null,
     streetId: 0,
     typeOfElevatorIdList: [],
+    parkingTypeIds: [],
+
     wheelchair: false,
     yardTypeId: null,
     countryId: null,
     yearOfConstruction: 0
   };
+
+  formData = {
+    code: '',
+    nameEn: '',
+    nameRu: '',
+    nameKz: '',
+  };
+
+
 
   clearForm() {
     this.formData = {
@@ -100,11 +123,12 @@ export class DicControlComponent implements OnInit {
       numberOfApartments: 0,
       numberOfEntrances: 0,
       numberOfFloors: 0,
-      parkingTypeIds: [],
       playground: false,
       propertyDeveloperId: null,
       streetId: 0,
       typeOfElevatorIdList: [],
+      parkingTypeIds: [],
+
       wheelchair: false,
       yardTypeId: null,
       countryId: null,
@@ -119,11 +143,17 @@ export class DicControlComponent implements OnInit {
     this.loadDictionary();
     this.loadDictionaryForEdit('residential-complexes');
     this.resident = true;
+
   }
+
 
   openModal(template: TemplateRef<any>) {
     console.log(template)
-    this.modalRef = this.modalService.show(template);
+    // this.modalRef = this.modalService.show(template);
+    this.modalRef = this.modalService.show(template,{ keyboard: false, backdrop: 'static'});
+
+    // this.modalRef.result.then(() => { console.log('When user closes'); }, () => { console.log('Backdrop click')})
+
   }
   loadDictionary(){
     this.dicService.getDics('CITIES').subscribe(data => {
@@ -174,6 +204,7 @@ export class DicControlComponent implements OnInit {
     this.actions = 'ADD';
   }
 
+
   editDic() {
     this.actions = 'EDIT';
     if (this.clickColumnDic == null) {
@@ -181,7 +212,17 @@ export class DicControlComponent implements OnInit {
       this.modalRef.hide();
     } else {
       if (this.dicName == 'residential-complexes') {
-        this.formRes = this.clickColumnDic;
+
+        this.dicService.getResidentialComplexesById(this.clickColumnDic.id).subscribe(data => {
+            if (data != null) {
+              this.formRes=data;
+            }
+          }, err => {
+            this.notifyService.showError('warning', err);
+            this.modalRef.hide();
+            this.clearForm();
+          }
+        );
       } else {
         this.formData = this.clickColumnDic;
       }
@@ -238,6 +279,10 @@ export class DicControlComponent implements OnInit {
   submit() {
     if (this.actions == 'ADD') {
       if (this.dicName == 'residential-complexes') {
+        if(this.formRes.cityId==null || this.formRes.streetId==null || this.formRes.houseNumber==null){
+          this.notifyService.showError('Пожалуйста, заполните все поля', "");
+          return;
+          }
         this.dicService.saveResidentalComplex(this.formRes).subscribe(data => {
             if (data != null) {
               this.notifyService.showSuccess('success', 'Успешно сохранено');
@@ -254,6 +299,10 @@ export class DicControlComponent implements OnInit {
         );
 
       } else {
+        if(this.formData.code==null || this.formData.nameRu==null){
+          this.notifyService.showError('Пожалуйста, заполните все поля', "");
+          return;
+        }
         this.dicService.saveDic(this.formData, this.dicName).subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
@@ -270,6 +319,10 @@ export class DicControlComponent implements OnInit {
       }
     } else {
       if (this.dicName == 'residential-complexes') {
+        if(this.formRes.cityId==null || this.formRes.streetId==null || this.formRes.houseNumber==null){
+          this.notifyService.showError('Пожалуйста, заполните все поля', "");
+          return;
+        }
         this.dicService.updateResidentalComplex(this.formRes).subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
@@ -285,6 +338,10 @@ export class DicControlComponent implements OnInit {
         });
 
       } else {
+        if(this.formData.code==null || this.formData.nameRu==null){
+          this.notifyService.showError('Пожалуйста, заполните все поля', "");
+          return;
+        }
         this.dicService.updateDic(this.formData, this.dicName).subscribe(data => {
           if (data == null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
@@ -306,4 +363,15 @@ export class DicControlComponent implements OnInit {
     this.editOrDelete = true;
     this.clickColumnDic = obj;
     }
+
+  openModal2(template: TemplateRef<any>) {
+    this.modalRef2 = this.modalService.show(template);
+  }
+
+  closeModal(){
+    this.modalRef2.hide();
+    this.modalRef.hide();
+
+    this.clearForm();
+  }
 }

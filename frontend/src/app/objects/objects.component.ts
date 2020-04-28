@@ -249,14 +249,13 @@ export class ObjectsComponent implements OnInit {
   }
 
   getImgUrl(obj:any){
-    if (obj!=null && obj.PHOTO !=null && obj.PHOTO.length!=null){
-      return 'https://fm-htc.dilau.kz/download/' + obj.PHOTO[0]+ '/preview?access_token=' + this.util.getCurrentUser().access_token;
+    if (obj!=null && obj.photos!=null && obj.photos.PHOTO !=null && obj.photos.PHOTO.length!=null){
+      return  this.util.generatorPreviewUrl(obj.photos.PHOTO[0])
     };
-    return 'https://fm-htc.dilau.kz/download/' + '98d3a7fe-01f4-460e-9a99-300cb8c66d8c'+ '/preview?access_token=' + this.util.getCurrentUser().access_token;
+    return null;
   }
 
   getCountFoto(obj:any){
-    console.log(obj)
     let s;
     if (obj!=null && obj.PHOTO !=null && obj.PHOTO.length!=null){
       s=obj.PHOTO.length+'/'
