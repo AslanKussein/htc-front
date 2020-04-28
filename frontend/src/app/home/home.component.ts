@@ -8,6 +8,9 @@ import {NotificationService} from "../services/notification.service";
 import {ClientDto} from "../models/createClaim/clientDto";
 import {ClaimService} from "../services/claim.service";
 import {formatDate} from '@angular/common';
+import {UserService} from "../services/user.service";
+import {NgSelectConfig} from "@ng-select/ng-select";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-home',
@@ -29,23 +32,20 @@ export class HomeComponent implements OnInit {
               private dicService: DicService,
               private util: Util,
               private notification: NotificationService,
-              private claimService: ClaimService) {
+              private claimService: ClaimService,
+              private userService: UserService,
+              private config: NgSelectConfig,
+              private translate: TranslateService) {
+    this.config.notFoundText = 'Данные не найдены';
   }
 
   ngOnInit(): void {
-    this.applicationLightForm = this.formBuilder.group({
-      id: [null, Validators.nullValidator],
-      operationTypeId: [null, Validators.nullValidator],
-      surName: [null, Validators.nullValidator],
-      name: [null, Validators.nullValidator],
-      patronymic: [null, Validators.nullValidator],
-      phoneNumber: [null, Validators.nullValidator],
-      note: [null, Validators.nullValidator],
-      agentLogin: [null, Validators.nullValidator],
-    });
-
+    this.clear();
     this.dicService.getDics('OPERATION_TYPES').subscribe(data => {
       this.operationType = this.util.toSelectArray(data);
+    });
+    this.userService.getAgents().subscribe(data => {
+      console.log(data)
     });
 
     this.findClaims(1);
@@ -63,7 +63,37 @@ export class HomeComponent implements OnInit {
     this.applicationLightDto.clientDto.phoneNumber = this.applicationLightForm?.phoneNumber;
   }
 
+  clear() {
+    this.applicationLightForm = this.formBuilder.group({
+      id: [null, Validators.nullValidator],
+      operationTypeId: [null, Validators.required],
+      surName: [null, Validators.nullValidator],
+      name: [null, Validators.nullValidator],
+      patronymic: [null, Validators.nullValidator],
+      phoneNumber: [null, Validators.nullValidator],
+      note: [null, Validators.nullValidator],
+      agentLogin: [null, Validators.nullValidator],
+    });
+  }
+
+  get f() {
+    return this.applicationLightForm.controls;
+  }
+
   onSave() {
+    let result = false;
+    const controls = this.applicationLightForm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.translate.get('claim.validator.' + name).subscribe((text: string) => {
+          this.notification.showInfo("Ошибка", "Поле " + text + " не заполнено!!!");
+        });
+        result = true;
+      }
+    }
+
+    if (result) return;
+
     this.fillApplicationLightDTO();
 
     this.claimService.saveLightApplication(this.applicationLightDto)

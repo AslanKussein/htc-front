@@ -46,7 +46,8 @@
       "livingArea": "Жилая",
       "kitchenArea": "Кухня",
       "ceilingHeight": "Высота потолков",
-      "numberOfBedrooms": "Количество спален"
+      "numberOfBedrooms": "Количество спален",
+      "operationTypeId": "Операция"
     },
     "title": "Заявки",
     "step": "Шаг",

@@ -88,9 +88,13 @@
                 formControlName="operationTypeId"
                 placeholder="{{ 'patterns.chooseElement' | translate }}">
               </ng-select>
+              <div *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid" class="text-danger">
+                <div *ngIf="f.operationTypeId.errors.required" translate>claim.requiredField</div>
+              </div>
             </div>
           </div>
 
+          <button class="btn btn-link float-left" (click)="clear()" translate>clear</button>
           <button class="btn btn-success float-right" (click)="onSave()" translate>patterns.save</button>
         </div>
       </div>

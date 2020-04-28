@@ -30,6 +30,10 @@ import {DicService} from "./services/dic.service";
 import { ChartsModule } from 'ng2-charts';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import localeRu from '@angular/common/locales/ru';
+import localeKz from '@angular/common/locales/ru-KZ';
+
+registerLocaleData(localeRu, localeKz);
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
@@ -50,6 +54,7 @@ import { HomeComponent } from './home/home.component';
 import {CreateClaimBtnComponent} from "./helpers/create-claim-btn/create-claim-btn.component";
 import {ChartsComponent} from "./home/charts/charts.component";
 import { CalendarComponent } from './home/calendar/calendar.component';
+import {registerLocaleData} from "@angular/common";
 
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);

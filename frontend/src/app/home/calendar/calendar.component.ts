@@ -2,7 +2,15 @@ import {Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit,} fro
 import {startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours,} from 'date-fns';
 import {Subject} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView,} from 'angular-calendar';
+import {
+  CalendarDateFormatter,
+  CalendarEvent,
+  CalendarEventAction,
+  CalendarEventTimesChangedEvent,
+  CalendarView,
+} from 'angular-calendar';
+import { CustomDateFormatter } from './customDateFormatter';
+import {EventsService} from "../../services/events.service";
 
 const colors: any = {
   red: {
@@ -23,12 +31,17 @@ const colors: any = {
   selector: 'app-calendar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  styleUrls: ['./calendar.component.scss'],
+  providers: [
+    {
+      provide: CalendarDateFormatter,
+      useClass: CustomDateFormatter,
+    },
+  ],
 })
 export class CalendarComponent implements OnInit {
 
-  ngOnInit(): void {
-  }
+  locale: string = 'ru-KZ';
 
   @ViewChild('modalContent', {static: true}) modalContent: TemplateRef<any>;
 
@@ -106,19 +119,14 @@ export class CalendarComponent implements OnInit {
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal) {
+  constructor(private modal: NgbModal,
+              private eventsService: EventsService) {
   }
 
   dayClicked({date, events}: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
-      if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
-      }
+      this.activeDayIsOpen = !((isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+        events.length === 0);
       this.viewDate = date;
     }
   }
@@ -175,4 +183,6 @@ export class CalendarComponent implements OnInit {
     this.activeDayIsOpen = false;
   }
 
+  ngOnInit(): void {
+  }
 }
