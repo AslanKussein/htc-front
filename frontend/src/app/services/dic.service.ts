@@ -90,7 +90,6 @@ export class DicService {
   }
 
   public updateResidentalComplex(obj): Observable<any> {
-    console.log(obj)
     return this.http.put(`${this.configService.apiDataManagerUrl}/residential-complexes/`+obj.id, obj)
       .pipe(
         tap(data => {

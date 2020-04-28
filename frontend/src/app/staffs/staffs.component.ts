@@ -75,7 +75,6 @@ export class StaffsComponent implements OnInit {
 
       if (res != null) {
         this.users = res.data;
-        console.log(this.users)
       }
     });
 
@@ -85,14 +84,12 @@ export class StaffsComponent implements OnInit {
     let searchFilter = {};
 
     this.loading = true;
-    console.log('formData.lastModifyDateRange', this.formData)
     searchFilter['pageNumber'] = pageNo;
     searchFilter['pageSize'] = this.itemsPerPage;
     this.staffService.getUserList(searchFilter).subscribe(res => {
 
       if (res != null) {
         this.users = res.data;
-        console.log(111)
       }
     });
     this.loading = false;
@@ -144,8 +141,7 @@ export class StaffsComponent implements OnInit {
           this.modalRef.hide();
         });
 
-      if (this.formData.passNew !='' && this.formData.passNew2 !=''){
-        if(this.formData.passNew !=null && this.formData.passNew2 !=null){
+      if (!this.util.isNullOrEmpty(this.formData.passNew) && !this.util.isNullOrEmpty(this.formData.passNew2)){
           if(this.formData.passNew==this.formData.passNew2){
             this.staffService.updatePasswordById(this.formData)
               .subscribe(data => {
@@ -158,9 +154,7 @@ export class StaffsComponent implements OnInit {
                 this.modalRef.hide();
               });
           }
-        }
-
-      }
+          }
 
 
 
@@ -174,7 +168,6 @@ export class StaffsComponent implements OnInit {
             this.modalRef.hide();
           }
         }, err => {
-          console.log(err)
           if(err=='User with Login = test already exists'){
             this.notifyService.showError('Логин уже зарегистрирован', "");
           }

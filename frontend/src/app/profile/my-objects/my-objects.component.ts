@@ -102,7 +102,7 @@ export class MyObjectsComponent implements OnInit {
   }
 
   getImgUrl(obj:any){
-    if (obj!=null && obj.photos!=null && obj.photos.PHOTO !=null && obj.photos.PHOTO.length!=null){
+    if (!this.util.isNullOrEmpty(obj.photos.PHOTO)){
       return  this.util.generatorPreviewUrl(obj.photos.PHOTO[0])
     };
     return null;
@@ -110,13 +110,13 @@ export class MyObjectsComponent implements OnInit {
 
   getCountFoto(obj:any){
     let s;
-    if (obj!=null && obj.PHOTO !=null && obj.PHOTO.length!=null){
+    if (!this.util.isNullOrEmpty(obj.PHOTO)){
       s=obj.PHOTO.length+'/'
     }
-    if (obj!=null && obj.HOUSING_PLAN !=null && obj.HOUSING_PLAN.length!=null){
+    if (!this.util.isNullOrEmpty(obj.HOUSING_PLAN)){
       s= s + obj.HOUSING_PLAN.length+'/'
     }
-    if (obj!=null && obj.VIRTUAL_TOUR !=null && obj.VIRTUAL_TOUR.length!=null){
+    if (!this.util.isNullOrEmpty(obj.VIRTUAL_TOUR)){
       s= s + obj.VIRTUAL_TOUR.length
     }
     return s;
