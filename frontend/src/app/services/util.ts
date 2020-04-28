@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {language} from "../../environments/language";
 import {Router} from "@angular/router";
 import {Dic} from "../models/dic";
+import {ConfigService} from "./config.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ import {Dic} from "../models/dic";
 export class Util {
   _language = language;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private configService: ConfigService) {
   }
 
   dnHref(href) {
@@ -162,5 +164,15 @@ export class Util {
 
   toString(data: any) {
     return data?.toString();
+  }
+
+  generatorPreviewUrl(uuid: string) {
+    const fm = `${this.configService.apiFileManagerUrl}`;
+    return fm + '/download/' + uuid + '/preview?access_token=' + this.getCurrentUser().access_token;
+  }
+
+  generatorFullUrl(uuid: string) {
+    const fm = `${this.configService.apiFileManagerUrl}`;
+    return fm + '/download/' + uuid + '?access_token=' + this.getCurrentUser().access_token;
   }
 }

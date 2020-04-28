@@ -687,12 +687,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   fillPicture(guid: any, id: number) {
-    const fm = `${this.configService.apiFileManagerUrl}`;
+
     let uuid = guid.uuid != null ? guid.uuid : guid;
     let obj = {};
     obj['guid'] = uuid;
-    obj['image'] = fm + '/download/' + uuid + '/preview?access_token=' + this.util.getCurrentUser().access_token;
-    obj['fullImage'] = fm + '/download/' + uuid + '?access_token=' + this.util.getCurrentUser().access_token;
+    obj['image'] = this.util.generatorPreviewUrl(uuid);
+    obj['fullImage'] = this.util.generatorFullUrl(uuid);
     if (id == 1) {
       this.photoList.push(obj)
     } else if (id == 2) {
