@@ -80,6 +80,7 @@ export class StaffService {
       );
   }
 
+
   public updatePasswordById(obj): Observable<any> {
     return this.http.put(`${this.configService.apiUserManagerUrl}/users/`+obj.id+`/pass`,{pass:obj.passNew} )
       .pipe(

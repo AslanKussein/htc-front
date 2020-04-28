@@ -92,8 +92,8 @@ export class StaffsComponent implements OnInit {
 
       if (res != null) {
         this.users = res.data;
-        console.log(this.users)
-        }
+        console.log(111)
+      }
     });
     this.loading = false;
   }
@@ -164,7 +164,7 @@ export class StaffsComponent implements OnInit {
 
 
 
-      }
+    }
     if (this.actions=='ADD'){
       this.staffService.createUser(this.formData)
         .subscribe(data => {
@@ -174,7 +174,16 @@ export class StaffsComponent implements OnInit {
             this.modalRef.hide();
           }
         }, err => {
-          this.notifyService.showError('warning', err.message);
+          console.log(err)
+          if(err=='User with Login = test already exists'){
+            this.notifyService.showError('Логин уже зарегистрирован', "");
+          }
+          else if(err=='User with FIO = test test already exists'){
+            this.notifyService.showError('Пользователь с таким ФИО уже зарегистрирован', "");
+          }else{
+            this.notifyService.showError('warning', err);
+
+          }
           this.findObjects(1);
           this.modalRef.hide();
         });
