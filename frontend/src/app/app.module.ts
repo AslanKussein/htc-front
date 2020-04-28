@@ -27,7 +27,7 @@ import {JwtInterceptor} from "./helpers/jwt.interceptor";
 import {ToastrModule} from 'ngx-toastr';
 import {UploaderService} from "./services/uploader.service";
 import {DicService} from "./services/dic.service";
-
+import { ChartsModule } from 'ng2-charts';
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
@@ -45,6 +45,7 @@ import { MyClaimsComponent } from './profile/my-claims/my-claims.component';
 import { FortebankApiComponent } from './fortebank-api/fortebank-api.component';
 import { HomeComponent } from './home/home.component';
 import {CreateClaimBtnComponent} from "./helpers/create-claim-btn/create-claim-btn.component";
+import {ChartsComponent} from "./home/charts/charts.component";
 
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
@@ -66,6 +67,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     FortebankApiComponent,
     HomeComponent,
     CreateClaimBtnComponent,
+    ChartsComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,6 +91,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     ToastrModule.forRoot(),
     NgxMaskModule.forRoot(options),
     MDBBootstrapModule.forRoot(),
+    ChartsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
