@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('currentUser', JSON.stringify(datax));
             }
           });
-          this.router.navigate(['claims']);
+          this.router.navigate(['home']);
         },
         error => {
           this.notifyService.showError('Ошибка', 'Не корректные данные для входа')

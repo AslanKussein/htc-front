@@ -49,10 +49,6 @@ export class ClaimsComponent implements OnInit {
   itemsPerPage = 30;
   currentPage = 1;
 
-  dnHref(href) {
-    this.util.dnHref(href);
-  }
-
   clearForm() {
     this.formData = {
       typeId: null,

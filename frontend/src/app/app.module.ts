@@ -42,6 +42,8 @@ import {ActsComponent} from "./claims/create-claim/acts/acts.component";
 import { DicControlComponent } from './dic-control/dic-control.component';
 import { MyObjectsComponent } from './profile/my-objects/my-objects.component';
 import { MyClaimsComponent } from './profile/my-claims/my-claims.component';
+import { HomeComponent } from './home/home.component';
+import {CreateClaimBtnComponent} from "./helpers/create-claim-btn/create-claim-btn.component";
 
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
@@ -60,6 +62,8 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     DicControlComponent,
     MyObjectsComponent,
     MyClaimsComponent,
+    HomeComponent,
+    CreateClaimBtnComponent,
   ],
   imports: [
     BrowserModule,

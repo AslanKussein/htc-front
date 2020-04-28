@@ -14,10 +14,12 @@ import {CreateClaimComponent} from "./claims/create-claim/create-claim.component
 import {DicControlComponent} from "./dic-control/dic-control.component";
 import {MyObjectsComponent} from "./profile/my-objects/my-objects.component";
 import {MyClaimsComponent} from "./profile/my-claims/my-claims.component";
+import {HomeComponent} from "./home/home.component";
 
 
 const routes: Routes = [
-  {path: '', redirectTo: '/claims', pathMatch: 'full', canActivate: [AuthGuard]},
+  {path: '', redirectTo: '/home', pathMatch: 'full', canActivate: [AuthGuard]},
+  {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'claims', component: ClaimsComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'board', component: BoardComponent, canActivate: [AuthGuard]},

@@ -18,7 +18,7 @@ import {ComponentCanDeactivate} from "../../canDeactivate/componentCanDeactivate
 import {ConfigService} from "../../services/config.service";
 import {ModalComponent} from "./modal.window/modal.component";
 import {RealPropertyRequestDto} from "../../models/createClaim/realPropertyRequestDto";
-import {RealPropertyOwnerDto} from "../../models/createClaim/realPropertyOwnerDto";
+import {ClientDto} from "../../models/createClaim/clientDto";
 import {PurchaseInfoDto} from "../../models/createClaim/purchaseInfoDto";
 import {BigDecimalPeriod} from "../../models/common/bigDecimalPeriod";
 import {ActivatedRoute} from "@angular/router";
@@ -578,8 +578,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   fillRealPropertyOwnerDto(data: any) {
-    this.application.clientDto = new RealPropertyOwnerDto(data.clientId, data.firstName, data.surname, data.patronymic,
-      '7' + data.phoneNumber, data.email, data.gender);
+    this.application.clientDto = new ClientDto(data.clientId, data.firstName, data.surname, data.patronymic, '7' + data.phoneNumber, data.email, data.gender);
   }
 
   submit() {
