@@ -1,5 +1,6 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import "~angular-notifier/styles";
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
 
 /* You can add global styles to this file, and also import other style files */
 body {
@@ -62,4 +63,8 @@ body {
 }
 .btn-breadcrumb .btn:last-child {
   padding:6px 18px 6px 24px!important;;
+}
+
+app-charts {
+  width: 100%;
 }

@@ -28,6 +28,9 @@ import {ToastrModule} from 'ngx-toastr';
 import {UploaderService} from "./services/uploader.service";
 import {DicService} from "./services/dic.service";
 import { ChartsModule } from 'ng2-charts';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
@@ -46,6 +49,7 @@ import { FortebankApiComponent } from './fortebank-api/fortebank-api.component';
 import { HomeComponent } from './home/home.component';
 import {CreateClaimBtnComponent} from "./helpers/create-claim-btn/create-claim-btn.component";
 import {ChartsComponent} from "./home/charts/charts.component";
+import { CalendarComponent } from './home/calendar/calendar.component';
 
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
@@ -68,6 +72,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     HomeComponent,
     CreateClaimBtnComponent,
     ChartsComponent,
+    CalendarComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,7 +96,11 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     ToastrModule.forRoot(),
     NgxMaskModule.forRoot(options),
     MDBBootstrapModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
