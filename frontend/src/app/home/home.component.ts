@@ -11,6 +11,7 @@ import {formatDate} from '@angular/common';
 import {UserService} from "../services/user.service";
 import {NgSelectConfig} from "@ng-select/ng-select";
 import {TranslateService} from "@ngx-translate/core";
+import {OwnerService} from "../services/owner.service";
 
 @Component({
   selector: 'app-home',
@@ -35,7 +36,8 @@ export class HomeComponent implements OnInit {
               private claimService: ClaimService,
               private userService: UserService,
               private config: NgSelectConfig,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private ownerService: OwnerService) {
     this.config.notFoundText = 'Данные не найдены';
   }
 
@@ -78,6 +80,20 @@ export class HomeComponent implements OnInit {
 
   get f() {
     return this.applicationLightForm.controls;
+  }
+
+  searchByPhone() {
+    if (this.applicationLightForm.phoneNumber != null && this.applicationLightForm.phoneNumber.length == 10) {
+      this.loading = true;
+      this.ownerService.searchByPhone('7' + this.applicationLightForm.phoneNumber)
+        .subscribe(res => {
+          this.applicationLightForm.name = res.firstName;
+          this.applicationLightForm.surName = res.surname;
+          this.applicationLightForm.patronymic = res.patronymic;
+          this.applicationLightForm.phoneNumber = res.phoneNumber;
+        });
+      this.loading = false;
+    }
   }
 
   onSave() {
