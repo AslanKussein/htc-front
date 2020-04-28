@@ -31,6 +31,16 @@ export class DicService {
       );
   }
 
+  public getResidentialComplexesById(id): Observable<any> {
+    return this.http.get(`${this.configService.apiDataManagerUrl}/residential-complexes/`+id, {})
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+
   private handleError(error: HttpErrorResponse) {
     if (error instanceof ErrorEvent) {
       console.error('An error occurred:', error.message);
@@ -80,7 +90,8 @@ export class DicService {
   }
 
   public updateResidentalComplex(obj): Observable<any> {
-    return this.http.put(`${this.configService.apiDataManagerUrl}/residential-complexes/`+obj.value, obj)
+    console.log(obj)
+    return this.http.put(`${this.configService.apiDataManagerUrl}/residential-complexes/`+obj.id, obj)
       .pipe(
         tap(data => {
         }),
@@ -89,7 +100,7 @@ export class DicService {
   }
 
   public deleteResidentalComplex(obj): Observable<any> {
-    return this.http.delete(`${this.configService.apiDataManagerUrl}/residential-complexes/`+obj.value)
+    return this.http.delete(`${this.configService.apiDataManagerUrl}/residential-complexes/`+obj.id)
       .pipe(
         tap(data => {
         }),

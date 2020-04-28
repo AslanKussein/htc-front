@@ -8,7 +8,7 @@
             <div class="col-sm">
               <div>
                 <input class="form-control" type="text" [(ngModel)]="filter.search" placeholder="Search"
-                          aria-label="Search">
+                       aria-label="Search">
               </div>
               <div style="margin-top: 10px">
                 <ng-select
@@ -69,6 +69,11 @@
                 <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="Username"
                        [(ngModel)]="formData.login">
               </div>
+              <div class="col-sm" *ngIf="actions=='ADD'">
+                <label class="col-sm col-form-label">Пароль<span class="text-danger">&nbsp;*</span></label>
+                <input type="password" class="col-sm form-control" name="password"
+                       [(ngModel)]="formData.pass">
+              </div>
               <div class="col-sm" *ngIf="actions=='EDIT'">
                 <label class="col-sm col-form-label">Новый пароль<span class="text-danger">&nbsp;*</span></label>
                 <input type="password" class="col-sm form-control" name="passNew" [(ngModel)]="formData.passNew">
@@ -80,11 +85,11 @@
               </div>
               <div class="col-sm">
                 <label class="col-sm col-form-label">Имя<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" class="col-sm form-control" name="First" [(ngModel)]="formData.name">
+                <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="First" [(ngModel)]="formData.name">
               </div>
               <div class="col-sm">
                 <label class="col-sm col-form-label">Фамилия<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" class="col-sm form-control" name="Last" [(ngModel)]="formData.surname">
+                <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="Last" [(ngModel)]="formData.surname">
               </div>
               <div class="col-sm">
                 <label class="col-sm col-form-label">Активность {{formData.isActive}}<span
@@ -111,7 +116,7 @@
               <div class="col-sm">
                 <label class="col-sm col-form-label">Роль<span class="text-danger">&nbsp;*</span></label>
                 <ng-select
-                    [multiple]="true"
+                  [multiple]="true"
                   bindValue="value"
                   [items]="roles"
                   [(ngModel)]="formData.roles">
@@ -123,6 +128,7 @@
                 <ng-select name="residentialComplexes"
                            [items]="groups"
                            bindValue="value"
+                           [disabled]="actions=='EDIT'"
                            [(ngModel)]="formData.group">
                 </ng-select>
               </div>
