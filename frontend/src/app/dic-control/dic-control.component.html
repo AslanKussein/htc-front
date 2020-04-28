@@ -33,9 +33,9 @@
           <div style="border: solid 1px black; padding: 5px; ">
             <a *ngIf="adminRoles" (click)="openModal(template);editDic()"><i style="color: blue" class="fa fa-edit fa-2x"></i></a>
             <a *ngIf="adminRoles" style="margin-left: 10px" (click)="openModal(template);addDic()"><i style="color:green"
-                                                                                   class="fa fa-plus-circle fa-2x"></i></a>
+                                                                                                      class="fa fa-plus-circle fa-2x"></i></a>
             <a *ngIf="adminRoles" (click)="openModal(template2);deleteDic()" style="margin-left: 10px"><i style="color:red"
-                                                                                       class="fa fa-times-circle fa-2x"></i></a>
+                                                                                                          class="fa fa-times-circle fa-2x"></i></a>
           </div>
 
           <div style="border: solid 1px black; padding: 5px;
@@ -287,13 +287,13 @@
 
           <!--ЖК начало-->
           <!--<div class="col-sm" *ngIf="resident">-->
-            <!--<label class="col-sm col-form-label">Страна<span class="text-danger">&nbsp;*</span></label>-->
-            <!--<ng-select-->
-              <!--bindValue="value"-->
-              <!--bindLabel="label"-->
-              <!--[items]="countries"-->
-              <!--[(ngModel)]="formRes.countryId">-->
-            <!--</ng-select>-->
+          <!--<label class="col-sm col-form-label">Страна<span class="text-danger">&nbsp;*</span></label>-->
+          <!--<ng-select-->
+          <!--bindValue="value"-->
+          <!--bindLabel="label"-->
+          <!--[items]="countries"-->
+          <!--[(ngModel)]="formRes.countryId">-->
+          <!--</ng-select>-->
           <!--</div>-->
           <div class="col-sm" *ngIf="resident">
             <label class="col-sm col-form-label">Город<span class="text-danger">&nbsp;*</span></label>
@@ -467,7 +467,7 @@
 
       <ng-template #template3>
         <div class="modal-header">
-          <h4 class="modal-title pull-left">Внимание </h4>
+          <h4 class="modal-title pull-left">Внимание</h4>
           <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
             <span aria-hidden="true">&times;</span>
           </button>

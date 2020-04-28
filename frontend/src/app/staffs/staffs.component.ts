@@ -93,7 +93,7 @@ export class StaffsComponent implements OnInit {
       if (res != null) {
         this.users = res.data;
         console.log(111)
-        }
+      }
     });
     this.loading = false;
   }
@@ -164,7 +164,7 @@ export class StaffsComponent implements OnInit {
 
 
 
-      }
+    }
     if (this.actions=='ADD'){
       this.staffService.createUser(this.formData)
         .subscribe(data => {

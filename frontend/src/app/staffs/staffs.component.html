@@ -8,7 +8,7 @@
             <div class="col-sm">
               <div>
                 <input class="form-control" type="text" [(ngModel)]="filter.search" placeholder="Search"
-                          aria-label="Search">
+                       aria-label="Search">
               </div>
               <div style="margin-top: 10px">
                 <ng-select
@@ -116,7 +116,7 @@
               <div class="col-sm">
                 <label class="col-sm col-form-label">Роль<span class="text-danger">&nbsp;*</span></label>
                 <ng-select
-                    [multiple]="true"
+                  [multiple]="true"
                   bindValue="value"
                   [items]="roles"
                   [(ngModel)]="formData.roles">

@@ -142,7 +142,7 @@ export class ObjectsComponent implements OnInit {
     this.myObject=false;
 
     this.findObjects(0);
-    }
+  }
 
   allObjects(){
     this.formData.my=false;
@@ -241,9 +241,9 @@ export class ObjectsComponent implements OnInit {
 
 
     this.objectService.getObjects(searchFilter).subscribe(res => {
-         this.objectsData = res.data.data.data;
-        this.totalItems = res.data.totalElements;
-        this.itemsPerPage = res.data.data.size;
+      this.objectsData = res.data.data.data;
+      this.totalItems = res.data.totalElements;
+      this.itemsPerPage = res.data.data.size;
     });
     this.loading = false;
   }

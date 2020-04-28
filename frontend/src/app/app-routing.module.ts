@@ -14,6 +14,7 @@ import {CreateClaimComponent} from "./claims/create-claim/create-claim.component
 import {DicControlComponent} from "./dic-control/dic-control.component";
 import {MyObjectsComponent} from "./profile/my-objects/my-objects.component";
 import {MyClaimsComponent} from "./profile/my-claims/my-claims.component";
+import {FortebankApiComponent} from "./fortebank-api/fortebank-api.component";
 
 
 const routes: Routes = [
@@ -32,6 +33,8 @@ const routes: Routes = [
   {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
   {path: 'create-claim/:id', component: CreateClaimComponent, canActivate: [AuthGuard]},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate]},
+  {path: 'fortebank-api', component: FortebankApiComponent}
+
 ];
 
 @NgModule({

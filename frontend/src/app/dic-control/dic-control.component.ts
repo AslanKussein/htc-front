@@ -52,15 +52,15 @@ export class DicControlComponent implements OnInit {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-     if(this.currentUser.roles!=null){
-       this.adminRoles=false;
-       for (const role of this.currentUser.roles) {
-           if(role=='Administrator resursa'){
-             this.adminRoles=true;
-             return;
-           }
-       }
-       }
+    if(this.currentUser.roles!=null){
+      this.adminRoles=false;
+      for (const role of this.currentUser.roles) {
+        if(role=='Administrator resursa'){
+          this.adminRoles=true;
+          return;
+        }
+      }
+    }
   }
 
 
@@ -282,7 +282,7 @@ export class DicControlComponent implements OnInit {
         if(this.formRes.cityId==null || this.formRes.streetId==null || this.formRes.houseNumber==null){
           this.notifyService.showError('Пожалуйста, заполните все поля', "");
           return;
-          }
+        }
         this.dicService.saveResidentalComplex(this.formRes).subscribe(data => {
             if (data != null) {
               this.notifyService.showSuccess('success', 'Успешно сохранено');
@@ -362,7 +362,7 @@ export class DicControlComponent implements OnInit {
   clickTr(obj) {
     this.editOrDelete = true;
     this.clickColumnDic = obj;
-    }
+  }
 
   openModal2(template: TemplateRef<any>) {
     this.modalRef2 = this.modalService.show(template);
