@@ -694,11 +694,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     obj['image'] = this.util.generatorPreviewUrl(uuid);
     obj['fullImage'] = this.util.generatorFullUrl(uuid);
     if (id == 1) {
-      this.photoList.push(obj)
+      this.photoList.push(obj);
     } else if (id == 2) {
-      this.photoPlanList.push(obj)
+      this.photoPlanList.push(obj);
     } else if (id == 3) {
-      this.photo3DList.push(obj)
+      this.photo3DList.push(obj);
     }
   }
+
 }
