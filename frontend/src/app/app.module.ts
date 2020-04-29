@@ -55,30 +55,32 @@ import {CreateClaimBtnComponent} from "./helpers/create-claim-btn/create-claim-b
 import {ChartsComponent} from "./home/charts/charts.component";
 import { CalendarComponent } from './home/calendar/calendar.component';
 import {registerLocaleData} from "@angular/common";
+import {MyClientsComponent} from "./profile/my-clients/my-clients.component";
 
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    BoardComponent,
-    ClaimsComponent,
-    ProfileComponent,
-    ObjectsComponent,
-    StaffsComponent,
-    CreateClaimComponent,
-    LoginComponent,
-    ActsComponent,
-    DicControlComponent,
-    MyObjectsComponent,
-    MyClaimsComponent,
-    FortebankApiComponent,
-    HomeComponent,
-    CreateClaimBtnComponent,
-    ChartsComponent,
-    CalendarComponent,
-  ],
+    declarations: [
+        AppComponent,
+        BoardComponent,
+        ClaimsComponent,
+        ProfileComponent,
+        ObjectsComponent,
+        StaffsComponent,
+        CreateClaimComponent,
+        LoginComponent,
+        ActsComponent,
+        DicControlComponent,
+        MyObjectsComponent,
+        MyClaimsComponent,
+        FortebankApiComponent,
+        HomeComponent,
+        CreateClaimBtnComponent,
+        ChartsComponent,
+        CalendarComponent,
+        MyClientsComponent,
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
