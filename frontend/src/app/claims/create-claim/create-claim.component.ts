@@ -319,7 +319,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   fillApplicationForm(data: any) {
-    if (this.operationType.length == 0) {
+    if (this.operationType?.length == 0) {
       this.loadDictionary();
       return
     }
