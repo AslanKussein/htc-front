@@ -27,9 +27,9 @@ import {JwtInterceptor} from "./helpers/jwt.interceptor";
 import {ToastrModule} from 'ngx-toastr';
 import {UploaderService} from "./services/uploader.service";
 import {DicService} from "./services/dic.service";
-import { ChartsModule } from 'ng2-charts';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import {ChartsModule} from 'ng2-charts';
+import {CalendarModule, DateAdapter} from 'angular-calendar';
+import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
 import localeRu from '@angular/common/locales/ru';
 import localeKz from '@angular/common/locales/ru-KZ';
 
@@ -46,18 +46,18 @@ import {UserService} from "./services/user.service";
 import {NotificationService} from "./services/notification.service";
 import {ModalComponent} from "./claims/create-claim/modal.window/modal.component";
 import {ActsComponent} from "./claims/create-claim/acts/acts.component";
-import { DicControlComponent } from './dic-control/dic-control.component';
-import { MyObjectsComponent } from './profile/my-objects/my-objects.component';
-import { MyClaimsComponent } from './profile/my-claims/my-claims.component';
-import { FortebankApiComponent } from './fortebank-api/fortebank-api.component';
-import { HomeComponent } from './home/home.component';
+import {DicControlComponent} from './dic-control/dic-control.component';
+import {MyObjectsComponent} from './profile/my-objects/my-objects.component';
+import {MyClaimsComponent} from './profile/my-claims/my-claims.component';
+import {FortebankApiComponent} from './fortebank-api/fortebank-api.component';
+import {HomeComponent} from './home/home.component';
 import {CreateClaimBtnComponent} from "./helpers/create-claim-btn/create-claim-btn.component";
 import {ChartsComponent} from "./home/charts/charts.component";
-import { CalendarComponent } from './home/calendar/calendar.component';
+import {CalendarComponent} from './home/calendar/calendar.component';
 import {registerLocaleData} from "@angular/common";
 import {MyClientsComponent} from "./profile/my-clients/my-clients.component";
-import { ClientCardComponent } from './profile/my-clients/client-card/client-card.component';
-import { YandexMapComponent } from './claims/create-claim/yandex-map/yandex-map.component';
+import {ClientCardComponent} from './profile/my-clients/client-card/client-card.component';
+import {YandexMapComponent} from './claims/create-claim/yandex-map/yandex-map.component';
 import {AngularYandexMapsModule} from "angular8-yandex-maps";
 import {NavComponent} from "./helpers/nav/nav.component";
 import {FooterComponent} from "./helpers/footer/footer.component";
@@ -66,30 +66,30 @@ import {FooterComponent} from "./helpers/footer/footer.component";
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        BoardComponent,
-        ClaimsComponent,
-        ProfileComponent,
-        ObjectsComponent,
-        StaffsComponent,
-        CreateClaimComponent,
-        LoginComponent,
-        ActsComponent,
-        DicControlComponent,
-        MyObjectsComponent,
-        MyClaimsComponent,
-        FortebankApiComponent,
-        HomeComponent,
-        CreateClaimBtnComponent,
-        ChartsComponent,
-        CalendarComponent,
-        MyClientsComponent,
-        ClientCardComponent,
-        YandexMapComponent,
-      NavComponent,
-      FooterComponent,
-    ],
+  declarations: [
+    AppComponent,
+    BoardComponent,
+    ClaimsComponent,
+    ProfileComponent,
+    ObjectsComponent,
+    StaffsComponent,
+    CreateClaimComponent,
+    LoginComponent,
+    ActsComponent,
+    DicControlComponent,
+    MyObjectsComponent,
+    MyClaimsComponent,
+    FortebankApiComponent,
+    HomeComponent,
+    CreateClaimBtnComponent,
+    ChartsComponent,
+    CalendarComponent,
+    MyClientsComponent,
+    ClientCardComponent,
+    YandexMapComponent,
+    NavComponent,
+    FooterComponent,
+  ],
 
   imports: [
     BrowserModule,
