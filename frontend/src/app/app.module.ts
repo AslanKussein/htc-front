@@ -57,32 +57,36 @@ import { CalendarComponent } from './home/calendar/calendar.component';
 import {registerLocaleData} from "@angular/common";
 import {MyClientsComponent} from "./profile/my-clients/my-clients.component";
 import { ClientCardComponent } from './profile/my-clients/client-card/client-card.component';
+import {NavComponent} from "./helpers/nav/nav.component";
+import {FooterComponent} from "./helpers/footer/footer.component";
 
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        BoardComponent,
-        ClaimsComponent,
-        ProfileComponent,
-        ObjectsComponent,
-        StaffsComponent,
-        CreateClaimComponent,
-        LoginComponent,
-        ActsComponent,
-        DicControlComponent,
-        MyObjectsComponent,
-        MyClaimsComponent,
-        FortebankApiComponent,
-        HomeComponent,
-        CreateClaimBtnComponent,
-        ChartsComponent,
-        CalendarComponent,
-        MyClientsComponent,
-        ClientCardComponent,
-    ],
+  declarations: [
+    AppComponent,
+    BoardComponent,
+    ClaimsComponent,
+    ProfileComponent,
+    ObjectsComponent,
+    StaffsComponent,
+    CreateClaimComponent,
+    LoginComponent,
+    ActsComponent,
+    DicControlComponent,
+    MyObjectsComponent,
+    MyClaimsComponent,
+    FortebankApiComponent,
+    HomeComponent,
+    CreateClaimBtnComponent,
+    ChartsComponent,
+    CalendarComponent,
+    MyClientsComponent,
+    ClientCardComponent,
+    NavComponent,
+    FooterComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

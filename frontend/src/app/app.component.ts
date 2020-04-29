@@ -1,9 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
-import {language} from "../environments/language";
-import {TranslateService} from '@ngx-translate/core';
-import {AuthenticationService} from "./services/authentication.service";
-import {User} from "./models/users";
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -11,35 +6,9 @@ import {User} from "./models/users";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'htc';
-  _language = language;
-
   public loading = false;
-  currentUser: User;
-  year: number;
+  title = 'htc';
 
-  constructor(public translate: TranslateService,
-              private router: Router,
-              private authenticationService: AuthenticationService) {
-    translate.setDefaultLang(this._language.language);
-    translate.use(this._language.language);
-    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-    this.year = new Date().getFullYear();
-  }
-
-  dnHref(href) {
-    localStorage.setItem('url', href);
-    this.router.navigate([href]);
-  }
-
-  changeLang(language: string) {
-    this._language.language = language;
-    this.translate.setDefaultLang(language);
-    this.translate.use(language);
-  }
-
-  logout() {
-    this.authenticationService.logout();
-    this.router.navigate(['/login']);
+  constructor() {
   }
 }
