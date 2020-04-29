@@ -319,6 +319,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   fillApplicationForm(data: any) {
+    if (this.operationType.length == 0) {
+      this.loadDictionary();
+      return
+    }
     this.applicationForm.operationTypeId = this.util.getDictionaryValueById(this.operationType, data.operationTypeId.toString());
     this.applicationForm.objectPrice = data.objectPrice;
     this.applicationForm.mortgage = this.util.toString(data.mortgage);
