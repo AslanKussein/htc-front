@@ -17,10 +17,9 @@ export class ProfileComponent implements OnInit {
   selectedFile: File;
 
   currentUser: User;
-  profiles: ProfileDto;
+  profile: ProfileDto;
   save: boolean;
   loading: boolean;
-
 
   constructor(private util: Util,
               private uploader: UploaderService,
@@ -30,24 +29,10 @@ export class ProfileComponent implements OnInit {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
-  profile = {
-    phone: '',
-    email: '',
-    address: '',
-    transport: '',
-    photoUuid: null
-  }
-
-  dnHref(href) {
-    this.util.dnHref(href);
-  }
-
   ngOnInit(): void {
-
     this.getProfile();
     this.save = false;
   }
-
 
   getProfile() {
     this.profileService.getProfile().subscribe(res => {
@@ -64,7 +49,6 @@ export class ProfileComponent implements OnInit {
     this.profileService.updateProfile(this.profile).subscribe(res => {
         this.profile = res;
         this.notifyService.showSuccess('Данные сохранены', "");
-
       }, err => {
         this.notifyService.showError('warning', err);
 
@@ -87,8 +71,6 @@ export class ProfileComponent implements OnInit {
     if (!this.util.isNullOrEmpty(photoUuid)) {
       return this.util.generatorPreviewUrl(this.profile.photoUuid)
     }
-    ;
     return 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png';
   }
-
 }
