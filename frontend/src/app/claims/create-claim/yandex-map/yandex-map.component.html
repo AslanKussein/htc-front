@@ -1,0 +1,10 @@
+<p>yandex-map works!</p>
+<div class="map">
+  <angular-yandex-map [center]="[55.751952, 37.600739]"  (yaclick)="onLoad($event)" [zoom]="8" >
+    <angular-yandex-placemark
+      [geometry]="cord"
+      [properties]="placemarkProperties"
+      [options]="placemarkOptions"
+    ></angular-yandex-placemark>
+  </angular-yandex-map>
+</div>

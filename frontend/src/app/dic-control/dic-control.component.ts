@@ -279,7 +279,7 @@ export class DicControlComponent implements OnInit {
   submit() {
     if (this.actions == 'ADD') {
       if (this.dicName == 'residential-complexes') {
-        if(this.formRes.cityId==null || this.formRes.streetId==null || this.formRes.houseNumber==null){
+        if(this.util.isNullOrEmpty(this.formRes.cityId)||this.util.isNullOrEmpty(this.formRes.streetId) ||this.util.isNullOrEmpty(this.formRes.houseNumber)){
           this.notifyService.showError('Пожалуйста, заполните все поля', "");
           return;
         }
@@ -299,7 +299,7 @@ export class DicControlComponent implements OnInit {
         );
 
       } else {
-        if(this.formData.code==null || this.formData.nameRu==null){
+        if( this.util.isNullOrEmpty(this.formData.code) ||this.util.isNullOrEmpty(this.formData.nameRu)){
           this.notifyService.showError('Пожалуйста, заполните все поля', "");
           return;
         }
@@ -319,7 +319,7 @@ export class DicControlComponent implements OnInit {
       }
     } else {
       if (this.dicName == 'residential-complexes') {
-        if(this.formRes.cityId==null || this.formRes.streetId==null || this.formRes.houseNumber==null){
+        if(this.util.isNullOrEmpty(this.formRes.cityId)||this.util.isNullOrEmpty(this.formRes.streetId) ||this.util.isNullOrEmpty(this.formRes.houseNumber)){
           this.notifyService.showError('Пожалуйста, заполните все поля', "");
           return;
         }
@@ -338,7 +338,7 @@ export class DicControlComponent implements OnInit {
         });
 
       } else {
-        if(this.formData.code==null || this.formData.nameRu==null){
+        if( this.util.isNullOrEmpty(this.formData.code) ||this.util.isNullOrEmpty(this.formData.nameRu)){
           this.notifyService.showError('Пожалуйста, заполните все поля', "");
           return;
         }

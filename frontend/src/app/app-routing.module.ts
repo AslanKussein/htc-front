@@ -17,6 +17,7 @@ import {MyClaimsComponent} from "./profile/my-claims/my-claims.component";
 import {HomeComponent} from "./home/home.component";
 import {FortebankApiComponent} from "./fortebank-api/fortebank-api.component";
 import {ClientCardComponent} from "./profile/my-clients/client-card/client-card.component";
+import {YandexMapComponent} from "./claims/create-claim/yandex-map/yandex-map.component";
 
 
 const routes: Routes = [
@@ -31,6 +32,7 @@ const routes: Routes = [
   {path: 'dic-control', component: DicControlComponent, canActivate: [AuthGuard]},
   {path: 'my-objects', component: MyObjectsComponent, canActivate: [AuthGuard]},
   {path: 'my-claims', component: MyClaimsComponent, canActivate: [AuthGuard]},
+  {path: 'yandex-map', component: YandexMapComponent, canActivate: [AuthGuard]},
 
   {path: 'news', component: NewsComponent, canActivate: [AuthGuard]},
   {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
