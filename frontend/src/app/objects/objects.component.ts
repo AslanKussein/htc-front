@@ -67,7 +67,7 @@ export class ObjectsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.findObjects(0);
+    this.findObjects(1);
     this.loadDictionary();
     this.myObject=true;
   }
@@ -141,20 +141,20 @@ export class ObjectsComponent implements OnInit {
     this.formData.my=true;
     this.myObject=false;
 
-    this.findObjects(0);
+    this.findObjects(1);
   }
 
   allObjects(){
     this.formData.my=false;
     this.myObject=true;
-    this.findObjects(0);
+    this.findObjects(1);
   }
 
   findObjects(pageNo: number) {
     let searchFilter = {};
 
     this.loading = true;
-    searchFilter['pageNumber'] = pageNo;
+    searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = 10;
     if (!this.util.isNullOrEmpty(this.formData.districtsId)) {
       searchFilter['districtId'] = parseInt(this.formData.districtsId);
@@ -241,8 +241,8 @@ export class ObjectsComponent implements OnInit {
 
     this.objectService.getObjects(searchFilter).subscribe(res => {
       this.objectsData = res.data.data.data;
-      this.totalItems = res.data.totalElements;
-      this.itemsPerPage = res.data.data.size;
+      this.totalItems = res.data.total;
+      this.currentPage = res.data.pageNumber + 1;
     });
     this.loading = false;
   }

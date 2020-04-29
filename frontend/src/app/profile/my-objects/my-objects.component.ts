@@ -45,7 +45,7 @@ export class MyObjectsComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.findObjects(0);
+    this.findObjects(1);
 
   }
 
@@ -82,7 +82,7 @@ export class MyObjectsComponent implements OnInit {
 
   findObjects(pageNo: number) {
     let searchFilter = {};
-    searchFilter['pageNumber'] = pageNo;
+    searchFilter['pageNumber'] = pageNo  - 1;;
     searchFilter['pageSize'] = 10;
     if (!this.util.isNullOrEmpty(this.formData.my)) {
       searchFilter['my'] = this.formData.my;
@@ -91,8 +91,8 @@ export class MyObjectsComponent implements OnInit {
 
     this.objectService.getObjects(searchFilter).subscribe(res => {
       this.objectsData = res.data.data.data;
-      this.totalItems = res.data.totalElements;
-      this.itemsPerPage = res.data.data.size;
+      this.totalItems = res.data.total;
+      this.currentPage = res.data.pageNumber + 1;
     });
     this.loading = false;
   }
