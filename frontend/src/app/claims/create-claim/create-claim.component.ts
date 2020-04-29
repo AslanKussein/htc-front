@@ -243,6 +243,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.loading = true;
     this.claimService.getClaimById(id).subscribe(data => {
       if (data != null) {
+        if (this.util.isNullOrEmpty(this.operationType) || this.util.isNullOrEmpty(this.objectType) || this.util.isNullOrEmpty(this.residentialComplexes)) {
+          this.loadDataById(this.applicationId);
+          return
+        }
         this.fillApplicationForm(data);
         this.fillApplicationFormPurchaseInfoDto(data.realPropertyRequestDto?.purchaseInfoDto);
         this.fillApplicationFormClientData(data.clientDto);
@@ -319,10 +323,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   fillApplicationForm(data: any) {
-    if (this.util.isNullOrEmpty(this.operationType) || this.util.isNullOrEmpty(this.objectType)) {
-      this.loadDictionary();
-      return
-    }
+
     this.applicationForm.operationTypeId = this.util.getDictionaryValueById(this.operationType, data.operationTypeId.toString());
     this.applicationForm.objectPrice = data.objectPrice;
     this.applicationForm.mortgage = this.util.toString(data.mortgage);
