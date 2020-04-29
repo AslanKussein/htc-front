@@ -34,6 +34,8 @@
             </tr>
             </tbody>
           </table>
+          <app-create-claim-btn></app-create-claim-btn>
+
           <div class="row">
             <div class="col-sm">
               <pagination [(ngModel)]="currentPage"
@@ -49,14 +51,7 @@
                           (pageChanged)="pageChanged($event)">
               </pagination>
             </div>
-            <div class="col-sm">
-              <div class="position-static createClaimBtn">
-                <button type="button" class="btn btn-success btn-circle btn-xl" (click)="dnHref('create-claim')"><i
-                  class="fa fa-plus"></i>
-                </button>
 
-              </div>
-            </div>
 
 
           </div>

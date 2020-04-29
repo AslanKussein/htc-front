@@ -56,6 +56,7 @@ import {ChartsComponent} from "./home/charts/charts.component";
 import { CalendarComponent } from './home/calendar/calendar.component';
 import {registerLocaleData} from "@angular/common";
 import {MyClientsComponent} from "./profile/my-clients/my-clients.component";
+import { ClientCardComponent } from './profile/my-clients/client-card/client-card.component';
 
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
@@ -80,6 +81,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
         ChartsComponent,
         CalendarComponent,
         MyClientsComponent,
+        ClientCardComponent,
     ],
   imports: [
     BrowserModule,

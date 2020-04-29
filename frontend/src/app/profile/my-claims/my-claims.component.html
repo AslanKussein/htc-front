@@ -39,11 +39,8 @@
       </tr>
       </tbody>
     </table>
-    <div class="position-static createClaimBtn">
-      <button type="button" class="btn btn-success btn-circle btn-xl" (click)="dnHref('create-claim')"><i
-        class="fa fa-plus"></i>
-      </button>
-    </div>
+    <app-create-claim-btn></app-create-claim-btn>
+
 
     <pagination [(ngModel)]="currentPage"
                 [totalItems]="totalItems"

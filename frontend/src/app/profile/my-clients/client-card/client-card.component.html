@@ -1,0 +1,109 @@
+<div class="card-body card-bg">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="btn-group btn-breadcrumb">
+          <a href="#" class="btn btn-primary"><i class="fa fa-home"></i></a>
+          <a href="#/profile" class="btn btn-primary">Личный кабинет</a>
+          <a href="#" class="btn btn-primary active">Карточка клиента</a>
+
+        </div>
+      </div>
+      <br/>
+      <div>
+        <div>
+          <h3>ID - 0138465</h3>
+        </div>
+
+        <div class="col-sm-5">
+          <h2 class="font-weight-bolder text-uppercase">{{currentUser?.surname}} {{currentUser?.name}}</h2>  муж.
+
+          <div class="form-group row">
+            <label for="inputEmail3MD" class="col-sm-2 col-form-label">Телефон</label>
+            <div class="col-sm-10">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Телефон" id="inputEmail3MD"
+                       [(ngModel)]="profile.phone"  prefix="+7 " mask="(000) 000 00 00">
+                <div class="input-group-append">
+                  <span class="input-group-text"><i aria-hidden="true" class="fa fa-whatsapp text-success"></i></span>
+                  <span class="input-group-text"><i aria-hidden="true" class="fa fa-telegram text-primary"></i></span>
+                  <span class="input-group-text"><i aria-hidden="true" class="fa fa-skype text-info"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">e-mail:</label>
+            <div class="col-sm-10">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="e-mail" id="mail"
+                       [(ngModel)]="profile.email" >
+                <div class="input-group-append">
+                  <span class="input-group-text"><i aria-hidden="true" class="fa fa-google-plus text-info"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <table class="table table-bordered table-sm">
+            <thead class="text-center">
+            <tr>
+              <th>ID заявки</th>
+              <th>Операция</th>
+              <th translate>claim.crDateFrom</th>
+              <th translate>fio</th>
+              <th translate>phone</th>
+              <th translate>e-mail</th>
+              <th translate>Район</th>
+              <th translate>Количество комнат</th>
+              <th translate>Цена</th>
+              <th translate>Вид расчета</th>
+              <th translate>Прошадь</th>
+              <th translate>Этаж</th>
+              <th translate>Статус</th>
+              <th translate>Комментарий</th>
+            </tr>
+            </thead>
+            <tbody style="cursor: pointer">
+            <tr *ngFor="let claim of claimData;let i = index">
+              <td>{{claim.id}}
+              </td>
+              <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
+              <td>{{formatDate(claim)}}</td>
+              <td>{{claim.fullname}}</td>
+              <td><span>{{claim.phone | mask: '+0 (000) 000-0000'}}</span></td>
+              <td>{{claim.email}}</td>
+              <td>{{getDicNameByLanguage(claim, 'district')}}</td>
+              <td>{{claim.numberOfRooms}}</td>
+              <td>{{claim.price}}</td>
+              <td></td>
+              <td>{{claim.totalArea}}</td>
+              <td>{{claim.floor}}</td>
+              <td>{{getDicNameByLanguage(claim, 'status')}}</td>
+              <td>{{claim.comment}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <app-create-claim-btn></app-create-claim-btn>
+
+
+          <pagination [(ngModel)]="currentPage"
+                      [totalItems]="totalItems"
+                      [itemsPerPage]="itemsPerPage"
+                      [maxSize]="10"
+                      [rotate]="true"
+                      [boundaryLinks]="true"
+                      previousText="&lsaquo;"
+                      nextText="&rsaquo;"
+                      firstText="&laquo;"
+                      lastText="&raquo;"
+                      (pageChanged)="pageChanged($event)">
+          </pagination>
+        </div>
+      </div>
+   </div>
+  </div>
+</div>

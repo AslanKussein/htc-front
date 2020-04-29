@@ -16,6 +16,7 @@ import {MyObjectsComponent} from "./profile/my-objects/my-objects.component";
 import {MyClaimsComponent} from "./profile/my-claims/my-claims.component";
 import {HomeComponent} from "./home/home.component";
 import {FortebankApiComponent} from "./fortebank-api/fortebank-api.component";
+import {ClientCardComponent} from "./profile/my-clients/client-card/client-card.component";
 
 
 const routes: Routes = [
@@ -34,6 +35,7 @@ const routes: Routes = [
   {path: 'news', component: NewsComponent, canActivate: [AuthGuard]},
   {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
   {path: 'create-claim/:id', component: CreateClaimComponent, canActivate: [AuthGuard]},
+  {path: 'client-card/:id', component: ClientCardComponent, canActivate: [AuthGuard]},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate]},
   {path: 'fortebank-api', component: FortebankApiComponent}
 
