@@ -59,6 +59,8 @@ import {MyClientsComponent} from "./profile/my-clients/my-clients.component";
 import { ClientCardComponent } from './profile/my-clients/client-card/client-card.component';
 import { YandexMapComponent } from './claims/create-claim/yandex-map/yandex-map.component';
 import {AngularYandexMapsModule} from "angular8-yandex-maps";
+import {NavComponent} from "./helpers/nav/nav.component";
+import {FooterComponent} from "./helpers/footer/footer.component";
 
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
@@ -85,7 +87,10 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
         MyClientsComponent,
         ClientCardComponent,
         YandexMapComponent,
+      NavComponent,
+      FooterComponent,
     ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -108,10 +113,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     ToastrModule.forRoot(),
     NgxMaskModule.forRoot(options),
     MDBBootstrapModule.forRoot(),
-    // AngularYandexMapsModule.forRoot('e0989234-02d4-474a-bde2-db56619d02ee'),
     AngularYandexMapsModule.forRoot('658f67a2-fd77-42e9-b99e-2bd48c4ccad4'),
-    // AngularYandexMapsModule.forRoot('0542b161-e7fa-4a97-aaaa-45a26cd62500'),
-    // AngularYandexMapsModule,
     ChartsModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
