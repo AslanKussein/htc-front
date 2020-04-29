@@ -390,8 +390,7 @@
           </div>
           <div class="col-sm" *ngIf="resident">
             <label class="col-sm col-form-label">Высота потолков</label>
-            <input type="text"  maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
-                   value=${var}  class="col-sm form-control" name="ceilingHeight"
+            <input type="number"  maxlength="4"  class="col-sm form-control" name="ceilingHeight"
                    [(ngModel)]="formRes.ceilingHeight">
           </div>
           <div class="col-sm" *ngIf="resident">
