@@ -131,6 +131,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
   ],
   bootstrap: [AppComponent],
   entryComponents: [
+    ProfileComponent,
     CreateClaimComponent,
     ModalComponent
   ],

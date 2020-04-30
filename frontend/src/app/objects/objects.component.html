@@ -610,9 +610,22 @@
 
 </div>
 <div class="row">
-  <h4 style="margin-left: 30px;">Найдено всего / </h4><a class="h4" *ngIf="myObject" (click)="myObjects()"> Свои
-  объекты</a><a
-  class="h4" (click)="allObjects() " *ngIf="!myObject"> Все объекты</a>
+  <h4 style="margin-left: 30px;">Найдено всего / </h4>
+
+  <ng-select name="ob"
+             [items]="objectMy"
+             [(ngModel)]="objectMyModel"
+             (changeEvent)="myObjectChange()"
+             (change)="myObjectChange()"
+             bindValue="value"
+      class="col-sm-2">
+
+  </ng-select>
+
+  <!--<a class="h4 link"  *ngIf="myObject" (click)="myObjects()"> Свои объекты</a>-->
+  <!--<a class="h4" (click)="allObjects() " *ngIf="!myObject"> Все объекты</a>-->
+
+
 
 </div>
 <div class="card-body card-bg">

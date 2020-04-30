@@ -6,19 +6,25 @@ import {ProfileService} from "../services/profile.service";
 import {ProfileDto} from "../models/profile/profileDto";
 import {UploaderService} from "../services/uploader.service";
 import {NotificationService} from "../services/notification.service";
+import {ComponentCanDeactivate} from "../canDeactivate/componentCanDeactivate";
+import {CreateClaimComponent} from "../claims/create-claim/create-claim.component";
+import {Observable} from "rxjs/index";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit,  ComponentCanDeactivate{
+
   selectedFile: File;
 
   currentUser: User;
   profile: ProfileDto;
   save: boolean;
   loading: boolean;
+  agentRoles:boolean;
+  rgRoles:boolean;
 
   constructor(private util: Util,
               private uploader: UploaderService,
@@ -26,6 +32,19 @@ export class ProfileComponent implements OnInit {
               private profileService: ProfileService,
               private authenticationService: AuthenticationService) {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    if(this.currentUser.roles!=null){
+      this.agentRoles=false;
+      this.rgRoles=false;
+      for (const role of this.currentUser.roles) {
+        console.log(this.currentUser.roles)
+        if(role=='AGENT_GROUP_CHOOSE'){
+          this.agentRoles=true;
+        }
+        if(role=='РГ'){
+          this.rgRoles=true;
+        }
+      }
+    }
   }
 
   ngOnInit(): void {
@@ -55,6 +74,8 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+
+
   onFileChanged(event) {
     this.selectedFile = event.target.files[0];
     this.loading = true;
@@ -71,5 +92,17 @@ export class ProfileComponent implements OnInit {
       return this.util.generatorPreviewUrl(this.profile.photoUuid)
     }
     return 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png';
+  }
+
+  canDeactivate(): boolean | Observable<boolean> {
+    if(this.save){
+      let result = confirm("Внесенные данные не сохранены, данные будут потеряны. Покинуть страницу?");
+      return result;
+    }
+    else{
+      return true;
+    }
+
+
   }
 }

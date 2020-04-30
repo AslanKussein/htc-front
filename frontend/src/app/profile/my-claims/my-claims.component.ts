@@ -14,7 +14,7 @@ import {formatDate} from "@angular/common";
   styleUrls: ['./my-claims.component.scss']
 })
 export class MyClaimsComponent implements OnInit {
-
+  text: string;
   constructor(private localeService: BsLocaleService,
               private claimService: ClaimService,
               private dicService: DicService,
@@ -45,7 +45,7 @@ export class MyClaimsComponent implements OnInit {
   currentPage = 1;
 
   ngOnInit(): void {
-    this.findClaims(0);
+    this.findClaims(1);
     }
   dnHref(href) {
     this.util.dnHref(href);
@@ -77,16 +77,16 @@ export class MyClaimsComponent implements OnInit {
 
     searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
-    searchFilter['pageNumber'] = pageNo;
-    searchFilter['pageSize'] = 30;
+    searchFilter['text'] = this.text;
+    searchFilter['pageNumber'] = pageNo - 1;
+    searchFilter['pageSize'] = this.itemsPerPage;
     this.claimService.getClaims(searchFilter).subscribe(res => {
-      if (res != null && res.data != null && !res.data.data.empty) {
 
         this.claimData = res.data.data.data;
-        this.totalItems = res.data.totalElements;
-        this.itemsPerPage = res.data.data.size;
-        // this.currentPage = res.data.number + 1;
-      }
+        this.totalItems = res.data.total;
+        // this.itemsPerPage = res.data.data.size;
+        this.currentPage = res.data.pageNumber + 1;
+
     });
     this.loading = false;
   }

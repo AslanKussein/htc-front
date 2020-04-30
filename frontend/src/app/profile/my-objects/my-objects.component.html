@@ -1,8 +1,12 @@
-<div class="card-body card-bg">
-  <div class="card">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-sm">
+<div class="row">
+  <div class="col-sm">
+    <div class="input-group w-50">
+      <input type="text" class="form-control" placeholder="Поиск" id="mail" [(ngModel)]="text">
+      <div class="input-group-append">
+        <span class="input-group-text" (click)="findObjects(1)"><i aria-hidden="true" class="fa fa-search text-info"></i></span>
+      </div>
+    </div>
+    <br/>
           <table class="table table-bordered text-center table-sm">
             <thead class="text-center">
             <tr>
@@ -59,7 +63,4 @@
 
         </div>
 
-      </div>
-    </div>
-  </div>
 </div>

@@ -26,7 +26,7 @@ const routes: Routes = [
   {path: 'claims', component: ClaimsComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'board', component: BoardComponent, canActivate: [AuthGuard]},
-  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
+  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate]},
   {path: 'objects', component: ObjectsComponent, canActivate: [AuthGuard]},
   {path: 'staffs', component: StaffsComponent, canActivate: [AuthGuard]},
   {path: 'dic-control', component: DicControlComponent, canActivate: [AuthGuard]},

@@ -26,6 +26,8 @@ export class ObjectsComponent implements OnInit {
   dicDynamic: Dic[];
   homeTypes: Dic[];
   myObject:boolean;
+  objectMy:any;
+  objectMyModel:number;
 
   constructor(private router: Router,
               private localeService: BsLocaleService,
@@ -70,12 +72,33 @@ export class ObjectsComponent implements OnInit {
     this.findObjects(1);
     this.loadDictionary();
     this.myObject=true;
+    this.objectMyModel=1;
+    this.objectMy=[
+      {label:'Все объекты',value:1},
+      {label:'Свои объекты',value:2},
+    ]
+
+
+
+    ;
   }
 
   dnHref(href) {
     localStorage.setItem('url', href);
     this.router.navigate([href]);
   }
+
+  myObjectChange(){
+    if(this.objectMyModel==1){
+      this.formData.my=false;
+      this.findObjects(1);
+    }else if(this.objectMyModel==2){
+      this.formData.my=true;
+      this.findObjects(1);
+    }
+  }
+
+
 
 
   objectsData = [
@@ -237,6 +260,8 @@ export class ObjectsComponent implements OnInit {
     if (!this.util.isNullOrEmpty(this.formData.my)) {
       searchFilter['my'] = this.formData.my;
     }
+    searchFilter['sortBy'] = 'application.objectPrice'
+    // searchFilter['direction'] = 'DESC'
 
 
     this.objectService.getObjects(searchFilter).subscribe(res => {

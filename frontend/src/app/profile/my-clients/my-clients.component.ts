@@ -39,6 +39,7 @@ export class MyClientsComponent implements OnInit {
     let searchFilter = {};
     searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
+    searchFilter['my'] = true;
     searchFilter['text'] = this.text;
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = this.itemsPerPage;

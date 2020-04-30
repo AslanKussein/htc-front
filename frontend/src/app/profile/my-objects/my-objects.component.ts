@@ -11,7 +11,7 @@ import {BsLocaleService} from "ngx-bootstrap";
   styleUrls: ['./my-objects.component.scss']
 })
 export class MyObjectsComponent implements OnInit {
-
+  text:string;
   constructor(  private objectService: ObjectService,
                 private localeService: BsLocaleService,
                 private util: Util) {
@@ -69,7 +69,7 @@ export class MyObjectsComponent implements OnInit {
   ];
   loading;
   totalItems = 0;
-  itemsPerPage = 10;
+  itemsPerPage = 20;
   currentPage = 1;
 
 
@@ -82,11 +82,15 @@ export class MyObjectsComponent implements OnInit {
 
   findObjects(pageNo: number) {
     let searchFilter = {};
+    searchFilter['direction'] = 'ASC';
+    searchFilter['sortBy'] = 'id';
     searchFilter['pageNumber'] = pageNo  - 1;;
-    searchFilter['pageSize'] = 10;
+    searchFilter['pageSize'] =  this.itemsPerPage;;
     if (!this.util.isNullOrEmpty(this.formData.my)) {
       searchFilter['my'] = this.formData.my;
     }
+    searchFilter['text'] = this.text;
+
 
 
     this.objectService.getObjects(searchFilter).subscribe(res => {

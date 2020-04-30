@@ -10,7 +10,7 @@
       <br/>
       <div class="row">
         <div class="col-sm">
-          <img [src]="getSrcImg(profile.photoUuid)" class="avatar img-circle img-thumbnail"
+          <img [src]="getSrcImg(profile?.photoUuid)" class="avatar img-circle img-thumbnail"
                alt="avatar">
           <a *ngIf="!save" (click)="editProfile()"><i style="color: blue" class="fa fa-edit fa-2x"></i></a>
           <a *ngIf="save" (click)="saveProfile()"><i style="color: blue" class="fa fa-save fa-2x"></i></a>
@@ -46,7 +46,7 @@
             <label for="mail" class="col-sm-2 col-form-label">e-mail:</label>
             <div class="col-sm-10">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Телефон" id="mail"
+                <input type="text" class="form-control" placeholder="Введите ваш e-mail" id="mail"
                        [(ngModel)]="profile.email" [readOnly]="!save">
                 <div class="input-group-append">
                   <span class="input-group-text"><i aria-hidden="true" class="fa fa-google-plus text-info"></i></span>
@@ -58,7 +58,7 @@
             <label class="col-sm-2 col-form-label">Адрес: </label>
             <div class="col-sm-10">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Телефон"
+                <input type="text" class="form-control" placeholder="Введите ваш адрес"
                        [(ngModel)]="profile.address" [readOnly]="!save">
                 <div class="input-group-append">
                   <span class="input-group-text"><i aria-hidden="true" class="fa fa-location-arrow text-info"></i></span>
@@ -82,33 +82,33 @@
           <h5><i class="fa fa-arrow-up text-success" aria-hidden="true"></i>&nbsp;<span class="text-primary">Рейтинг риэлтора: 8,7 баллов</span>
           </h5>
           <br>
-          <p>Агентские договра: 8,7 баллов</p>
+          <p>Агентские договора: 8,7 баллов</p>
           <p>Сумма задатков: 8,7 баллов</p>
           <p>Сумма продаж: 8,7 баллов</p>
         </div>
       </div>
       <ul class="nav nav-tabs" id="myTab2" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+        <li class="nav-item" *ngIf="false">
+          <a class="nav-link " id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
              aria-selected="true">Мои клиенты</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+        <li class="nav-item" *ngIf="agentRoles || rgRoles">
+          <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
              aria-selected="false">Мои объекты</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="agentRoles || rgRoles">
           <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
              aria-selected="false">Мои сделки</a>
         </li>
       </ul>
       <div class="tab-content" id="myTabContent2">
-        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <div class="tab-pane fade " id="home" role="tabpanel" aria-labelledby="home-tab"  *ngIf="false">
           <app-my-clients></app-my-clients>
         </div>
-        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab" *ngIf="agentRoles || rgRoles">
           <app-my-objects></app-my-objects>
         </div>
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab" *ngIf="agentRoles || rgRoles">
           <app-my-claims></app-my-claims>
 
         </div>

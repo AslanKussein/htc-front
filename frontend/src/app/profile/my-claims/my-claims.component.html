@@ -1,5 +1,13 @@
 <div class="row">
   <div class="col-sm">
+    <div class="input-group w-50">
+      <input type="text" class="form-control" placeholder="Поиск" id="mail" [(ngModel)]="text">
+      <div class="input-group-append">
+        <span class="input-group-text" (click)="findClaims(1)"><i aria-hidden="true" class="fa fa-search text-info"></i></span>
+      </div>
+    </div>
+    <br/>
+
     <table class="table table-bordered table-sm">
       <thead class="text-center">
       <tr>
