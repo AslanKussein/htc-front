@@ -250,7 +250,7 @@
                                [(ngModel)]="applicationForm.phoneNumber" name="phoneNumber"
                                [formControl]="applicationForm.controls['phoneNumber']"
                                prefix="+7" mask=' (000) 000-0000' [showMaskTyped]="true"
-                               (ngModelChange)="searchByPhone()"/>
+                               placeHolderCharacter="0" (ngModelChange)="searchByPhone()"/>
 
                         <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
                           <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>

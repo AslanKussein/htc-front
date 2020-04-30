@@ -313,7 +313,16 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       this.loading = true;
       this.ownerService.searchByPhone('7' + this.applicationForm.phoneNumber)
         .subscribe(res => {
-          this.fillApplicationFormClientData(res);
+          if (!this.util.isNullOrEmpty(res)) {
+            this.fillApplicationFormClientData(res);
+          } else {
+            this.applicationForm.clientId = null;
+            this.applicationForm.firstName = null;
+            this.applicationForm.surname = null;
+            this.applicationForm.patronymic = null;
+            this.applicationForm.email = null;
+            this.applicationForm.gender = null;
+          }
         });
       this.loading = false;
     }
