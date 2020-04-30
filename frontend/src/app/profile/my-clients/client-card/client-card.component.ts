@@ -10,6 +10,7 @@ import {ClaimService} from "../../../services/claim.service";
 import {DicService} from "../../../services/dic.service";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {BsLocaleService} from "ngx-bootstrap";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-client-card',
@@ -26,18 +27,20 @@ export class ClientCardComponent implements OnInit {
   totalItems = 0;
   itemsPerPage = 30;
   currentPage = 1;
+  clientId:number;
 
 
   constructor(private localeService: BsLocaleService,
               private claimService: ClaimService,
               private dicService: DicService,
               private authenticationService: AuthenticationService,
+              private actRoute: ActivatedRoute,
               private util: Util) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-
-  }
+    this.clientId = this.actRoute.snapshot.params.id;
+    }
 
 
   profile={
@@ -83,6 +86,9 @@ export class ClientCardComponent implements OnInit {
     searchFilter['my'] = this.formData.myClaim;
     if (!this.util.isNullOrEmpty(this.formData.applicationStatuses)) {
       searchFilter['applicationStatusList'] = this.formData.applicationStatuses;
+    }
+    if (!this.util.isNullOrEmpty(this.clientId)) {
+      searchFilter['clientId'] = Number(this.clientId);
     }
 
     searchFilter['direction'] = 'ASC';
