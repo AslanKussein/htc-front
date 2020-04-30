@@ -445,19 +445,6 @@
                               <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>
                             </div>
                           </div>
-                          <div class="col-sm"
-                               *ngIf="applicationForm.objectTypeId?.code=='003001' && applicationForm.operationTypeId?.code=='001002'">
-                            <label for="patronymic" translate>claim.building</label>
-                            <ng-select
-                              [items]="residentialComplexes"
-                              [(ngModel)]="applicationForm.residentialComplexId"
-                              (ngModelChange)="setResidenceComplexType()"
-                              formControlName="residentialComplexId"
-                              placeholder="{{ 'claim.building' | translate }}">
-                            </ng-select>
-                          </div>
-                        </div>
-                        <div class="row">
                           <div class="col-sm form-group required"
                                *ngIf="applicationForm.operationTypeId?.code=='001002'">
                             <label for="patronymic" translate>claim.street</label>
@@ -473,6 +460,19 @@
                               <div *ngIf="f.streetId.errors.required" translate>claim.requiredField</div>
                             </div>
                           </div>
+                          <div class="col-sm"
+                               *ngIf="applicationForm.objectTypeId?.code=='003001' && applicationForm.operationTypeId?.code=='001002'">
+                            <label for="patronymic" translate>claim.building</label>
+                            <ng-select
+                              [items]="residentialComplexes"
+                              [(ngModel)]="applicationForm.residentialComplexId"
+                              (ngModelChange)="setResidenceComplexType()"
+                              formControlName="residentialComplexId"
+                              placeholder="{{ 'claim.building' | translate }}">
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="row">
                           <div class="col-sm form-group required"
                                *ngIf="applicationForm.operationTypeId?.code=='001002'">
                             <label for="patronymic" translate>claim.numberHouse
@@ -533,8 +533,7 @@
                             </div>
                           </div>
                         </div>
-                        <!--                        <div class="row" *ngIf="applicationForm.operationTypeId?.code == '001002'">-->
-                        <div class="row">
+                        <div class="row" *ngIf="applicationForm.operationTypeId?.code == '001002'">
                           <div class="col-sm">
                             <label for="cadastralNumber">Кадастровый номер</label>
                             <div class="input-group">
@@ -556,7 +555,9 @@
                                      formControlName="cadastralNumber3"/>
                             </div>
                             <div *ngIf="f.cadastralNumber.touched && f.cadastralNumber.invalid" class="text-danger">
-                              <div *ngIf="applicationForm.cadastralNumber != null">Длина поле кадастровый номер не верно</div>
+                              <div *ngIf="applicationForm.cadastralNumber != null">Длина поле кадастровый номер не
+                                верно
+                              </div>
                             </div>
                           </div>
                         </div>
