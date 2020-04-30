@@ -92,9 +92,10 @@
                                  oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                  [(ngModel)]="applicationForm.objectPriceTo" formControlName="objectPriceTo"/>
                         </div>
-                        <input type="number" id="form1" class="form-control" maxlength="20"
+                        <input type="text" id="form1" class="form-control" maxlength="20"
                                oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                *ngIf="applicationForm.operationTypeId?.code != '001001'"
+                               mask="separator.2" thousandSeparator=" "
                                [(ngModel)]="applicationForm.objectPrice" formControlName="objectPrice" min="0">
                         <div
                           *ngIf="applicationForm.operationTypeId?.code == '001002' && f.objectPrice.touched && f.objectPrice.invalid"
@@ -205,7 +206,8 @@
                           <span class="text-danger" *ngIf="!applicationForm.amount">&nbsp;*</span>
                         </label>
                         <input type="number" id="fillFromAnd" class="form-control" [(ngModel)]="applicationForm.amount"
-                               maxlength="20" oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                               maxlength="20"
+                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                formControlName="amount" min="0"/>
                         <div *ngIf="f.amount.touched && f.amount.invalid" class="text-danger">
                           <div *ngIf="f.amount.errors.required" translate>claim.requiredField</div>
@@ -217,10 +219,7 @@
                                  [(ngModel)]="applicationForm.isCommissionIncludedInThePrice"
                                  formControlName="isCommissionIncludedInThePrice"/>
                           <label class="custom-control-label" for="isCommissionIncludedInThePrice">Комиссия включена в
-                            стоимость
-                            <span class="text-danger"
-                                  *ngIf="!applicationForm.isCommissionIncludedInThePrice">&nbsp;*</span>
-                          </label>
+                            стоимость</label>
                         </div>
                       </div>
                     </div>
@@ -245,12 +244,17 @@
                   <div class="card-body">
                     <div class="row">
                       <div class="col-sm">
-                        <label for="clientId" translate>claim.clientID <span class="text-danger"
-                                                                             *ngIf="!applicationForm.clientId">&nbsp;*</span></label>
-                        <input type="text" id="clientId" class="form-control" [(ngModel)]="applicationForm.clientId"
-                               formControlName="clientId" [readOnly]="applicationForm.clientId != null"
-                               (ngModelChange)="searchByClientId()"/>
+                        <label for="phoneNumber" translate>claim.contacts <span class="text-danger"
+                                                                                *ngIf="!applicationForm.phoneNumber">&nbsp;*</span></label>
+                        <input type="text" id="phoneNumber" class="form-control"
+                               [(ngModel)]="applicationForm.phoneNumber" name="phoneNumber"
+                               [formControl]="applicationForm.controls['phoneNumber']"
+                               prefix="+" mask="0 (000) 000 00 00"
+                               (ngModelChange)="searchByPhone()"/>
 
+                        <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
+                          <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>
+                        </div>
                       </div>
                     </div>
                     <div class="row">
@@ -284,17 +288,10 @@
                     </div>
                     <div class="row">
                       <div class="col-sm">
-                        <label for="phoneNumber" translate>claim.contacts <span class="text-danger"
-                                                                                *ngIf="!applicationForm.phoneNumber">&nbsp;*</span></label>
-                        <input type="text" id="phoneNumber" class="form-control"
-                               [(ngModel)]="applicationForm.phoneNumber" name="phoneNumber"
-                               [formControl]="applicationForm.controls['phoneNumber']"
-                               prefix="+" mask="0 (000) 000 00 00"
-                               (ngModelChange)="searchByPhone()"/>
-
-                        <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
-                          <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>
-                        </div>
+                        <label for="clientId" translate>claim.clientID</label>
+                        <input type="text" id="clientId" class="form-control" [(ngModel)]="applicationForm.clientId"
+                               formControlName="clientId" [readOnly]="applicationForm.clientId != null"
+                               (ngModelChange)="searchByClientId()"/>
                       </div>
                       <div class="col-sm">
                         <label for="email" translate>claim.email</label>
@@ -440,6 +437,7 @@
                               [items]="city"
                               [(ngModel)]="applicationForm.cityId"
                               formControlName="cityId"
+                              [readonly]="readonlyChooseJK"
                               bindValue="value"
                               placeholder="{{ 'claim.city' | translate }}">
                             </ng-select>
@@ -535,14 +533,34 @@
                             </div>
                           </div>
                         </div>
+                        <!--                        <div class="row" *ngIf="applicationForm.operationTypeId?.code == '001002'">-->
                         <div class="row">
-                          <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code == '001002'">
+                          <div class="col-sm">
                             <label for="cadastralNumber">Кадастровый номер</label>
-                            <input type="text" id="cadastralNumber" class="form-control"
-                                   [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber?.length != 16)}"
-                                   [(ngModel)]="applicationForm.cadastralNumber" mask="00:000:000:000:00:000"
-                                   formControlName="cadastralNumber" min="21"/>
+                            <div class="input-group">
+                              <input type="text" id="cadastralNumber" class="form-control"
+                                     placeholder="00:000:000"
+                                     [(ngModel)]="applicationForm.cadastralNumber" mask="00:000:000"
+                                     formControlName="cadastralNumber"/>
+                              <input type="text" class="form-control"
+                                     [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber1 == null)}"
+                                     [(ngModel)]="applicationForm.cadastralNumber1" maxlength="12"
+                                     formControlName="cadastralNumber1"/>
+                              <input type="text" class="form-control"
+                                     [(ngModel)]="applicationForm.cadastralNumber2" maxlength="12"
+                                     [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber2 == null)}"
+                                     formControlName="cadastralNumber2"/>
+                              <input type="text" class="form-control"
+                                     [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber3 == null)}"
+                                     [(ngModel)]="applicationForm.cadastralNumber3" maxlength="12"
+                                     formControlName="cadastralNumber3"/>
+                            </div>
+                            <div *ngIf="f.cadastralNumber.touched && f.cadastralNumber.invalid" class="text-danger">
+                              <div *ngIf="applicationForm.cadastralNumber != null">Длина поле кадастровый номер не верно</div>
+                            </div>
                           </div>
+                        </div>
+                        <div class="row">
                           <div class="col-sm-5" *ngIf="applicationForm.objectTypeId?.code == '003001'">
                             <label>Этаж</label>
                             <div class="input-group" *ngIf="applicationForm.operationTypeId?.code == '001001'">
