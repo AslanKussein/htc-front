@@ -11,16 +11,17 @@ import {IEvent} from 'angular8-yandex-maps/lib/types/types';
 export class YandexMapComponent implements OnInit {
 
   public  cord: any;
+  ddd:any;
 
-  public placemarkProperties = {
-    hintContent: 'Hint content',
-    balloonContent: 'Baloon content'
-  }
+  public parameters = {
+    options: {
+      provider: 'yandex#search'
+    }
+  };
 
   public placemarkOptions = {
+    preset: "twirl#redIcon",
     draggable: true,
-    iconLayout: 'default#image',
-    iconImageHref: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png',
     iconImageSize: [32, 32]
   };
 
@@ -29,16 +30,36 @@ export class YandexMapComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cord = [55.607637392971306, 36.95529222265626]
+    this.cord = [51.12, 71.43]
   }
 
-  onLoad(event: IEvent) {
-    console.log(this.cord);
-    const coords = event.event.get('coords');
+  onLoad(event) {
     this.cord = event.event.get('coords')
+    console.log(event)
+    // event.instance.geometry.setCoordinates(this.cord);
+    this.ddd.geometry.setCoordinates(this.cord);
 
-    console.log(this.cord);
-    this._changeDetectorRef.detectChanges();
+  }
+
+
+
+  onLoad2(event) {
+    if(event.type=='dragend'){
+      console.log(event)
+      this.cord=event.instance.geometry.getCoordinates();
+      event.instance.geometry.setCoordinates(this.cord);
+    }
+    }
+
+  onLoad3(event) {
+      this.cord=event.instance.geometry.getCoordinates();
+      event.instance.geometry.setCoordinates(this.cord);
+      this.ddd=event.instance;
+
+    }
+
+   savecoordinats (){
+    let new_coords = [this.cord[0].toFixed(4), this.cord[1].toFixed(4)];
 
   }
 
