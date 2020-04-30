@@ -249,7 +249,7 @@
                         <input type="text" id="phoneNumber" class="form-control"
                                [(ngModel)]="applicationForm.phoneNumber" name="phoneNumber"
                                [formControl]="applicationForm.controls['phoneNumber']"
-                               prefix="+" mask="0 (000) 000 00 00"
+                               prefix="+7" mask=' (000) 000-0000' [showMaskTyped]="true"
                                (ngModelChange)="searchByPhone()"/>
 
                         <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
@@ -290,7 +290,7 @@
                       <div class="col-sm">
                         <label for="clientId" translate>claim.clientID</label>
                         <input type="text" id="clientId" class="form-control" [(ngModel)]="applicationForm.clientId"
-                               formControlName="clientId" [readOnly]="applicationForm.clientId != null"
+                               formControlName="clientId" [readOnly]="true"
                                (ngModelChange)="searchByClientId()"/>
                       </div>
                       <div class="col-sm">

@@ -324,7 +324,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.applicationForm.firstName = res.firstName;
     this.applicationForm.surname = res.surname;
     this.applicationForm.patronymic = res.patronymic;
-    this.applicationForm.phoneNumber = res.phoneNumber;
+    this.applicationForm.phoneNumber = res.phoneNumber?.length == 11 ? res.phoneNumber.substr(1) : res.phoneNumber;
     this.applicationForm.email = res.email;
     this.applicationForm.gender = res.gender;
   }
