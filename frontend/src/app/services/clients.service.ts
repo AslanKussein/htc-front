@@ -21,4 +21,8 @@ export class ClientsService {
     return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getClientList`, search);
   }
 
+  getClientById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/clients/`+id);
+  }
+
 }

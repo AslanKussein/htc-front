@@ -11,6 +11,8 @@ import {DicService} from "../../../services/dic.service";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {BsLocaleService} from "ngx-bootstrap";
 import {ActivatedRoute} from "@angular/router";
+import {ClientDto} from "../../../models/clientCard/clientDto";
+import {ClientsService} from "../../../services/clients.service";
 
 @Component({
   selector: 'app-client-card',
@@ -22,16 +24,19 @@ export class ClientCardComponent implements OnInit {
 
   // profile: ProfileDto;
 
+  client:ClientDto;
   claimData = [];
   loading;
   totalItems = 0;
   itemsPerPage = 30;
   currentPage = 1;
   clientId:number;
+  gender:string;
 
 
   constructor(private localeService: BsLocaleService,
               private claimService: ClaimService,
+              private clientsService: ClientsService,
               private dicService: DicService,
               private authenticationService: AuthenticationService,
               private actRoute: ActivatedRoute,
@@ -43,10 +48,7 @@ export class ClientCardComponent implements OnInit {
     }
 
 
-  profile={
-    phone:'',
-    email:''
-  }
+
 
   formData = {
     typeId: null,
@@ -63,6 +65,9 @@ export class ClientCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.findClaims(1);
+    if (!this.util.isNullOrEmpty(this.clientId)){
+      this.getClientById(this.clientId);
+    }
   }
 
   pageChanged(event: any): void {
@@ -97,11 +102,9 @@ export class ClientCardComponent implements OnInit {
     searchFilter['pageSize'] = 30;
     this.claimService.getClaims(searchFilter).subscribe(res => {
       if (res != null && res.data != null && !res.data.data.empty) {
-
         this.claimData = res.data.data.data;
         this.totalItems = res.data.totalElements;
         this.itemsPerPage = res.data.data.size;
-        // this.currentPage = res.data.number + 1;
       }
     });
     this.loading = false;
@@ -114,6 +117,25 @@ export class ClientCardComponent implements OnInit {
 
   formatDate(claim: any) {
     return formatDate(claim.creationDate, 'dd.MM.yyyy HH:mm', 'en-US');
+  }
+
+  getClientById(id:number){
+      this.clientsService.getClientById(id).subscribe(res => {
+        if (res != null) {
+          this.client = res;
+          if(res.gender!=null){
+            if(res.gender=='MALE'){
+              this.gender='муж.'
+            }else if(res.gender=='FEMALE'){
+              this.gender='жен.'
+            }else{
+              this.gender='не изв.'
+            }
+
+          }
+          console.log(this.client)
+        }
+      });
   }
 
 }
