@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ObjectService} from "../../services/object.service";
-import {Util} from "../../services/util";
+import {ObjectService} from "../../../services/object.service";
+import {Util} from "../../../services/util";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {BsLocaleService} from "ngx-bootstrap";

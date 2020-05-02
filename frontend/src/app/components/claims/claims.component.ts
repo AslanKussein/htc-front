@@ -1,28 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import {DatePeriod} from "../../models/common/datePeriod";
-import {defineLocale} from "ngx-bootstrap/chronos";
-import {ClaimService} from "../../services/claim.service";
-import {DicService} from "../../services/dic.service";
-import {ruLocale} from "ngx-bootstrap/locale";
-import {BsLocaleService} from "ngx-bootstrap";
-import {Util} from "../../services/util";
-import {formatDate} from "@angular/common";
+import {Component, OnInit} from '@angular/core';
+import {language} from '../../../environments/language';
+import {formatDate} from '@angular/common';
+import {defineLocale} from 'ngx-bootstrap/chronos';
+import {ruLocale} from 'ngx-bootstrap/locale';
+import {BsLocaleService} from 'ngx-bootstrap';
+import {ClaimService} from '../../services/claim.service';
+import {Dic} from '../../models/dic';
+import {DicService} from '../../services/dic.service';
+import {Util} from '../../services/util';
+import {DatePeriod} from '../../models/common/datePeriod';
+import {NotificationService} from '../../services/notification.service';
 
 @Component({
-  selector: 'app-my-claims',
-  templateUrl: './my-claims.component.html',
-  styleUrls: ['./my-claims.component.scss']
+  selector: 'app-claims',
+  templateUrl: './claims.component.html',
+  styleUrls: ['./claims.component.scss']
 })
-export class MyClaimsComponent implements OnInit {
-  text: string;
+export class ClaimsComponent implements OnInit {
+  env = language;
+
   constructor(private localeService: BsLocaleService,
               private claimService: ClaimService,
               private dicService: DicService,
-              private util: Util) {
+              private util: Util,
+              private notification: NotificationService) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
   }
-
 
   formData = {
     typeId: null,
@@ -34,23 +38,42 @@ export class MyClaimsComponent implements OnInit {
     lastCommentDateFrom: '',
     lastCommentDateTo: '',
     textSearch: null,
-    myClaim: true
+    myClaim: false
   };
 
-
+  operationType: Dic[];
+  appStatuses: Dic[];
   claimData = [];
   loading;
   totalItems = 0;
   itemsPerPage = 30;
   currentPage = 1;
 
-  ngOnInit(): void {
-    this.findClaims(1);
-    }
-  dnHref(href) {
-    this.util.dnHref(href);
+  clearForm() {
+    this.formData = {
+      typeId: null,
+      applicationStatuses: null,
+      crDateFrom: '',
+      crDateTo: '',
+      lastModifyDateFrom: '',
+      lastModifyDateTo: '',
+      lastCommentDateFrom: '',
+      lastCommentDateTo: '',
+      textSearch: null,
+      myClaim: false
+    };
   }
 
+  ngOnInit(): void {
+
+    this.findClaims(1);
+    this.dicService.getDics('OPERATION_TYPES').subscribe(data => {
+      this.operationType = this.util.toSelectArray(data);
+    });
+    this.dicService.getDics('APPLICATION_STATUSES').subscribe(data => {
+      this.appStatuses = this.util.toSelectArray(data);
+    });
+  }
 
   pageChanged(event: any): void {
     if (this.currentPage !== event.page) {
@@ -59,9 +82,8 @@ export class MyClaimsComponent implements OnInit {
   }
 
   findClaims(pageNo: number) {
-    // this.itemsPerPage = 30;
     this.loading = true;
-    let searchFilter = {};
+    const searchFilter = {};
 
     searchFilter['createDate'] = new DatePeriod(this.formData.crDateFrom, this.formData.crDateTo);
     searchFilter['changeDate'] = new DatePeriod(this.formData.lastModifyDateFrom, this.formData.lastModifyDateTo);
@@ -70,22 +92,25 @@ export class MyClaimsComponent implements OnInit {
     if (!this.util.isNullOrEmpty(this.formData.typeId)) {
       searchFilter['operationTypeId'] = this.formData.typeId;
     }
-    searchFilter['my'] = this.formData.myClaim;
+    searchFilter["my"] = this.formData.myClaim;
     if (!this.util.isNullOrEmpty(this.formData.applicationStatuses)) {
       searchFilter['applicationStatusList'] = this.formData.applicationStatuses;
     }
 
     searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
-    searchFilter['text'] = this.text;
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = this.itemsPerPage;
     this.claimService.getClaims(searchFilter).subscribe(res => {
+      if (res != null && res.data != null) {
 
         this.claimData = res.data.data.data;
         this.totalItems = res.data.total;
-        // this.itemsPerPage = res.data.data.size;
         this.currentPage = res.data.pageNumber + 1;
+        if (res.data.data.empty) {
+          this.notification.showInfo('информация', 'Нет данных');
+        }
+      }
 
     });
     this.loading = false;
@@ -99,5 +124,4 @@ export class MyClaimsComponent implements OnInit {
   formatDate(claim: any) {
     return formatDate(claim.creationDate, 'dd.MM.yyyy HH:mm', 'en-US');
   }
-
 }

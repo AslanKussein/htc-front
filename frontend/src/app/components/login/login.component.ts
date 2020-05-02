@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AuthenticationService} from "../services/authentication.service";
+import {AuthenticationService} from "../../services/authentication.service";
 import {first, map} from "rxjs/operators";
-import {NotificationService} from "../services/notification.service";
-import {UserService} from "../services/user.service";
+import {NotificationService} from "../../services/notification.service";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-login',

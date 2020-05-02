@@ -1,20 +1,20 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {ProfileDto} from "../../../models/profile/profileDto";
-import {AuthenticationService} from "../../../services/authentication.service";
-import {User} from "../../../models/users";
-import {DatePeriod} from "../../../models/common/datePeriod";
+import {ProfileDto} from "../../../../models/profile/profileDto";
+import {AuthenticationService} from "../../../../services/authentication.service";
+import {User} from "../../../../models/users";
+import {DatePeriod} from "../../../../models/common/datePeriod";
 import {formatDate} from "@angular/common";
-import {Util} from "../../../services/util";
+import {Util} from "../../../../services/util";
 import {ruLocale} from "ngx-bootstrap/locale";
-import {ClaimService} from "../../../services/claim.service";
-import {DicService} from "../../../services/dic.service";
+import {ClaimService} from "../../../../services/claim.service";
+import {DicService} from "../../../../services/dic.service";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {BsLocaleService} from "ngx-bootstrap";
 import {ActivatedRoute} from "@angular/router";
-import {ClientDto} from "../../../models/clientCard/clientDto";
-import {ClientsService} from "../../../services/clients.service";
+import {ClientDto} from "../../../../models/clientCard/clientDto";
+import {ClientsService} from "../../../../services/clients.service";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
-import {NotificationService} from "../../../services/notification.service";
+import {NotificationService} from "../../../../services/notification.service";
 
 @Component({
   selector: 'app-client-card',

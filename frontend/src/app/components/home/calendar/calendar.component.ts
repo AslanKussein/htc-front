@@ -10,7 +10,7 @@ import {
   CalendarView,
 } from 'angular-calendar';
 import { CustomDateFormatter } from './customDateFormatter';
-import {EventsService} from "../../services/events.service";
+import {EventsService} from "../../../services/events.service";
 
 const colors: any = {
   red: {

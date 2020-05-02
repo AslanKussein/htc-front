@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {BsLocaleService} from "ngx-bootstrap";
-import {ClaimService} from "../services/claim.service";
+import {ClaimService} from "../../services/claim.service";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {defineLocale} from "ngx-bootstrap/chronos";
-import {DicService} from "../services/dic.service";
-import {Dic} from "../models/dic";
-import {language} from "../../environments/language";
+import {DicService} from "../../services/dic.service";
+import {Dic} from "../../models/dic";
+import {language} from "../../../environments/language";
 import {Validators} from "@angular/forms";
-import {Util} from "../services/util";
-import {ObjectService} from "../services/object.service";
-import {UploaderService} from "../services/uploader.service";
+import {Util} from "../../services/util";
+import {ObjectService} from "../../services/object.service";
+import {UploaderService} from "../../services/uploader.service";
 
 
 @Component({
