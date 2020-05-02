@@ -87,9 +87,9 @@ export class HomeComponent implements OnInit {
       this.loading = true;
       this.ownerService.searchByPhone('7' + this.applicationLightForm.phoneNumber)
         .subscribe(res => {
-          this.applicationLightForm.name = res.firstName;
-          this.applicationLightForm.surName = res.surname;
-          this.applicationLightForm.patronymic = res.patronymic;
+          this.applicationLightForm.name = !this.util.isNullOrEmpty(res.firstName) ? res.firstName : null;
+          this.applicationLightForm.surName = !this.util.isNullOrEmpty(res.surname) ? res.surname : null;
+          this.applicationLightForm.patronymic = !this.util.isNullOrEmpty(res.patronymic) ? res.patronymic : null;
           this.applicationLightForm.phoneNumber = res.phoneNumber;
         });
       this.loading = false;

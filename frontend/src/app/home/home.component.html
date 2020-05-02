@@ -58,8 +58,8 @@
               <input type="text" id="phoneNumber" class="form-control"
                      [(ngModel)]="applicationLightForm.phoneNumber" name="phoneNumber"
                      [formControl]="applicationLightForm.controls['phoneNumber']"
-                     prefix="+" mask="0 (000) 000 00 00"
-                     (ngModelChange)="searchByPhone()"/>
+                     prefix="+7" mask=' (000) 000-0000' [showMaskTyped]="true"
+                     placeHolderCharacter="0" (ngModelChange)="searchByPhone()"/>
             </div>
           </div>
           <div class="form-group row">
