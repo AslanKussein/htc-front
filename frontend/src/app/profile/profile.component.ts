@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {Util} from "../services/util";
 import {User} from "../models/users";
 import {AuthenticationService} from "../services/authentication.service";
@@ -9,6 +9,7 @@ import {NotificationService} from "../services/notification.service";
 import {ComponentCanDeactivate} from "../canDeactivate/componentCanDeactivate";
 import {CreateClaimComponent} from "../claims/create-claim/create-claim.component";
 import {Observable} from "rxjs/index";
+import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +19,7 @@ import {Observable} from "rxjs/index";
 export class ProfileComponent implements OnInit,  ComponentCanDeactivate{
 
   selectedFile: File;
-
+  modalRef: BsModalRef;
   currentUser: User;
   profile: ProfileDto;
   save: boolean;
@@ -102,7 +103,7 @@ export class ProfileComponent implements OnInit,  ComponentCanDeactivate{
     else{
       return true;
     }
+    }
 
 
-  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {ProfileDto} from "../../../models/profile/profileDto";
 import {AuthenticationService} from "../../../services/authentication.service";
 import {User} from "../../../models/users";
@@ -13,6 +13,8 @@ import {BsLocaleService} from "ngx-bootstrap";
 import {ActivatedRoute} from "@angular/router";
 import {ClientDto} from "../../../models/clientCard/clientDto";
 import {ClientsService} from "../../../services/clients.service";
+import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
+import {NotificationService} from "../../../services/notification.service";
 
 @Component({
   selector: 'app-client-card',
@@ -22,7 +24,9 @@ import {ClientsService} from "../../../services/clients.service";
 export class ClientCardComponent implements OnInit {
   currentUser: User;
 
-  // profile: ProfileDto;
+   profile: any;
+  modalRef: BsModalRef;
+  modalRef2: BsModalRef;
 
   client:ClientDto;
   claimData = [];
@@ -32,11 +36,16 @@ export class ClientCardComponent implements OnInit {
   currentPage = 1;
   clientId:number;
   gender:string;
+  agentRoles:boolean;
+  rgRoles:boolean;
 
 
   constructor(private localeService: BsLocaleService,
               private claimService: ClaimService,
               private clientsService: ClientsService,
+              private modalService: BsModalService,
+              private notifyService: NotificationService,
+
               private dicService: DicService,
               private authenticationService: AuthenticationService,
               private actRoute: ActivatedRoute,
@@ -45,7 +54,24 @@ export class ClientCardComponent implements OnInit {
     this.localeService.use('ru');
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     this.clientId = this.actRoute.snapshot.params.id;
+
+    if(this.currentUser.roles!=null){
+      this.agentRoles=false;
+      this.rgRoles=false;
+      for (const role of this.currentUser.roles) {
+        console.log(this.currentUser.roles)
+        if(role=='AGENT_GROUP_CHOOSE'){
+          this.agentRoles=true;
+        }
+        if(role=='РГ'){
+          this.rgRoles=true;
+        }
+      }
     }
+    }
+
+
+
 
 
 
@@ -61,6 +87,17 @@ export class ClientCardComponent implements OnInit {
     lastCommentDateTo: '',
     textSearch: null,
     myClaim: true
+  };
+
+
+  formClient = {
+    id:	null,
+    email:	'',
+    phoneNumber:'',
+    gender: '',
+    firstName: '',
+    surname: '',
+    patronymic: ''
   };
 
   ngOnInit(): void {
@@ -122,7 +159,7 @@ export class ClientCardComponent implements OnInit {
   getClientById(id:number){
       this.clientsService.getClientById(id).subscribe(res => {
         if (res != null) {
-          this.client = res;
+          this.profile = res;
           if(res.gender!=null){
             if(res.gender=='MALE'){
               this.gender='муж.'
@@ -137,5 +174,63 @@ export class ClientCardComponent implements OnInit {
         }
       });
   }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign({}, { class: 'gray modal-lg' },{ keyboard: false, backdrop: 'static'})
+    );
+
+    this.formClient = {
+      id:	this.profile?.id,
+      email:	this.profile?.email,
+      phoneNumber:this.profile?.phoneNumber,
+      gender: this.profile?.gender,
+      firstName: this.profile?.firstName,
+      surname: this.profile?.surname,
+      patronymic: this.profile?.patronymic,
+    };
+  }
+
+  submit(){
+    if(this.util.isNullOrEmpty(this.formClient.phoneNumber)||this.util.isNullOrEmpty(this.formClient.firstName)) {
+      this.notifyService.showError('Пожалуйста, заполните все поля', "");
+      return;
+    }
+
+     this.clientsService.updateClientById(this.formClient)  .subscribe(data => {
+       if (data != null) {
+         this.notifyService.showSuccess('success', 'Успешно сохранено');
+         this.profile=data;
+         this.modalRef.hide();
+         }
+     }, err => {
+       this.notifyService.showError('warning', err);
+       this.modalRef.hide();
+
+     });
+  }
+
+
+  getDataByPhoneNumber(ss){
+    if(this.formClient.phoneNumber.length==10){
+      this.clientsService.findClientByPhoneNumber(this.formClient.phoneNumber)  .subscribe(data => {
+        if (data != null) {
+          this.formClient=data;
+          }
+      }, err => {
+        this.notifyService.showError('warning', err);
+      });
+    }
+  }
+
+  openModal2(template: TemplateRef<any>) {
+    this.modalRef2 = this.modalService.show(template);
+  }
+
+  closeModal(){
+    this.modalRef2.hide();
+    this.modalRef.hide();
+    }
 
 }
