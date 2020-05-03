@@ -1,14 +1,14 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {DicService} from "../services/dic.service";
-import {Dic} from "../models/dic";
-import {Util} from "../services/util";
+import {DicService} from "../../services/dic.service";
+import {Dic} from "../../models/dic";
+import {Util} from "../../services/util";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {BsLocaleService} from "ngx-bootstrap";
-import {NotificationService} from "../services/notification.service";
-import {User} from "../models/users";
-import {AuthenticationService} from "../services/authentication.service";
+import {NotificationService} from "../../services/notification.service";
+import {User} from "../../models/users";
+import {AuthenticationService} from "../../services/authentication.service";
 
 
 

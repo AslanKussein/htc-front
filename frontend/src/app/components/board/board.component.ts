@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {BoardService} from "../services/board.service";
-import {DicService} from "../services/dic.service";
-import {Dic} from "../models/dic";
-import {Util} from "../services/util";
-import {NotificationService} from "../services/notification.service";
-import {Board} from "../models/board/board";
+import {BoardService} from "../../services/board.service";
+import {DicService} from "../../services/dic.service";
+import {Dic} from "../../models/dic";
+import {Util} from "../../services/util";
+import {NotificationService} from "../../services/notification.service";
+import {Board} from "../../models/board/board";
 
 @Component({
   selector: 'app-board',

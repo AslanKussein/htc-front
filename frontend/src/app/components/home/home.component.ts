@@ -1,17 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {ApplicationLightDto} from "../models/applicationLightDto";
-import {DicService} from "../services/dic.service";
-import {Util} from "../services/util";
-import {Dic} from "../models/dic";
-import {NotificationService} from "../services/notification.service";
-import {ClientDto} from "../models/createClaim/clientDto";
-import {ClaimService} from "../services/claim.service";
+import {ApplicationLightDto} from "../../models/applicationLightDto";
+import {DicService} from "../../services/dic.service";
+import {Util} from "../../services/util";
+import {Dic} from "../../models/dic";
+import {NotificationService} from "../../services/notification.service";
+import {ClientDto} from "../../models/createClaim/clientDto";
+import {ClaimService} from "../../services/claim.service";
 import {formatDate} from '@angular/common';
-import {UserService} from "../services/user.service";
+import {UserService} from "../../services/user.service";
 import {NgSelectConfig} from "@ng-select/ng-select";
 import {TranslateService} from "@ngx-translate/core";
-import {OwnerService} from "../services/owner.service";
+import {OwnerService} from "../../services/owner.service";
 
 @Component({
   selector: 'app-home',
