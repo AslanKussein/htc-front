@@ -10,6 +10,7 @@ import {DicService} from '../../services/dic.service';
 import {Util} from '../../services/util';
 import {DatePeriod} from '../../models/common/datePeriod';
 import {NotificationService} from '../../services/notification.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-claims',
@@ -23,7 +24,8 @@ export class ClaimsComponent implements OnInit {
               private claimService: ClaimService,
               private dicService: DicService,
               private util: Util,
-              private notification: NotificationService) {
+              private notification: NotificationService,
+              private ngxLoader: NgxUiLoaderService) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
   }
@@ -44,7 +46,6 @@ export class ClaimsComponent implements OnInit {
   operationType: Dic[];
   appStatuses: Dic[];
   claimData = [];
-  loading;
   totalItems = 0;
   itemsPerPage = 30;
   currentPage = 1;
@@ -65,7 +66,7 @@ export class ClaimsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.ngxLoader.start();
     this.findClaims(1);
     this.dicService.getDics('OPERATION_TYPES').subscribe(data => {
       this.operationType = this.util.toSelectArray(data);
@@ -73,6 +74,7 @@ export class ClaimsComponent implements OnInit {
     this.dicService.getDics('APPLICATION_STATUSES').subscribe(data => {
       this.appStatuses = this.util.toSelectArray(data);
     });
+    this.ngxLoader.stop();
   }
 
   pageChanged(event: any): void {
@@ -82,7 +84,7 @@ export class ClaimsComponent implements OnInit {
   }
 
   findClaims(pageNo: number) {
-    this.loading = true;
+    this.ngxLoader.start();
     const searchFilter = {};
 
     searchFilter['createDate'] = new DatePeriod(this.formData.crDateFrom, this.formData.crDateTo);
@@ -111,9 +113,8 @@ export class ClaimsComponent implements OnInit {
           this.notification.showInfo('информация', 'Нет данных');
         }
       }
-
     });
-    this.loading = false;
+    this.ngxLoader.stop();
   }
 
   getDicNameByLanguage(claim: any, column: string) {

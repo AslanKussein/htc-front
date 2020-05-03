@@ -22,6 +22,10 @@ import {ClientDto} from "../../../models/createClaim/clientDto";
 import {PurchaseInfoDto} from "../../../models/createClaim/purchaseInfoDto";
 import {BigDecimalPeriod} from "../../../models/common/bigDecimalPeriod";
 import {ActivatedRoute} from "@angular/router";
+import {NgxUiLoaderService} from "ngx-ui-loader";
+import {RoleManagerService} from "../../../services/roleManager.service";
+import {catchError, tap} from "rxjs/operators";
+import {HttpParams} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +40,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   application: ApplicationDto;
   selectedFile: File;
-  loading = false;
   photoList: any[] = [];
   photoPlanList: any[] = [];
   photo3DList: any[] = [];
@@ -64,6 +67,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   saved: boolean = false;
   modalRef: BsModalRef;
   applicationId: number;
+  roles: any;
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -78,12 +82,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
               private configService: ConfigService,
               private cdRef: ChangeDetectorRef,
               private modalService: BsModalService,
-              private actRoute: ActivatedRoute) {
+              private actRoute: ActivatedRoute,
+              private ngxLoader: NgxUiLoaderService,
+              private roleManagerService: RoleManagerService) {
     this.config.notFoundText = 'Данные не найдены';
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
     this.applicationId = this.actRoute.snapshot.params.id;
-
   }
 
   get f() {
@@ -91,7 +96,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   ngOnInit(): void {
-    this.loading = true;
+    this.ngxLoader.start();
+    this.getCheckOperationList();
     this.applicationForm = this.formBuilder.group({
       id: [null, Validators.nullValidator],
       operationTypeId: [null, Validators.required],
@@ -183,7 +189,35 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     });
     this.cdRef.detectChanges();
     this.loadDictionary();
-    this.loading = false;
+
+    if (this.applicationId != null) {
+      this.loadDataById(this.applicationId);
+    } else {
+      this.ngxLoader.stop();
+    }
+  }
+
+  hasShow(code: string, operation: string) {
+    if (!this.util.isNullOrEmpty(this.roles)) {
+      for (const data of this.roles) {
+        if (data.code === code) {
+          return data.operations.indexOf(operation) != 0;
+        }
+      }
+    }
+  }
+
+  getCheckOperationList() {
+    this.roleManagerService.getOperations().subscribe(
+      data => {
+        let params = new HttpParams();
+        for (const el of data.data) {
+          params = params.append('groupCodes', String(el.code))
+        }
+        this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
+          this.roles = obj.data
+        });
+      })
   }
 
   loadDictionary() {
@@ -236,17 +270,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       this.heatingSystems = this.util.toSelectArray(data);
     });
     this.roomCountDic = this.util.roomCountDictionary();
-
-    if (this.applicationId != null) {
-      this.loadDataById(this.applicationId);
-    }
   }
 
   loadDataById(id: number) {
-    this.loading = true;
+    this.ngxLoader.start();
     this.claimService.getClaimById(id).subscribe(data => {
       if (data != null) {
-        setTimeout(()=>{    //<<<---    using ()=> syntax
+        setTimeout(() => {    //<<<---    using ()=> syntax
           if (this.util.isNullOrEmpty(this.operationType) || this.util.isNullOrEmpty(this.objectType) || this.util.isNullOrEmpty(this.residentialComplexes)) {
             this.loadDataById(this.applicationId);
             return
@@ -256,12 +286,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
             this.fillApplicationFormClientData(data.clientDto);
             this.fillApplicationFormRealPropertyRequestDto(data.realPropertyRequestDto);
             this.cdRef.detectChanges();
+            this.ngxLoader.stop();
           }
         }, 3000);
       }
     });
-    this.loading = false;
-
   }
 
   setHouseOrApartmentsForMaterials() {
@@ -310,7 +339,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   searchByPhone() {
     if (this.applicationForm.phoneNumber != null && this.applicationForm.phoneNumber.length == 10 && this.applicationId == null) {
-      this.loading = true;
+      this.ngxLoader.start();
       this.ownerService.searchByPhone('7' + this.applicationForm.phoneNumber)
         .subscribe(res => {
           if (!this.util.isNullOrEmpty(res)) {
@@ -324,7 +353,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
             this.applicationForm.gender = null;
           }
         });
-      this.loading = false;
+      this.ngxLoader.stop();
     }
   }
 
@@ -448,12 +477,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   searchByClientId() {
     if (this.applicationForm.clientId != null) {
-      this.loading = true;
       this.ownerService.searchByClientId(this.applicationForm.clientId)
         .subscribe(res => {
           this.fillApplicationFormClientData(res);
         });
-      this.loading = false;
     }
   }
 
@@ -610,6 +637,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   submit() {
+    this.ngxLoader.start();
     this.validate();
     if (!this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber) && (this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber1) ||
       this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber2) || this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber3))) {
@@ -644,7 +672,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       }
     }
 
-    this.loading = true;
     if (this.applicationId != null) {
       this.claimService.updateClaim(this.applicationId, this.application)
         .subscribe(data => {
@@ -666,7 +693,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
           this.notifyService.showWarning('warning', err);
         });
     }
-    this.loading = false;
+    this.ngxLoader.stop();
   }
 
   canDeactivate(): boolean | Observable<boolean> {
@@ -698,15 +725,15 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   onFileChanged(event, id: number) {
+    this.ngxLoader.start();
     this.selectedFile = event.target.files[0];
-    this.loading = true;
     this.uploader.uploadData(this.selectedFile)
       .subscribe(data => {
         if (data != null) {
           this.fillPicture(data, id);
         }
       });
-    this.loading = false;
+    this.ngxLoader.stop();
   }
 
   fillPicture(guid: any, id: number) {

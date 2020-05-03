@@ -42,7 +42,6 @@ import {ActsComponent} from "./components/claims/create-claim/acts/acts.componen
 import {DicControlComponent} from './components/dic-control/dic-control.component';
 import {MyObjectsComponent} from './components/profile/my-objects/my-objects.component';
 import {MyClaimsComponent} from './components/profile/my-claims/my-claims.component';
-import {FortebankApiComponent} from './components/fortebank-api/fortebank-api.component';
 import {HomeComponent} from './components/home/home.component';
 import {CreateClaimBtnComponent} from "./helpers/create-claim-btn/create-claim-btn.component";
 import {ChartsComponent} from "./components/home/charts/charts.component";
@@ -54,6 +53,7 @@ import {YandexMapComponent} from './components/claims/create-claim/yandex-map/ya
 import {AngularYandexMapsModule} from "angular8-yandex-maps";
 import {NavComponent} from "./helpers/nav/nav.component";
 import {FooterComponent} from "./helpers/footer/footer.component";
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 registerLocaleData(localeRu, localeKz);
 
@@ -78,7 +78,6 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     DicControlComponent,
     MyObjectsComponent,
     MyClaimsComponent,
-    FortebankApiComponent,
     HomeComponent,
     CreateClaimBtnComponent,
     ChartsComponent,
@@ -118,6 +117,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    NgxUiLoaderModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

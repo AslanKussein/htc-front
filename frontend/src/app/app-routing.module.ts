@@ -12,7 +12,6 @@ import {AnalyticsComponent} from "./components/analytics/analytics.component";
 import {CreateClaimComponent} from "./components/claims/create-claim/create-claim.component";
 import {DicControlComponent} from "./components/dic-control/dic-control.component";
 import {HomeComponent} from "./components/home/home.component";
-import {FortebankApiComponent} from "./components/fortebank-api/fortebank-api.component";
 import {ClientCardComponent} from "./components/profile/my-clients/client-card/client-card.component";
 import {YandexMapComponent} from "./components/claims/create-claim/yandex-map/yandex-map.component";
 import {NewsComponent} from "./components/news/news.component";
@@ -33,7 +32,6 @@ const routes: Routes = [
   {path: 'create-claim/:id', component: CreateClaimComponent, canActivate: [AuthGuard]},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate]},
   {path: 'client-card/:id', component: ClientCardComponent, canActivate: [AuthGuard]},
-  {path: 'fortebank-api', component: FortebankApiComponent}
 ];
 
 @NgModule({
