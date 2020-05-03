@@ -1,211 +1,182 @@
-<div class="card-body card-bg">
+<div class="card-body card-bg" ngxUiLoaderBlurred>
   <div class="card">
     <div class="card-body">
+      <div class="row">
+        <div class="col-sm-6">
+          <label>Поиск</label>
+          <input class="form-control" type="text" [(ngModel)]="filter.search" placeholder="Search"
+                 aria-label="Search">
+        </div>
+        <div class="col-sm">
+          <label>Роль</label>
+          <ng-select
+            placeholder="Роль"
+            bindValue="value"
+            [items]="roles"
+            [(ngModel)]="filter.roles">
+          </ng-select>
+        </div>
+        <div class="col-sm">
+          <label>Группа</label>
+          <ng-select
+            placeholder="Группа"
+            [items]="groups"
+            bindValue="value"
+            [(ngModel)]="filter.group">
+          </ng-select>
+        </div>
+      </div>
+      <br/>
+      <div class="row ">
+        <div class="col-sm">
+          <button type="button" class="btn btn-success float-right btn2" (click)="getUserInfo()"> Поиск пользователя
+            <span><i class="fa fa-search" aria-hidden="true"></i></span>
+          </button>
 
-      <div class="container">
-        <div class="row">
-          <div class="col-sm row">
-            <div class="col-sm">
-              <div>
-                <input class="form-control" type="text" [(ngModel)]="filter.search" placeholder="Search"
-                       aria-label="Search">
-              </div>
-              <div style="margin-top: 10px">
-                <ng-select
-                  placeholder="Роль"
-                  bindValue="value"
-                  [items]="roles"
-                  [(ngModel)]="filter.roles">
-                </ng-select>
-              </div>
-            </div>
-            <div class="col-sm">
-              <div>
-                <button type="button" class="form-control btn-primary"  (click)="findObjects(0)">
-                  Все пользователи
-                </button>
-              </div>
-              <div style="margin-top: 10px">
-                <ng-select
-                  placeholder="Группа"
-                  [items]="groups"
-                  bindValue="value"
-                  [(ngModel)]="filter.group"
-                >
-                </ng-select>
+          <button type="button" class="btn btn-primary float-right btn2" (click)="findObjects(0)">
+            Все пользователи
+          </button>
 
-              </div>
-
-            </div>
+          <button type="button" class="btn btn-primary float-right btn2" (click)="openModal(template); addUser()">
+            Создать
+            пользователя
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <ng-template #template>
+          <div class="modal-header">
+            <h4 class="modal-title pull-left" *ngIf="actions=='ADD'">Add user</h4>
+            <h4 class="modal-title pull-left" *ngIf="actions=='EDIT'">Edit user</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-          <div class="col-sm"></div>
-          <div class="col-sm" style="text-align: right">
-            <div>
-              <button type="button" class="form-control btn-primary" (click)="openModal(template); addUser()"> Создать
-                пользователя
-              </button>
+          <div class="modal-body">
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Login<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="Username"
+                     [(ngModel)]="formData.login">
             </div>
-            <div style="margin-top: 10px">
-              <button type="button" class="form-control btn-default" (click)="getUserInfo()"> Поиск пользователя
-                <span><i class="fa fa-search" aria-hidden="true"></i></span>
-              </button>
+            <div class="col-sm" *ngIf="actions=='ADD'">
+              <label class="col-sm col-form-label">Пароль<span class="text-danger">&nbsp;*</span></label>
+              <input type="password" class="col-sm form-control" name="password"
+                     [(ngModel)]="formData.pass">
             </div>
-
-
-          </div>
-
-
-          <ng-template #template>
-            <div class="modal-header">
-              <h4 class="modal-title pull-left" *ngIf="actions=='ADD'">Add user</h4>
-              <h4 class="modal-title pull-left" *ngIf="actions=='EDIT'">Edit user</h4>
-              <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-                <span aria-hidden="true">&times;</span>
-              </button>
+            <div class="col-sm" *ngIf="actions=='EDIT'">
+              <label class="col-sm col-form-label">Новый пароль<span class="text-danger">&nbsp;*</span></label>
+              <input type="password" class="col-sm form-control" name="passNew" [(ngModel)]="formData.passNew">
             </div>
-            <div class="modal-body">
-              <div class="col-sm">
-                <label class="col-sm col-form-label">Login<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="Username"
-                       [(ngModel)]="formData.login">
-              </div>
-              <div class="col-sm" *ngIf="actions=='ADD'">
-                <label class="col-sm col-form-label">Пароль<span class="text-danger">&nbsp;*</span></label>
-                <input type="password" class="col-sm form-control" name="password"
-                       [(ngModel)]="formData.pass">
-              </div>
-              <div class="col-sm" *ngIf="actions=='EDIT'">
-                <label class="col-sm col-form-label">Новый пароль<span class="text-danger">&nbsp;*</span></label>
-                <input type="password" class="col-sm form-control" name="passNew" [(ngModel)]="formData.passNew">
-              </div>
-              <div class="col-sm" *ngIf="actions=='EDIT'">
-                <label class="col-sm col-form-label">Подтверждения пароль<span
-                  class="text-danger">&nbsp;*</span></label>
-                <input type="password" class="col-sm form-control" name="passNew2" [(ngModel)]="formData.passNew2">
-              </div>
-              <div class="col-sm">
-                <label class="col-sm col-form-label">Имя<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="First" [(ngModel)]="formData.name">
-              </div>
-              <div class="col-sm">
-                <label class="col-sm col-form-label">Фамилия<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="Last" [(ngModel)]="formData.surname">
-              </div>
-              <div class="col-sm">
-                <label class="col-sm col-form-label">Активность {{formData.isActive}}<span
-                  class="text-danger">&nbsp;*</span></label>
-                <!--<div class="btn-group">-->
-                <!--<label class="btn btn-primary" name="isActidve" [(ngModel)]="formData.isActive" ngDefaultControl-->
-                <!--btnRadio="true" tabindex="0" role="button">On</label>-->
-                <!--<label class="btn btn-primary" name="isActidve" [(ngModel)]="formData.isActive" ngDefaultControl-->
-                <!--btnRadio="false" tabindex="0" role="button">Off</label>-->
-                <!--</div>-->
-                <div class="custom-control custom-checkbox">
-                  <div class="custom-control custom-radio">
-                    <input type="radio" id="men" name="isActive" value="true" class="custom-control-input"
-                           [(ngModel)]="formData.isActive">
-                    <label class="custom-control-label" for="men" translate>on</label>
-                  </div>
-                  <div class="custom-control custom-radio">
-                    <input type="radio" id="women" name="isActive" value="false" class="custom-control-input"
-                           [(ngModel)]="formData.isActive">
-                    <label class="custom-control-label" for="women" translate>off</label>
-                  </div>
+            <div class="col-sm" *ngIf="actions=='EDIT'">
+              <label class="col-sm col-form-label">Подтверждения пароль<span
+                class="text-danger">&nbsp;*</span></label>
+              <input type="password" class="col-sm form-control" name="passNew2" [(ngModel)]="formData.passNew2">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Имя<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="First"
+                     [(ngModel)]="formData.name">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Фамилия<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="Last"
+                     [(ngModel)]="formData.surname">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Активность {{formData.isActive}}<span
+                class="text-danger">&nbsp;*</span></label>
+              <div class="custom-control custom-checkbox">
+                <div class="custom-control custom-radio">
+                  <input type="radio" id="men" name="isActive" value="true" class="custom-control-input"
+                         [(ngModel)]="formData.isActive">
+                  <label class="custom-control-label" for="men" translate>on</label>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input type="radio" id="women" name="isActive" value="false" class="custom-control-input"
+                         [(ngModel)]="formData.isActive">
+                  <label class="custom-control-label" for="women" translate>off</label>
                 </div>
               </div>
-              <div class="col-sm">
-                <label class="col-sm col-form-label">Роль<span class="text-danger">&nbsp;*</span></label>
-                <ng-select
-                  [multiple]="true"
-                  bindValue="value"
-                  [items]="roles"
-                  [(ngModel)]="formData.roles">
-                </ng-select>
-              </div>
-
-              <div class="col-sm">
-                <label class="col-sm col-form-label">Группа<span class="text-danger">&nbsp;*</span></label>
-                <ng-select name="residentialComplexes"
-                           [items]="groups"
-                           bindValue="value"
-                           [disabled]="actions=='EDIT'"
-                           [(ngModel)]="formData.group">
-                </ng-select>
-              </div>
-              <div class="col-sm" style="text-align: right">
-
-                <button type="button" class="btn btn-primary" (click)="submit()" style="margin: 10px">
-                  Сохранить
-                </button>
-                <button type="button" class="btn btn-light" (click)="modalRef.hide()" style="margin: 10px">
-                  Отмена
-                </button>
-
-              </div>
-
             </div>
-          </ng-template>
-
-        </div>
-
-
-        <div class="row" style="margin-top: 10px">
-          <div class="col-sm">
-            <table class="table table-bordered text-center table-sm">
-              <thead class="text-center">
-              <tr>
-                <th>Id</th>
-                <th translate>Login</th>
-                <th translate>Имя</th>
-                <th translate>Фамилия</th>
-                <th translate>Роль</th>
-                <th translate>Группа</th>
-                <th translate>Действия</th>
-              </tr>
-              </thead>
-              <tbody style="cursor: pointer">
-              <tr *ngFor="let user of users;let i = index">
-                <td>{{user.id}}</td>
-                <td>{{user.login}}</td>
-                <td>{{user.name}}</td>
-                <td>{{user.surname}}</td>
-                <td>{{user.roles}}</td>
-                <td>{{user.group}}</td>
-                <td>
-                  <button type="button" class="btn btn-sm btn-light" style="margin: 10px"
-                          (click)="editData(user);openModal(template)">
-                    Редактировать
-                  </button>
-                  <!--<button type="button" class="btn btn-sm btn-light" style="margin: 10px"-->
-                  <!--(click)="delUser(user)">-->
-                  <!--Удалить-->
-                  <!--</button>-->
-                </td>
-              </tr>
-              </tbody>
-            </table>
-            <div class="row">
-              <div class="col-sm">
-                <pagination [(ngModel)]="currentPage"
-                            [totalItems]="totalItems"
-                            [itemsPerPage]="itemsPerPage"
-                            [maxSize]="10"
-                            [rotate]="true"
-                            [boundaryLinks]="true"
-                            previousText="&lsaquo;"
-                            nextText="&rsaquo;"
-                            firstText="&laquo;"
-                            lastText="&raquo;"
-                            (pageChanged)="pageChanged($event)">
-                </pagination>
-              </div>
-
-
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Роль<span class="text-danger">&nbsp;*</span></label>
+              <ng-select
+                [multiple]="true"
+                bindValue="value"
+                [items]="roles"
+                [(ngModel)]="formData.roles">
+              </ng-select>
             </div>
-
-
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Группа<span class="text-danger">&nbsp;*</span></label>
+              <ng-select name="residentialComplexes"
+                         [items]="groups"
+                         bindValue="value"
+                         [disabled]="actions=='EDIT'"
+                         [(ngModel)]="formData.group">
+              </ng-select>
+            </div>
+            <div class="col-sm text-right">
+              <button type="button" class="btn btn-primary" (click)="submit()" style="margin: 10px">
+                Сохранить
+              </button>
+              <button type="button" class="btn btn-light" (click)="modalRef.hide()" style="margin: 10px">
+                Отмена
+              </button>
+            </div>
           </div>
+        </ng-template>
+      </div>
 
+      <div class="row">
+        <div class="col-sm">
+          <table class="table table-bordered table-sm">
+            <thead class="text-center">
+            <tr>
+              <th>Id</th>
+              <th translate>Login</th>
+              <th translate>ФИО</th>
+              <th translate>Роль</th>
+              <th translate>Группа</th>
+              <th translate>Действия</th>
+            </tr>
+            </thead>
+            <tbody style="cursor: pointer">
+            <tr *ngFor="let user of users;let i = index">
+              <td>{{user.id}}</td>
+              <td>{{user.login}}</td>
+              <td>{{user.name}} {{user.surname}}</td>
+              <td>{{user.roles}}</td>
+              <td>{{user.group}}</td>
+              <td>
+                <button type="button" class="btn btn-sm btn-light"
+                        (click)="editData(user);openModal(template)">
+                  Редактировать
+                </button>
+                <!--<button type="button" class="btn btn-sm btn-light" style="margin: 10px"-->
+                <!--(click)="delUser(user)">-->
+                <!--Удалить-->
+                <!--</button>-->
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="row">
+            <div class="col-sm">
+              <pagination [(ngModel)]="currentPage"
+                          [totalItems]="totalItems"
+                          [itemsPerPage]="itemsPerPage"
+                          [maxSize]="10"
+                          [rotate]="true"
+                          [boundaryLinks]="true"
+                          previousText="&lsaquo;"
+                          nextText="&rsaquo;"
+                          firstText="&laquo;"
+                          lastText="&raquo;"
+                          (pageChanged)="pageChanged($event)">
+              </pagination>
+            </div>
+          </div>
         </div>
       </div>
     </div>

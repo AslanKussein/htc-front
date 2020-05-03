@@ -96,7 +96,6 @@
             </tr>
             </tbody>
           </table>
-          <app-create-claim-btn></app-create-claim-btn>
 
 
           <pagination [(ngModel)]="currentPage"
@@ -149,7 +148,7 @@
             <div class="col-sm">
               <div>
                 <label class="col-sm col-form-label">Телефон<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" class="col-sm form-control" name="nameEn" prefix="+7" mask="(000) 000 00 00" [disabled]="!rgRoles" (input)="getDataByPhoneNumber($event.target.value)"
+                <input type="text" class="col-sm form-control" name="nameEn" prefix="+7" mask="(000) 000 00 00" [disabled]="!rgRoles" (input)="getDataByPhoneNumber()"
                        [(ngModel)]="formClient.phoneNumber">
                 <div *ngIf="!formClient.phoneNumber" class="text-danger">
                   <div *ngIf="!formClient.phoneNumber" translate>claim.requiredField</div>

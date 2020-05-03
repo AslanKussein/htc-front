@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {BsLocaleService} from "ngx-bootstrap";
-import {ClaimService} from "../../services/claim.service";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {DicService} from "../../services/dic.service";
 import {Dic} from "../../models/dic";
 import {language} from "../../../environments/language";
-import {Validators} from "@angular/forms";
 import {Util} from "../../services/util";
 import {ObjectService} from "../../services/object.service";
 import {UploaderService} from "../../services/uploader.service";
+import {NgxUiLoaderService} from "ngx-ui-loader";
+import {BigDecimalPeriod} from "../../models/common/bigDecimalPeriod";
 
 
 @Component({
@@ -25,107 +25,73 @@ export class ObjectsComponent implements OnInit {
   residentialComplexes: Dic[];
   dicDynamic: Dic[];
   homeTypes: Dic[];
-  myObject:boolean;
-  objectMy:any;
-  objectMyModel:number;
+  myObject: boolean;
+  objectMy: any;
+  objectMyModel: number;
 
   constructor(private router: Router,
               private localeService: BsLocaleService,
               private objectService: ObjectService,
               private uploadService: UploaderService,
               private dicService: DicService,
-              private util: Util) {
+              private util: Util,
+              private ngxLoader: NgxUiLoaderService) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
   }
 
-
-
   formData = {
-    numberOfRooms:null,
+    numberOfRooms: null,
     districtsId: null,
     residentialComplexes: null,
     zalog: null,
     typeHome: null,
     numKvart: '',
-    priceFrom: '',
-    priceTo: '',
-    floorFrom: '',
-    floorTo: '',
-    floorsFrom: '',
-    floorsTo: '',
-    totalAreaFrom: '',
-    totalAreaTo: '',
-    livingSpaceFrom: '',
-    livingSpaceTo: '',
-    kitchenAreaFrom: '',
-    kitchenAreaTo: '',
+    priceFrom: null,
+    priceTo: null,
+    floorFrom: null,
+    floorTo: null,
+    floorsFrom: null,
+    floorsTo: null,
+    totalAreaFrom: null,
+    totalAreaTo: null,
+    livingSpaceFrom: null,
+    livingSpaceTo: null,
+    kitchenAreaFrom: null,
+    kitchenAreaTo: null,
     distance: '',
     garage: '',
     attic: '',
-    my:null
+    my: null
   };
 
-
   ngOnInit(): void {
-
+    this.ngxLoader.start();
     this.findObjects(1);
     this.loadDictionary();
-    this.myObject=true;
-    this.objectMyModel=1;
-    this.objectMy=[
-      {label:'Все объекты',value:1},
-      {label:'Свои объекты',value:2},
+    this.myObject = true;
+    this.objectMyModel = 1;
+    this.objectMy = [
+      {label: 'Все объекты', value: 1},
+      {label: 'Свои объекты', value: 2},
     ]
-
-
-
-    ;
   }
 
-  dnHref(href) {
-    localStorage.setItem('url', href);
-    this.router.navigate([href]);
-  }
-
-  myObjectChange(){
-    if(this.objectMyModel==1){
-      this.formData.my=false;
+  myObjectChange() {
+    if (this.objectMyModel == 1) {
+      this.formData.my = false;
       this.findObjects(1);
-    }else if(this.objectMyModel==2){
-      this.formData.my=true;
+    } else if (this.objectMyModel == 2) {
+      this.formData.my = true;
       this.findObjects(1);
     }
   }
 
-
-
-
-  objectsData = [
-    {
-      realPropertyId: null,
-      photos: {
-        VIRTUAL_TOUR: [],
-        PHOTO: [],
-        HOUSING_PLAN: []
-      },
-      address: [],
-      price: null,
-      numberOfRooms: 0,
-      photosCount: '',
-      encumbrance: '',
-      priceAnalytics: '',
-      contactsOfAgent: '',
-      photo:[]
-    }
-  ];
-  loading;
+  objectsData;
   totalItems = 0;
   itemsPerPage = 10;
   currentPage = 1;
-  model:'Middle';
-  uncheckableRadioModel:null;
-
+  model: 'Middle';
 
   pageChanged(event: any): void {
     if (this.currentPage !== event.page) {
@@ -133,50 +99,37 @@ export class ObjectsComponent implements OnInit {
     }
   }
 
-  clearFilter(){
+  clearFilter() {
     this.formData = {
-      numberOfRooms:null,
+      numberOfRooms: null,
       districtsId: null,
       residentialComplexes: null,
       zalog: null,
       typeHome: null,
       numKvart: '',
-      priceFrom: '',
-      priceTo: '',
-      floorFrom: '',
-      floorTo: '',
-      floorsFrom: '',
-      floorsTo: '',
-      totalAreaFrom: '',
-      totalAreaTo: '',
-      livingSpaceFrom: '',
-      livingSpaceTo: '',
-      kitchenAreaFrom: '',
-      kitchenAreaTo: '',
+      priceFrom: null,
+      priceTo: null,
+      floorFrom: null,
+      floorTo: null,
+      floorsFrom: null,
+      floorsTo: null,
+      totalAreaFrom: null,
+      totalAreaTo: null,
+      livingSpaceFrom: null,
+      livingSpaceTo: null,
+      kitchenAreaFrom: null,
+      kitchenAreaTo: null,
       distance: '',
       garage: '',
       attic: '',
-      my:null
+      my: null
     };
   }
 
-  myObjects(){
-    this.formData.my=true;
-    this.myObject=false;
-
-    this.findObjects(1);
-  }
-
-  allObjects(){
-    this.formData.my=false;
-    this.myObject=true;
-    this.findObjects(1);
-  }
-
   findObjects(pageNo: number) {
+    this.ngxLoader.start();
     let searchFilter = {};
 
-    this.loading = true;
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = 10;
     if (!this.util.isNullOrEmpty(this.formData.districtsId)) {
@@ -191,69 +144,16 @@ export class ObjectsComponent implements OnInit {
     if (!this.util.isNullOrEmpty(this.formData.numKvart)) {
       searchFilter['apartmentNumber'] = parseInt(this.formData.numKvart);
     }
-    let obj = {};
-    if (!this.util.isNullOrEmpty(this.formData.priceFrom)) {
-      obj['from'] = this.formData.priceFrom;
-    }
-    if (!this.util.isNullOrEmpty(this.formData.priceTo)) {
-      obj['to'] = this.formData.priceTo;
-    }
-    if (this.util.getObjectLength(obj) > 0) {
-      searchFilter['price'] = obj;
-    }
-    obj = {};
-    if (!this.util.isNullOrEmpty(this.formData.floorFrom)) {
-      obj['from'] = this.formData.floorFrom;
-    }
-    if (!this.util.isNullOrEmpty(this.formData.floorTo)) {
-      obj['to'] = this.formData.floorTo;
-    }
-    if (this.util.getObjectLength(obj) > 0) {
-      searchFilter['floor'] = obj;
-    }
-    obj = {};
-    if (!this.util.isNullOrEmpty(this.formData.floorsFrom)) {
-      obj['from'] = this.formData.floorsFrom;
-    }
-    if (!this.util.isNullOrEmpty(this.formData.floorsTo)) {
-      obj['to'] = this.formData.floorsTo;
-    }
-    if (this.util.getObjectLength(obj) > 0) {
-      searchFilter['floorInTheHouse'] = obj;
-    }
     if (!this.util.isNullOrEmpty(this.formData.zalog)) {
       searchFilter['encumbrance'] = parseInt(this.formData.zalog);
     }
-    obj = {};
-    if (!this.util.isNullOrEmpty(this.formData.totalAreaFrom)) {
-      obj['from'] = this.formData.totalAreaFrom;
-    }
-    if (!this.util.isNullOrEmpty(this.formData.totalAreaTo)) {
-      obj['to'] = this.formData.totalAreaTo;
-    }
-    if (this.util.getObjectLength(obj) > 0) {
-      searchFilter['totalArea'] = obj;
-    }
-    obj = {};
-    if (!this.util.isNullOrEmpty(this.formData.livingSpaceFrom)) {
-      obj['from'] = this.formData.livingSpaceFrom;
-    }
-    if (!this.util.isNullOrEmpty(this.formData.livingSpaceTo)) {
-      obj['to'] = this.formData.livingSpaceTo;
-    }
-    if (this.util.getObjectLength(obj) > 0) {
-      searchFilter['livingArea'] = obj;
-    }
-    obj = {};
-    if (!this.util.isNullOrEmpty(this.formData.kitchenAreaFrom)) {
-      obj['from'] = this.formData.kitchenAreaFrom;
-    }
-    if (!this.util.isNullOrEmpty(this.formData.kitchenAreaTo)) {
-      obj['to'] = this.formData.kitchenAreaTo;
-    }
-    if (this.util.getObjectLength(obj) > 0) {
-      searchFilter['kitchenArea'] = obj;
-    }
+    searchFilter['price'] = new BigDecimalPeriod(this.formData?.priceFrom, this.formData?.priceTo);
+    searchFilter['floor'] = new BigDecimalPeriod(this.formData?.floorFrom, this.formData?.floorTo);
+    searchFilter['floorInTheHouse'] = new BigDecimalPeriod(this.formData?.floorsFrom, this.formData?.floorsTo);
+    searchFilter['totalArea'] = new BigDecimalPeriod(this.formData?.totalAreaFrom, this.formData?.totalAreaTo);
+    searchFilter['livingArea'] = new BigDecimalPeriod(this.formData?.livingSpaceFrom, this.formData?.livingSpaceTo);
+    searchFilter['kitchenArea'] = new BigDecimalPeriod(this.formData?.kitchenAreaFrom, this.formData?.kitchenAreaTo);
+
     if (!this.util.isNullOrEmpty(this.formData.numberOfRooms)) {
       searchFilter['numberOfRooms'] = parseInt(this.formData.numberOfRooms);
     }
@@ -261,39 +161,35 @@ export class ObjectsComponent implements OnInit {
       searchFilter['my'] = this.formData.my;
     }
     searchFilter['sortBy'] = 'application.objectPrice'
-    // searchFilter['direction'] = 'DESC'
-
 
     this.objectService.getObjects(searchFilter).subscribe(res => {
       this.objectsData = res.data.data.data;
       this.totalItems = res.data.total;
       this.currentPage = res.data.pageNumber + 1;
     });
-    this.loading = false;
+    this.ngxLoader.stop();
   }
 
-  getImgUrl(obj:any){
-    if (!this.util.isNullOrEmpty(obj.photos.PHOTO)){
-      return  this.util.generatorPreviewUrl(obj.photos.PHOTO[0])
-    };
+  getImgUrl(obj: any) {
+    if (!this.util.isNullOrEmpty(obj.photos.PHOTO)) {
+      return this.util.generatorPreviewUrl(obj.photos.PHOTO[0])
+    }
     return null;
   }
 
-  getCountFoto(obj:any){
+  getCountFoto(obj: any) {
     let s;
-    if (!this.util.isNullOrEmpty(obj.PHOTO)){
-      s=obj.PHOTO.length+'/'
+    if (!this.util.isNullOrEmpty(obj.PHOTO)) {
+      s = obj.PHOTO.length + '/'
     }
-    if (!this.util.isNullOrEmpty(obj.HOUSING_PLAN)){
-      s= s + obj.HOUSING_PLAN.length+'/'
+    if (!this.util.isNullOrEmpty(obj.HOUSING_PLAN)) {
+      s = s + obj.HOUSING_PLAN.length + '/'
     }
-    if (!this.util.isNullOrEmpty(obj.VIRTUAL_TOUR)){
-      s= s + obj.VIRTUAL_TOUR.length
+    if (!this.util.isNullOrEmpty(obj.VIRTUAL_TOUR)) {
+      s = s + obj.VIRTUAL_TOUR.length
     }
     return s;
   }
-
-
 
   loadDictionary() {
     this.dicService.getDics('DISTRICTS').subscribe(data => {
@@ -311,6 +207,4 @@ export class ObjectsComponent implements OnInit {
       this.dicDynamic = this.util.toSelectArray(data);
     });
   }
-
-
 }

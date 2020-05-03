@@ -6,6 +6,7 @@ import {Dic} from "../../models/dic";
 import {Util} from "../../services/util";
 import {NotificationService} from "../../services/notification.service";
 import {Board} from "../../models/board/board";
+import {NgxUiLoaderService} from "ngx-ui-loader";
 
 @Component({
   selector: 'app-board',
@@ -18,15 +19,16 @@ export class BoardComponent implements OnInit {
   appStatusesSort: Dic[];
   appStatusesData: any;
   board: Board;
-  loading: false;
 
   constructor(private boardService: BoardService,
               private dicService: DicService,
               private util: Util,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private ngxLoader: NgxUiLoaderService) {
   }
 
   ngOnInit(): void {
+    this.ngxLoader.start();
     this.dicService.getDics('APPLICATION_STATUSES').subscribe(data => {
       this.appStatuses = this.util.toSelectArray(data);
       this.sortStatusesDic(3);
@@ -61,6 +63,7 @@ export class BoardComponent implements OnInit {
         this.notificationService.showWarning('Информация', 'Техническая ошибка');
       }
     });
+    this.ngxLoader.stop();
   }
 
   sortStatusesDic(tab: number) {
@@ -83,10 +86,6 @@ export class BoardComponent implements OnInit {
       }
     }
     this.getBoardData(tab, ids);
-  }
-
-  dnHref(href) {
-    this.util.dnHref(href);
   }
 
   getBgColorBySumm(price: number) {

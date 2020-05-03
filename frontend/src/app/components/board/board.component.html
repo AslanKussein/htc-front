@@ -1,4 +1,4 @@
-<div class="card-body card-bg">
+<div class="card-body card-bg" ngxUiLoaderBlurred>
   <div class="row">
     <div class="btn-group btn-breadcrumb">
       <a href="#" class="btn btn-primary"><i class="fa fa-home"></i></a>
@@ -38,8 +38,10 @@
   <div class="row" cdkDropListGroup>
     <div class="col-sm" *ngFor="let data of appStatusesData;let i = index">
       <div class="alert bg-secondary text-white font-weight-bolder boardTitle text-center" role="alert" translate>
-        {{data.label}}<span
-        class="badge badge-danger ml-2">{{data.boardData?.data.length}}</span>
+        <div class="row">
+          <div class="col-sm">{{data.label}}</div>
+          <div class="col-sm-1"><span class="badge badge-danger">{{data.boardData?.data.length}}</span></div>
+        </div>
       </div>
       <br/>
       <div *ngIf="data.boardData"
@@ -64,11 +66,6 @@
           <br/>
         </div>
       </div>
-    </div>
-    <div class="position-static createClaimBtn">
-      <button type="button" class="btn btn-success btn-circle btn-xl" (click)="dnHref('create-claim')"><i
-        class="fa fa-plus"></i>
-      </button>
     </div>
   </div>
 

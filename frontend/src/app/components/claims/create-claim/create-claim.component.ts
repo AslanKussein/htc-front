@@ -201,7 +201,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     if (!this.util.isNullOrEmpty(this.roles)) {
       for (const data of this.roles) {
         if (data.code === code) {
-          return data.operations.indexOf(operation) != 0;
+          return !data.operations.includes(operation);
         }
       }
     }

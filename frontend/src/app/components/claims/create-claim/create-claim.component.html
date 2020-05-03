@@ -247,7 +247,8 @@
                                [(ngModel)]="applicationForm.phoneNumber" name="phoneNumber"
                                [formControl]="applicationForm.controls['phoneNumber']"
                                prefix="+7" mask=' (000) 000-0000' [showMaskTyped]="true"
-                               placeHolderCharacter="0" (ngModelChange)="searchByPhone()"/>
+                               placeHolderCharacter="0" (ngModelChange)="searchByPhone()"
+                               [readOnly]="hasShow('CLIENT_GROUP', 'UPDATE_CLIENT_DATA') || hasShow('CLIENT_GROUP', 'VIEW_CLIENT_DATA')"/>
 
                         <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
                           <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>
@@ -262,6 +263,7 @@
                         <input type="text" class="form-control" id="name"
                                [(ngModel)]="applicationForm.firstName"
                                formControlName="firstName" maxlength="255"
+                               [readOnly]="hasShow('CLIENT_GROUP', 'VIEW_CLIENT_INFO') || hasShow('CLIENT_GROUP', 'UPDATE_CLIENT_INFO')"
                         />
                         <div *ngIf="f.firstName.touched && f.firstName.invalid" class="text-danger">
                           <div *ngIf="f.firstName.errors.required" translate>claim.requiredField</div>
@@ -272,7 +274,8 @@
                           <span class="text-danger" *ngIf="!applicationForm.surname">&nbsp;*</span>
                         </label>
                         <input type="text" class="form-control" id="surname" formControlName="surname"
-                               [(ngModel)]="applicationForm.surname" maxlength="255"/>
+                               [(ngModel)]="applicationForm.surname" maxlength="255"
+                               [readOnly]="hasShow('CLIENT_GROUP', 'VIEW_CLIENT_INFO') || hasShow('CLIENT_GROUP', 'UPDATE_CLIENT_INFO')"/>
                         <div *ngIf="f.surname.touched && f.surname.invalid" class="text-danger">
                           <div *ngIf="f.surname.errors.required" translate>claim.requiredField</div>
                         </div>
@@ -280,7 +283,8 @@
                       <div class="col-sm">
                         <label for="patronymic" translate>patronymic</label>
                         <input type="text" class="form-control" id="patronymic" formControlName="patronymic"
-                               [(ngModel)]="applicationForm.patronymic" maxlength="255"/>
+                               [(ngModel)]="applicationForm.patronymic" maxlength="255"
+                               [readOnly]="hasShow('CLIENT_GROUP', 'VIEW_CLIENT_INFO') || hasShow('CLIENT_GROUP', 'UPDATE_CLIENT_INFO')"/>
                       </div>
                     </div>
                     <div class="row">
@@ -293,7 +297,8 @@
                       <div class="col-sm">
                         <label for="email" translate>claim.email</label>
                         <input type="text" id="email" class="form-control" [(ngModel)]="applicationForm.email"
-                               formControlName="email" [readOnly]="hasShow('CLIENT_GROUP', 'VIEW_CLIENT_INFO')"/>
+                               formControlName="email"
+                               [readOnly]="hasShow('CLIENT_GROUP', 'VIEW_CLIENT_INFO') || hasShow('CLIENT_GROUP', 'UPDATE_CLIENT_INFO')"/>
                       </div>
                     </div>
                     <div class="row">

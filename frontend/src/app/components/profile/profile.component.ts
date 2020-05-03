@@ -10,48 +10,51 @@ import {ComponentCanDeactivate} from "../../helpers/canDeactivate/componentCanDe
 import {CreateClaimComponent} from "../claims/create-claim/create-claim.component";
 import {Observable} from "rxjs/index";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
+import {NgxUiLoaderService} from "ngx-ui-loader";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit,  ComponentCanDeactivate{
+export class ProfileComponent implements OnInit, ComponentCanDeactivate {
 
   selectedFile: File;
-  modalRef: BsModalRef;
   currentUser: User;
   profile: ProfileDto;
   save: boolean;
   loading: boolean;
-  agentRoles:boolean;
-  rgRoles:boolean;
+  agentRoles: boolean;
+  rgRoles: boolean;
 
   constructor(private util: Util,
               private uploader: UploaderService,
               private notifyService: NotificationService,
               private profileService: ProfileService,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private ngxLoader: NgxUiLoaderService) {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-    if(this.currentUser.roles!=null){
-      this.agentRoles=false;
-      this.rgRoles=false;
+    if (this.currentUser.roles != null) {
+      this.agentRoles = false;
+      this.rgRoles = false;
       for (const role of this.currentUser.roles) {
         console.log(this.currentUser.roles)
-        if(role=='AGENT_GROUP_CHOOSE'){
-          this.agentRoles=true;
+        if (role == 'AGENT_GROUP_CHOOSE') {
+          this.agentRoles = true;
         }
-        if(role=='РГ'){
-          this.rgRoles=true;
+        if (role == 'РГ') {
+          this.rgRoles = true;
         }
       }
     }
   }
 
   ngOnInit(): void {
+    this.ngxLoader.start();
     this.profile = new ProfileDto();
     this.getProfile();
     this.save = false;
+    this.ngxLoader.stop();
   }
 
   getProfile() {
@@ -77,7 +80,6 @@ export class ProfileComponent implements OnInit,  ComponentCanDeactivate{
   }
 
 
-
   onFileChanged(event) {
     this.selectedFile = event.target.files[0];
     this.loading = true;
@@ -97,14 +99,13 @@ export class ProfileComponent implements OnInit,  ComponentCanDeactivate{
   }
 
   canDeactivate(): boolean | Observable<boolean> {
-    if(this.save){
+    if (this.save) {
       let result = confirm("Внесенные данные не сохранены, данные будут потеряны. Покинуть страницу?");
       return result;
-    }
-    else{
+    } else {
       return true;
     }
-    }
+  }
 
 
 }
