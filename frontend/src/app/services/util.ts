@@ -14,18 +14,11 @@ export class Util {
               private configService: ConfigService) {
   }
 
-  /**
-   * @desc Редиректить на урл;
-   * @param href значения;
-   */
-  dnHref(href: string) {
+  dnHref(href) {
     localStorage.setItem('url', href);
     this.router.navigate([href]);
   }
 
-  /**
-   * @desc проверка на null или на пустоту/неопределенность;
-   */
   isNullOrEmpty(e: any) {
     return e == null || e == '' || e == undefined;
   }
@@ -35,7 +28,7 @@ export class Util {
     if (data) {
       const len = data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value: data[i][idField], label: data[i][labelField], code: data[i]['code']});
+        list.push({value:  data[i][idField], label: data[i][labelField], code: data[i]['code']});
       }
     }
     return list;
@@ -52,16 +45,27 @@ export class Util {
     return list;
   }
 
-  toSelectArrayRoles2(data, idField = 'id', labelField = this.getDicName()) {
+  toSelectArrayRoles(data, idField = 'id', labelField = this.getDicName()) {
     const list = [];
     if (data) {
       const len = data.data.length;
       for (let i = 0; i < len; i++) {
         list.push({
-          value: data.data[i][idField],
+          value: '' + data.data[i][idField],
           label: data.data[i][labelField],
           description: data.data[i]['description']
         });
+      }
+    }
+    return list;
+  }
+
+  toSelectArrayRoles2(data, idField = 'id', labelField = this.getDicName()) {
+    const list = [];
+    if (data) {
+      const len = data.data.length;
+      for (let i = 0; i < len; i++) {
+        list.push({value: data.data[i][idField], label: data.data[i][labelField], description: data.data[i]['description']});
       }
     }
     return list;
@@ -96,7 +100,7 @@ export class Util {
       for (let i = 0; i < len; i++) {
         list.push({
           value: '' + data[i]['id'],
-          id: data[i]['id'],
+          id:data[i]['id'],
           label: data[i]['houseName'],
           countryId: data[i]['countryId'],
           cityId: data[i]['cityId'],
@@ -131,10 +135,6 @@ export class Util {
     return data[key];
   }
 
-  /**
-   * @desc длина объекта
-   * @param obj
-   */
   getObjectLength(obj: any) {
     return Object.keys(obj).length;
   }
@@ -150,16 +150,10 @@ export class Util {
     return dic_;
   }
 
-  /**
-   * @desc из стоража достаем юзера;
-   */
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem('currentUser'));
+    return JSON.parse(localStorage.getItem('currentUser'))
   }
 
-  /**
-   * @desc достаем данные из справочника по ключу;
-   */
   getDictionaryValueById(data: Dic[], id: any) {
     for (const obj of data) {
       if (obj['value'] == id) {
@@ -168,27 +162,15 @@ export class Util {
     }
   }
 
-  /**
-   * превращаем в строку если объект есть;
-   * @param data
-   */
   toString(data: any) {
     return data?.toString();
   }
 
-  /**
-   * генерируем ссылку на preview;
-   * @param uuid
-   */
   generatorPreviewUrl(uuid: string) {
     const fm = `${this.configService.apiFileManagerUrl}`;
     return fm + '/download/' + uuid + '/preview?access_token=' + this.getCurrentUser().access_token;
   }
 
-  /**
-   * @desc генерируем ссылку на полную картинку;
-   * @param uuid
-   */
   generatorFullUrl(uuid: string) {
     const fm = `${this.configService.apiFileManagerUrl}`;
     return fm + '/download/' + uuid + '?access_token=' + this.getCurrentUser().access_token;

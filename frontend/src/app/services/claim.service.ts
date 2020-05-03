@@ -18,6 +18,10 @@ export class ClaimService {
     return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getApplicationList`, search);
   }
 
+  getShortApplicationList(search: any): Observable<any> {
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getShortApplicationList`, search);
+  }
+
   getClaimById(id: number): Observable<any> {
     return this.http.get<any>(`${this.configService.apiDataManagerUrl}/applications/` + id, {});
   }
@@ -35,6 +39,15 @@ export class ClaimService {
   public updateClaim(id: number, obj: any): Observable<any> {
     return this.http.put(`${this.configService.apiDataManagerUrl}/applications/` + id, obj)
       // return this.http.post(`/ehr/api/resume/put/resume` , obj)
+      .pipe(
+        tap(data => {
+          console.log(data)
+        }),
+      );
+  }
+
+  public saveLightApplication(obj: any): Observable<any> {
+    return this.http.post(`${this.configService.apiDataManagerUrl}/applications/saveLightApplication`, obj)
       .pipe(
         tap(data => {
           console.log(data)

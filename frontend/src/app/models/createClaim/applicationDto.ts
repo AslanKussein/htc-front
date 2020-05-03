@@ -1,5 +1,5 @@
 import {BaseEntity} from "../baseEntity";
-import {RealPropertyOwnerDto} from "./realPropertyOwnerDto";
+import {ClientDto} from "./clientDto";
 import {RealPropertyRequestDto} from "./realPropertyRequestDto";
 
 /**
@@ -20,7 +20,7 @@ export class ApplicationDto implements BaseEntity {
   public amount?: number;//Сумма по договору
   public isCommissionIncludedInThePrice?: boolean;//Комиссия включена в стоимость
   public note?: string;//Примечание
-  public clientDto?: RealPropertyOwnerDto;//Модель сущности Клиент
+  public clientDto?: ClientDto;//Модель сущности Клиент
   public realPropertyRequestDto?: RealPropertyRequestDto;//Модель сущности недвижимости
 
 

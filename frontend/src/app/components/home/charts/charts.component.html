@@ -1,0 +1,11 @@
+<div class="col-sm">
+      <canvas baseChart
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [plugins]="barChartPlugins"
+              [legend]="barChartLegend"
+              [chartType]="barChartType">
+      </canvas>
+    <button mat-button mat-raised-button color="primary" (click)="randomize()">Update</button>
+</div>

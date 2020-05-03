@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-sm">
+    <div class="input-group w-50">
+      <input type="text" class="form-control" placeholder="Поиск" id="mail" [(ngModel)]="text">
+      <div class="input-group-append">
+        <span class="input-group-text" (click)="findClaims(1)"><i aria-hidden="true" class="fa fa-search text-info"></i></span>
+      </div>
+    </div>
+    <br/>
+
+    <table class="table table-bordered table-sm">
+      <thead class="text-center">
+      <tr>
+        <th>ID заявки</th>
+        <th>Операция</th>
+        <th translate>claim.crDateFrom</th>
+        <th translate>fio</th>
+        <th translate>phone</th>
+        <th translate>e-mail</th>
+        <th translate>Район</th>
+        <th translate>Количество комнат</th>
+        <th translate>Цена</th>
+        <th translate>Вид расчета</th>
+        <th translate>Прошадь</th>
+        <th translate>Этаж</th>
+        <th translate>Статус</th>
+        <th translate>Комментарий</th>
+      </tr>
+      </thead>
+      <tbody style="cursor: pointer">
+      <tr *ngFor="let claim of claimData;let i = index">
+        <td>{{claim.id}}
+        </td>
+        <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
+        <td>{{formatDate(claim)}}</td>
+        <td>{{claim.fullname}}</td>
+        <td><span>{{claim.phone | mask: '+0 (000) 000-0000'}}</span></td>
+        <td>{{claim.email}}</td>
+        <td>{{getDicNameByLanguage(claim, 'district')}}</td>
+        <td>{{claim.numberOfRooms}}</td>
+        <td>{{claim.price}}</td>
+        <td></td>
+        <td>{{claim.totalArea}}</td>
+        <td>{{claim.floor}}</td>
+        <td>{{getDicNameByLanguage(claim, 'status')}}</td>
+        <td>{{claim.comment}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <pagination [(ngModel)]="currentPage"
+                [totalItems]="totalItems"
+                [itemsPerPage]="itemsPerPage"
+                [maxSize]="10"
+                [rotate]="true"
+                [boundaryLinks]="true"
+                previousText="&lsaquo;"
+                nextText="&rsaquo;"
+                firstText="&laquo;"
+                lastText="&raquo;"
+                (pageChanged)="pageChanged($event)">
+    </pagination>
+  </div>
+</div>
