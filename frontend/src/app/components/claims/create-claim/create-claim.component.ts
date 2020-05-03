@@ -23,6 +23,9 @@ import {PurchaseInfoDto} from "../../../models/createClaim/purchaseInfoDto";
 import {BigDecimalPeriod} from "../../../models/common/bigDecimalPeriod";
 import {ActivatedRoute} from "@angular/router";
 import {NgxUiLoaderService} from "ngx-ui-loader";
+import {RoleManagerService} from "../../../services/roleManager.service";
+import {catchError, tap} from "rxjs/operators";
+import {HttpParams} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +67,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   saved: boolean = false;
   modalRef: BsModalRef;
   applicationId: number;
+  roles: any;
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -79,12 +83,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
               private cdRef: ChangeDetectorRef,
               private modalService: BsModalService,
               private actRoute: ActivatedRoute,
-              private ngxLoader: NgxUiLoaderService) {
+              private ngxLoader: NgxUiLoaderService,
+              private roleManagerService: RoleManagerService) {
     this.config.notFoundText = 'Данные не найдены';
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
     this.applicationId = this.actRoute.snapshot.params.id;
-
   }
 
   get f() {
@@ -93,6 +97,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   ngOnInit(): void {
     this.ngxLoader.start();
+    this.getCheckOperationList();
     this.applicationForm = this.formBuilder.group({
       id: [null, Validators.nullValidator],
       operationTypeId: [null, Validators.required],
@@ -184,11 +189,35 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     });
     this.cdRef.detectChanges();
     this.loadDictionary();
+
     if (this.applicationId != null) {
       this.loadDataById(this.applicationId);
     } else {
       this.ngxLoader.stop();
     }
+  }
+
+  hasShow(code: string, operation: string) {
+    if (!this.util.isNullOrEmpty(this.roles)) {
+      for (const data of this.roles) {
+        if (data.code === code) {
+          return data.operations.indexOf(operation) != 0;
+        }
+      }
+    }
+  }
+
+  getCheckOperationList() {
+    this.roleManagerService.getOperations().subscribe(
+      data => {
+        let params = new HttpParams();
+        for (const el of data.data) {
+          params = params.append('groupCodes', String(el.code))
+        }
+        this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
+          this.roles = obj.data
+        });
+      })
   }
 
   loadDictionary() {
@@ -247,7 +276,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.ngxLoader.start();
     this.claimService.getClaimById(id).subscribe(data => {
       if (data != null) {
-        setTimeout(()=>{    //<<<---    using ()=> syntax
+        setTimeout(() => {    //<<<---    using ()=> syntax
           if (this.util.isNullOrEmpty(this.operationType) || this.util.isNullOrEmpty(this.objectType) || this.util.isNullOrEmpty(this.residentialComplexes)) {
             this.loadDataById(this.applicationId);
             return
@@ -664,7 +693,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
           this.notifyService.showWarning('warning', err);
         });
     }
-    this.ngxLoader.stop();  }
+    this.ngxLoader.stop();
+  }
 
   canDeactivate(): boolean | Observable<boolean> {
     if (!this.saved) {

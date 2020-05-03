@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {ApplicationLightDto} from "../../models/applicationLightDto";
 import {DicService} from "../../services/dic.service";
@@ -12,6 +12,7 @@ import {UserService} from "../../services/user.service";
 import {NgSelectConfig} from "@ng-select/ng-select";
 import {TranslateService} from "@ngx-translate/core";
 import {OwnerService} from "../../services/owner.service";
+import {NgxUiLoaderService} from "ngx-ui-loader";
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,6 @@ export class HomeComponent implements OnInit {
   applicationLightDto: ApplicationLightDto;
   operationType: Dic[];
   claimLightData = [];
-  loading;
   totalItems = 0;
   itemsPerPage = 10;
   currentPage = 1;
@@ -37,7 +37,9 @@ export class HomeComponent implements OnInit {
               private userService: UserService,
               private config: NgSelectConfig,
               private translate: TranslateService,
-              private ownerService: OwnerService) {
+              private ownerService: OwnerService,
+              private ngxLoader: NgxUiLoaderService,
+              private cdRef: ChangeDetectorRef) {
     this.config.notFoundText = 'Данные не найдены';
   }
 
@@ -76,6 +78,7 @@ export class HomeComponent implements OnInit {
       note: [null, Validators.nullValidator],
       agentLogin: [null, Validators.nullValidator],
     });
+    this.cdRef.detectChanges()
   }
 
   get f() {
@@ -84,7 +87,7 @@ export class HomeComponent implements OnInit {
 
   searchByPhone() {
     if (this.applicationLightForm.phoneNumber != null && this.applicationLightForm.phoneNumber.length == 10) {
-      this.loading = true;
+      this.ngxLoader.start();
       this.ownerService.searchByPhone('7' + this.applicationLightForm.phoneNumber)
         .subscribe(res => {
           this.applicationLightForm.name = !this.util.isNullOrEmpty(res.firstName) ? res.firstName : null;
@@ -92,11 +95,12 @@ export class HomeComponent implements OnInit {
           this.applicationLightForm.patronymic = !this.util.isNullOrEmpty(res.patronymic) ? res.patronymic : null;
           this.applicationLightForm.phoneNumber = res.phoneNumber;
         });
-      this.loading = false;
+      this.ngxLoader.stop();
     }
   }
 
   onSave() {
+    this.ngxLoader.start();
     let result = false;
     const controls = this.applicationLightForm.controls;
     for (const name in controls) {
@@ -121,6 +125,7 @@ export class HomeComponent implements OnInit {
       }, err => {
         this.notification.showWarning('warning', err);
       });
+    this.ngxLoader.stop();
   }
 
   pageChanged(event: any): void {
@@ -130,7 +135,7 @@ export class HomeComponent implements OnInit {
   }
 
   findClaims(pageNo: number) {
-    this.loading = true;
+    this.ngxLoader.start();
     const searchFilter = {};
     searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
@@ -145,7 +150,7 @@ export class HomeComponent implements OnInit {
       }
 
     });
-    this.loading = false;
+    this.ngxLoader.stop();
   }
 
   getDicNameByLanguage(claim: any, column: string) {

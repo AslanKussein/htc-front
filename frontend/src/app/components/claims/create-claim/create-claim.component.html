@@ -293,7 +293,7 @@
                       <div class="col-sm">
                         <label for="email" translate>claim.email</label>
                         <input type="text" id="email" class="form-control" [(ngModel)]="applicationForm.email"
-                               formControlName="email"/>
+                               formControlName="email" [readOnly]="hasShow('CLIENT_GROUP', 'VIEW_CLIENT_INFO')"/>
                       </div>
                     </div>
                     <div class="row">
