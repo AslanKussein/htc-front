@@ -8,22 +8,22 @@
             <h3>Все справочники </h3>
           </div>
           <div style="border: solid 1px black; padding: 5px">
-            <a (click)="loadDictionaryForEdit('residential-complexes'); resident=true"><h5>ЖК</h5></a>
-            <a (click)="loadDictionaryForEdit('COUNTRIES'); resident=false"><h5>Страна </h5></a>
-            <a (click)="loadDictionaryForEdit('CITIES'); resident=false"><h5>Город</h5></a>
-            <a (click)="loadDictionaryForEdit('DISTRICTS'); resident=false"><h5>Районы</h5></a>
-            <a (click)="loadDictionaryForEdit('STREETS'); resident=false"><h5>Улицы</h5></a>
-            <a (click)="loadDictionaryForEdit('PROPERTY_DEVELOPERS'); resident=false"><h5>Застройщик</h5></a>
-            <a (click)="loadDictionaryForEdit('TYPE_OF_ELEVATOR'); resident=false"><h5>Тип лифта</h5></a>
-            <a (click)="loadDictionaryForEdit('MATERIALS_OF_CONSTRUCTION'); resident=false"><h5>Материал постройки
+            <a (click)="loadDictionaryForEdit('residential-complexes',1); resident=true"><h5>ЖК</h5></a>
+            <a (click)="loadDictionaryForEdit('COUNTRIES',null); resident=false"><h5>Страна </h5></a>
+            <a (click)="loadDictionaryForEdit('CITIES',null); resident=false"><h5>Город</h5></a>
+            <a (click)="loadDictionaryForEdit('DISTRICTS',null); resident=false"><h5>Районы</h5></a>
+            <a (click)="loadDictionaryForEdit('STREETS',null); resident=false"><h5>Улицы</h5></a>
+            <a (click)="loadDictionaryForEdit('PROPERTY_DEVELOPERS',null); resident=false"><h5>Застройщик</h5></a>
+            <a (click)="loadDictionaryForEdit('TYPE_OF_ELEVATOR',null); resident=false"><h5>Тип лифта</h5></a>
+            <a (click)="loadDictionaryForEdit('MATERIALS_OF_CONSTRUCTION',null); resident=false"><h5>Материал постройки
               (квартира)</h5></a>
-            <a (click)="loadDictionaryForEdit('MATERIALS_OF_CONSTRUCTION'); resident=false"><h5>Материал постройки
+            <a (click)="loadDictionaryForEdit('MATERIALS_OF_CONSTRUCTION',null); resident=false"><h5>Материал постройки
               (дом)</h5></a>
-            <a (click)="loadDictionaryForEdit('SEWERAGE_SYSTEMS'); resident=false"><h5>Канализация</h5></a>
-            <a (click)="loadDictionaryForEdit('HEATING_SYSTEMS'); resident=false"><h5>Отопление</h5></a>
-            <a (click)="loadDictionaryForEdit('PARKING_TYPES'); resident=false"><h5>Парковка</h5></a>
-            <a (click)="loadDictionaryForEdit('YARD_TYPES'); resident=false"><h5>Двор</h5></a>
-            <a (click)="loadDictionaryForEdit('POSSIBLE_REASONS_FOR_BIDDING'); resident=false"><h5>Возможные причины
+            <a (click)="loadDictionaryForEdit('SEWERAGE_SYSTEMS',null); resident=false"><h5>Канализация</h5></a>
+            <a (click)="loadDictionaryForEdit('HEATING_SYSTEMS',null); resident=false"><h5>Отопление</h5></a>
+            <a (click)="loadDictionaryForEdit('PARKING_TYPES',null); resident=false"><h5>Парковка</h5></a>
+            <a (click)="loadDictionaryForEdit('YARD_TYPES',null); resident=false"><h5>Двор</h5></a>
+            <a (click)="loadDictionaryForEdit('POSSIBLE_REASONS_FOR_BIDDING',null); resident=false"><h5>Возможные причины
               торга</h5></a>
           </div>
         </div>
@@ -197,6 +197,19 @@
               </tr>
               </tbody>
             </table>
+            <pagination [(ngModel)]="currentPage"
+                        *ngIf="resident"
+                        [totalItems]="totalItems"
+                        [itemsPerPage]="itemsPerPage"
+                        [maxSize]="10"
+                        [rotate]="true"
+                        [boundaryLinks]="true"
+                        previousText="&lsaquo;"
+                        nextText="&rsaquo;"
+                        firstText="&laquo;"
+                        lastText="&raquo;"
+                        (pageChanged)="pageChanged($event)">
+            </pagination>
 
 
             <!--{{clickColumnDic.nameEn}}-->
