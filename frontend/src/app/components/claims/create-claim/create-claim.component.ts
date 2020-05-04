@@ -26,6 +26,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {RoleManagerService} from "../../../services/roleManager.service";
 import {catchError, tap} from "rxjs/operators";
 import {HttpParams} from "@angular/common/http";
+import {moment} from "ngx-bootstrap/chronos/test/chain";
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   sortMaterials: Dic[] = [];
   roomCountDic: Dic[];
   possibleReasonForBidding: Dic[];
+  possibleReasonForBiddingSort: Dic[];
   applicationForm: any;
   image: any;
   dicDynamic: Dic[];
@@ -207,6 +209,26 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
+  hasShowApplicationGroup(operation: string) {
+    if (!this.util.isNullOrEmpty(this.roles)) {
+      for (const data of this.roles) {
+        if (data.code === 'APPLICATION_GROUP') {
+          return !data.operations.includes(operation);
+        }
+      }
+    }
+  }
+
+  hasShowRealPropertyGroup(operation: string) {
+    if (!this.util.isNullOrEmpty(this.roles)) {
+      for (const data of this.roles) {
+        if (data.code === 'REAL_PROPERTY_GROUP') {
+          return !data.operations.includes(operation);
+        }
+      }
+    }
+  }
+
   getCheckOperationList() {
     this.roleManagerService.getOperations().subscribe(
       data => {
@@ -291,6 +313,21 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
         }, 3000);
       }
     });
+  }
+
+  setPossibleReasonForBidding() {
+    this.possibleReasonForBiddingSort = [];
+    if (!this.util.isNullOrEmpty(this.possibleReasonForBidding)) {
+      for (const pos of this.possibleReasonForBidding) {
+        if (pos['operationCode'] == this.applicationForm?.operationTypeId?.code) {
+          let m = {};
+          m['value'] = pos['value'];
+          m['label'] = pos['label'];
+          m['code'] = pos['code'];
+          this.possibleReasonForBiddingSort.push(m)
+        }
+      }
+    }
   }
 
   setHouseOrApartmentsForMaterials() {
