@@ -31,3 +31,8 @@ legend {
 .btn2 {
   width: 200px!important;
 }
+
+.disabledDev {
+  pointer-events: none!important;
+  opacity: 0.4!important;
+}

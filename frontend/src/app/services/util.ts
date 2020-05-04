@@ -39,7 +39,7 @@ export class Util {
     if (data) {
       const len = data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value: data[i][idField], label: data[i][labelField], code: data[i]['code']});
+        list.push({value: data[i][idField], label: data[i][labelField], code: data[i]['code'], operationCode: data[i]['operationCode']});
       }
     }
     return list;

@@ -21,6 +21,6 @@ export class CreateClaimBtnComponent implements OnInit {
   }
 
   isShow() {
-    return this.router.url != '/create-claim'
+    return !['/create-claim', '/login'].includes(this.router.url);
   }
 }
