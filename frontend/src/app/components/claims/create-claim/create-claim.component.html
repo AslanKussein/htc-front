@@ -277,71 +277,78 @@
                      data-parent="#accordionaboutOwnerOne">
                   <div class="card-body">
                     <div class="row">
-                      <div class="col-sm">
-                        <label for="phoneNumber" translate>claim.contacts <span class="text-danger"
-                                                                                *ngIf="!applicationForm.phoneNumber">&nbsp;*</span></label>
+                      <div class="col-sm"
+                           [hidden]="hasShowClientGroup('VIEW_CLIENT_DATA') && hasShowClientGroup('UPDATE_CLIENT_DATA')">
+                        <label for="phoneNumber" translate>claim.contacts
+                          <span class="text-danger" *ngIf="!applicationForm.phoneNumber">&nbsp;*</span>
+                        </label>
                         <input type="text" id="phoneNumber" class="form-control"
                                [(ngModel)]="applicationForm.phoneNumber" name="phoneNumber"
                                [formControl]="applicationForm.controls['phoneNumber']"
                                prefix="+7" mask=' (000) 000-0000' [showMaskTyped]="true"
                                placeHolderCharacter="0" (ngModelChange)="searchByPhone()"
-                               [readOnly]="hasShow('CLIENT_GROUP', 'UPDATE_CLIENT_DATA') || hasShow('CLIENT_GROUP', 'VIEW_CLIENT_DATA')"/>
+                               [readOnly]="hasShowClientGroup('UPDATE_CLIENT_DATA')"/>
 
                         <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
                           <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>
                         </div>
                       </div>
                     </div>
-                    <div
-                      [hidden]="hasShow('CLIENT_GROUP', 'VIEW_CLIENT_INFO') || hasShow('CLIENT_GROUP', 'UPDATE_CLIENT_INFO')">
-                      <div class="row" [class.disabledDiv]="hasShow('CLIENT_GROUP', 'UPDATE_CLIENT_INFO')">
-                        <div class="col-sm">
-                          <label for="name" translate>name
-                            <span class="text-danger" *ngIf="!applicationForm.firstName">&nbsp;*</span>
-                          </label>
-                          <input type="text" class="form-control" id="name"
-                                 [(ngModel)]="applicationForm.firstName"
-                                 formControlName="firstName" maxlength="255"/>
-                          <div *ngIf="f.firstName.touched && f.firstName.invalid" class="text-danger">
-                            <div *ngIf="f.firstName.errors.required" translate>claim.requiredField</div>
-                          </div>
-                        </div>
-                        <div class="col-sm">
-                          <label for="surname" translate>surname
-                            <span class="text-danger" *ngIf="!applicationForm.surname">&nbsp;*</span>
-                          </label>
-                          <input type="text" class="form-control" id="surname" formControlName="surname"
-                                 [(ngModel)]="applicationForm.surname" maxlength="255"/>
-                          <div *ngIf="f.surname.touched && f.surname.invalid" class="text-danger">
-                            <div *ngIf="f.surname.errors.required" translate>claim.requiredField</div>
-                          </div>
-                        </div>
-                        <div class="col-sm">
-                          <label for="patronymic" translate>patronymic</label>
-                          <input type="text" class="form-control" id="patronymic" formControlName="patronymic"
-                                 [(ngModel)]="applicationForm.patronymic" maxlength="255"/>
+                    <div class="row"
+                         [hidden]="hasShowClientGroup('VIEW_CLIENT_INFO') && hasShowClientGroup('UPDATE_CLIENT_INFO')">
+                      <div class="col-sm">
+                        <label for="name" translate>name
+                          <span class="text-danger" *ngIf="!applicationForm.firstName">&nbsp;*</span>
+                        </label>
+                        <input type="text" class="form-control" id="name"
+                               [(ngModel)]="applicationForm.firstName"
+                               formControlName="firstName" maxlength="255"
+                               [readOnly]="hasShowClientGroup('UPDATE_CLIENT_INFO')"/>
+                        <div *ngIf="f.firstName.touched && f.firstName.invalid" class="text-danger">
+                          <div *ngIf="f.firstName.errors.required" translate>claim.requiredField</div>
                         </div>
                       </div>
-                      <div class="row" [class.disabledDiv]="hasShow('CLIENT_GROUP', 'UPDATE_CLIENT_INFO')">
-                        <div class="col-sm">
-                          <label for="clientId" translate>claim.clientID</label>
-                          <input type="text" id="clientId" class="form-control" [(ngModel)]="applicationForm.clientId"
-                                 formControlName="clientId" [readOnly]="true"
-                                 (ngModelChange)="searchByClientId()"/>
+                      <div class="col-sm"
+                           [hidden]="hasShowClientGroup('VIEW_CLIENT_DATA') && hasShowClientGroup('UPDATE_CLIENT_DATA')">
+                        <label for="surname" translate>surname
+                          <span class="text-danger" *ngIf="!applicationForm.surname">&nbsp;*</span>
+                        </label>
+                        <input type="text" class="form-control" id="surname" formControlName="surname"
+                               [(ngModel)]="applicationForm.surname" maxlength="255"
+                               [readOnly]="hasShowClientGroup('UPDATE_CLIENT_DATA')"/>
+                        <div *ngIf="f.surname.touched && f.surname.invalid" class="text-danger">
+                          <div *ngIf="f.surname.errors.required" translate>claim.requiredField</div>
                         </div>
-                        <div class="col-sm">
-                          <label for="email" translate>claim.email</label>
-                          <input type="text" id="email" class="form-control" [(ngModel)]="applicationForm.email"
-                                 formControlName="email"/>
-                        </div>
+                      </div>
+                      <div class="col-sm"
+                           [hidden]="hasShowClientGroup('VIEW_CLIENT_DATA') && hasShowClientGroup('UPDATE_CLIENT_DATA')">
+                        <label for="patronymic" translate>patronymic</label>
+                        <input type="text" class="form-control" id="patronymic" formControlName="patronymic"
+                               [readOnly]="hasShowClientGroup('UPDATE_CLIENT_DATA')"
+                               [(ngModel)]="applicationForm.patronymic" maxlength="255"/>
                       </div>
                     </div>
                     <div class="row"
-                         [hidden]="hasShow('CLIENT_GROUP', 'VIEW_CLIENT_INFO') || hasShow('CLIENT_GROUP', 'UPDATE_CLIENT_INFO')">
+                         [hidden]="hasShowClientGroup('VIEW_CLIENT_DATA') && hasShowClientGroup('UPDATE_CLIENT_DATA')">
+                      <div class="col-sm">
+                        <label for="clientId" translate>claim.clientID</label>
+                        <input type="text" id="clientId" class="form-control" [(ngModel)]="applicationForm.clientId"
+                               formControlName="clientId" [readOnly]="true"
+                               (ngModelChange)="searchByClientId()"/>
+                      </div>
+                      <div class="col-sm"
+                           [hidden]="hasShowClientGroup('VIEW_CLIENT_DATA') && hasShowClientGroup('UPDATE_CLIENT_DATA')">
+                        <label for="email" translate>claim.email</label>
+                        <input type="text" id="email" class="form-control" [(ngModel)]="applicationForm.email"
+                               [readOnly]="hasShowClientGroup('UPDATE_CLIENT_DATA')" formControlName="email"/>
+                      </div>
+                    </div>
+                    <div class="row"
+                         [hidden]="hasShowClientGroup('UPDATE_CLIENT_INFO') && hasShowClientGroup('VIEW_CLIENT_INFO')">
                       <div class="col-sm">
                         <label translate>gender</label>
                         <div class="custom-control custom-checkbox"
-                             [class.disabledDiv]="hasShow('CLIENT_GROUP', 'UPDATE_CLIENT_INFO')">
+                             [class.disabledDiv]="hasShowClientGroup('UPDATE_CLIENT_INFO')">
                           <div class="custom-control custom-radio">
                             <input type="radio" id="men" name="gender" value="MALE" class="custom-control-input"
                                    [(ngModel)]="applicationForm.gender" formControlName="gender">
@@ -519,8 +526,7 @@
                             </ng-select>
                           </div>
                         </div>
-                        <div class="row"
-                             [hidden]="hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO') && hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')">
+                        <div class="row">
                           <div class="col-sm form-group required"
                                *ngIf="applicationForm.operationTypeId?.code=='001002'">
                             <label for="patronymic" translate>claim.numberHouse
@@ -528,6 +534,7 @@
                             </label>
                             <div class="input-group">
                               <input type="text" min="0" class="form-control"
+                                     [hidden]="hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO') && hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
                                      placeholder="{{'claim.numberHouse' | translate}}"
                                      mask="separator.2" thousandSeparator=" "
                                      [(ngModel)]="applicationForm.houseNumber" maxlength="10"
@@ -535,9 +542,10 @@
                                      [readOnly]="hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
                                      formControlName="houseNumber"/>
                               <input type="text" class="form-control" maxlength="10"
+                                     [hidden]="hasShowRealPropertyGroup('VIEW_SALE_OBJECT_DATA') && hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA')"
                                      placeholder="Номер дома (дробь/буква/строение)"
                                      [(ngModel)]="applicationForm.houseNumberFraction"
-                                     [readOnly]="hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
+                                     [readOnly]="hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA')"
                                      formControlName="houseNumberFraction"/>
                             </div>
                             <div *ngIf="f.houseNumber.touched && f.houseNumber.invalid" class="text-danger">
@@ -577,42 +585,52 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-sm"
-                               *ngIf="applicationForm.operationTypeId?.code == '001002' && applicationForm.objectTypeId?.code == '003001'">
-                            <label translate>Номер квартиры</label>
-                            <div class="input-group">
-                              <input type="number" min="1" class="form-control"
-                                     placeholder="Номер квартиры" maxlength="20"
-                                     oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                     [(ngModel)]="applicationForm.apartmentNumber"
-                                     formControlName="apartmentNumber"/>
+                          <div
+                            [hidden]="hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO') && hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')">
+                            <div class="col-sm"
+                                 *ngIf="applicationForm.operationTypeId?.code == '001002' && applicationForm.objectTypeId?.code == '003001'">
+                              <label translate>Номер квартиры</label>
+                              <div class="input-group">
+                                <input type="number" min="1" class="form-control"
+                                       placeholder="Номер квартиры" maxlength="20"
+                                       oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                       [(ngModel)]="applicationForm.apartmentNumber"
+                                       formControlName="apartmentNumber"/>
+                              </div>
                             </div>
                           </div>
                         </div>
-                        <div class="row" *ngIf="applicationForm.operationTypeId?.code == '001002'">
-                          <div class="col-sm">
-                            <label for="cadastralNumber">Кадастровый номер</label>
-                            <div class="input-group">
-                              <input type="text" id="cadastralNumber" class="form-control"
-                                     placeholder="00:000:000"
-                                     [(ngModel)]="applicationForm.cadastralNumber" mask="00:000:000"
-                                     formControlName="cadastralNumber"/>
-                              <input type="text" class="form-control"
-                                     [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber1 == null)}"
-                                     [(ngModel)]="applicationForm.cadastralNumber1" maxlength="12"
-                                     formControlName="cadastralNumber1"/>
-                              <input type="text" class="form-control"
-                                     [(ngModel)]="applicationForm.cadastralNumber2" maxlength="12"
-                                     [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber2 == null)}"
-                                     formControlName="cadastralNumber2"/>
-                              <input type="text" class="form-control"
-                                     [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber3 == null)}"
-                                     [(ngModel)]="applicationForm.cadastralNumber3" maxlength="12"
-                                     formControlName="cadastralNumber3"/>
-                            </div>
-                            <div *ngIf="f.cadastralNumber.touched && f.cadastralNumber.invalid" class="text-danger">
-                              <div *ngIf="applicationForm.cadastralNumber != null">Длина поле кадастровый номер не
-                                верно
+                        <div
+                          [hidden]="hasShowRealPropertyGroup('VIEW_SALE_OBJECT_DATA') && hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA')">
+                          <div class="row" *ngIf="applicationForm.operationTypeId?.code == '001002'">
+                            <div class="col-sm">
+                              <label for="cadastralNumber">Кадастровый номер</label>
+                              <div class="input-group">
+                                <input type="text" id="cadastralNumber" class="form-control"
+                                       placeholder="00:000:000"
+                                       [(ngModel)]="applicationForm.cadastralNumber" mask="00:000:000"
+                                       formControlName="cadastralNumber"
+                                       [readonly]="hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA')"/>
+                                <input type="text" class="form-control"
+                                       [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber1 == null)}"
+                                       [(ngModel)]="applicationForm.cadastralNumber1" maxlength="12"
+                                       formControlName="cadastralNumber1"
+                                       [readonly]="hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA')"/>
+                                <input type="text" class="form-control"
+                                       [(ngModel)]="applicationForm.cadastralNumber2" maxlength="12"
+                                       [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber2 == null)}"
+                                       formControlName="cadastralNumber2"
+                                       [readonly]="hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA')"/>
+                                <input type="text" class="form-control"
+                                       [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber3 == null)}"
+                                       [(ngModel)]="applicationForm.cadastralNumber3" maxlength="12"
+                                       formControlName="cadastralNumber3"
+                                       [readonly]="hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA')"/>
+                              </div>
+                              <div *ngIf="f.cadastralNumber.touched && f.cadastralNumber.invalid" class="text-danger">
+                                <div *ngIf="applicationForm.cadastralNumber != null">Длина поле кадастровый номер не
+                                  верно
+                                </div>
                               </div>
                             </div>
                           </div>

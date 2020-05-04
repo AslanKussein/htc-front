@@ -199,10 +199,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
-  hasShow(code: string, operation: string) {
+  hasShowClientGroup(operation: string) {
     if (!this.util.isNullOrEmpty(this.roles)) {
       for (const data of this.roles) {
-        if (data.code === code) {
+        if (data.code === 'CLIENT_GROUP') {
           return !data.operations.includes(operation);
         }
       }
