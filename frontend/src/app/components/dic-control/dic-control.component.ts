@@ -10,6 +10,7 @@ import {NotificationService} from "../../services/notification.service";
 import {User} from "../../models/users";
 import {AuthenticationService} from "../../services/authentication.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
+import {HttpParams} from "@angular/common/http";
 
 @Component({
   selector: 'app-dic-control',
@@ -180,12 +181,11 @@ export class DicControlComponent implements OnInit {
 
   loadResidenceComplex(pageNo: number) {
     const searchFilter = {};
-    searchFilter['direction'] = 'ASC';
-    searchFilter['sortBy'] = 'id';
-    searchFilter['pageNumber'] = pageNo - 1;
-    searchFilter['pageSize'] = this.itemsPerPage;
+    let params = new HttpParams();
+    params = params.append('pageNumber', String(pageNo - 1))
+    params = params.append('pageSize', String(this.itemsPerPage))
 
-    this.dicService.getResidentialComplexesPageable(searchFilter).subscribe(res => {
+    this.dicService.getResidentialComplexesPageable(params).subscribe(res => {
       if (res != null && res.data != null) {
         this.residentialComplexes = this.util.toSelectArrayResidenceComplex(res.data.data);
         this.totalItems = res.total;
