@@ -339,7 +339,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   searchByPhone() {
     if (this.applicationForm.phoneNumber != null && this.applicationForm.phoneNumber.length == 10 && this.applicationId == null) {
-      this.ngxLoader.start();
       this.ownerService.searchByPhone('7' + this.applicationForm.phoneNumber)
         .subscribe(res => {
           if (!this.util.isNullOrEmpty(res)) {
@@ -353,7 +352,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
             this.applicationForm.gender = null;
           }
         });
-      this.ngxLoader.stop();
     }
   }
 

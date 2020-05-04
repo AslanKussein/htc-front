@@ -87,7 +87,6 @@ export class HomeComponent implements OnInit {
 
   searchByPhone() {
     if (this.applicationLightForm.phoneNumber != null && this.applicationLightForm.phoneNumber.length == 10) {
-      this.ngxLoader.start();
       this.ownerService.searchByPhone('7' + this.applicationLightForm.phoneNumber)
         .subscribe(res => {
           this.applicationLightForm.name = !this.util.isNullOrEmpty(res.firstName) ? res.firstName : null;
@@ -95,7 +94,6 @@ export class HomeComponent implements OnInit {
           this.applicationLightForm.patronymic = !this.util.isNullOrEmpty(res.patronymic) ? res.patronymic : null;
           this.applicationLightForm.phoneNumber = res.phoneNumber;
         });
-      this.ngxLoader.stop();
     }
   }
 
