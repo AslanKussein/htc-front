@@ -678,16 +678,11 @@
                                 </div>
                               </div>
                               <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code != '001001'">
-                                <label for="kitchenArea" translate>claim.kitchen <span class="text-danger"
-                                                                                       *ngIf="!applicationForm.kitchenArea">*</span></label>
+                                <label for="kitchenArea" translate>claim.kitchen</label>
                                 <input type="number" id="kitchenArea" class="form-control"
                                        [(ngModel)]="applicationForm.kitchenArea" maxlength="10"
                                        oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                        formControlName="kitchenArea" min="0"/>
-
-                                <div *ngIf="f.kitchenArea.touched && f.kitchenArea.invalid" class="text-danger">
-                                  <div *ngIf="f.kitchenArea.errors.required" translate>claim.requiredField</div>
-                                </div>
                               </div>
                               <div class="col-sm"
                                    *ngIf="applicationForm.operationTypeId?.code == '001001' && applicationForm.objectTypeId?.code=='003001'">
@@ -730,15 +725,11 @@
                               </div>
                               <div class="col-sm"
                                    *ngIf="applicationForm.operationTypeId?.code != '001001' && applicationForm.objectTypeId?.code=='003001'">
-                                <label for="ceilingHeight" translate>claim.heightWall<span class="text-danger"
-                                                                                           *ngIf="!applicationForm.ceilingHeight">*</span></label>
+                                <label for="ceilingHeight" translate>claim.heightWall</label>
                                 <input type="number" id="ceilingHeight" class="form-control"
                                        [(ngModel)]="applicationForm.ceilingHeight" maxlength="10"
                                        oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                        formControlName="ceilingHeight" min="0"/>
-                                <div *ngIf="f.ceilingHeight.touched && f.ceilingHeight.invalid" class="text-danger">
-                                  <div *ngIf="f.ceilingHeight.errors.required" translate>claim.requiredField</div>
-                                </div>
                               </div>
                             </div>
                             <div class="row" *ngIf="applicationForm.objectTypeId?.code=='003001'">

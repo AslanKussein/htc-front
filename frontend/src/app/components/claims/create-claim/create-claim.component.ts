@@ -506,10 +506,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
         this.applicationForm.controls["totalArea"].updateValueAndValidity();
         this.applicationForm.controls['livingArea'].setValidators([Validators.required]);
         this.applicationForm.controls["livingArea"].updateValueAndValidity();
-        this.applicationForm.controls['kitchenArea'].setValidators([Validators.required]);
-        this.applicationForm.controls["kitchenArea"].updateValueAndValidity();
-        this.applicationForm.controls['ceilingHeight'].setValidators([Validators.required]);
-        this.applicationForm.controls["ceilingHeight"].updateValueAndValidity();
         this.applicationForm.controls['numberOfBedrooms'].setValidators([Validators.required]);
         this.applicationForm.controls["numberOfBedrooms"].updateValueAndValidity();
         if (this.util.isNullOrEmpty(this.applicationForm?.residentialComplexId)) {
@@ -517,8 +513,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
           this.applicationForm.controls["streetId"].updateValueAndValidity();
           this.applicationForm.controls['houseNumber'].setValidators([Validators.required]);
           this.applicationForm.controls["houseNumber"].updateValueAndValidity();
-          this.applicationForm.controls['ceilingHeight'].setValidators([Validators.required]);
-          this.applicationForm.controls["ceilingHeight"].updateValueAndValidity();
           this.applicationForm.controls['districtId'].setValidators([Validators.required]);
           this.applicationForm.controls["districtId"].updateValueAndValidity();
         } else {
@@ -526,8 +520,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
           this.applicationForm.controls["streetId"].updateValueAndValidity();
           this.applicationForm.controls['houseNumber'].setValidators([Validators.nullValidator]);
           this.applicationForm.controls["houseNumber"].updateValueAndValidity();
-          this.applicationForm.controls['ceilingHeight'].setValidators([Validators.nullValidator]);
-          this.applicationForm.controls["ceilingHeight"].updateValueAndValidity();
           this.applicationForm.controls['districtId'].setValidators([Validators.nullValidator]);
           this.applicationForm.controls["districtId"].updateValueAndValidity();
         }
@@ -551,8 +543,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
         this.applicationForm.controls["totalArea"].updateValueAndValidity();
         this.applicationForm.controls['livingArea'].setValidators([Validators.required]);
         this.applicationForm.controls["livingArea"].updateValueAndValidity();
-        this.applicationForm.controls['kitchenArea'].setValidators([Validators.required]);
-        this.applicationForm.controls["kitchenArea"].updateValueAndValidity();
       }
     }
   }
