@@ -1,10 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthenticationService} from "../../services/authentication.service";
 import {first, map} from "rxjs/operators";
 import {NotificationService} from "../../services/notification.service";
 import {UserService} from "../../services/user.service";
+import {NgxUiLoaderService} from "ngx-ui-loader";
 
 @Component({
   selector: 'app-login',
@@ -23,21 +24,22 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private notifyService: NotificationService,
-    private userService: UserService) {
+    private userService: UserService,
+    private ngxLoader: NgxUiLoaderService) {
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(['claims']);
     }
   }
 
   ngOnInit(): void {
+    this.ngxLoader.start()
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
       rememberMe: ['', Validators.nullValidator]
     });
-    this.loginForm.username = localStorage.getItem('username');
-    this.loginForm.password = localStorage.getItem('password');
     this.loginForm.rememberMe = localStorage.getItem('username') != null;
+    this.ngxLoader.stop()
   }
 
   get f() {
@@ -45,14 +47,17 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.ngxLoader.start()
     this.submitted = true;
 
     if (this.loginForm.value.username == null) {
       this.notifyService.showError("Ошибка", "Введите Логин для входа")
+      this.ngxLoader.stop()
       return;
     }
     if (this.loginForm.value.password == null) {
       this.notifyService.showError("Ошибка", "Введите Пароль для входа")
+      this.ngxLoader.stop()
       return;
     }
 
@@ -60,6 +65,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.value.username.toLocaleUpperCase() == 'ADMIN') {
       this.notifyService.showError('Ошибка', 'Не корректные данные для входа учетка admin не доступен');
       this.loading = false;
+      this.ngxLoader.stop()
       return;
     }
     // this.authenticationService.login('admin', 'lCogB5%U*y5v')
@@ -85,5 +91,7 @@ export class LoginComponent implements OnInit {
           this.notifyService.showError('Ошибка', 'Не корректные данные для входа')
           this.loading = false;
         });
+
+    this.ngxLoader.stop()
   }
 }
