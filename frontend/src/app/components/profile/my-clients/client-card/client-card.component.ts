@@ -97,7 +97,8 @@ export class ClientCardComponent implements OnInit {
     gender: '',
     firstName: '',
     surname: '',
-    patronymic: ''
+    patronymic: '',
+    addPhoneNumbers:[]
   };
 
   ngOnInit(): void {
@@ -189,6 +190,7 @@ export class ClientCardComponent implements OnInit {
       firstName: this.profile?.firstName,
       surname: this.profile?.surname,
       patronymic: this.profile?.patronymic,
+      addPhoneNumbers: this.profile?.addPhoneNumbers,
     };
   }
 
@@ -197,7 +199,7 @@ export class ClientCardComponent implements OnInit {
       this.notifyService.showError('Пожалуйста, заполните все поля', "");
       return;
     }
-
+    this.formClient.addPhoneNumbers=['1d11','6s66']
      this.clientsService.updateClientById(this.formClient)  .subscribe(data => {
        if (data != null) {
          this.notifyService.showSuccess('success', 'Успешно сохранено');
