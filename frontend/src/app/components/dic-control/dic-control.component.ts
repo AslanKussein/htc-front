@@ -141,6 +141,7 @@ export class DicControlComponent implements OnInit {
     this.loadDictionary();
     this.loadResidenceComplex(1);
     this.resident = true;
+    this.dicName = 'residential-complexes';
 
   }
 
@@ -293,8 +294,10 @@ export class DicControlComponent implements OnInit {
   }
 
   submit() {
+    console.log(this.actions,this.dicName)
     if (this.actions == 'ADD') {
       if (this.dicName == 'residential-complexes') {
+        console.log(this.formRes)
         if (this.util.isNullOrEmpty(this.formRes.cityId) || this.util.isNullOrEmpty(this.formRes.streetId) || this.util.isNullOrEmpty(this.formRes.houseNumber)) {
           this.notifyService.showError('Пожалуйста, заполните все поля', "");
           return;
