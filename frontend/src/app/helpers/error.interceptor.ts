@@ -3,6 +3,7 @@ import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor} from '@angular/com
 import {BehaviorSubject, Observable, throwError} from 'rxjs';
 import {catchError, filter, switchMap, take} from 'rxjs/operators';
 import {AuthenticationService} from "../services/authentication.service";
+import {ConfigService} from "../services/config.service";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -10,14 +11,15 @@ export class ErrorInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  constructor(private authenticationService: AuthenticationService) {
+  constructor(private authenticationService: AuthenticationService,
+              private configService: ConfigService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
       if (err.status === 401) {
         return this.handle401Error(request, next);
-      } else if (err.status === 400) {
+      } else if (err.status === 400 && err.url.includes(this.configService.authUrl)) {
         this.authenticationService.showAuthModal();
       }
 
@@ -27,6 +29,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+
     if (!this.isRefreshing) {
 
       this.isRefreshing = true;
@@ -35,8 +38,14 @@ export class ErrorInterceptor implements HttpInterceptor {
       return this.authenticationService.refreshToken().pipe(
         switchMap((token: any) => {
           this.isRefreshing = false;
-          this.refreshTokenSubject.next(token.jwt);
-          return next.handle(this.authenticationService.addToken(request, token.jwt));
+          this.refreshTokenSubject.next(token.access_token);
+          this.authenticationService.storeTokens(token);
+          request = request.clone({
+            setHeaders: {
+              Authorization: `Bearer ${token.access_token}`
+            }
+          });
+          return next.handle(request);
         }));
 
     } else {
@@ -44,10 +53,13 @@ export class ErrorInterceptor implements HttpInterceptor {
         filter(token => token != null),
         take(1),
         switchMap(jwt => {
-          return next.handle(this.authenticationService.addToken(request, jwt));
+          request = request.clone({
+            setHeaders: {
+              Authorization: `Bearer ${jwt}`
+            }
+          });
+          return next.handle(request);
         }));
     }
   }
-
-
 }

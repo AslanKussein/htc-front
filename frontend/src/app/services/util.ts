@@ -45,15 +45,15 @@ export class Util {
     return list;
   }
 
-  toSelectArrayRoles(data, idField = 'id', labelField = this.getDicName()) {
+  toSelectArrayRoles(data, idField = 'id') {
     const list = [];
     if (data) {
       const len = data.data.length;
       for (let i = 0; i < len; i++) {
         list.push({
           value: '' + data.data[i][idField],
-          label: data.data[i][labelField],
-          description: data.data[i]['description']
+          label: data.data[i]['surname']?.toUpperCase() + ' ' + data.data[i]['name']?.toUpperCase() + ' (' + data.data[i]['applicationCount'] + ')',
+          applicationCount: data.data[i]['applicationCount']
         });
       }
     }

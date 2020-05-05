@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
   applicationLightForm: any;
   applicationLightDto: ApplicationLightDto;
   operationType: Dic[];
+  agentList: Dic[];
   claimLightData = [];
   totalItems = 0;
   itemsPerPage = 10;
@@ -48,8 +49,8 @@ export class HomeComponent implements OnInit {
     this.dicService.getDics('OPERATION_TYPES').subscribe(data => {
       this.operationType = this.util.toSelectArray(data);
     });
-    this.userService.getAgents().subscribe(data => {
-      console.log(data)
+    this.userService.getAgents().subscribe(obj => {
+      this.agentList = this.util.toSelectArrayRoles(obj, 'login');
     });
 
     this.findClaims(1);
@@ -61,6 +62,7 @@ export class HomeComponent implements OnInit {
     this.applicationLightDto.note = this.applicationLightForm?.note;
     this.applicationLightDto.agentLogin = this.applicationLightForm?.agentLogin;
     this.applicationLightDto.clientDto = new ClientDto();
+    this.applicationLightDto.clientDto.id = this.applicationLightForm?.clientId;
     this.applicationLightDto.clientDto.firstName = this.applicationLightForm?.name;
     this.applicationLightDto.clientDto.surname = this.applicationLightForm?.surName;
     this.applicationLightDto.clientDto.patronymic = this.applicationLightForm?.patronymic;
@@ -70,6 +72,7 @@ export class HomeComponent implements OnInit {
   clear() {
     this.applicationLightForm = this.formBuilder.group({
       id: [null, Validators.nullValidator],
+      clientId: [null, Validators.nullValidator],
       operationTypeId: [null, Validators.required],
       surName: [null, Validators.nullValidator],
       name: [null, Validators.nullValidator],
@@ -93,6 +96,8 @@ export class HomeComponent implements OnInit {
           this.applicationLightForm.surName = !this.util.isNullOrEmpty(res.surname) ? res.surname : null;
           this.applicationLightForm.patronymic = !this.util.isNullOrEmpty(res.patronymic) ? res.patronymic : null;
           this.applicationLightForm.phoneNumber = res.phoneNumber;
+          this.applicationLightForm.phoneNumber = res.phoneNumber;
+          this.applicationLightForm.clientId = res?.id;
         });
     }
   }

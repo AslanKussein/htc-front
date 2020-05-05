@@ -56,11 +56,6 @@ export class ClaimService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    if (error instanceof ErrorEvent) {
-      console.error('An error occurred:', error.message);
-    } else {
-    }
-    return throwError(
-      error);
+   console.log(error)
   }
 }

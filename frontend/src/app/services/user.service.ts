@@ -36,6 +36,14 @@ export class UserService {
     );
   }
 
+  getAgentsToAssign(): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiViewManagerUrl}/agents/getAgentsToAssign`, {}).pipe(
+      tap(data => {
+      }),
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error instanceof ErrorEvent) {
       console.error('An error occurred:', error.message);

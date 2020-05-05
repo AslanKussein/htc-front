@@ -39,13 +39,29 @@
                      data-parent="#accordionaboutDeal">
                   <div class="card-body">
                     <div class="row">
+                      <div class="col-sm" *ngIf="this.applicationId">
+                        <label>ID</label>
+                        <input type="text" class="form-control" readonly [value]="this.applicationId"/>
+                      </div>
+                      <div class="col-sm">
+                        <label >Выберите агента</label>
+                        <ng-select
+                          [items]="agentList"
+                          [(ngModel)]="applicationForm.agent"
+                          formControlName="agent"
+                          bindValue="value"
+                          placeholder="{{ 'patterns.chooseElement' | translate }}">
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="row">
                       <div class="col-sm"
                            [hidden]="hasShowApplicationGroup('VIEW_SALE_DEAL_INFO') && hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO') && hasShowApplicationGroup('UPDATE_DEAL_DATA')">
                         <label translate>claim.operation
                           <span class="text-danger" *ngIf="!applicationForm.operationTypeId">&nbsp;*</span>
                         </label>
                         <ng-select
-                          [class.disabledDev]="hasShowApplicationGroup('UPDATE_DEAL_DATA') || this.applicationId"
+                          [class.disabledDev]="hasShowApplicationGroup('UPDATE_DEAL_DATA') && this.applicationId"
                           [items]="operationType"
                           [(ngModel)]="applicationForm.operationTypeId"
                           formControlName="operationTypeId"
@@ -215,8 +231,9 @@
                       <div class="row">
                         <div class="col-sm">
                           <label>Номер договора</label>
-                          <input type="text" class="form-control"
-                                 [readonly]="hasShowApplicationGroup('UPDATE_DEAL_DATA')"/>
+                          <input type="text" class="form-control" minlength="10" formControlName="contractNumber"
+                                 [(ngModel)]="applicationForm.contractNumber"
+                                 [readonly]="hasShowApplicationGroup('UPDATE_DEAL_DATA')" />
                         </div>
                       </div>
                       <div class="row">

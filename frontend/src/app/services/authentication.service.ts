@@ -119,7 +119,7 @@ export class AuthenticationService {
     });
   }
 
-  private storeTokens(tokens: User) {
+  public storeTokens(tokens: User) {
     localStorage.setItem(this.JWT_TOKEN, tokens.access_token);
     localStorage.setItem(this.REFRESH_TOKEN, tokens.refresh_token);
   }

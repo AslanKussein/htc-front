@@ -22,9 +22,10 @@ export class ApplicationDto implements BaseEntity {
   public note?: string;//Примечание
   public clientDto?: ClientDto;//Модель сущности Клиент
   public realPropertyRequestDto?: RealPropertyRequestDto;//Модель сущности недвижимости
+  private agent: string;//Логин агента, на кого назначена заявка
+  private contractNumber: string;//Номер договора
 
-
-  constructor(operationTypeId: number, objectPrice: number, mortgage: boolean, encumbrance: boolean, sharedOwnershipProperty: boolean, exchange: boolean, probabilityOfBidding: boolean, theSizeOfTrades: number, possibleReasonForBiddingIdList: number, contractPeriod: any, amount: number, isCommissionIncludedInThePrice: boolean, note: string) {
+  constructor(operationTypeId: number, objectPrice: number, mortgage: boolean, encumbrance: boolean, sharedOwnershipProperty: boolean, exchange: boolean, probabilityOfBidding: boolean, theSizeOfTrades: number, possibleReasonForBiddingIdList: number, contractPeriod: any, amount: number, isCommissionIncludedInThePrice: boolean, note: string, agent: string, contractNumber: string) {
     this.operationTypeId = operationTypeId;
     this.objectPrice = objectPrice;
     this.mortgage = mortgage;
@@ -38,5 +39,7 @@ export class ApplicationDto implements BaseEntity {
     this.amount = amount;
     this.isCommissionIncludedInThePrice = isCommissionIncludedInThePrice;
     this.note = note;
+    this.agent = agent;
+    this.contractNumber = contractNumber;
   }
 }

@@ -51,6 +51,7 @@ export class LoginModalComponent implements OnInit {
       return;
     }
     this.authenticationService.login(this.loginForm, 2);
+    this.modalRef.hide();
 
     this.ngxLoader.stop()
   }
