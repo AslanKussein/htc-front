@@ -1,11 +1,15 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams, HttpRequest} from '@angular/common/http';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {catchError, map, mapTo, tap} from 'rxjs/operators';
+import {catchError, first, map, mapTo, tap} from 'rxjs/operators';
 import {User} from "../models/users";
 import {ConfigService} from "./config.service";
 import {Util} from "./util";
 import {UserService} from "./user.service";
+import {ModalComponent} from "../components/claims/create-claim/modal.window/modal.component";
+import {LoginModalComponent} from "../components/login/login-modal/login-modal.component";
+import {BsModalService} from "ngx-bootstrap";
+import {NotificationService} from "./notification.service";
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService {
@@ -21,7 +25,10 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient,
               private configService: ConfigService,
-              private util: Util) {
+              private util: Util,
+              private modalService: BsModalService,
+              private userService: UserService,
+              private notifyService: NotificationService) {
     this.currentUserSubject = new BehaviorSubject<User>(this.util.getCurrentUser());
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -30,7 +37,32 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
-  login(loginForm: any) {
+  login(loginForm: any, id: number) {
+    this.loginIDP(loginForm?.value)
+      .pipe(first())
+      .subscribe(
+        datax => {
+          this.userService.findUserByLogin().subscribe(data => {
+            if (data != null) {
+              datax.name = data.name
+              datax.surname = data.surname
+              datax.login = data.login
+              datax.roles = data.roles
+              datax.group = data.group
+              datax.id = data.id
+              localStorage.setItem('currentUser', JSON.stringify(datax));
+            }
+          });
+          if (id == 1) {
+            this.util.dnHref('/home')
+          }
+        },
+        error => {
+          this.notifyService.showError('Ошибка', 'Не корректные данные для входа')
+        });
+  }
+
+  loginIDP(loginForm: any) {
 
     const body_ = new HttpParams()
       .set('username', loginForm.username)
@@ -64,6 +96,15 @@ export class AuthenticationService {
     localStorage.removeItem(this.JWT_TOKEN);
     this.currentUserSubject.next(null);
     this.util.dnHref(['/login']);
+  }
+
+  showAuthModal() {
+    this.modalService.show(LoginModalComponent, {
+      class: 'modal-lg',
+      initialState: {
+        centered: true
+      }
+    });
   }
 
   getJwtToken() {
