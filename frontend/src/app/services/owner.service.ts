@@ -18,7 +18,7 @@ export class OwnerService {
 
     params = params.append('phoneNumber', String(number));
 
-    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/clients/search/by-phone-number`, {params: params})
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/api/clients/search/by-phone-number`, {params: params})
       .pipe(
         tap(data => {
         }),
@@ -27,7 +27,7 @@ export class OwnerService {
   }
 
   searchByClientId(clientId: number): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/clients/` + clientId, {});
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/api/clients/` + clientId, {});
   }
 
 

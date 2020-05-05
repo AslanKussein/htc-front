@@ -18,7 +18,7 @@ export class EventsService {
    * @param dto
    */
   addEvent(dto: EventsDTO): Observable<any> {
-    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/events`, dto);
+    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/api/events`, dto);
   }
 
   /**
@@ -26,7 +26,7 @@ export class EventsService {
    * @param id
    */
   getEventById(id: number): Observable<any> {
-    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/events/` + id, {});
+    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/api/events/` + id, {});
   }
 
   /**
@@ -35,7 +35,7 @@ export class EventsService {
    * @param dto
    */
   updateEvent(id: number, dto: EventsDTO): Observable<any> {
-    return this.http.put<any>(`${this.configService.apiDataManagerUrl}/events/` + id, dto);
+    return this.http.put<any>(`${this.configService.apiDataManagerUrl}/api/events/` + id, dto);
   }
 
   /**
@@ -43,6 +43,6 @@ export class EventsService {
    * @param id
    */
   deleteEventById(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.configService.apiDataManagerUrl}/events/` + id, {});
+    return this.http.delete<any>(`${this.configService.apiDataManagerUrl}/api/events/` + id, {});
   }
 }

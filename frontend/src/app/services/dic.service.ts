@@ -23,11 +23,11 @@ export class DicService {
   }
 
   public getResidentialComplexesPageable(search: any): Observable<any> {
-    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/residential-complexes/getAllPageable`, search);
+    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/api/residential-complexes/getAllPageable`, search);
   }
 
   public getResidentialComplexes(): Observable<any> {
-    return this.http.get(`${this.configService.apiDataManagerUrl}/residential-complexes`, {})
+    return this.http.get(`${this.configService.apiDataManagerUrl}/api/residential-complexes`, {})
       .pipe(
         tap(data => {
         }),
@@ -37,7 +37,7 @@ export class DicService {
 
 
   public getResidentialComplexesById(id): Observable<any> {
-    return this.http.get(`${this.configService.apiDataManagerUrl}/residential-complexes/`+id, {})
+    return this.http.get(`${this.configService.apiDataManagerUrl}/api/residential-complexes/`+id, {})
       .pipe(
         tap(data => {
         }),
@@ -86,7 +86,7 @@ export class DicService {
   }
 
   public saveResidentalComplex(obj): Observable<any> {
-    return this.http.post(`${this.configService.apiDataManagerUrl}/residential-complexes`, obj)
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/residential-complexes`, obj)
       .pipe(
         tap(data => {
         }),
@@ -95,7 +95,7 @@ export class DicService {
   }
 
   public updateResidentalComplex(obj): Observable<any> {
-    return this.http.put(`${this.configService.apiDataManagerUrl}/residential-complexes/`+obj.id, obj)
+    return this.http.put(`${this.configService.apiDataManagerUrl}/api/residential-complexes/`+obj.id, obj)
       .pipe(
         tap(data => {
         }),
@@ -104,7 +104,7 @@ export class DicService {
   }
 
   public deleteResidentalComplex(obj): Observable<any> {
-    return this.http.delete(`${this.configService.apiDataManagerUrl}/residential-complexes/`+obj.id)
+    return this.http.delete(`${this.configService.apiDataManagerUrl}/api/residential-complexes/`+obj.id)
       .pipe(
         tap(data => {
         }),

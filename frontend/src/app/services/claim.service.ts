@@ -23,11 +23,11 @@ export class ClaimService {
   }
 
   getClaimById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/applications/` + id, {});
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/api/applications/` + id, {});
   }
 
   public saveClaim(obj): Observable<any> {
-    return this.http.post(`${this.configService.apiDataManagerUrl}/applications`, obj)
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/applications`, obj)
       // return this.http.post(`/ehr/api/resume/put/resume` , obj)
       .pipe(
         tap(data => {
@@ -37,7 +37,7 @@ export class ClaimService {
   }
 
   public updateClaim(id: number, obj: any): Observable<any> {
-    return this.http.put(`${this.configService.apiDataManagerUrl}/applications/` + id, obj)
+    return this.http.put(`${this.configService.apiDataManagerUrl}/api/applications/` + id, obj)
       // return this.http.post(`/ehr/api/resume/put/resume` , obj)
       .pipe(
         tap(data => {
@@ -47,7 +47,7 @@ export class ClaimService {
   }
 
   public saveLightApplication(obj: any): Observable<any> {
-    return this.http.post(`${this.configService.apiDataManagerUrl}/applications/saveLightApplication`, obj)
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/applications/saveLightApplication`, obj)
       .pipe(
         tap(data => {
           console.log(data)
