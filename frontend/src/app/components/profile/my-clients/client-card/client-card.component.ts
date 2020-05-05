@@ -214,7 +214,7 @@ export class ClientCardComponent implements OnInit {
   }
 
 
-  getDataByPhoneNumber(ss){
+  getDataByPhoneNumber(){
     if(this.formClient.phoneNumber.length==10){
       this.clientsService.findClientByPhoneNumber(this.formClient.phoneNumber)  .subscribe(data => {
         if (data != null) {
