@@ -54,6 +54,7 @@ import {AngularYandexMapsModule} from "angular8-yandex-maps";
 import {NavComponent} from "./helpers/nav/nav.component";
 import {FooterComponent} from "./helpers/footer/footer.component";
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { LoginModalComponent } from './components/login/login-modal/login-modal.component';
 
 registerLocaleData(localeRu, localeKz);
 
@@ -87,6 +88,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     YandexMapComponent,
     NavComponent,
     FooterComponent,
+    LoginModalComponent,
   ],
 
   imports: [
