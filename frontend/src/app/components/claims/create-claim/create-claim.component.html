@@ -999,8 +999,8 @@
                               <div class="col-sm" *ngIf="this.applicationForm?.objectTypeId?.code == '003002'">
                                 <label class="control-labels">Канализация</label>
                                 <ng-select
-                                  [items]="heatingSystems"
-                                  [(ngModel)]="applicationForm.heatingSystemId"
+                                  [items]="sewerageSystems"
+                                  [(ngModel)]="applicationForm.sewerageId"
                                   formControlName="heatingSystemId"
                                   bindValue="value"
                                   placeholder="Канализация">
@@ -1009,8 +1009,8 @@
                               <div class="col-sm" *ngIf="this.applicationForm?.objectTypeId?.code == '003002'">
                                 <label class="control-labels">Отопление</label>
                                 <ng-select
-                                  [items]="sewerageSystems"
-                                  [(ngModel)]="applicationForm.sewerageId"
+                                  [items]="heatingSystems"
+                                  [(ngModel)]="applicationForm.heatingSystemId"
                                   formControlName="sewerageId"
                                   bindValue="value"
                                   placeholder="Отопление">
