@@ -14,7 +14,7 @@ export class DicService {
   }
 
   public getDics(dicName): Observable<any> {
-    return this.http.get(`${this.configService.apiDataManagerUrl}/dictionaries/` + dicName, {})
+    return this.http.get(`${this.configService.apiDataManagerUrl}/open-api/dictionaries/` + dicName, {})
       .pipe(
         tap(data => {
         }),
@@ -58,7 +58,7 @@ export class DicService {
   }
 
   public saveDic(obj,dicName): Observable<any> {
-    return this.http.post(`${this.configService.apiDataManagerUrl}/dictionaries/`+dicName, obj)
+    return this.http.post(`${this.configService.apiDataManagerUrl}/open-api/dictionaries/`+dicName, obj)
       .pipe(
         tap(data => {
         }),
@@ -67,7 +67,7 @@ export class DicService {
   }
 
   public updateDic(obj,dicName): Observable<any> {
-    return this.http.put(`${this.configService.apiDataManagerUrl}/dictionaries/`+dicName+'/'+obj.id, obj)
+    return this.http.put(`${this.configService.apiDataManagerUrl}/open-api/dictionaries/`+dicName+'/'+obj.id, obj)
       .pipe(
         tap(data => {
         }),
@@ -76,7 +76,7 @@ export class DicService {
   }
 
   public deleteDic(obj,dicName): Observable<any> {
-    return this.http.delete(`${this.configService.apiDataManagerUrl}/dictionaries/`+dicName+'/'+obj.id)
+    return this.http.delete(`${this.configService.apiDataManagerUrl}/open-api/dictionaries/`+dicName+'/'+obj.id)
       .pipe(
         tap(data => {
         }),
