@@ -1,4 +1,4 @@
-<div class="card-body card-bg">
+<div class="card-body card-bg" ngxUiLoaderBlurred>
   <div class="card">
     <div class="card-body">
       <!--<div class="container">-->
@@ -211,6 +211,19 @@
                         (pageChanged)="pageChanged($event)">
             </pagination>
 
+            <pagination *ngIf="resident"
+                        [(ngModel)]="currentPage"
+                        [totalItems]="totalItems"
+                        [itemsPerPage]="itemsPerPage"
+                        [maxSize]="10"
+                        [rotate]="true"
+                        [boundaryLinks]="true"
+                        previousText="&lsaquo;"
+                        nextText="&rsaquo;"
+                        firstText="&laquo;"
+                        lastText="&raquo;"
+                        (pageChanged)="pageChanged($event)">
+            </pagination>
 
             <!--{{clickColumnDic.nameEn}}-->
             <table *ngIf="!resident" class="table table-bordered text-center table-sm">
@@ -496,9 +509,6 @@
           </button>
            </div>
       </ng-template>
-
-
-      <!--</div>-->
     </div>
   </div>
 </div>

@@ -26,6 +26,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {RoleManagerService} from "../../../services/roleManager.service";
 import {catchError, tap} from "rxjs/operators";
 import {HttpParams} from "@angular/common/http";
+import {moment} from "ngx-bootstrap/chronos/test/chain";
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   sortMaterials: Dic[] = [];
   roomCountDic: Dic[];
   possibleReasonForBidding: Dic[];
+  possibleReasonForBiddingSort: Dic[];
   applicationForm: any;
   image: any;
   dicDynamic: Dic[];
@@ -197,11 +199,31 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
-  hasShow(code: string, operation: string) {
+  hasShowClientGroup(operation: string) {
     if (!this.util.isNullOrEmpty(this.roles)) {
       for (const data of this.roles) {
-        if (data.code === code) {
-          return data.operations.indexOf(operation) != 0;
+        if (data.code === 'CLIENT_GROUP') {
+          return !data.operations.includes(operation);
+        }
+      }
+    }
+  }
+
+  hasShowApplicationGroup(operation: string) {
+    if (!this.util.isNullOrEmpty(this.roles)) {
+      for (const data of this.roles) {
+        if (data.code === 'APPLICATION_GROUP') {
+          return !data.operations.includes(operation);
+        }
+      }
+    }
+  }
+
+  hasShowRealPropertyGroup(operation: string) {
+    if (!this.util.isNullOrEmpty(this.roles)) {
+      for (const data of this.roles) {
+        if (data.code === 'REAL_PROPERTY_GROUP') {
+          return !data.operations.includes(operation);
         }
       }
     }
@@ -293,6 +315,21 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     });
   }
 
+  setPossibleReasonForBidding() {
+    this.possibleReasonForBiddingSort = [];
+    if (!this.util.isNullOrEmpty(this.possibleReasonForBidding)) {
+      for (const pos of this.possibleReasonForBidding) {
+        if (pos['operationCode'] == this.applicationForm?.operationTypeId?.code) {
+          let m = {};
+          m['value'] = pos['value'];
+          m['label'] = pos['label'];
+          m['code'] = pos['code'];
+          this.possibleReasonForBiddingSort.push(m)
+        }
+      }
+    }
+  }
+
   setHouseOrApartmentsForMaterials() {
     this.sortMaterials = [];
     if (this.applicationForm?.objectTypeId?.code == '003001') {//кв
@@ -339,7 +376,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   searchByPhone() {
     if (this.applicationForm.phoneNumber != null && this.applicationForm.phoneNumber.length == 10 && this.applicationId == null) {
-      this.ngxLoader.start();
       this.ownerService.searchByPhone('7' + this.applicationForm.phoneNumber)
         .subscribe(res => {
           if (!this.util.isNullOrEmpty(res)) {
@@ -353,7 +389,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
             this.applicationForm.gender = null;
           }
         });
-      this.ngxLoader.stop();
     }
   }
 
@@ -506,10 +541,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
         this.applicationForm.controls["totalArea"].updateValueAndValidity();
         this.applicationForm.controls['livingArea'].setValidators([Validators.required]);
         this.applicationForm.controls["livingArea"].updateValueAndValidity();
-        this.applicationForm.controls['kitchenArea'].setValidators([Validators.required]);
-        this.applicationForm.controls["kitchenArea"].updateValueAndValidity();
-        this.applicationForm.controls['ceilingHeight'].setValidators([Validators.required]);
-        this.applicationForm.controls["ceilingHeight"].updateValueAndValidity();
         this.applicationForm.controls['numberOfBedrooms'].setValidators([Validators.required]);
         this.applicationForm.controls["numberOfBedrooms"].updateValueAndValidity();
         if (this.util.isNullOrEmpty(this.applicationForm?.residentialComplexId)) {
@@ -517,8 +548,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
           this.applicationForm.controls["streetId"].updateValueAndValidity();
           this.applicationForm.controls['houseNumber'].setValidators([Validators.required]);
           this.applicationForm.controls["houseNumber"].updateValueAndValidity();
-          this.applicationForm.controls['ceilingHeight'].setValidators([Validators.required]);
-          this.applicationForm.controls["ceilingHeight"].updateValueAndValidity();
           this.applicationForm.controls['districtId'].setValidators([Validators.required]);
           this.applicationForm.controls["districtId"].updateValueAndValidity();
         } else {
@@ -526,8 +555,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
           this.applicationForm.controls["streetId"].updateValueAndValidity();
           this.applicationForm.controls['houseNumber'].setValidators([Validators.nullValidator]);
           this.applicationForm.controls["houseNumber"].updateValueAndValidity();
-          this.applicationForm.controls['ceilingHeight'].setValidators([Validators.nullValidator]);
-          this.applicationForm.controls["ceilingHeight"].updateValueAndValidity();
           this.applicationForm.controls['districtId'].setValidators([Validators.nullValidator]);
           this.applicationForm.controls["districtId"].updateValueAndValidity();
         }
@@ -551,8 +578,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
         this.applicationForm.controls["totalArea"].updateValueAndValidity();
         this.applicationForm.controls['livingArea'].setValidators([Validators.required]);
         this.applicationForm.controls["livingArea"].updateValueAndValidity();
-        this.applicationForm.controls['kitchenArea'].setValidators([Validators.required]);
-        this.applicationForm.controls["kitchenArea"].updateValueAndValidity();
       }
     }
   }

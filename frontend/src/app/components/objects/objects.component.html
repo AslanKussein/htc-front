@@ -1,4 +1,4 @@
-<div class="card-body card-bg">
+<div class="card-body card-bg" ngxUiLoaderBlurred>
   <div class="card">
     <div class="card-body">
       <br/>
@@ -25,7 +25,7 @@
             <div class="col-sm-4">
               <form>
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Комнаты</label>
+                  <label class="col-sm col-form-label text-right">Комнаты</label>
                   <div class="col-sm">
                     <div class="custom-control custom-checkbox">
                       <div class="custom-control custom-radio custom-control-inline">
@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Район</label>
+                  <label class="col-sm col-form-label text-right">Район</label>
                   <div class="col-sm">
                     <ng-select name="districtsId"
                                [items]="districts"
@@ -76,7 +76,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Тип дома</label>
+                  <label class="col-sm col-form-label text-right">Тип дома</label>
                   <div class="col-sm">
                     <ng-select
                       [items]="homeTypes"
@@ -88,7 +88,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Жилой комплекс</label>
+                  <label class="col-sm col-form-label text-right">Жилой комплекс</label>
                   <div class="col-sm">
                     <ng-select
                       [items]="residentialComplexes"
@@ -100,7 +100,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Номер квартиы</label>
+                  <label class="col-sm col-form-label text-right">Номер квартиы</label>
                   <div class="col-sm">
                     <input type="number" class="form-control"
                            [(ngModel)]="formData.numKvart" [ngModelOptions]="{standalone: true}">
@@ -108,13 +108,12 @@
                 </div>
               </form>
 
-
             </div>
 
             <div class="col-sm-3">
               <form>
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Цена</label>
+                  <label class="col-sm col-form-label text-right">Цена</label>
                   <div class="col-sm row">
                     <input type="number" mino class="col-sm form-control" [(ngModel)]="formData.priceFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -125,7 +124,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Этаж</label>
+                  <label class="col-sm col-form-label text-right">Этаж</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.floorFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -137,7 +136,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Этажей в доме</label>
+                  <label class="col-sm col-form-label text-right">Этажей в доме</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.floorsFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -149,7 +148,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">В залоге</label>
+                  <label class="col-sm col-form-label text-right">В залоге</label>
                   <div class="col-sm">
                     <ng-select
                       [items]="dicDynamic" bindValue="value"
@@ -165,7 +164,7 @@
             <div class="col-sm-3">
               <form>
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Общая площадь</label>
+                  <label class="col-sm col-form-label text-right">Общая площадь</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.totalAreaFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -177,7 +176,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Жилая площадь</label>
+                  <label class="col-sm col-form-label text-right">Жилая площадь</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.livingSpaceFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -189,7 +188,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Площадь кухни</label>
+                  <label class="col-sm col-form-label text-right">Площадь кухни</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.kitchenAreaFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -213,7 +212,7 @@
             <div class="col-sm-4">
               <form>
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Комнаты</label>
+                  <label class="col-sm col-form-label text-right">Комнаты</label>
                   <div class="col-sm">
                     <div class="custom-control custom-checkbox">
                       <div class="custom-control custom-radio custom-control-inline">
@@ -252,7 +251,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Район</label>
+                  <label class="col-sm col-form-label text-right">Район</label>
                   <div class="col-sm">
                     <ng-select name="districtsId"
                                [items]="districts" bindValue="value"
@@ -262,7 +261,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Тип дома</label>
+                  <label class="col-sm col-form-label text-right">Тип дома</label>
                   <div class="col-sm">
                     <ng-select name="typeHome"
                                [items]="homeTypes" bindValue="value"
@@ -272,7 +271,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Расстояние от центра города</label>
+                  <label class="col-sm col-form-label text-right">Расстояние от центра города</label>
                   <div class="col-sm">
                     <input type="number" class="form-control" [(ngModel)]="formData.distance"
                            [ngModelOptions]="{standalone: true}">
@@ -280,23 +279,19 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Гараж</label>
+                  <label class="col-sm col-form-label text-right">Гараж</label>
                   <div class="col-sm">
                     <input type="checkbox" class="form-control" style="margin-left: -42%" [(ngModel)]="formData.garage"
                            [ngModelOptions]="{standalone: true}">
                   </div>
                 </div>
-
-
               </form>
-
-
             </div>
 
             <div class="col-sm-3">
               <form>
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Цена</label>
+                  <label class="col-sm col-form-label text-right">Цена</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.priceFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -307,7 +302,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Этаж</label>
+                  <label class="col-sm col-form-label text-right">Этаж</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.floorFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -319,16 +314,15 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Чердак</label>
+                  <label class="col-sm col-form-label text-right">Чердак</label>
                   <div class="col-sm">
                     <input type="checkbox" class="form-control" style="margin-left: -42%" [(ngModel)]="formData.attic"
                            [ngModelOptions]="{standalone: true}">
                   </div>
                 </div>
 
-
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">В залоге</label>
+                  <label class="col-sm col-form-label text-right">В залоге</label>
                   <div class="col-sm">
                     <ng-select name="zalog"
                                [items]="dicDynamic" bindValue="value"
@@ -338,13 +332,12 @@
                   </div>
                 </div>
               </form>
-
             </div>
 
             <div class="col-sm-3">
               <form>
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Общая площадь</label>
+                  <label class="col-sm col-form-label text-right">Общая площадь</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.totalAreaFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -356,7 +349,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Жилая площадь</label>
+                  <label class="col-sm col-form-label text-right">Жилая площадь</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.livingSpaceFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -368,7 +361,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Площадь кухни</label>
+                  <label class="col-sm col-form-label text-right">Площадь кухни</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.kitchenAreaFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -378,11 +371,8 @@
 
                   </div>
                 </div>
-
               </form>
-
             </div>
-
           </div>
         </div>
 
@@ -393,7 +383,7 @@
             <div class="col-sm-4">
               <form>
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Комнаты</label>
+                  <label class="col-sm col-form-label text-right">Комнаты</label>
                   <div class="col-sm">
                     <div class="custom-control custom-checkbox">
                       <div class="custom-control custom-radio custom-control-inline">
@@ -432,7 +422,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Район</label>
+                  <label class="col-sm col-form-label text-right">Район</label>
                   <div class="col-sm">
                     <ng-select name="districtsId"
                                [items]="districts" bindValue="value"
@@ -443,7 +433,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Тип дома</label>
+                  <label class="col-sm col-form-label text-right">Тип дома</label>
                   <div class="col-sm">
                     <ng-select name="typeHome"
                                [items]="homeTypes" bindValue="value"
@@ -454,7 +444,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Жилой комплекс</label>
+                  <label class="col-sm col-form-label text-right">Жилой комплекс</label>
                   <div class="col-sm">
                     <ng-select name="residentialComplexes"
                                [items]="residentialComplexes" bindValue="value"
@@ -464,7 +454,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Номер квартиы</label>
+                  <label class="col-sm col-form-label text-right">Номер квартиы</label>
                   <div class="col-sm">
                     <input type="number" class="form-control"
                            [(ngModel)]="formData.numKvart" [ngModelOptions]="{standalone: true}">
@@ -478,7 +468,7 @@
             <div class="col-sm-3">
               <form>
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Цена</label>
+                  <label class="col-sm col-form-label text-right">Цена</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.priceFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -489,7 +479,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Этаж</label>
+                  <label class="col-sm col-form-label text-right">Этаж</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.floorFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -501,7 +491,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Этажей в доме</label>
+                  <label class="col-sm col-form-label text-right">Этажей в доме</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.floorsFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -513,7 +503,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">В залоге</label>
+                  <label class="col-sm col-form-label text-right">В залоге</label>
                   <div class="col-sm">
                     <ng-select name="zalog"
                                [items]="dicDynamic" bindValue="value"
@@ -530,7 +520,7 @@
             <div class="col-sm-3">
               <form>
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Общая площадь</label>
+                  <label class="col-sm col-form-label text-right">Общая площадь</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.totalAreaFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -542,7 +532,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Жилая площадь</label>
+                  <label class="col-sm col-form-label text-right">Жилая площадь</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.livingSpaceFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -554,7 +544,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label" style="text-align: right">Площадь кухни</label>
+                  <label class="col-sm col-form-label text-right">Площадь кухни</label>
                   <div class="col-sm row">
                     <input type="number" class="col-sm form-control" [(ngModel)]="formData.kitchenAreaFrom"
                            [ngModelOptions]="{standalone: true}">
@@ -564,76 +554,49 @@
 
                   </div>
                 </div>
-
               </form>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="row ">
-          <div class="col-sm-9"></div>
-          <div class="col-sm-3">
-
-            <div class="row">
-              <div class="form-group col-sm">
-                <button type="button" mdbBtn color="success"
-                        class="btn btn-sm btn-info float-right btn2"
-                        mdbWavesEffect>
-                  <span class="fa fa-map-marker"> Посмотреть на карте</span>
-                </button>
-                <button type="button" mdbBtn color="success" (click)="findObjects(1)"
-                        class="btn btn-sm btn-info float-right btn2"
-                        mdbWavesEffect>
-                  <span class="fa fa-search" translate> search</span>
-                </button>
-                <button type="button" mdbBtn class="btn btn-sm btn-link float-right btn2" (click)="clearFilter()"
-                        translate>
-                  clear
-                </button>
-              </div>
             </div>
           </div>
-
         </div>
 
-
+        <div class="row">
+          <div class="form-group col-sm">
+            <button type="button" mdbBtn color="success"
+                    class="btn btn-sm btn-info float-right btn2"
+                    mdbWavesEffect>
+              <span class="fa fa-map-marker"> Посмотреть на карте</span>
+            </button>
+            <button type="button" mdbBtn color="success" (click)="findObjects(1)"
+                    class="btn btn-sm btn-info float-right btn2"
+                    mdbWavesEffect>
+              <span class="fa fa-search" translate> search</span>
+            </button>
+            <button type="button" mdbBtn class="btn btn-sm btn-link float-right btn2" (click)="clearFilter()"
+                    translate>
+              clear
+            </button>
+          </div>
+        </div>
       </div>
-
-
       <br>
-    </div>
-  </div>
+      <div class="row">
+        <div class="col-sm-2">Найдено всего/</div>
+        <div class="col-sm-3 float-left">
+          <ng-select name="ob"
+                     [items]="objectMy"
+                     [(ngModel)]="objectMyModel"
+                     (changeEvent)="myObjectChange()"
+                     (change)="myObjectChange()"
+                     bindValue="value">
 
-
-</div>
-<div class="row">
-  <h4 style="margin-left: 30px;">Найдено всего / </h4>
-
-  <ng-select name="ob"
-             [items]="objectMy"
-             [(ngModel)]="objectMyModel"
-             (changeEvent)="myObjectChange()"
-             (change)="myObjectChange()"
-             bindValue="value"
-      class="col-sm-2">
-
-  </ng-select>
-
-  <!--<a class="h4 link"  *ngIf="myObject" (click)="myObjects()"> Свои объекты</a>-->
-  <!--<a class="h4" (click)="allObjects() " *ngIf="!myObject"> Все объекты</a>-->
-
-
-
-</div>
-<div class="card-body card-bg">
-  <div class="card">
-    <div class="card-body">
+          </ng-select>
+        </div>
+        <div class="col-sm"></div>
+      </div>
+      <br/>
       <div class="row">
         <div class="col-sm">
-          <table class="table table-bordered text-center table-sm">
+          <table class="table table-bordered table-sm">
             <thead class="text-center">
             <tr>
               <th>№</th>
@@ -678,21 +641,8 @@
                           (pageChanged)="pageChanged($event)">
               </pagination>
             </div>
-            <div class="col-sm">
-              <div class="position-static createClaimBtn">
-                <button type="button" class="btn btn-success btn-circle btn-xl" (click)="dnHref('create-claim')"><i
-                  class="fa fa-plus"></i>
-                </button>
-
-              </div>
-            </div>
-
-
           </div>
-
-
         </div>
-
       </div>
     </div>
   </div>

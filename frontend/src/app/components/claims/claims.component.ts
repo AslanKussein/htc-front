@@ -99,6 +99,7 @@ export class ClaimsComponent implements OnInit {
       searchFilter['applicationStatusList'] = this.formData.applicationStatuses;
     }
 
+    searchFilter['text'] = this.formData.textSearch;
     searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
     searchFilter['pageNumber'] = pageNo - 1;

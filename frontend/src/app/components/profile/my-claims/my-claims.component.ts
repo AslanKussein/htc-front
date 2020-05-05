@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DatePeriod} from "../../../models/common/datePeriod";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ClaimService} from "../../../services/claim.service";
@@ -15,6 +15,7 @@ import {formatDate} from "@angular/common";
 })
 export class MyClaimsComponent implements OnInit {
   text: string;
+
   constructor(private localeService: BsLocaleService,
               private claimService: ClaimService,
               private dicService: DicService,
@@ -22,21 +23,6 @@ export class MyClaimsComponent implements OnInit {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
   }
-
-
-  formData = {
-    typeId: null,
-    applicationStatuses: null,
-    crDateFrom: '',
-    crDateTo: '',
-    lastModifyDateFrom: '',
-    lastModifyDateTo: '',
-    lastCommentDateFrom: '',
-    lastCommentDateTo: '',
-    textSearch: null,
-    myClaim: true
-  };
-
 
   claimData = [];
   loading;
@@ -46,11 +32,7 @@ export class MyClaimsComponent implements OnInit {
 
   ngOnInit(): void {
     this.findClaims(1);
-    }
-  dnHref(href) {
-    this.util.dnHref(href);
   }
-
 
   pageChanged(event: any): void {
     if (this.currentPage !== event.page) {
@@ -59,34 +41,19 @@ export class MyClaimsComponent implements OnInit {
   }
 
   findClaims(pageNo: number) {
-    // this.itemsPerPage = 30;
     this.loading = true;
     let searchFilter = {};
 
-    searchFilter['createDate'] = new DatePeriod(this.formData.crDateFrom, this.formData.crDateTo);
-    searchFilter['changeDate'] = new DatePeriod(this.formData.lastModifyDateFrom, this.formData.lastModifyDateTo);
-    searchFilter['commentDate'] = new DatePeriod(this.formData.lastCommentDateFrom, this.formData.lastCommentDateTo);
-
-    if (!this.util.isNullOrEmpty(this.formData.typeId)) {
-      searchFilter['operationTypeId'] = this.formData.typeId;
-    }
-    searchFilter['my'] = this.formData.myClaim;
-    if (!this.util.isNullOrEmpty(this.formData.applicationStatuses)) {
-      searchFilter['applicationStatusList'] = this.formData.applicationStatuses;
-    }
-
+    searchFilter['my'] = true;
     searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
     searchFilter['text'] = this.text;
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = this.itemsPerPage;
     this.claimService.getClaims(searchFilter).subscribe(res => {
-
-        this.claimData = res.data.data.data;
-        this.totalItems = res.data.total;
-        // this.itemsPerPage = res.data.data.size;
-        this.currentPage = res.data.pageNumber + 1;
-
+      this.claimData = res.data.data.data;
+      this.totalItems = res.data.total;
+      this.currentPage = res.data.pageNumber + 1;
     });
     this.loading = false;
   }

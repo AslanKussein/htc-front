@@ -22,6 +22,10 @@ export class DicService {
       );
   }
 
+  public getResidentialComplexesPageable(search: any): Observable<any> {
+    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/residential-complexes/getAllPageable`, search);
+  }
+
   public getResidentialComplexes(): Observable<any> {
     return this.http.get(`${this.configService.apiDataManagerUrl}/residential-complexes`, {})
       .pipe(

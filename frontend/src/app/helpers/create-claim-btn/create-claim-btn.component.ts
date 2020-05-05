@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Util} from "../../services/util";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-claim-btn',
@@ -8,12 +9,18 @@ import {Util} from "../../services/util";
 })
 export class CreateClaimBtnComponent implements OnInit {
 
-  constructor(private util: Util) { }
+  constructor(private util: Util,
+              private router: Router) {
+  }
 
   ngOnInit(): void {
   }
 
   dnHref(href) {
     this.util.dnHref(href);
+  }
+
+  isShow() {
+    return !['/create-claim', '/login'].includes(this.router.url);
   }
 }
