@@ -197,9 +197,8 @@
               </tr>
               </tbody>
             </table>
-
-            <pagination *ngIf="resident"
-                        [(ngModel)]="currentPage"
+            <pagination [(ngModel)]="currentPage"
+                        *ngIf="resident"
                         [totalItems]="totalItems"
                         [itemsPerPage]="itemsPerPage"
                         [maxSize]="10"

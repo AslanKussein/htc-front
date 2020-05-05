@@ -35,6 +35,7 @@ export class DicService {
       );
   }
 
+
   public getResidentialComplexesById(id): Observable<any> {
     return this.http.get(`${this.configService.apiDataManagerUrl}/residential-complexes/`+id, {})
       .pipe(
