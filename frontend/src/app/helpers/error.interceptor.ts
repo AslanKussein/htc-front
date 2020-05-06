@@ -18,9 +18,15 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
       if (err.status === 401) {
+
         return this.handle401Error(request, next);
       } else if (err.status === 400 && err.url.includes(this.configService.authUrl)) {
-        this.authenticationService.showAuthModal();
+        if (err.error.error_description.includes('Refresh token expired') && err.error.error.includes('invalid_grant')) {
+          this.authenticationService.logout();
+          location.reload(true);
+        } else {
+          this.authenticationService.showAuthModal();
+        }
       }
 
       const error = err.error.message || err.statusText;

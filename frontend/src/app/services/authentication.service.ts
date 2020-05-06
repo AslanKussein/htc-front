@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams, HttpRequest} from '@angular/common/http';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpRequest} from '@angular/common/http';
+import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {catchError, first, map, mapTo, tap} from 'rxjs/operators';
 import {User} from "../models/users";
 import {ConfigService} from "./config.service";
@@ -86,9 +86,10 @@ export class AuthenticationService {
       .set('refresh_token', this.getRefreshToken())
       .set('grant_type', 'refresh_token')
       .set('client_id', this.CLIENT_ID);
-    return this.http.post<any>(`${this.configService.authUrl}`, body_.toString(), this.options).pipe(tap((tokens: User) => {
-      this.storeTokens(tokens);
-    }));
+    return this.http.post<any>(`${this.configService.authUrl}`, body_.toString(), this.options)
+      .pipe(tap((tokens: User) => {
+        this.storeTokens(tokens);
+      }));
   }
 
   logout() {
