@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, Injectable, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Injectable, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ApplicationDto} from "../../../models/createClaim/applicationDto";
 import {Util} from "../../../services/util";
 import {NotificationService} from "../../../services/notification.service";
@@ -24,9 +24,7 @@ import {BigDecimalPeriod} from "../../../models/common/bigDecimalPeriod";
 import {ActivatedRoute} from "@angular/router";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {RoleManagerService} from "../../../services/roleManager.service";
-import {catchError, tap} from "rxjs/operators";
 import {HttpParams} from "@angular/common/http";
-import {moment} from "ngx-bootstrap/chronos/test/chain";
 import {UserService} from "../../../services/user.service";
 
 @Injectable({
@@ -39,6 +37,7 @@ import {UserService} from "../../../services/user.service";
   styleUrls: ['./create-claim.component.scss']
 })
 export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
+
 
   application: ApplicationDto;
   selectedFile: File;
@@ -192,7 +191,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       purchaseInfoDto: [null, Validators.nullValidator],
       apartmentNumber: [null, Validators.nullValidator],
       agent: [null, Validators.nullValidator],
-      contractNumber: [null, Validators.nullValidator],
+      contractNumber: [null, Validators.required],
     });
     this.cdRef.detectChanges();
     this.loadDictionary();
@@ -790,5 +789,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   checkMaxLength(object) {
     if (object.value.length > object.maxLength)
       object.value = object.value.slice(0, object.maxLength)
+  }
+
+  changeTab(tab: string) {
+    if (tab == 'add-event') {
+      this.util.dnHref('create-claim/add-event')
+    }
   }
 }

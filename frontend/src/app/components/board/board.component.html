@@ -1,75 +1,94 @@
 <div class="card-body card-bg" ngxUiLoaderBlurred>
+
   <div class="row">
     <div class="btn-group btn-breadcrumb">
       <a href="#" class="btn btn-primary"><i class="fa fa-home"></i></a>
-      <a href="#" class="btn btn-primary active">Личный кабинет</a>
+      <a  class="btn btn-primary active">Личный кабинет</a>
     </div>
   </div>
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-         aria-selected="true" (click)="sortStatusesDic(3)" translate>board.commonBoard</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-         aria-selected="false" (click)="sortStatusesDic(2)" translate>board.sellBoard</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
-         aria-selected="false" (click)="sortStatusesDic(1)" translate>board.buyerBoard</a>
-    </li>
-  </ul>
-  <div class="text-center" style="font-size: 18px">
-    <span><i class="fa fa-lightbulb-o" style="color: orange"></i> Всего в активе 18 сделок</span>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <span><i class="fa fa-money" style="color: green"></i>  Общая комиссия 1 750 000 тг</span>
-  </div>
-  <br>
-  <div class="row">
-    <div class="col-sm">
-      <span>Фильтры:</span>
-      <button type="button" class="btn btn-sm btn-link">Все</button>
-      <button type="button" class="btn btn-sm btn-link">Адам</button>
-      <button type="button" class="btn btn-sm btn-link">Юрий</button>
-    </div>
 
-  </div>
-  <br>
-  <div class="row" cdkDropListGroup>
-    <div class="col-sm" *ngFor="let data of appStatusesData;let i = index">
-      <div class="alert bg-secondary text-white font-weight-bolder boardTitle text-center" role="alert" translate>
-        <div class="row">
-          <div class="col-sm">{{data.label}}</div>
-          <div class="col-sm-1"><span class="badge badge-danger">{{data.boardData?.data.length}}</span></div>
-        </div>
+  <br/>
+
+  <router-outlet></router-outlet>
+
+  <br/>
+  <div *ngIf="displayBoardContent">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="activeTab == 3 ? 'active' : ''" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+           aria-selected="true" (click)="sortStatusesDic(3)" translate>board.commonBoard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="activeTab == 2 ? 'active' : ''" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+           aria-selected="false" (click)="sortStatusesDic(2)" translate>board.sellBoard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="activeTab == 1 ? 'active' : ''" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+           aria-selected="false" (click)="sortStatusesDic(1)" translate>board.buyerBoard</a>
+      </li>
+    </ul>
+    <div class="text-center" style="font-size: 18px">
+      <span><i class="fa fa-lightbulb-o" style="color: orange"></i> Всего в активе {{applicationCount}} сделок</span>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span><i class="fa fa-money" style="color: green"></i>  Общая комиссия {{totalCommission | mask : 'separator.2' }} ₸</span>
+    </div>
+    <br>
+    <div class="row" *ngIf="this.activeTab != 3">
+      <div class="col-sm">
+        <span>Фильтры:</span>
+        <button type="button" class="btn btn-sm btn-link">Все</button>
+        <button type="button" class="btn btn-sm btn-link">Адам</button>
+        <button type="button" class="btn btn-sm btn-link">Юрий</button>
       </div>
-      <br/>
-      <div *ngIf="data.boardData"
-           cdkDropList
-           [cdkDropListData]="data.boardData.data"
-           class="example-list dropItem"
-           (cdkDropListDropped)="drop($event)">
-        <div *ngFor="let item of data.boardData.data; let i = index" cdkDrag [class]="item.style" >
-          <div class="card">
-            <div class="card-body" [class]="getBgColorBySumm(item.price)">
-              <p class="card-text">{{item.id}} &nbsp;Покупка</p>
-              <p class="card-text">{{item.numberOfRooms}} комнатная, кв {{item.totalArea}}
-                {{item.district.name.nameRu}}
-                <br/>цена: {{item.price}}</p>
-              <i class="fa fa-phone" *ngIf="item.phone"><a href="tel:8{{item.phone}}"
-                                                           class="text-white"> {{item.phone | mask: '+0 (000) 000-0000'}}</a></i>
-            </div>
-            <div class="card-footer">
-              {{item.fullname}}
-            </div>
+    </div>
+    <br>
+    <div class="row" cdkDropListGroup [class.disabledDev]="this.activeTab == 3">
+      <div class="col-sm" *ngFor="let data of appStatusesData;let i = index">
+
+        <div class="alert bg-info text-white font-weight-bolder text-center" role="alert" translate>
+          <div class="row">
+            <div class="col-sm">Комиссия: {{data.boardData.commission ? data.boardData.commission:0 | mask : 'separator.2'}} ₸</div>
           </div>
-          <br/>
+        </div>
+        <div class="alert bg-secondary text-white font-weight-bolder boardTitle text-center" role="alert" translate>
+          <div class="row">
+            <div class="col-sm">{{data.label}} <span
+              class="badge badge-danger">{{data.boardData.applicationLightDtoList?.data?.length}}</span></div>
+          </div>
+        </div>
+        <br/>
+        <div *ngIf="data.boardData"
+             cdkDropList
+             [cdkDropListData]="data.boardData.applicationLightDtoList?.data"
+             class="example-list dropItem"
+             [id]="data.value"
+             (cdkDropListDropped)="drop($event)">
+          <div *ngFor="let item of data.boardData.applicationLightDtoList?.data; let i = index" cdkDrag
+               [class]="item.style" (cdkDragDropped)="changeStatus($event,item, data.value)">
+            <div class="card">
+              <div class="card-body" [class]="getBgColorBySumm(item.price)">
+                <p class="card-text">{{item.id}} &nbsp;{{item.operationType?.name[getDicNameByLanguage()]}}</p>
+                <p class="card-text">
+                  {{item.agentLogin}}<br/>
+                  {{item.numberOfRooms}} комнатная, кв {{item.totalArea}}
+                  <span *ngIf="activeTab == 2">{{item?.residentialComplex ? item?.residentialComplex[getDicNameByLanguage()] : ''}}</span>
+                  <span *ngIf="activeTab == 1">{{item.district?.name[getDicNameByLanguage()]}}</span>
+                  <br/><span>цена: {{item.price | mask : 'separator.2'}}</span></p>
+                <i class="fa fa-phone" *ngIf="item.phone"><a href="tel:8{{item.phone}}"
+                                                             class="text-white"> {{item.phone | mask: '+0 (000) 000-0000'}}</a></i>
+              </div>
+              <div class="card-footer">
+                {{item.clientFullname}}
+              </div>
+            </div>
+            <br/>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <br/>
-  <br/>
-  <br/>
+    <br/>
+    <br/>
+    <br/>
+  </div>
 </div>

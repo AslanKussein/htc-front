@@ -15,7 +15,8 @@
 }
 
 .boardTitle {
-  height: 70px;
+  max-height: 100px;
+  min-height: 70px;
 }
 
 .card-bg {
@@ -28,4 +29,8 @@
 
 .addRight{
   border-right: 1px solid #7f7f7f;
+}
+
+.disabledDev {
+  pointer-events: none!important;
 }

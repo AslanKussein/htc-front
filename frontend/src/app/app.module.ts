@@ -53,8 +53,9 @@ import {YandexMapComponent} from './components/claims/create-claim/yandex-map/ya
 import {AngularYandexMapsModule} from "angular8-yandex-maps";
 import {NavComponent} from "./helpers/nav/nav.component";
 import {FooterComponent} from "./helpers/footer/footer.component";
-import { NgxUiLoaderModule } from 'ngx-ui-loader';
-import { LoginModalComponent } from './components/login/login-modal/login-modal.component';
+import {NgxUiLoaderModule} from 'ngx-ui-loader';
+import {LoginModalComponent} from './components/login/login-modal/login-modal.component';
+import {CloseDealComponent} from "./components/board/close-deal/close-deal.component";
 
 registerLocaleData(localeRu, localeKz);
 
@@ -89,8 +90,8 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     NavComponent,
     FooterComponent,
     LoginModalComponent,
+    CloseDealComponent
   ],
-
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -119,7 +120,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
-    NgxUiLoaderModule
+    NgxUiLoaderModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

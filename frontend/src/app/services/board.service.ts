@@ -24,6 +24,15 @@ export class BoardService {
       );
   }
 
+  changeStatus(data: any) {
+    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/api/applications/changeStatus`, data)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error instanceof ErrorEvent) {
       console.error('An error occurred:', error.message);

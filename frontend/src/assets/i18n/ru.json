@@ -47,7 +47,8 @@
       "kitchenArea": "Кухня",
       "ceilingHeight": "Высота потолков",
       "numberOfBedrooms": "Количество спален",
-      "operationTypeId": "Операция"
+      "operationTypeId": "Операция",
+      "contractNumber": "Номер договора"
     },
     "title": "Заявки",
     "step": "Шаг",
