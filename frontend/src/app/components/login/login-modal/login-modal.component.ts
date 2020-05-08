@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {BsModalRef} from "ngx-bootstrap";
 import {FormBuilder, Validators} from "@angular/forms";
-import {first} from "rxjs/operators";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {NotificationService} from "../../../services/notification.service";
 import {AuthenticationService} from "../../../services/authentication.service";
-import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-login-modal',

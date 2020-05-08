@@ -38,7 +38,6 @@ import {UserService} from "../../../services/user.service";
 })
 export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
-
   application: ApplicationDto;
   selectedFile: File;
   photoList: any[] = [];
@@ -92,7 +91,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.config.notFoundText = 'Данные не найдены';
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
-    this.applicationId = this.actRoute.snapshot.params.id;
+    if (this.util.isNumeric(this.actRoute.snapshot.params.id)) {
+      this.applicationId = Number(this.actRoute.snapshot.params.id);
+    }
   }
 
   get f() {
@@ -755,11 +756,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       .subscribe(data => {
       });
     if (id == 1) {
-      this.photoList.filter(function(item) {
+      this.photoList.filter(function (item) {
         return item !== obj
       })
     } else if (id == 2) {
-      this.photoPlanList.filter(function(item) {
+      this.photoPlanList.filter(function (item) {
         return item !== obj
       })
     } else if (id == 3) {
@@ -773,7 +774,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   removePhoto(data: any) {
     for (const element of data) {
-     this.removeByGuid(element, null);
+      this.removeByGuid(element, null);
     }
   }
 

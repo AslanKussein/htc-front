@@ -17,7 +17,7 @@ export class CloseDealComponent implements OnInit {
               private util: Util,
               private actRoute: ActivatedRoute) {
     this.operationId = this.actRoute.snapshot.params.operationId;
-
+    this.board.displayBoardContent = false;
     this.boardSelect = this.board.boardSelect;
     if (this.util.isNullOrEmpty(this.boardSelect)) {
       this.cancel()
@@ -27,6 +27,7 @@ export class CloseDealComponent implements OnInit {
   cancel() {
     this.board.displayBoardContent = true;
     this.util.dnHref('board');
+    this.board.sortStatusesDic(this.board.activeTab);
   }
 
   ngOnInit(): void {

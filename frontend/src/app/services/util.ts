@@ -3,6 +3,7 @@ import {language} from "../../environments/language";
 import {Router} from "@angular/router";
 import {Dic} from "../models/dic";
 import {ConfigService} from "./config.service";
+import {isArray} from "rxjs/internal-compatibility";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,9 @@ export class Util {
   dnHref(href) {
     localStorage.setItem('url', href);
     this.router.navigate([href]);
+  }
+  navigateByUrl(href) {
+    this.router.navigateByUrl(href);
   }
 
   isNullOrEmpty(e: any) {
@@ -190,5 +194,13 @@ export class Util {
   generatorFullUrl(uuid: string) {
     const fm = `${this.configService.apiFileManagerUrl}`;
     return fm + '/download/' + uuid + '?access_token=' + this.getCurrentUser().access_token;
+  }
+
+  isNumeric(val: any): val is number | string {
+    // parseFloat NaNs numeric-cast false positives (null|true|false|"")
+    // ...but misinterprets leading-number strings, particularly hex literals ("0x...")
+    // subtraction forces infinities to NaN
+    // adding 1 corrects loss of precision from parseFloat (#15100)
+    return !isArray(val) && (val - parseFloat(val) + 1) >= 0;
   }
 }

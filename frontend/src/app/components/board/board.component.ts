@@ -23,7 +23,7 @@ export class BoardComponent implements OnInit {
   private _boardSelect: Board;
   totalCommission: number;
   applicationCount: number;
-  activeTab: number = 1;
+  activeTab: number = 3;
   displayBoardContent: boolean = true;
 
   get boardSelect(): Board {
@@ -86,7 +86,7 @@ export class BoardComponent implements OnInit {
     } else if (this.activeTab == 2) {
       ids = [1, 2, 3, 4, 5, 6, 7]
     } else if (this.activeTab == 1) {
-      ids = [1, 3, 6, 7]
+      ids = [1, 2, 3, 6, 10, 7]
     }
     return ids;
   }
@@ -126,6 +126,31 @@ export class BoardComponent implements OnInit {
     if (parseInt(event.previousContainer.id) > parseInt(event.container.id)) {
       return
     }
+    let currentStatusId = parseInt(event.container.id);
+    let prevStatusId = parseInt(event.previousContainer.id);
+
+    if (prevStatusId == 1 && currentStatusId != 2) {
+      return;
+    }
+    if (prevStatusId == 2 && currentStatusId != 3) {
+      return;
+    }
+    if (this.activeTab == 2) {
+      if (prevStatusId == 3 && currentStatusId != 6) {
+        return;
+      }
+      if (prevStatusId == 6 && currentStatusId != 7) {
+        return;
+      }
+    } else if (this.activeTab == 1) {
+
+      if (prevStatusId == 6 && currentStatusId != 10) {
+        return;
+      }
+      if (prevStatusId == 10 && currentStatusId != 7) {
+        return;
+      }
+    }
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -150,6 +175,7 @@ export class BoardComponent implements OnInit {
    "id": 7, Закрытие сделки
    "id": 8, Успешно
    "id": 9, Завершен
+   "id": 10, Договор о задатке/авансе
    * @param event
    * @param item
    * @param prevStatusId
@@ -158,39 +184,48 @@ export class BoardComponent implements OnInit {
     if (parseInt(event.previousContainer.id) > parseInt(event.container.id)) {
       return
     }
+    this._boardSelect = item;
+
     let currentStatusId = parseInt(event.container.id);
-    if (currentStatusId == 7) {
-      this._boardSelect = item;
-      this.util.dnHref('board/close-deal/' + this.activeTab);
-      this.displayBoardContent = false;
-
-    }
-    if (this.activeTab == 2) {// воронка покупателей
-      if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
-        alert('add event')
-      } else if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
-        alert('create dogovor')
-      } else if (prevStatusId == 3 && currentStatusId == 4) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
-        alert('create dogovor')
-      } else {
-        return;
-      }
-    }
-
-
-    if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
-      alert('add event')
-    }
-    if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
-      alert('create dogovor')
-    }
 
     let data = {applicationId: item.id, statusId: currentStatusId};
-    console.log(event.container)
-    this.boardService.changeStatus(data).subscribe(res => {
 
-      console.log(res)
-    })
+    if (this.activeTab == 1) {// воронка покупателей
+      if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
+        this.openInnerPage('board/add-event');
+      } else if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
+        alert('create dogovor')
+      } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.3. С "Договор на оказание услуг *" на "Показ *"
+        this.moveStatus(data);
+      } else if (prevStatusId == 6 && currentStatusId == 10) { // 2.4. С "Показ *" на "Договор о задатке/авансе *"
+        alert('БУДЕТ ССЫЛКА')
+      } else if (prevStatusId == 10 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
+        this.openInnerPage('board/close-deal/' + this.activeTab);
+      }
+    } else if (this.activeTab == 2) {
+      if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
+        this.openInnerPage('board/add-event');
+      } else if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
+        alert('create dogovor')
+      } else if (prevStatusId == 3 && (currentStatusId == 4 || currentStatusId == 5)) {// С "Договор на оказание услуг *" на "Фотосет", "Реклама"
+        this.moveStatus(data);
+      } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.4. С "Договор на оказание услуг *" на "Показ *"
+        this.moveStatus(data);
+      } else if (prevStatusId == 6 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
+        this.openInnerPage('board/close-deal/' + this.activeTab);
+      }
+    }
     this.sortStatusesDic(this.activeTab);
+  }
+
+  openInnerPage(url: string) {
+    this.util.dnHref(url);
+    this.displayBoardContent = false;
+  }
+
+  moveStatus(data: any) {
+    this.boardService.changeStatus(data).subscribe(res => {
+      this.sortStatusesDic(this.activeTab);
+    })
   }
 }

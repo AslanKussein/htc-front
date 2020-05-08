@@ -16,10 +16,12 @@ import {YandexMapComponent} from "./components/claims/create-claim/yandex-map/ya
 import {NewsComponent} from "./components/news/news.component";
 import {CloseDealComponent} from "./components/board/close-deal/close-deal.component";
 import {ActsComponent} from "./components/claims/create-claim/acts/acts.component";
+import {AddEventComponent} from "./components/board/add-event/add-event.component";
 
 // определение дочерних маршрутов
 const itemRoutes: Routes = [
   {path: 'close-deal/:operationId', component: CloseDealComponent, canActivate: [AuthGuard]},
+  {path: 'add-event', component: AddEventComponent, canActivate: [AuthGuard]},
 ];
 
 const createClaimChild: Routes = [
