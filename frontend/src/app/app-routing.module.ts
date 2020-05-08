@@ -39,7 +39,7 @@ const routes: Routes = [
   {path: 'yandex-map', component: YandexMapComponent, canActivate: [AuthGuard]},
   {path: 'news', component: NewsComponent, canActivate: [AuthGuard]},
   {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
-  {path: 'create-claim/:id', component: CreateClaimComponent, canActivate: [AuthGuard]},
+  {path: 'create-claim/:id', component: CreateClaimComponent, canActivate: [AuthGuard], children: createClaimChild},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate], children: createClaimChild},
 ];
 

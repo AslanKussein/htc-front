@@ -813,6 +813,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   changeTab(tab: string) {
     if (tab == 'add-event') {
       this.util.dnHref('create-claim/add-event')
+    } else if (tab == 'create') {
+      this.util.dnHref('create-claim')
     }
   }
 }

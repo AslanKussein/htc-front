@@ -23,6 +23,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
+      this.ngxLoader.stop();
       if (err.status === 401) {
         return this.handle401Error(request, next);
       } else if (err.status === 400) {
@@ -40,7 +41,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       } else {
         this.notificationService.showInfo('Информация', err.error.message)
       }
-      this.ngxLoader.stop();
+
       const error = err.error.message || err.statusText;
       return throwError(error);
     }))
