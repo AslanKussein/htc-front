@@ -93,6 +93,22 @@ export class Util {
     return fieldName;
   }
 
+  getError() {
+    let fieldName;
+    switch (this._language.language) {
+      case "kz":
+        fieldName = 'kk';
+        break;
+      case "en":
+        fieldName = 'en';
+        break;
+      default:
+        fieldName = 'ru';
+        break;
+    }
+    return fieldName;
+  }
+
   toSelectArrayResidenceComplex(data) {
     const list = [];
     if (data) {

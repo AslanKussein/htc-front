@@ -9,7 +9,7 @@ import {
   CalendarEventTimesChangedEvent,
   CalendarView,
 } from 'angular-calendar';
-import { CustomDateFormatter } from './customDateFormatter';
+import {CustomDateFormatter} from './customDateFormatter';
 import {EventsService} from "../../../services/events.service";
 
 const colors: any = {
@@ -184,5 +184,14 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  getEventForCalendar() {
+    let searchParams = {};
+    searchParams['from'] = this.viewDate;
+    searchParams['to'] = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 0);
+    this.eventsService.getEventsForCalendar(searchParams).subscribe(obj => {
+      console.log(obj)
+    });
   }
 }

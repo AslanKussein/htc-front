@@ -20,7 +20,7 @@ export class BoardService {
       .pipe(
         tap(data => {
         }),
-        catchError(this.handleError)
+        catchError(BoardService.handleError)
       );
   }
 
@@ -29,18 +29,11 @@ export class BoardService {
       .pipe(
         tap(data => {
         }),
-        catchError(this.handleError)
+        catchError(BoardService.handleError)
       );
   }
 
-  private handleError(error: HttpErrorResponse) {
-    if (error instanceof ErrorEvent) {
-      console.error('An error occurred:', error.message);
-    } else {
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.message}`);
-    }
+  private static handleError(error: HttpErrorResponse) {
     return throwError(
       error);
   }

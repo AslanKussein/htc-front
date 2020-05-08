@@ -750,11 +750,30 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
+  removeByGuid(obj: any, id: number) {
+    this.uploader.removePhotoById(obj.guid)
+      .subscribe(data => {
+      });
+    if (id == 1) {
+      this.photoList.filter(function(item) {
+        return item !== obj
+      })
+    } else if (id == 2) {
+      this.photoPlanList.filter(function(item) {
+        return item !== obj
+      })
+    } else if (id == 3) {
+      const index = this.photo3DList.indexOf(obj);
+      if (index > -1) {
+        this.photo3DList.splice(index, 1);
+      }
+    }
+    console.log(this.photoList)
+  }
+
   removePhoto(data: any) {
     for (const element of data) {
-      this.uploader.removePhotoById(element.guid)
-        .subscribe(data => {
-        });
+     this.removeByGuid(element, null);
     }
   }
 

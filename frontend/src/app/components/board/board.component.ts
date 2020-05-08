@@ -7,6 +7,7 @@ import {Util} from "../../services/util";
 import {NotificationService} from "../../services/notification.service";
 import {Board} from "../../models/board/board";
 import {NgxUiLoaderService} from "ngx-ui-loader";
+import {catchError} from "rxjs/operators";
 
 @Component({
   selector: 'app-board',
@@ -184,12 +185,12 @@ export class BoardComponent implements OnInit {
       alert('create dogovor')
     }
 
-    // let data = {applicationId: item.id, statusId: currentStatusId};
-    // console.log(event.container)
-    // this.boardService.changeStatus(data).subscribe(res => {
-    //   console.log(res)
-    // })
-    // this.sortStatusesDic(this.activeTab);
-    // ;
+    let data = {applicationId: item.id, statusId: currentStatusId};
+    console.log(event.container)
+    this.boardService.changeStatus(data).subscribe(res => {
+
+      console.log(res)
+    })
+    this.sortStatusesDic(this.activeTab);
   }
 }

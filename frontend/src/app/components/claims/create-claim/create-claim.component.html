@@ -44,7 +44,7 @@
                         <input type="text" class="form-control" readonly [value]="this.applicationId"/>
                       </div>
                       <div class="col-sm">
-                        <label >Выберите агента</label>
+                        <label>Выберите агента</label>
                         <ng-select
                           [items]="agentList"
                           [(ngModel)]="applicationForm.agent"
@@ -233,7 +233,7 @@
                           <label>Номер договора</label>
                           <input type="text" class="form-control" maxlength="10" formControlName="contractNumber"
                                  [(ngModel)]="applicationForm.contractNumber"
-                                 [readonly]="hasShowApplicationGroup('UPDATE_DEAL_DATA')" />
+                                 [readonly]="hasShowApplicationGroup('UPDATE_DEAL_DATA')"/>
                         </div>
                       </div>
                       <div class="row">
@@ -402,18 +402,29 @@
                           <div class="col-sm" *ngIf="photoList.length > 0">
                             <span>Фото + {{photoList.length}}</span>
                             <div id="photoCarousel" class="carousel slide" data-ride="carousel" style="width: 302px;">
-                              <ol class="carousel-indicators">
-                                <li data-target="#photoCarousel" attr.data-slide-to="{{i}}"
-                                    class="bg-dark" [class]="i==0 ? 'active': ''"
-                                    *ngFor="let photo of photoList;let i = index">
-                                </li>
-                              </ol>
+                              <!--                              <ol class="carousel-indicators">-->
+                              <!--                                <li data-target="#photoCarousel" attr.data-slide-to="{{i}}"-->
+                              <!--                                    class="bg-dark" [class]="i==0 ? 'active': ''"-->
+                              <!--                                    *ngFor="let photo of photoList;let i = index">-->
+                              <!--                                </li>-->
+
+                              <!--                              </ol>-->
+
                               <div class="carousel-inner">
                                 <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                      *ngFor="let photo of photoList;let i = index">
-                                  <img [src]="photo.image" alt="First Slide" class="photoList" width="302" height="320"
-                                       (click)="showPhotoFull(photo.fullImage)">
+
+                                  <div class="container">
+                                    <img [src]="photo.image" alt="First Slide" class="photoList" width="302"
+                                         height="320"
+                                         (click)="showPhotoFull(photo.fullImage)">
+                                    <button class="btn btn-sm btn-danger removeItemCarousel"
+                                            (click)="removeByGuid(photo, 1)"><i class="fa fa-trash fa-2x"
+                                                                                aria-hidden="true"></i></button>
+                                  </div>
+
                                 </div>
+
                               </div>
                               <a class="carousel-control-prev" href="#photoCarousel" data-slide="prev">
                                 <span class="carousel-control-prev-icon bg-dark"></span>
@@ -421,17 +432,26 @@
                               <a class="carousel-control-next" href="#photoCarousel" data-slide="next">
                                 <span class="carousel-control-next-icon bg-dark"></span>
                               </a>
+
                             </div>
                           </div>
                           <div class="col-sm" *ngIf="photoPlanList.length > 0">
                             <span>Планы + {{photoPlanList.length}}</span>
                             <div id="planCarousel" class="carousel slide" data-ride="carousel" style="width: 302px;">
-                              <ol class="carousel-indicators">
-                                <li data-target="#planCarousel" attr.data-slide-to="{{i}}"
-                                    [class]="i==0 ? 'active': ''"
-                                    *ngFor="let plan of photoPlanList;let i = index">
-                                </li>
-                              </ol>
+                              <!--                              <ol class="carousel-indicators">-->
+                              <!--                                <li data-target="#planCarousel" attr.data-slide-to="{{i}}"-->
+                              <!--                                    [class]="i==0 ? 'active': ''"-->
+                              <!--                                    *ngFor="let plan of photoPlanList;let i = index">-->
+                              <!--                                </li>-->
+                              <!--                                <button *ngFor="let photo of photoList;let i = index" type="button"-->
+                              <!--                                        class="text-center removeItemCarousel"-->
+                              <!--                                        (click)="removeByGuid(photo, 2)"><i class="fa fa-trash fa-2x text-danger"-->
+                              <!--                                                                            aria-hidden="true"></i></button>-->
+                              <!--                              </ol>-->
+                              <div class='carousel-item'>
+                                <a class='btn btn-sm btn-danger' *ngFor="let photo of photoList;let i = index"
+                                   (click)="removeByGuid(photo, 2)"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
+                              </div>
                               <div class="carousel-inner">
                                 <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                      *ngFor="let plan of photoPlanList;let i = index">
@@ -1185,8 +1205,8 @@
     </div>
     <div class="tab-pane fade" id="impressions" role="tabpanel" aria-labelledby="impressions-tab">
 
-    <router-outlet></router-outlet>
-<!--      <app-acts></app-acts>-->
+      <router-outlet></router-outlet>
+      <!--      <app-acts></app-acts>-->
     </div>
     <!--    <div class="tab-pane fade" id="journals" role="tabpanel" aria-labelledby="journals-tab">-->
     <!--      3-->

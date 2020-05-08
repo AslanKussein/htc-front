@@ -45,4 +45,12 @@ export class EventsService {
   deleteEventById(id: number): Observable<any> {
     return this.http.delete<any>(`${this.configService.apiDataManagerUrl}/api/events/` + id, {});
   }
+
+  getEventsForCalendar(searchFilter: any) {
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/events/eventsForCalendar`, searchFilter);
+  }
+
+  getEventsByDate(date: any) {
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/events/eventsToDate`, date)
+  }
 }
