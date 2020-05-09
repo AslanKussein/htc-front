@@ -69,6 +69,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   modalRef: BsModalRef;
   applicationId: number;
   roles: any;
+  createClaimComponent: boolean = true;
+  headerDeal: boolean = false;
+  clientDeal: boolean = false;
+  aboutObject: boolean = false;
+  activeTab: string = 'create';
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -732,10 +737,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.util.dnHref('home')
   }
 
-  headerDeal: boolean = false;
-  clientDeal: boolean = false;
-  aboutObject: boolean = false;
-
   showHideHeader(id: number) {
     if (id == 1) {
       this.headerDeal = false;
@@ -832,15 +833,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
-  checkMaxLength(object) {
-    if (object.value.length > object.maxLength)
-      object.value = object.value.slice(0, object.maxLength)
-  }
-
   changeTab(tab: string) {
+    this.activeTab = tab;
     if (tab == 'add-event') {
+      this.createClaimComponent = false;
       this.util.dnHref('create-claim/add-event')
     } else if (tab == 'create') {
+      this.createClaimComponent = true;
       this.util.dnHref('create-claim')
     }
   }

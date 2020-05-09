@@ -38,7 +38,6 @@ import {ExitDeactivate} from "./helpers/canDeactivate/exitDeactivate";
 import {UserService} from "./services/user.service";
 import {NotificationService} from "./services/notification.service";
 import {ModalComponent} from "./components/claims/create-claim/modal.window/modal.component";
-import {ActsComponent} from "./components/claims/create-claim/acts/acts.component";
 import {DicControlComponent} from './components/dic-control/dic-control.component';
 import {MyObjectsComponent} from './components/profile/my-objects/my-objects.component';
 import {MyClaimsComponent} from './components/profile/my-claims/my-claims.component';
@@ -58,6 +57,7 @@ import {LoginModalComponent} from './components/login/login-modal/login-modal.co
 import {CloseDealComponent} from "./components/board/close-deal/close-deal.component";
 import {AddEventComponent} from "./components/board/add-event/add-event.component";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { ClaimEventsComponent } from './components/claims/create-claim/claim-events/claim-events.component';
 
 registerLocaleData(localeRu, localeKz);
 
@@ -78,7 +78,6 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     StaffsComponent,
     CreateClaimComponent,
     LoginComponent,
-    ActsComponent,
     DicControlComponent,
     MyObjectsComponent,
     MyClaimsComponent,
@@ -94,6 +93,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     LoginModalComponent,
     CloseDealComponent,
     AddEventComponent,
+    ClaimEventsComponent,
   ],
   imports: [
     BrowserModule,

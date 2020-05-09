@@ -15,8 +15,8 @@ import {HomeComponent} from "./components/home/home.component";
 import {YandexMapComponent} from "./components/claims/create-claim/yandex-map/yandex-map.component";
 import {NewsComponent} from "./components/news/news.component";
 import {CloseDealComponent} from "./components/board/close-deal/close-deal.component";
-import {ActsComponent} from "./components/claims/create-claim/acts/acts.component";
 import {AddEventComponent} from "./components/board/add-event/add-event.component";
+import {ClaimEventsComponent} from "./components/claims/create-claim/claim-events/claim-events.component";
 
 // определение дочерних маршрутов
 const itemRoutes: Routes = [
@@ -25,7 +25,7 @@ const itemRoutes: Routes = [
 ];
 
 const createClaimChild: Routes = [
-  {path: 'add-event', component: ActsComponent, canActivate: [AuthGuard]},
+  {path: 'add-event/:id', component: ClaimEventsComponent, canActivate: [AuthGuard]},
 ];
 
 const routes: Routes = [

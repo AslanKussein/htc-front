@@ -68,10 +68,7 @@ export class BoardComponent implements OnInit {
             this.board.applicationLightDtoList.data = []
             argument['boardData'] = this.board;
           }
-          if (argument.id == 1) {
-            argument['board.data.style'] = 'addRight';
-          }
-          console.log(argument)
+
           this.appStatusesData.push(argument)
         }
         this.applicationCount = res?.data.applicationCount
@@ -94,19 +91,51 @@ export class BoardComponent implements OnInit {
     }
     return ids;
   }
+  /*
+    "id": 1,002001 : "Первичный контакт",
+    "id": 2,002002: "Встреча",
+    "id": 3,002003: "Договор на оказание услуг",
+    "id": 4,002004: "Реклама",
+    "id": 5,002005: "Фотосет",
+    "id": 6,002006: "Показ",
+    "id": 7,002007: "Закрытие сделки",
+    "id": 8,002008: "Успешно",
+    "id": 9,002009: "Завершен",
+    "id": 10,002010: "Договор о задатке/авансе",
+  }
+]*/
+  getStatusCodesByTab() {
+    let code;
+    if (this.activeTab == 3) {
+      code = ['002001', '002002', '002003', '002005', '002004', '002006', '002010', '002007'];
+    } else if (this.activeTab == 2) {
+      code = ['002001', '002002', '002003', '002004', '002005', '002006', '002007']
+    } else if (this.activeTab == 1) {
+      code = ['002001', '002002', '002003', '002006', '002010', '002007']
+    }
+    return code;
+  }
+
+  getDictionaryValueById(code: string) {
+    for (const obj of this.appStatuses) {
+      if (obj['code'] == code) {
+        return obj;
+      }
+    }
+  }
 
   sortStatusesDic(tab: number) {
     this.appStatusesSort = [];
     this.activeTab = tab;
     let ids = this.getStatusIdsByTab();
-    for (const status of this.appStatuses) {
-      if (ids.includes(parseInt(status['value']))) {
+    let code = this.getStatusCodesByTab();
+    for (const status of code) {
         let m = {};
-        m['value'] = status['value'];
-        m['label'] = status['label'];
-        m['code'] = status['code'];
+        let dic = this.getDictionaryValueById(status);
+        m['value'] = dic['value'];
+        m['label'] = dic['label'];
+        m['code'] = status;
         this.appStatusesSort.push(m)
-      }
     }
     this.getBoardData(tab, ids);
   }

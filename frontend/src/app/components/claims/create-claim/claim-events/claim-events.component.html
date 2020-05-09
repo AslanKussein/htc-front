@@ -1,0 +1,52 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm">
+        <div class="row">
+          <div class="col-sm">
+            <i aria-hidden="true" class="fa fa-eye fa-2x">Показ</i>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm">
+            <label for="fillFromAndTo" translate>Дата и Время:</label>
+            <input type="text" id="fillFromAndTo"  class="form-control" bsDatepicker
+                   #ru="bsDatepicker"/>
+
+          </div>
+          <div class="col-sm">
+            <ngb-timepicker ></ngb-timepicker>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm">
+        <div class="row">
+          <div class="col-sm">
+            <label for="form7">Описание события</label>
+            <div class="md-form">
+              <textarea  class="md-textarea form-control" rows="1"></textarea>
+            </div>
+          </div>
+          <div class="col-sm">
+            <label for="form7">ID заявки -</label>
+            <div class="md-form">
+              <textarea id="form7" class="md-textarea form-control" rows="1" readonly></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="md-form">
+              <textarea  class="md-textarea form-control" rows="1"></textarea>
+              <label for="form7">Комментарий</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <button type="button" class="btn btn-btn btn2 btn-secondary">Закрыть</button>
+    <button type="button" class="btn btn-btn btn2 btn-success">Сохранить</button>
+  </div>
+</div>
