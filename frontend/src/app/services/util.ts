@@ -159,17 +159,6 @@ export class Util {
     return Object.keys(obj).length;
   }
 
-  roomCountDictionary() {
-    let dic_ = [];
-    for (let i = 1; i <= 6; i++) {
-      let dic = new Dic();
-      dic['value'] = i;
-      dic['label'] = i == 6 ? "более" : i;
-      dic_.push(dic);
-    }
-    return dic_;
-  }
-
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('currentUser'))
   }

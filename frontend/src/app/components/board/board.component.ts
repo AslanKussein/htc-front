@@ -7,7 +7,7 @@ import {Util} from "../../services/util";
 import {NotificationService} from "../../services/notification.service";
 import {Board} from "../../models/board/board";
 import {NgxUiLoaderService} from "ngx-ui-loader";
-import {catchError} from "rxjs/operators";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-board',
@@ -25,17 +25,18 @@ export class BoardComponent implements OnInit {
   applicationCount: number;
   activeTab: number = 3;
   displayBoardContent: boolean = true;
+  agentList: Dic[];
 
   get boardSelect(): Board {
     return this._boardSelect;
   }
 
-
   constructor(private boardService: BoardService,
               private dicService: DicService,
               private util: Util,
               private notificationService: NotificationService,
-              private ngxLoader: NgxUiLoaderService) {
+              private ngxLoader: NgxUiLoaderService,
+              private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -43,6 +44,9 @@ export class BoardComponent implements OnInit {
     this.dicService.getDics('APPLICATION_STATUSES').subscribe(data => {
       this.appStatuses = this.util.toSelectArray(data);
       this.sortStatusesDic(this.activeTab);
+    });
+    this.userService.getAgents().subscribe(obj => {
+      this.agentList = obj.data;
     });
   }
 

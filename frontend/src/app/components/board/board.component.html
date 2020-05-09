@@ -37,8 +37,7 @@
       <div class="col-sm">
         <span>Фильтры:</span>
         <button type="button" class="btn btn-sm btn-link">Все</button>
-        <button type="button" class="btn btn-sm btn-link">Адам</button>
-        <button type="button" class="btn btn-sm btn-link">Юрий</button>
+        <button type="button" *ngFor="let agent of agentList;let i = index" class="btn btn-sm btn-link">{{agent.name}}</button>
       </div>
     </div>
     <br>
