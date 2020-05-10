@@ -4,6 +4,9 @@ import {BehaviorSubject, Observable, throwError} from 'rxjs';
 import {catchError, filter, switchMap, take} from 'rxjs/operators';
 import {AuthenticationService} from "../services/authentication.service";
 import {ConfigService} from "../services/config.service";
+import {NotificationService} from "../services/notification.service";
+import {Util} from "../services/util";
+import {NgxUiLoaderService} from "ngx-ui-loader";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -12,21 +15,31 @@ export class ErrorInterceptor implements HttpInterceptor {
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(private authenticationService: AuthenticationService,
-              private configService: ConfigService) {
+              private configService: ConfigService,
+              private notificationService: NotificationService,
+              private util: Util,
+              private ngxLoader: NgxUiLoaderService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
+      this.ngxLoader.stop();
       if (err.status === 401) {
-
         return this.handle401Error(request, next);
-      } else if (err.status === 400 && err.url.includes(this.configService.authUrl)) {
-        if (err.error.error_description.includes('Refresh token expired') && err.error.error.includes('invalid_grant')) {
-          this.authenticationService.logout();
-          location.reload(true);
-        } else {
-          this.authenticationService.showAuthModal();
+      } else if (err.status === 400) {
+        if (err.url.includes(this.configService.authUrl)) {
+          if (err.error.error_description.includes('Refresh token expired') && err.error.error.includes('invalid_grant')) {
+            this.authenticationService.logout();
+            location.reload(true);
+          } else {
+            this.authenticationService.showAuthModal();
+          }
         }
+      }
+      if (!this.util.isNullOrEmpty(err.error.message?.ru)) {
+        this.notificationService.showInfo('Информация', err.error.message[this.util.getError()])
+      } else {
+        this.notificationService.showInfo('Информация', err.error.message)
       }
 
       const error = err.error.message || err.statusText;

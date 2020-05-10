@@ -1,8 +1,8 @@
-import {ChangeDetectorRef, Component, ElementRef, Injectable, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Injectable, OnInit} from '@angular/core';
 import {ApplicationDto} from "../../../models/createClaim/applicationDto";
 import {Util} from "../../../services/util";
 import {NotificationService} from "../../../services/notification.service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, Validators} from "@angular/forms";
 import {ClaimService} from "../../../services/claim.service";
 import {NgSelectConfig} from "@ng-select/ng-select";
 import {UploaderService} from "../../../services/uploader.service";
@@ -38,7 +38,6 @@ import {UserService} from "../../../services/user.service";
 })
 export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
-
   application: ApplicationDto;
   selectedFile: File;
   photoList: any[] = [];
@@ -58,7 +57,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   countries: Dic[];
   materials: Dic[];
   sortMaterials: Dic[] = [];
-  roomCountDic: Dic[];
   possibleReasonForBidding: Dic[];
   possibleReasonForBiddingSort: Dic[];
   applicationForm: any;
@@ -71,6 +69,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   modalRef: BsModalRef;
   applicationId: number;
   roles: any;
+  headerDeal: boolean = false;
+  clientDeal: boolean = false;
+  aboutObject: boolean = false;
+  activeTab: string = 'create';
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -92,7 +94,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.config.notFoundText = 'Данные не найдены';
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
-    this.applicationId = this.actRoute.snapshot.params.id;
+    if (this.util.isNumeric(this.actRoute.snapshot.params.id)) {
+      this.applicationId = Number(this.actRoute.snapshot.params.id);
+    }
   }
 
   get f() {
@@ -106,13 +110,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       id: [null, Validators.nullValidator],
       operationTypeId: [null, Validators.required],
       objectTypeId: [null, Validators.required],
-      objectPrice: [null, Validators.nullValidator],
+      objectPrice: [0, Validators.nullValidator],
       surname: [null, Validators.required],
       firstName: [null, Validators.required],
       patronymic: [null, Validators.nullValidator],
       clientId: [null, Validators.nullValidator],
       phoneNumber: [null, Validators.required],
-      email: [null, Validators.nullValidator],
+      email: [null, [Validators.email, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
       objectPriceFrom: [null, Validators.nullValidator],
       objectPriceTo: [null, Validators.nullValidator],
       mortgage: [null, Validators.nullValidator],
@@ -298,18 +302,18 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.userService.getAgentsToAssign().subscribe(obj => {
       this.agentList = this.util.toSelectArrayRoles(obj.data, 'login');
     });
-    this.roomCountDic = this.util.roomCountDictionary();
   }
 
   loadDataById(id: number) {
     this.ngxLoader.start();
-    this.claimService.getClaimById(id).subscribe(data => {
-      if (data != null) {
-        setTimeout(() => {    //<<<---    using ()=> syntax
-          if (this.util.isNullOrEmpty(this.operationType) || this.util.isNullOrEmpty(this.objectType) || this.util.isNullOrEmpty(this.residentialComplexes)) {
-            this.loadDataById(this.applicationId);
-            return
-          } else {
+
+    setTimeout(() => {    //<<<---    using ()=> syntax
+      if (this.util.isNullOrEmpty(this.operationType) || this.util.isNullOrEmpty(this.objectType) || this.util.isNullOrEmpty(this.residentialComplexes)) {
+        this.loadDataById(this.applicationId);
+        return
+      } else {
+        this.claimService.getClaimById(id).subscribe(data => {
+          if (data != null) {
             this.fillApplicationForm(data);
             this.fillApplicationFormPurchaseInfoDto(data.realPropertyRequestDto?.purchaseInfoDto);
             this.fillApplicationFormClientData(data.clientDto);
@@ -317,9 +321,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
             this.cdRef.detectChanges();
             this.ngxLoader.stop();
           }
-        }, 3000);
+        });
       }
-    });
+    }, 3000);
   }
 
   setPossibleReasonForBidding() {
@@ -357,25 +361,28 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   setResidenceComplexType() {
     if (!this.util.isNullOrEmpty(this.applicationForm.residentialComplexId)) {
+      console.log(this.applicationForm.residentialComplexId)
       this.applicationForm.streetId = this.applicationForm.residentialComplexId?.streetId;//Улица
       this.applicationForm.houseNumber = this.applicationForm.residentialComplexId?.houseNumber;//Номер дома
+      this.applicationForm.houseNumberFraction = this.applicationForm.residentialComplexId?.houseNumberFraction;//номер дробь
       this.applicationForm.districtId = this.applicationForm.residentialComplexId?.districtId;//Район
       this.applicationForm.numberOfFloors = this.applicationForm.residentialComplexId?.numberOfFloors;//Этажность дома
       this.applicationForm.apartmentsOnTheSite = this.applicationForm.residentialComplexId?.apartmentsOnTheSite;//Кв. на площадке
       this.applicationForm.materialOfConstructionId = this.applicationForm.residentialComplexId?.materialOfConstructionId;//Материал
       this.applicationForm.yearOfConstruction = this.applicationForm.residentialComplexId?.yearOfConstruction;//Год постройки
-      this.applicationForm.typeOfElevatorList = this.applicationForm.residentialComplexId?.typeOfElevatorIdList;//Лифт
-      this.applicationForm.concierge = this.applicationForm.residentialComplexId?.concierge;//Консьерж
-      this.applicationForm.wheelchair = this.applicationForm.residentialComplexId?.wheelchair;//Колясочная
-      this.applicationForm.parkingTypeId = [this.applicationForm.residentialComplexId?.parkingTypeId];///Парковка
-      this.applicationForm.yardTypeId = this.applicationForm.residentialComplexId?.yardTypeId;//Двор
-      this.applicationForm.playground = this.applicationForm.residentialComplexId?.playground;//Детская площадка
+      this.applicationForm.typeOfElevatorList = this.applicationForm.residentialComplexId?.typeOfElevator;//Лифт
+      this.applicationForm.concierge = this.util.toString(this.applicationForm.residentialComplexId?.concierge)//Консьерж
+      this.applicationForm.wheelchair = this.util.toString(this.applicationForm.residentialComplexId?.wheelchair)//Колясочная
+      this.applicationForm.parkingTypeId = this.applicationForm.residentialComplexId?.parkingTypeIds;///Парковка
+      this.applicationForm.yardTypeId = this.applicationForm.residentialComplexId?.yardType;//Двор
+      this.applicationForm.playground = this.util.toString(this.applicationForm.residentialComplexId?.playground);//Детская площадка
       this.applicationForm.propertyDeveloperId = this.applicationForm.residentialComplexId?.propertyDeveloperId;//Затройщик
       this.applicationForm.housingClass = this.applicationForm.residentialComplexId?.housingClass;//Класс жилья
       this.applicationForm.housingCondition = this.applicationForm.residentialComplexId?.housingCondition;//Состояния
       this.applicationForm.numberOfApartments = this.applicationForm.residentialComplexId?.numberOfApartments;//Кол-во кв
       this.applicationForm.ceilingHeight = this.applicationForm.residentialComplexId?.ceilingHeight;//Кол-во кв
       this.applicationForm.cityId = this.applicationForm.residentialComplexId?.cityId;//Кол-во кв
+
       this.readonlyChooseJK = true;
     }
 
@@ -385,32 +392,22 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     if (this.applicationForm.phoneNumber != null && this.applicationForm.phoneNumber.length == 10 && this.applicationId == null) {
       this.ownerService.searchByPhone('7' + this.applicationForm.phoneNumber)
         .subscribe(res => {
-          if (!this.util.isNullOrEmpty(res)) {
-            this.fillApplicationFormClientData(res);
-          } else {
-            this.applicationForm.clientId = null;
-            this.applicationForm.firstName = null;
-            this.applicationForm.surname = null;
-            this.applicationForm.patronymic = null;
-            this.applicationForm.email = null;
-            this.applicationForm.gender = null;
-          }
+          this.fillApplicationFormClientData(res);
         });
     }
   }
 
   fillApplicationFormClientData(res: any) {
-    this.applicationForm.clientId = res.id;
-    this.applicationForm.firstName = res.firstName;
-    this.applicationForm.surname = res.surname;
-    this.applicationForm.patronymic = res.patronymic;
-    this.applicationForm.phoneNumber = res.phoneNumber?.length == 11 ? res.phoneNumber.substr(1) : res.phoneNumber;
-    this.applicationForm.email = res.email;
-    this.applicationForm.gender = res.gender;
+    this.applicationForm.clientId = res?.id;
+    this.applicationForm.firstName = res?.firstName;
+    this.applicationForm.surname = res?.surname;
+    this.applicationForm.patronymic = res?.patronymic;
+    this.applicationForm.phoneNumber = res?.phoneNumber?.length == 11 ? res.phoneNumber.substr(1) : res.phoneNumber;
+    this.applicationForm.email = res?.email;
+    this.applicationForm.gender = res?.gender;
   }
 
   fillApplicationForm(data: any) {
-
     this.applicationForm.operationTypeId = this.util.getDictionaryValueById(this.operationType, data?.operationTypeId.toString());
     this.applicationForm.objectPrice = data?.objectPrice;
     this.applicationForm.mortgage = this.util.toString(data?.mortgage);
@@ -676,6 +673,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     if (!this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber) && (this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber1) ||
       this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber2) || this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber3))) {
       this.notifyService.showError("Ошибка", "Длина поле кадастровый номер не верно");
+      this.ngxLoader.stop();
+
     }
     this.fillApplication();
     this.fillRealPropertyRequestDto();
@@ -697,7 +696,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       }
     }
 
-    if (result) return;
+    if (result) {
+      this.ngxLoader.stop();
+      return;
+    }
 
     if (!this.util.isNullOrEmpty(this.application.realPropertyRequestDto.parkingTypeId)) {
       if (this.application.realPropertyRequestDto.parkingTypeId.indexOf("1") == 0) {
@@ -730,6 +732,32 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.ngxLoader.stop();
   }
 
+  cancel() {
+    this.saved = true;
+    this.util.dnHref('home')
+  }
+
+  showHideHeader(id: number) {
+    if (id == 1) {
+      this.headerDeal = false;
+    }
+    if (id == 2) {
+      this.headerDeal = true;
+    }
+    if (id == 3) {
+      this.clientDeal = false;
+    }
+    if (id == 4) {
+      this.clientDeal = true;
+    }
+    if (id == 5) {
+      this.aboutObject = false;
+    }
+    if (id == 6) {
+      this.aboutObject = true;
+    }
+  }
+
   canDeactivate(): boolean | Observable<boolean> {
     if (!this.saved) {
       let result = confirm("Вы хотите покинуть страницу?");
@@ -750,11 +778,22 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
+  removeByGuid(obj: any, id: number) {
+    this.uploader.removePhotoById(obj.guid)
+      .subscribe(data => {
+      });
+    if (id == 1) {
+      this.photoList.splice(this.photoList.indexOf(obj), 1);
+    } else if (id == 2) {
+      this.photoPlanList.splice(this.photoPlanList.indexOf(obj), 1);
+    } else if (id == 3) {
+      this.photo3DList.splice(this.photo3DList.indexOf(obj), 1);
+    }
+  }
+
   removePhoto(data: any) {
     for (const element of data) {
-      this.uploader.removePhotoById(element.guid)
-        .subscribe(data => {
-        });
+      this.removeByGuid(element, null);
     }
   }
 
@@ -786,14 +825,14 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
-  checkMaxLength(object) {
-    if (object.value.length > object.maxLength)
-      object.value = object.value.slice(0, object.maxLength)
-  }
-
   changeTab(tab: string) {
-    if (tab == 'add-event') {
-      this.util.dnHref('create-claim/add-event')
+    this.activeTab = tab;
+    if (tab == 'create') {
+      let url = 'create-claim';
+      if (this.applicationId) {
+        url = 'create-claim/' + this.applicationId;
+      }
+      this.util.dnHref(url);
     }
   }
 }

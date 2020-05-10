@@ -3,6 +3,7 @@ import {language} from "../../environments/language";
 import {Router} from "@angular/router";
 import {Dic} from "../models/dic";
 import {ConfigService} from "./config.service";
+import {isArray} from "rxjs/internal-compatibility";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,9 @@ export class Util {
   dnHref(href) {
     localStorage.setItem('url', href);
     this.router.navigate([href]);
+  }
+  navigateByUrl(href) {
+    this.router.navigateByUrl(href);
   }
 
   isNullOrEmpty(e: any) {
@@ -93,6 +97,22 @@ export class Util {
     return fieldName;
   }
 
+  getError() {
+    let fieldName;
+    switch (this._language.language) {
+      case "kz":
+        fieldName = 'kk';
+        break;
+      case "en":
+        fieldName = 'en';
+        break;
+      default:
+        fieldName = 'ru';
+        break;
+    }
+    return fieldName;
+  }
+
   toSelectArrayResidenceComplex(data) {
     const list = [];
     if (data) {
@@ -139,17 +159,6 @@ export class Util {
     return Object.keys(obj).length;
   }
 
-  roomCountDictionary() {
-    let dic_ = [];
-    for (let i = 1; i <= 6; i++) {
-      let dic = new Dic();
-      dic['value'] = i;
-      dic['label'] = i == 6 ? "более" : i;
-      dic_.push(dic);
-    }
-    return dic_;
-  }
-
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('currentUser'))
   }
@@ -174,5 +183,13 @@ export class Util {
   generatorFullUrl(uuid: string) {
     const fm = `${this.configService.apiFileManagerUrl}`;
     return fm + '/download/' + uuid + '?access_token=' + this.getCurrentUser().access_token;
+  }
+
+  isNumeric(val: any): val is number | string {
+    // parseFloat NaNs numeric-cast false positives (null|true|false|"")
+    // ...but misinterprets leading-number strings, particularly hex literals ("0x...")
+    // subtraction forces infinities to NaN
+    // adding 1 corrects loss of precision from parseFloat (#15100)
+    return !isArray(val) && (val - parseFloat(val) + 1) >= 0;
   }
 }

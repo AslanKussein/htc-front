@@ -7,6 +7,7 @@ import {Util} from "../../services/util";
 import {NotificationService} from "../../services/notification.service";
 import {Board} from "../../models/board/board";
 import {NgxUiLoaderService} from "ngx-ui-loader";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-board',
@@ -22,19 +23,20 @@ export class BoardComponent implements OnInit {
   private _boardSelect: Board;
   totalCommission: number;
   applicationCount: number;
-  activeTab: number = 1;
+  activeTab: number = 3;
   displayBoardContent: boolean = true;
+  agentList: Dic[];
 
   get boardSelect(): Board {
     return this._boardSelect;
   }
 
-
   constructor(private boardService: BoardService,
               private dicService: DicService,
               private util: Util,
               private notificationService: NotificationService,
-              private ngxLoader: NgxUiLoaderService) {
+              private ngxLoader: NgxUiLoaderService,
+              private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -42,6 +44,9 @@ export class BoardComponent implements OnInit {
     this.dicService.getDics('APPLICATION_STATUSES').subscribe(data => {
       this.appStatuses = this.util.toSelectArray(data);
       this.sortStatusesDic(this.activeTab);
+    });
+    this.userService.getAgents().subscribe(obj => {
+      this.agentList = obj.data;
     });
   }
 
@@ -63,10 +68,7 @@ export class BoardComponent implements OnInit {
             this.board.applicationLightDtoList.data = []
             argument['boardData'] = this.board;
           }
-          if (argument.id == 1) {
-            argument['board.data.style'] = 'addRight';
-          }
-          console.log(argument)
+
           this.appStatusesData.push(argument)
         }
         this.applicationCount = res?.data.applicationCount
@@ -85,23 +87,55 @@ export class BoardComponent implements OnInit {
     } else if (this.activeTab == 2) {
       ids = [1, 2, 3, 4, 5, 6, 7]
     } else if (this.activeTab == 1) {
-      ids = [1, 3, 6, 7]
+      ids = [1, 2, 3, 6, 10, 7]
     }
     return ids;
+  }
+  /*
+    "id": 1,002001 : "Первичный контакт",
+    "id": 2,002002: "Встреча",
+    "id": 3,002003: "Договор на оказание услуг",
+    "id": 4,002004: "Реклама",
+    "id": 5,002005: "Фотосет",
+    "id": 6,002006: "Показ",
+    "id": 7,002007: "Закрытие сделки",
+    "id": 8,002008: "Успешно",
+    "id": 9,002009: "Завершен",
+    "id": 10,002010: "Договор о задатке/авансе",
+  }
+]*/
+  getStatusCodesByTab() {
+    let code;
+    if (this.activeTab == 3) {
+      code = ['002001', '002002', '002003', '002005', '002004', '002006', '002010', '002007'];
+    } else if (this.activeTab == 2) {
+      code = ['002001', '002002', '002003', '002004', '002005', '002006', '002007']
+    } else if (this.activeTab == 1) {
+      code = ['002001', '002002', '002003', '002006', '002010', '002007']
+    }
+    return code;
+  }
+
+  getDictionaryValueById(code: string) {
+    for (const obj of this.appStatuses) {
+      if (obj['code'] == code) {
+        return obj;
+      }
+    }
   }
 
   sortStatusesDic(tab: number) {
     this.appStatusesSort = [];
     this.activeTab = tab;
     let ids = this.getStatusIdsByTab();
-    for (const status of this.appStatuses) {
-      if (ids.includes(parseInt(status['value']))) {
+    let code = this.getStatusCodesByTab();
+    for (const status of code) {
         let m = {};
-        m['value'] = status['value'];
-        m['label'] = status['label'];
-        m['code'] = status['code'];
+        let dic = this.getDictionaryValueById(status);
+        m['value'] = dic['value'];
+        m['label'] = dic['label'];
+        m['code'] = status;
         this.appStatusesSort.push(m)
-      }
     }
     this.getBoardData(tab, ids);
   }
@@ -124,6 +158,31 @@ export class BoardComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     if (parseInt(event.previousContainer.id) > parseInt(event.container.id)) {
       return
+    }
+    let currentStatusId = parseInt(event.container.id);
+    let prevStatusId = parseInt(event.previousContainer.id);
+
+    if (prevStatusId == 1 && currentStatusId != 2) {
+      return;
+    }
+    if (prevStatusId == 2 && currentStatusId != 3) {
+      return;
+    }
+    if (this.activeTab == 2) {
+      if (prevStatusId == 3 && currentStatusId != 6) {
+        return;
+      }
+      if (prevStatusId == 6 && currentStatusId != 7) {
+        return;
+      }
+    } else if (this.activeTab == 1) {
+
+      if (prevStatusId == 6 && currentStatusId != 10) {
+        return;
+      }
+      if (prevStatusId == 10 && currentStatusId != 7) {
+        return;
+      }
     }
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -149,6 +208,7 @@ export class BoardComponent implements OnInit {
    "id": 7, Закрытие сделки
    "id": 8, Успешно
    "id": 9, Завершен
+   "id": 10, Договор о задатке/авансе
    * @param event
    * @param item
    * @param prevStatusId
@@ -157,39 +217,48 @@ export class BoardComponent implements OnInit {
     if (parseInt(event.previousContainer.id) > parseInt(event.container.id)) {
       return
     }
-    let currentStatusId = parseInt(event.container.id);
-    if (currentStatusId == 7) {
-      this._boardSelect = item;
-      this.util.dnHref('board/close-deal/' + this.activeTab);
-      this.displayBoardContent = false;
+    this._boardSelect = item;
 
-    }
-    if (this.activeTab == 2) {// воронка покупателей
+    let currentStatusId = parseInt(event.container.id);
+
+    let data = {applicationId: item.id, statusId: currentStatusId};
+
+    if (this.activeTab == 1) {// воронка покупателей
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
-        alert('add event')
+        this.openInnerPage('board/add-event');
       } else if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
         alert('create dogovor')
-      } else if (prevStatusId == 3 && currentStatusId == 4) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
+      } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.3. С "Договор на оказание услуг *" на "Показ *"
+        this.moveStatus(data);
+      } else if (prevStatusId == 6 && currentStatusId == 10) { // 2.4. С "Показ *" на "Договор о задатке/авансе *"
+        alert('БУДЕТ ССЫЛКА')
+      } else if (prevStatusId == 10 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
+        this.openInnerPage('board/close-deal/' + this.activeTab);
+      }
+    } else if (this.activeTab == 2) {
+      if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
+        this.openInnerPage('board/add-event');
+      } else if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
         alert('create dogovor')
-      } else {
-        return;
+      } else if (prevStatusId == 3 && (currentStatusId == 4 || currentStatusId == 5)) {// С "Договор на оказание услуг *" на "Фотосет", "Реклама"
+        this.moveStatus(data);
+      } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.4. С "Договор на оказание услуг *" на "Показ *"
+        this.moveStatus(data);
+      } else if (prevStatusId == 6 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
+        this.openInnerPage('board/close-deal/' + this.activeTab);
       }
     }
+    this.sortStatusesDic(this.activeTab);
+  }
 
+  openInnerPage(url: string) {
+    this.util.dnHref(url);
+    this.displayBoardContent = false;
+  }
 
-    if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
-      alert('add event')
-    }
-    if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
-      alert('create dogovor')
-    }
-
-    // let data = {applicationId: item.id, statusId: currentStatusId};
-    // console.log(event.container)
-    // this.boardService.changeStatus(data).subscribe(res => {
-    //   console.log(res)
-    // })
-    // this.sortStatusesDic(this.activeTab);
-    // ;
+  moveStatus(data: any) {
+    this.boardService.changeStatus(data).subscribe(res => {
+      this.sortStatusesDic(this.activeTab);
+    })
   }
 }

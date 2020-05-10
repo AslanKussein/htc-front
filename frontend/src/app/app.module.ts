@@ -55,7 +55,10 @@ import {NavComponent} from "./helpers/nav/nav.component";
 import {FooterComponent} from "./helpers/footer/footer.component";
 import {NgxUiLoaderModule} from 'ngx-ui-loader';
 import {LoginModalComponent} from './components/login/login-modal/login-modal.component';
-// import {CloseDealComponent} from "./components/board/close-deal/close-deal.component";
+import {CloseDealComponent} from "./components/board/close-deal/close-deal.component";
+import {AddEventComponent} from "./components/board/add-event/add-event.component";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { ClaimEventsComponent } from './components/claims/create-claim/claim-events/claim-events.component';
 
 registerLocaleData(localeRu, localeKz);
 
@@ -76,7 +79,6 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     StaffsComponent,
     CreateClaimComponent,
     LoginComponent,
-    ActsComponent,
     DicControlComponent,
     MyObjectsComponent,
     MyClaimsComponent,
@@ -90,7 +92,9 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     NavComponent,
     FooterComponent,
     LoginModalComponent,
-    // CloseDealComponent
+    CloseDealComponent,
+    AddEventComponent,
+    ClaimEventsComponent,
   ],
   imports: [
     BrowserModule,
@@ -121,6 +125,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
       useFactory: adapterFactory,
     }),
     NgxUiLoaderModule,
+    NgbModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

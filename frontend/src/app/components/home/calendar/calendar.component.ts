@@ -5,27 +5,14 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {
   CalendarDateFormatter,
   CalendarEvent,
-  CalendarEventAction,
-  CalendarEventTimesChangedEvent,
   CalendarView,
 } from 'angular-calendar';
-import { CustomDateFormatter } from './customDateFormatter';
+import {CustomDateFormatter} from './customDateFormatter';
 import {EventsService} from "../../../services/events.service";
-
-const colors: any = {
-  red: {
-    primary: '#ad2121',
-    secondary: '#FAE3E3',
-  },
-  blue: {
-    primary: '#1e90ff',
-    secondary: '#D1E8FF',
-  },
-  yellow: {
-    primary: '#e3bc08',
-    secondary: '#FDF1BA',
-  },
-};
+import {Util} from "../../../services/util";
+import {BsLocaleService} from "ngx-bootstrap";
+import {defineLocale} from "ngx-bootstrap/chronos";
+import {ruLocale} from "ngx-bootstrap/locale";
 
 @Component({
   selector: 'app-calendar',
@@ -42,88 +29,36 @@ const colors: any = {
 export class CalendarComponent implements OnInit {
 
   locale: string = 'ru-KZ';
+  events: CalendarEvent[] = [];
 
   @ViewChild('modalContent', {static: true}) modalContent: TemplateRef<any>;
 
   view: CalendarView = CalendarView.Month;
 
-  CalendarView = CalendarView;
+  refresh: Subject<any> = new Subject();
+
 
   viewDate: Date = new Date();
 
   modalData: {
-    action: string;
     event: CalendarEvent;
   };
 
-  actions: CalendarEventAction[] = [
-    {
-      label: '<i class="fas fa-fw fa-pencil-alt"></i>',
-      a11yLabel: 'Edit',
-      onClick: ({event}: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
-      },
-    },
-    {
-      label: '<i class="fas fa-fw fa-trash-alt"></i>',
-      a11yLabel: 'Delete',
-      onClick: ({event}: { event: CalendarEvent }): void => {
-        this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.handleEvent('Deleted', event);
-      },
-    },
-  ];
-
-  refresh: Subject<any> = new Subject();
-
-  events: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'A 3 day event',
-      color: colors.red,
-      actions: this.actions,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      color: colors.yellow,
-      actions: this.actions,
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
-      color: colors.blue,
-      allDay: true,
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: addHours(new Date(), 2),
-      title: 'A draggable and resizable event',
-      color: colors.yellow,
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-  ];
-
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen: boolean = false;
 
   constructor(private modal: NgbModal,
-              private eventsService: EventsService) {
+              private eventsService: EventsService,
+              private util: Util,
+              private localeService: BsLocaleService) {
+    defineLocale('ru', ruLocale);
+    this.localeService.use('ru');
   }
 
-  dayClicked({date, events}: { date: Date; events: CalendarEvent[] }): void {
+  ngOnInit() {
+    this.getEventForCalendar();
+  }
+
+  dayClicked({date, events}: { date: Date; events: CalendarEvent[] }) {
     if (isSameMonth(date, this.viewDate)) {
       this.activeDayIsOpen = !((isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
         events.length === 0);
@@ -131,58 +66,67 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  eventTimesChanged({
-                      event,
-                      newStart,
-                      newEnd,
-                    }: CalendarEventTimesChangedEvent): void {
-    this.events = this.events.map((iEvent) => {
-      if (iEvent === event) {
-        return {
-          ...event,
-          start: newStart,
-          end: newEnd,
-        };
-      }
-      return iEvent;
-    });
-    this.handleEvent('Dropped or resized', event);
-  }
-
-  handleEvent(action: string, event: CalendarEvent): void {
-    this.modalData = {event, action};
+  handleEvent(event: CalendarEvent) {
+    this.modalData = {event};
     this.modal.open(this.modalContent, {size: 'lg'});
   }
 
-  addEvent(): void {
-    this.events = [
-      ...this.events,
-      {
-        title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
-        color: colors.red,
-        draggable: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true,
-        },
-      },
-    ];
+  getEventForCalendar() {
+    let searchParams = {};
+    searchParams['from'] = this.viewDate;
+    searchParams['to'] = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 0);
+    this.eventsService.getEventsForCalendar(searchParams).subscribe(obj => {
+      if (!this.util.isNullOrEmpty(obj.data)) {
+        this.events = [];
+        obj.data.data.forEach(e => {
+          let data = {
+            start: subDays(startOfDay(new Date(e.eventDate)), 1),
+            end: subDays(startOfDay(new Date(e.eventDate)), 1),
+            title: e.eventType.name[this.util.getDicNameByLanguage()],
+            color: this.getColorsByStatusId(e.eventType.id),
+            allDay: true,
+          }
+          this.refresh.next();
+          this.events.push(data)
+        })
+      }
+    });
   }
 
-  deleteEvent(eventToDelete: CalendarEvent) {
-    this.events = this.events.filter((event) => event !== eventToDelete);
-  }
-
-  setView(view: CalendarView) {
-    this.view = view;
-  }
-
-  closeOpenMonthViewDay() {
-    this.activeDayIsOpen = false;
-  }
-
-  ngOnInit(): void {
+  getColorsByStatusId(statusId: number) {
+    switch (statusId) {
+      case 1:
+        let color: {
+          primary: '#ad2121',
+          secondary: '#FAE3E3',
+        }
+        return color;
+      case 2:
+        let color2: {
+          primary: '#e3bc08',
+          secondary: '#FDF1BA',
+        }
+        return color2;
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 8:
+      case 9:
+      case 10:
+    }
+    /*
+        "id": 1, Первичный контакт
+        "id": 2 Встреча,
+        "id": 3 Договор на оказание услуг,
+        "id": 4 Реклама,
+        "id": 5 Фотосет,
+        "id": 6 Показ,
+        "id": 7 Закрытие сделки,
+        "id": 8 Успешно,
+        "id": 9 Завершен,
+        "id": 34 Договор о задатке/авансе,
+    */
   }
 }
