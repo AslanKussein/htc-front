@@ -20,6 +20,7 @@ export class Util {
     localStorage.setItem('url', href);
     this.router.navigate([href]);
   }
+
   navigateByUrl(href) {
     this.router.navigateByUrl(href);
   }
@@ -33,7 +34,7 @@ export class Util {
     if (data) {
       const len = data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value:  data[i][idField], label: data[i][labelField], code: data[i]['code']});
+        list.push({value: data[i][idField], label: data[i][labelField], code: data[i]['code']});
       }
     }
     return list;
@@ -44,7 +45,12 @@ export class Util {
     if (data) {
       const len = data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value: data[i][idField], label: data[i][labelField], code: data[i]['code'], operationCode: data[i]['operationCode']});
+        list.push({
+          value: data[i][idField],
+          label: data[i][labelField],
+          code: data[i]['code'],
+          operationCode: data[i]['operationCode']
+        });
       }
     }
     return list;
@@ -57,7 +63,7 @@ export class Util {
       for (let i = 0; i < len; i++) {
         list.push({
           value: '' + data.data[i][idField],
-          label: data.data[i]['surname']?.toUpperCase() + ' ' + data.data[i]['name']?.toUpperCase() + ' (' + data.data[i]['applicationCount'] + ')',
+          label: data.data[i]['surname']?.toUpperCase() + ' ' + data.data[i]['name']?.toUpperCase() + ' (' + this.isNullOrEmpty(data.data[i]['applicationCount']) ? 0 : data.data[i]['applicationCount'] + ')',
           applicationCount: data.data[i]['applicationCount']
         });
       }
@@ -70,7 +76,11 @@ export class Util {
     if (data) {
       const len = data.data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value: data.data[i][idField], label: data.data[i][labelField], description: data.data[i]['description']});
+        list.push({
+          value: data.data[i][idField],
+          label: data.data[i][labelField],
+          description: data.data[i]['description']
+        });
       }
     }
     return list;
@@ -121,7 +131,7 @@ export class Util {
       for (let i = 0; i < len; i++) {
         list.push({
           value: '' + data[i]['id'],
-          id:data[i]['id'],
+          id: data[i]['id'],
           label: data[i]['houseName'],
           countryId: data[i]['countryId'],
           cityId: data[i]['cityId'],

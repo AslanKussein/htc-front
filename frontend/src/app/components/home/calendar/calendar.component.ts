@@ -101,7 +101,9 @@ export class CalendarComponent implements OnInit {
         this.eventsData = res.data.data.data;
         this.totalItems = res.data.total;
         this.currentPage = res.data.pageNumber + 1;
-        this.modal.open(this.modalContent, {size: 'xl'});
+        if (!this.util.isNullOrEmpty(this.eventsData)) {
+          this.modal.open(this.modalContent, {size: 'xl'});
+        }
       }
     });
   }
