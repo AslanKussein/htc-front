@@ -87,7 +87,6 @@ export class CalendarComponent implements OnInit {
 
   getDicNameByLanguage(data: any, column: string) {
     let x = this.util.getDicNameByLanguage();
-    console.log(data[column]?.name[x])
     return data[column]?.name[x];
   }
 
