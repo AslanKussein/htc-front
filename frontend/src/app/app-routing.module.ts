@@ -39,7 +39,6 @@ const routes: Routes = [
   {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
   {path: 'create-claim/:id', component: CreateClaimComponent, canActivate: [AuthGuard]},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate]},
-  {path: 'test', component: ClaimEventsComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

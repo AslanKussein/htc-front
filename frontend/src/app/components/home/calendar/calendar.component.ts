@@ -44,6 +44,12 @@ export class CalendarComponent implements OnInit {
     event: CalendarEvent;
   };
 
+  eventsData = [];
+  totalItems = 0;
+  itemsPerPage = 10;
+  currentPage = 1;
+  date: any;
+
   activeDayIsOpen: boolean = false;
 
   constructor(private modal: NgbModal,
@@ -58,17 +64,47 @@ export class CalendarComponent implements OnInit {
     this.getEventForCalendar();
   }
 
-  dayClicked({date, events}: { date: Date; events: CalendarEvent[] }) {
-    if (isSameMonth(date, this.viewDate)) {
-      this.activeDayIsOpen = !((isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0);
-      this.viewDate = date;
+  handleEvent(event: CalendarEvent) {
+    // this.util.dnHref('')
+    // this.modalData = {event};
+    this.modal.open(this.modalContent, {size: 'lg'});
+  }
+
+  pageChanged(event: any): void {
+    if (this.currentPage !== event.page) {
+      this.getEventsByDate(event.page);
     }
   }
 
-  handleEvent(event: CalendarEvent) {
-    this.modalData = {event};
-    this.modal.open(this.modalContent, {size: 'lg'});
+  getEventsByClick({date, events}: { date: Date; events: CalendarEvent[] }) {
+    this.date = date;
+    this.getEventsByDate(1);
+  }
+
+  format(date: any) {
+    return this.util.formatDate(date);
+  }
+
+  getDicNameByLanguage(data: any, column: string) {
+    let x = this.util.getDicNameByLanguage();
+    console.log(data[column]?.name[x])
+    return data[column]?.name[x];
+  }
+
+  getEventsByDate(pageNo: number) {
+    const searchFilter = {};
+    searchFilter['direction'] = 'ASC';
+    searchFilter['sortBy'] = 'id';
+    searchFilter['pageNumber'] = pageNo - 1;
+    searchFilter['pageSize'] = this.itemsPerPage;
+    this.eventsService.getEventsByDate(addDays(this.date, 1)).subscribe(res => {
+      if (res != null && res.data != null) {
+        this.eventsData = res.data.data.data;
+        this.totalItems = res.data.total;
+        this.currentPage = res.data.pageNumber + 1;
+        this.modal.open(this.modalContent, {size: 'xl'});
+      }
+    });
   }
 
   getEventForCalendar() {

@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {registerLocaleData} from "@angular/common";
@@ -64,18 +63,9 @@ export class ClaimEventsComponent implements OnInit {
   }
 
   sortStatus() {
-    let m = {};
-    m['value'] = 1;
-    m['label'] = 'Показ';
-    this.appStatusesSort.push(m)
-    m = {};
-    m['value'] = 2;
-    m['label'] = 'Звонок';
-    this.appStatusesSort.push(m)
-    m = {};
-    m['value'] = 3;
-    m['label'] = 'Встреча';
-    this.appStatusesSort.push(m)
+    this.dicService.getDics('EVENT_TYPES').subscribe(data => {
+      this.appStatusesSort = this.util.toSelectArray(data);
+    });
   }
 
   pageChanged(event: any): void {
@@ -91,7 +81,22 @@ export class ClaimEventsComponent implements OnInit {
     searchParams['pageSize'] = this.itemsPerPage;
     this.eventsService.getEventsByApplicationId(searchParams).subscribe(res => {
       if (res != null && res.data != null) {
-        this.eventsData = res.data.data.data;
+        for (const argument of res.data.data.data) {
+          let obj = {};
+          obj['applicationId'] = argument.applicationId;
+          obj['comment'] = argument.comment;
+          obj['description'] = argument.description;
+          obj['eventId'] = argument.eventId;
+          obj['operationType'] = argument.operationType;
+          obj['photoSet'] = argument.photoSet;
+          obj['realPropertyId'] = argument.realPropertyId;
+          obj['eventDate'] = this.util.formatDate(argument.eventDate);
+          obj['time'] = this.getTime(this.util.formatDate(argument.eventDate));
+          obj['eventType'] = argument.eventType
+          obj['disabledDev'] = true
+          this.eventsData.push(obj)
+        }
+        console.log(this.eventsData)
         this.totalItems = res.data.total;
         this.currentPage = res.data.pageNumber + 1;
       }
@@ -114,14 +119,44 @@ export class ClaimEventsComponent implements OnInit {
     })
   }
 
-  getDateByString(events: any) {
-    console.log(events)
-    this.eventsDTO.eventDate = new Date(events.eventDate);
+  update(events: any) {
+    if (!this.util.isNullOrEmpty(events.time)) {
+      events.eventDate = new Date(events.eventDate);
+      events.eventDate.setHours(events.time.hour);
+      events.eventDate.setMinutes(events.time.minute);
+    } else {
+      this.notificationService.showInfo('Информация', 'Введите время');
+    }
+    if (this.util.isNullOrEmpty(events.eventDate)) {
+      this.notificationService.showInfo('Информация', 'Введите дату');
+    }
+    this.eventsService.updateEvent(events.eventId, events).subscribe(res => {
+      this.changeDisableDev(events, true);
+      this.notificationService.showSuccess('Информация', 'Событие изменено');
+      this.eventsService.putCommentEvent(res, events.comment).subscribe();
+    });
+  }
+
+  getTime(date: any) {
+    let time = {};
+    time['hour'] = new Date(date).getHours();
+    time['minute'] = new Date(date).getMinutes();
+    return time;
   }
 
   deleteEvent(id: any) {
-    this.eventsService.deleteEventById(id).subscribe(res => {
-      this.getEventsByApplicationId(1);
-    });
+    if (confirm("Вы действительно хотите удалить событие?")) {
+      this.eventsService.deleteEventById(id).subscribe(res => {
+        this.getEventsByApplicationId(1);
+      });
+    }
+  }
+
+  changeDisableDev(events: any, res: boolean) {
+    events.disabledDev = res;
+  }
+
+  editEvent(events: any) {
+    this.changeDisableDev(events, false);
   }
 }

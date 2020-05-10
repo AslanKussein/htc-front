@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {Dic} from "../models/dic";
 import {ConfigService} from "./config.service";
 import {isArray} from "rxjs/internal-compatibility";
+import {formatDate} from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -191,5 +192,9 @@ export class Util {
     // subtraction forces infinities to NaN
     // adding 1 corrects loss of precision from parseFloat (#15100)
     return !isArray(val) && (val - parseFloat(val) + 1) >= 0;
+  }
+
+  formatDate(date: any) {
+    return formatDate(date, 'dd.MM.yyyy HH:mm', 'en-US');
   }
 }

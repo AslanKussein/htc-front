@@ -51,7 +51,7 @@ export class EventsService {
   }
 
   getEventsByDate(date: any) {
-    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/events/eventsToDate`, date)
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/events/eventsToDate`, {date})
   }
 
   getEventsByApplicationId(searchParams: any) {
