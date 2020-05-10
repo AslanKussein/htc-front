@@ -442,13 +442,6 @@
                             <div class="col-sm" *ngIf="photoList.length > 0">
                               <span>Фото + {{photoList.length}}</span>
                               <div id="photoCarousel" class="carousel slide" data-ride="carousel" style="width: 302px;">
-                                <!--                              <ol class="carousel-indicators">-->
-                                <!--                                <li data-target="#photoCarousel" attr.data-slide-to="{{i}}"-->
-                                <!--                                    class="bg-dark" [class]="i==0 ? 'active': ''"-->
-                                <!--                                    *ngFor="let photo of photoList;let i = index">-->
-                                <!--                                </li>-->
-
-                                <!--                              </ol>-->
 
                                 <div class="carousel-inner">
                                   <div class="carousel-item" [class]="i==0 ? 'active': ''"
@@ -458,7 +451,7 @@
                                       <img [src]="photo.image" alt="First Slide" class="photoList" width="302"
                                            height="320"
                                            (click)="showPhotoFull(photo.fullImage)">
-                                      <button class="btn btn-sm btn-danger removeItemCarousel"
+                                      <button class="btn btn-sm btn-danger removeItemCarousel" [disabled]="!hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
                                               (click)="removeByGuid(photo, 1)"><i class="fa fa-trash fa-2x"
                                                                                   aria-hidden="true"></i></button>
                                     </div>
@@ -478,16 +471,7 @@
                             <div class="col-sm" *ngIf="photoPlanList.length > 0">
                               <span>Планы + {{photoPlanList.length}}</span>
                               <div id="planCarousel" class="carousel slide" data-ride="carousel" style="width: 302px;">
-                                <!--                              <ol class="carousel-indicators">-->
-                                <!--                                <li data-target="#planCarousel" attr.data-slide-to="{{i}}"-->
-                                <!--                                    [class]="i==0 ? 'active': ''"-->
-                                <!--                                    *ngFor="let plan of photoPlanList;let i = index">-->
-                                <!--                                </li>-->
-                                <!--                                <button *ngFor="let photo of photoList;let i = index" type="button"-->
-                                <!--                                        class="text-center removeItemCarousel"-->
-                                <!--                                        (click)="removeByGuid(photo, 2)"><i class="fa fa-trash fa-2x text-danger"-->
-                                <!--                                                                            aria-hidden="true"></i></button>-->
-                                <!--                              </ol>-->
+
                                 <div class='carousel-item'>
                                   <a class='btn btn-sm btn-danger' *ngFor="let photo of photoList;let i = index"
                                      (click)="removeByGuid(photo, 2)"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
@@ -497,6 +481,10 @@
                                        *ngFor="let plan of photoPlanList;let i = index">
                                     <img [src]="plan.image" alt="First Slide" class="photoList" width="302" height="320"
                                          (click)="showPhotoFull(plan.fullImage)">
+
+                                    <button class="btn btn-sm btn-danger removeItemCarousel" [disabled]="!hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
+                                            (click)="removeByGuid(photo, 1)"><i class="fa fa-trash fa-2x"
+                                                                                aria-hidden="true"></i></button>
                                   </div>
                                 </div>
                                 <a class="carousel-control-prev" href="#planCarousel" data-slide="prev">
