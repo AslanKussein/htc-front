@@ -24,10 +24,6 @@ const itemRoutes: Routes = [
   {path: 'add-event', component: AddEventComponent, canActivate: [AuthGuard]},
 ];
 
-const createClaimChild: Routes = [
-  {path: 'add-event/:id', component: ClaimEventsComponent, canActivate: [AuthGuard]},
-];
-
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full', canActivate: [AuthGuard]},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
@@ -41,8 +37,9 @@ const routes: Routes = [
   {path: 'yandex-map', component: YandexMapComponent, canActivate: [AuthGuard]},
   {path: 'news', component: NewsComponent, canActivate: [AuthGuard]},
   {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
-  {path: 'create-claim/:id', component: CreateClaimComponent, canActivate: [AuthGuard], children: createClaimChild},
-  {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate], children: createClaimChild},
+  {path: 'create-claim/:id', component: CreateClaimComponent, canActivate: [AuthGuard]},
+  {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate]},
+  {path: 'test', component: ClaimEventsComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

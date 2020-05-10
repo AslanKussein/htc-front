@@ -69,7 +69,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   modalRef: BsModalRef;
   applicationId: number;
   roles: any;
-  createClaimComponent: boolean = true;
   headerDeal: boolean = false;
   clientDeal: boolean = false;
   aboutObject: boolean = false;
@@ -307,13 +306,14 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   loadDataById(id: number) {
     this.ngxLoader.start();
-    this.claimService.getClaimById(id).subscribe(data => {
-      if (data != null) {
-        setTimeout(() => {    //<<<---    using ()=> syntax
-          if (this.util.isNullOrEmpty(this.operationType) || this.util.isNullOrEmpty(this.objectType) || this.util.isNullOrEmpty(this.residentialComplexes)) {
-            this.loadDataById(this.applicationId);
-            return
-          } else {
+
+    setTimeout(() => {    //<<<---    using ()=> syntax
+      if (this.util.isNullOrEmpty(this.operationType) || this.util.isNullOrEmpty(this.objectType) || this.util.isNullOrEmpty(this.residentialComplexes)) {
+        this.loadDataById(this.applicationId);
+        return
+      } else {
+        this.claimService.getClaimById(id).subscribe(data => {
+          if (data != null) {
             this.fillApplicationForm(data);
             this.fillApplicationFormPurchaseInfoDto(data.realPropertyRequestDto?.purchaseInfoDto);
             this.fillApplicationFormClientData(data.clientDto);
@@ -321,9 +321,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
             this.cdRef.detectChanges();
             this.ngxLoader.stop();
           }
-        }, 3000);
+        });
       }
-    });
+    }, 3000);
   }
 
   setPossibleReasonForBidding() {
@@ -783,20 +783,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       .subscribe(data => {
       });
     if (id == 1) {
-      this.photoList.filter(function (item) {
-        return item !== obj
-      })
+      this.photoList.splice(this.photoList.indexOf(obj), 1);
     } else if (id == 2) {
-      this.photoPlanList.filter(function (item) {
-        return item !== obj
-      })
+      this.photoPlanList.splice(this.photoPlanList.indexOf(obj), 1);
     } else if (id == 3) {
-      const index = this.photo3DList.indexOf(obj);
-      if (index > -1) {
-        this.photo3DList.splice(index, 1);
-      }
+      this.photo3DList.splice(this.photo3DList.indexOf(obj), 1);
     }
-    console.log(this.photoList)
   }
 
   removePhoto(data: any) {
@@ -835,12 +827,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   changeTab(tab: string) {
     this.activeTab = tab;
-    if (tab == 'add-event') {
-      this.createClaimComponent = false;
-      this.util.dnHref('create-claim/add-event')
-    } else if (tab == 'create') {
-      this.createClaimComponent = true;
-      this.util.dnHref('create-claim')
+    if (tab == 'create') {
+      let url = 'create-claim';
+      if (this.applicationId) {
+        url = 'create-claim/' + this.applicationId;
+      }
+      this.util.dnHref(url);
     }
   }
 }

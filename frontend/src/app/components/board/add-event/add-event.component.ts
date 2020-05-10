@@ -77,6 +77,7 @@ export class AddEventComponent implements OnInit {
   addEvent() {
     this.setDateTime();
     this.eventsService.addEvent(this.eventsForm.value).subscribe(res => {
+      this.eventsService.putCommentEvent(res, this.eventsForm.value.comment).subscribe();
       this.notificationService.showSuccess('Информация', 'Статус изменен');
       this.board.sortStatusesDic(this.board.activeTab);
     })

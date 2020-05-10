@@ -53,4 +53,12 @@ export class EventsService {
   getEventsByDate(date: any) {
     return this.http.post<any>(`${this.configService.apiViewManagerUrl}/events/eventsToDate`, date)
   }
+
+  getEventsByApplicationId(searchParams: any) {
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/events/applicationEvents`, searchParams)
+  }
+
+  putCommentEvent(id: number, comment: string) {
+    return this.http.put<any>(`${this.configService.apiDataManagerUrl}/api/events/` + id + `/comment`, comment)
+  }
 }

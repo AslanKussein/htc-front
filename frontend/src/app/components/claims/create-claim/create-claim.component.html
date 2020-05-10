@@ -2,24 +2,23 @@
   <div class="card-body card-bg" ngxUiLoaderBlurred>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item">
-        <a class="nav-link" [ngClass]="activeTab == 'create' ? 'active' : ''" id="fillClaims-tab" data-toggle="tab" href="#fillClaims" role="tab"
-           aria-controls="fillClaims" (click)="changeTab('create')"
+        <a class="nav-link active" id="fillClaims-tab" data-toggle="tab" href="#fillClaims" role="tab"
+           aria-controls="fillClaims"
            aria-selected="true" translate> claim.title</a>
       </li>
       <li class="nav-item" *ngIf="this.applicationId">
-        <a class="nav-link" [ngClass]="activeTab == 'contract' ? 'active' : ''" id="contractOU-tab" data-toggle="tab" href="#contractOU" role="tab" aria-controls="contractOU"
-           aria-selected="false" (click)="changeTab('contract')" translate>claim.contractOU</a>
+        <a class="nav-link" id="contractOU-tab" data-toggle="tab" href="#contractOU" role="tab" aria-controls="contractOU"
+           aria-selected="false" translate>claim.contractOU</a>
       </li>
       <li class="nav-item" *ngIf="this.applicationId">
-        <a class="nav-link" [ngClass]="activeTab == 'add-event' ? 'active' : ''" id="impressions-tab" data-toggle="tab" href="#impressions" role="tab"
-           aria-controls="impressions" (click)="changeTab('add-event')"
+        <a class="nav-link" id="impressions-tab" data-toggle="tab" href="#impressions" role="tab"
+           aria-controls="impressions"
            aria-selected="false" translate>claim.impressions</a>
       </li>
     </ul>
 
     <div class="tab-content" id="myTabContent">
-
-      <div class="tab-pane fade show active" [formGroup]="applicationForm" *ngIf="createClaimComponent" id="fillClaims"
+      <div class="tab-pane fade show active" [formGroup]="applicationForm" id="fillClaims"
            role="tabpanel" aria-labelledby="fillClaims-tab">
         <div class="card-body">
           <div class="row">
@@ -1273,11 +1272,10 @@
         </div>
 
       </div>
-      <div class="tab-pane fade" id="contractOU" role="tabpanel" aria-labelledby="contractOU-tab" *ngIf="this.applicationId">
+      <div class="tab-pane fade" id="contractOU" role="tabpanel" aria-labelledby="contractOU-tab">
         2
       </div>
-      <div class="tab-pane fade" id="impressions" role="tabpanel" aria-labelledby="impressions-tab" *ngIf="this.applicationId">
-<!--        <router-outlet></router-outlet>-->
+      <div class="tab-pane fade" id="impressions" role="tabpanel" aria-labelledby="impressions-tab">
         <app-claim-events></app-claim-events>
       </div>
     </div>
