@@ -194,7 +194,7 @@ export class DicControlComponent implements OnInit {
       }
       this.ngxLoader.stop();
     });
-  }
+  } 
 
   loadDictionaryForEdit(dic) {
     this.ngxLoader.start();

@@ -15,6 +15,8 @@ import {ClientDto} from "../../../../models/clientCard/clientDto";
 import {ClientsService} from "../../../../services/clients.service";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {NotificationService} from "../../../../services/notification.service";
+import {NgxUiLoaderService} from "ngx-ui-loader";
+import {UploaderService} from "../../../../services/uploader.service";
 
 @Component({
   selector: 'app-client-card',
@@ -23,8 +25,8 @@ import {NotificationService} from "../../../../services/notification.service";
 })
 export class ClientCardComponent implements OnInit {
   currentUser: User;
-
-   profile: any;
+  selectedFile: File;
+  profile: any;
   modalRef: BsModalRef;
   modalRef2: BsModalRef;
 
@@ -45,7 +47,8 @@ export class ClientCardComponent implements OnInit {
               private clientsService: ClientsService,
               private modalService: BsModalService,
               private notifyService: NotificationService,
-
+              private ngxLoader: NgxUiLoaderService,
+              private uploader: UploaderService,
               private dicService: DicService,
               private authenticationService: AuthenticationService,
               private actRoute: ActivatedRoute,
@@ -59,7 +62,6 @@ export class ClientCardComponent implements OnInit {
       this.agentRoles=false;
       this.rgRoles=false;
       for (const role of this.currentUser.roles) {
-        console.log(this.currentUser.roles)
         if(role=='AGENT_GROUP_CHOOSE'){
           this.agentRoles=true;
         }
@@ -98,7 +100,9 @@ export class ClientCardComponent implements OnInit {
     firstName: '',
     surname: '',
     patronymic: '',
-    addPhoneNumbers:[]
+    addPhoneNumbers: [],
+    clientFiles:[],
+    filename:[]
   };
 
   ngOnInit(): void {
@@ -169,14 +173,13 @@ export class ClientCardComponent implements OnInit {
             }else{
               this.gender='не изв.'
             }
-
-          }
-          console.log(this.client)
+            }
         }
       });
   }
 
   openModal(template: TemplateRef<any>) {
+    this.ngxLoader.start();
     this.modalRef = this.modalService.show(
       template,
       Object.assign({}, { class: 'gray modal-lg' },{ keyboard: false, backdrop: 'static'})
@@ -191,7 +194,25 @@ export class ClientCardComponent implements OnInit {
       surname: this.profile?.surname,
       patronymic: this.profile?.patronymic,
       addPhoneNumbers: this.profile?.addPhoneNumbers,
+      clientFiles:this.profile?.clientFiles,
+      filename:this.profile?.filename
     };
+    if(this.profile.clientFiles!=null) {
+      const len = this.profile.clientFiles.length;
+      for (let i = 0; i < len; i++) {
+            this.uploader.getFileNameById(this.profile.clientFiles[i].guid).subscribe(data => {
+              if (data != null) {
+                console.log(data.headers.get('content-disposition'));
+              }
+            }, err => {
+              this.notifyService.showError('warning', err.message);
+              });
+
+
+      }
+    }
+    this.ngxLoader.stop();
+
   }
 
   submit(){
@@ -199,7 +220,6 @@ export class ClientCardComponent implements OnInit {
       this.notifyService.showError('Пожалуйста, заполните все поля', "");
       return;
     }
-    this.formClient.addPhoneNumbers=['1d11','6s66']
      this.clientsService.updateClientById(this.formClient)  .subscribe(data => {
        if (data != null) {
          this.notifyService.showSuccess('success', 'Успешно сохранено');
@@ -207,7 +227,7 @@ export class ClientCardComponent implements OnInit {
          this.modalRef.hide();
          }
      }, err => {
-       this.notifyService.showError('warning', err);
+       this.notifyService.showError('warning', err.message.ru);
        this.modalRef.hide();
 
      });
@@ -234,5 +254,48 @@ export class ClientCardComponent implements OnInit {
     this.modalRef2.hide();
     this.modalRef.hide();
     }
+
+  addPhoneNumber(){
+    if(this.formClient.addPhoneNumbers==null){
+      this.formClient.addPhoneNumbers=[]
+      this.formClient.addPhoneNumbers.push({phoneNumber:'',
+        clientId:this.formClient.id})
+    }else if(this.formClient.addPhoneNumbers.length<5){
+      this.formClient.addPhoneNumbers.push({phoneNumber:'',
+        clientId:this.formClient.id})
+
+    }else{
+      this.notifyService.showError('warning', 'Max 5 entries!');
+
+    }
+  }
+
+  onFileChanged(event){
+    this.ngxLoader.start();
+    this.selectedFile = event.target.files[0];
+    this.uploader.uploadData(this.selectedFile)
+      .subscribe(data => {
+        if (data != null) {
+         console.log(data)
+          if(this.formClient.clientFiles==null){
+            this.formClient.clientFiles=[]
+          }
+          this.formClient.clientFiles.push({guid:data.uuid,
+            clientId:this.formClient.id})
+
+          this.clientsService.updateClientById(this.formClient)  .subscribe(data => {
+            if (data != null) {
+              this.notifyService.showSuccess('success', 'Успешно сохранено');
+              this.profile=data;
+              this.formClient=data;
+            }
+          }, err => {
+            this.notifyService.showError('warning', err);
+            });
+
+        }
+      });
+    this.ngxLoader.stop();
+  }
 
 }

@@ -14,12 +14,13 @@ import {DicControlComponent} from "./components/dic-control/dic-control.componen
 import {HomeComponent} from "./components/home/home.component";
 import {YandexMapComponent} from "./components/claims/create-claim/yandex-map/yandex-map.component";
 import {NewsComponent} from "./components/news/news.component";
-import {CloseDealComponent} from "./components/board/close-deal/close-deal.component";
+// import {CloseDealComponent} from "./components/board/close-deal/close-deal.component";
 import {ActsComponent} from "./components/claims/create-claim/acts/acts.component";
+import {ClientCardComponent} from "./components/profile/my-clients/client-card/client-card.component";
 
 // определение дочерних маршрутов
 const itemRoutes: Routes = [
-  {path: 'close-deal/:operationId', component: CloseDealComponent, canActivate: [AuthGuard]},
+  // {path: 'close-deal/:operationId', component: CloseDealComponent, canActivate: [AuthGuard]},
 ];
 
 const createClaimChild: Routes = [
@@ -41,6 +42,7 @@ const routes: Routes = [
   {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
   {path: 'create-claim/:id', component: CreateClaimComponent, canActivate: [AuthGuard]},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate], children: createClaimChild},
+  {path: 'client-card/:id', component: ClientCardComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

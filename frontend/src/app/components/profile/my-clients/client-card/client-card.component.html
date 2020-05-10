@@ -143,20 +143,29 @@
                 <label class="col-sm col-form-label">ID клиента<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="col-sm form-control" name="nameEn" disabled [(ngModel)]="formClient.id" [disabled]="true">
               </div>
-
+              <div>
+                <label class="col-sm col-form-label">Файл<span class="text-danger">&nbsp;*</span></label>
+                <i class="fa fa-paperclip"></i>
+                <input type="file" (change)="onFileChanged($event)">
+              </div>
             </div>
             <div class="col-sm">
-              <div>
+              <div  >
                 <label class="col-sm col-form-label">Телефон<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" class="col-sm form-control" name="nameEn" prefix="+7" mask="(000) 000 00 00" [disabled]="!rgRoles" (input)="getDataByPhoneNumber()"
-                       [(ngModel)]="formClient.phoneNumber">
+                  <div class="row" style="margin-left: 1px"> <input  type="text" class="col-sm form-control" name="nameEn" prefix="+7" mask="(000) 000 00 00" [disabled]="!rgRoles"
+                                           (input)="getDataByPhoneNumber()"
+                                           [(ngModel)]="formClient.phoneNumber">
+                    <a  style="margin-left: 10px" (click)="addPhoneNumber()"><i style="color:green"
+                                                                                class="fa fa-plus-circle fa-2x"></i></a></div>
+
                 <div *ngIf="!formClient.phoneNumber" class="text-danger">
                   <div *ngIf="!formClient.phoneNumber" translate>claim.requiredField</div>
                 </div>
               </div>
-              <div>
-                <label class="col-sm col-form-label">Доп телефон<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" class="col-sm form-control" name="nameEn" >
+              <div *ngFor="let item of formClient.addPhoneNumbers;let index = index">
+
+                <label class="col-sm col-form-label">Доп телефон</label>
+                <input type="text" class="col-sm form-control" [(ngModel)]="item.phoneNumber">
               </div>
               <div>
                 <label class="col-sm col-form-label">Почта<span class="text-danger">&nbsp;*</span></label>
