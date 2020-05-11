@@ -323,7 +323,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
           }
         });
       }
-    }, 3000);
+    }, 1000);
   }
 
   setPossibleReasonForBidding() {
