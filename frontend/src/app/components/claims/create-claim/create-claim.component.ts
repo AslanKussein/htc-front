@@ -798,7 +798,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   onFileChanged(event, id: number) {
-    this.ngxLoader.start();
     this.selectedFile = event.target.files[0];
     this.uploader.uploadData(this.selectedFile)
       .subscribe(data => {
@@ -806,7 +805,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
           this.fillPicture(data, id);
         }
       });
-    this.ngxLoader.stop();
   }
 
   fillPicture(guid: any, id: number) {
