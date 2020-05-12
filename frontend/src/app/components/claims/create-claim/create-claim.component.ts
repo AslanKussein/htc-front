@@ -833,4 +833,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       this.util.dnHref(url);
     }
   }
+
+  hasRGRole() {
+    return this.util.hasRGRole();
+  }
 }

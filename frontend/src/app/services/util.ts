@@ -60,12 +60,14 @@ export class Util {
     const list = [];
     if (data) {
       const len = data.data.length;
-      for (let i = 0; i < len; i++) {
-        list.push({
-          value: '' + data.data[i][idField],
-          label: data.data[i]['surname']?.toUpperCase() + ' ' + data.data[i]['name']?.toUpperCase() + ' (' + this.isNullOrEmpty(data.data[i]['applicationCount']) ? 0 : data.data[i]['applicationCount'] + ')',
-          applicationCount: data.data[i]['applicationCount']
-        });
+      if (len > 0) {
+        for (let i = 0; i < len; i++) {
+          list.push({
+            value: '' + data.data[i][idField],
+            label: data.data[i]['surname']?.toUpperCase() + ' ' + data.data[i]['name']?.toUpperCase() + ' (' + this.isNullOrEmpty(data.data[i]['applicationCount']) ? 0 : data.data[i]['applicationCount'] + ')',
+            applicationCount: data.data[i]['applicationCount']
+          });
+        }
       }
     }
     return list;

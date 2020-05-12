@@ -54,7 +54,7 @@
                           <label>ID</label>
                           <input type="text" class="form-control" readonly [value]="this.applicationId"/>
                         </div>
-                        <div class="col-sm">
+                        <div class="col-sm" *ngIf="hasRGRole()">
                           <label>Выберите агента</label>
                           <ng-select
                             [items]="agentList"
