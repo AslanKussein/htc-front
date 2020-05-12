@@ -384,8 +384,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       this.applicationForm.cityId = this.applicationForm.residentialComplexId?.cityId;//Кол-во кв
 
       this.readonlyChooseJK = true;
+    } else {
+      this.readonlyChooseJK = false;
     }
-
   }
 
   searchByPhone() {
