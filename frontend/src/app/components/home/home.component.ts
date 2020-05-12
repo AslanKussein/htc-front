@@ -22,13 +22,13 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 export class HomeComponent implements OnInit {
 
   applicationLightForm: any;
-  applicationLightDto: ApplicationLightDto;
   operationType: Dic[];
   agentList: Dic[];
   claimLightData = [];
   totalItems = 0;
   itemsPerPage = 10;
   currentPage = 1;
+  applicationLightDto: ApplicationLightDto;
 
   constructor(private formBuilder: FormBuilder,
               private dicService: DicService,
@@ -45,7 +45,25 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.clear();
+    this.applicationLightForm = this.formBuilder.group({
+      id: [null, Validators.nullValidator],
+      clientId: [null, Validators.nullValidator],
+      operationTypeId: [null, Validators.required],
+      surName: [null, Validators.required],
+      name: [null, Validators.required],
+      patronymic: [null, Validators.nullValidator],
+      phoneNumber: [null, Validators.required],
+      note: [null, Validators.nullValidator],
+      agentLogin: [null, Validators.nullValidator],
+    });
+
+    if (this.hasRGRole()) {
+      this.applicationLightForm.controls['agentLogin'].setValidators([Validators.required]);
+      this.applicationLightForm.controls["agentLogin"].updateValueAndValidity();
+    }
+
+    this.cdRef.detectChanges()
+
     this.dicService.getDics('OPERATION_TYPES').subscribe(data => {
       this.operationType = this.util.toSelectArray(data);
     });
@@ -58,30 +76,19 @@ export class HomeComponent implements OnInit {
 
   fillApplicationLightDTO() {
     this.applicationLightDto = new ApplicationLightDto();
-    this.applicationLightDto.operationTypeId = this.applicationLightForm?.operationTypeId?.value
-    this.applicationLightDto.note = this.applicationLightForm?.note;
-    this.applicationLightDto.agentLogin = this.applicationLightForm?.agentLogin;
+    this.applicationLightDto.operationTypeId = this.applicationLightForm?.value.operationTypeId?.value
+    this.applicationLightDto.note = this.applicationLightForm?.value?.note;
+    this.applicationLightDto.agentLogin = this.applicationLightForm?.value?.agentLogin;
     this.applicationLightDto.clientDto = new ClientDto();
-    this.applicationLightDto.clientDto.id = this.applicationLightForm?.clientId;
-    this.applicationLightDto.clientDto.firstName = this.applicationLightForm?.name;
-    this.applicationLightDto.clientDto.surname = this.applicationLightForm?.surName;
-    this.applicationLightDto.clientDto.patronymic = this.applicationLightForm?.patronymic;
-    this.applicationLightDto.clientDto.phoneNumber = this.applicationLightForm?.phoneNumber;
+    this.applicationLightDto.clientDto.id = this.applicationLightForm?.value?.clientId;
+    this.applicationLightDto.clientDto.firstName = this.applicationLightForm?.value?.name;
+    this.applicationLightDto.clientDto.surname = this.applicationLightForm?.value?.surName;
+    this.applicationLightDto.clientDto.patronymic = this.applicationLightForm?.value?.patronymic;
+    this.applicationLightDto.clientDto.phoneNumber = this.applicationLightForm?.value?.phoneNumber;
   }
 
   clear() {
-    this.applicationLightForm = this.formBuilder.group({
-      id: [null, Validators.nullValidator],
-      clientId: [null, Validators.nullValidator],
-      operationTypeId: [null, Validators.required],
-      surName: [null, Validators.nullValidator],
-      name: [null, Validators.nullValidator],
-      patronymic: [null, Validators.nullValidator],
-      phoneNumber: [null, Validators.nullValidator],
-      note: [null, Validators.nullValidator],
-      agentLogin: [null, Validators.nullValidator],
-    });
-    this.cdRef.detectChanges()
+    this.applicationLightForm.reset();
   }
 
   get f() {
@@ -103,22 +110,7 @@ export class HomeComponent implements OnInit {
   }
 
   onSave() {
-    this.ngxLoader.start();
-    let result = false;
-    const controls = this.applicationLightForm.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        this.translate.get('claim.validator.' + name).subscribe((text: string) => {
-          this.notification.showInfo("Ошибка", "Поле " + text + " не заполнено!!!");
-        });
-        result = true;
-      }
-    }
-
-    if (result) return;
-
     this.fillApplicationLightDTO();
-
     this.claimService.saveLightApplication(this.applicationLightDto)
       .subscribe(data => {
         if (data != null) {
@@ -128,7 +120,6 @@ export class HomeComponent implements OnInit {
       }, err => {
         this.notification.showWarning('warning', err);
       });
-    this.ngxLoader.stop();
   }
 
   pageChanged(event: any): void {
@@ -163,5 +154,9 @@ export class HomeComponent implements OnInit {
 
   formatDate(claim: any) {
     return formatDate(claim.creationDate, 'dd.MM.yyyy HH:mm', 'en-US');
+  }
+
+  hasRGRole() {
+    return this.util.hasRGRole();
   }
 }

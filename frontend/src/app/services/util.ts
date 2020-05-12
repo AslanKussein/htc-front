@@ -207,4 +207,13 @@ export class Util {
   formatDate(date: any) {
     return formatDate(date, 'dd.MM.yyyy HH:mm', 'en-US');
   }
+
+  hasRGRole() {
+    for (const routerElement of JSON.parse(localStorage.getItem('currentUser')).roles) {
+      if (routerElement == 'РГ') {
+        return true;
+      }
+    }
+    return false;
+  }
 }
