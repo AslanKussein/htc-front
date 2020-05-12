@@ -205,6 +205,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     } else {
       this.ngxLoader.stop();
     }
+    window.scrollTo(0,0);
+
   }
 
   hasShowClientGroup(operation: string) {
