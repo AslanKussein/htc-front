@@ -392,7 +392,9 @@
                         </div>
                         <div class="col-sm"
                              [hidden]="hasShowClientGroup('VIEW_CLIENT_DATA') && hasShowClientGroup('UPDATE_CLIENT_DATA')">
-                          <label for="email" translate>claim.email</label>
+                          <label for="email" translate>claim.email
+                            <span class="text-danger" *ngIf="!applicationForm.email">&nbsp;*</span>
+                          </label>
                           <input type="text" id="email" class="form-control" [(ngModel)]="applicationForm.email"
                                  placeholder="{{'claim.email' | translate}}"
                                  [readOnly]="hasShowClientGroup('UPDATE_CLIENT_DATA')" formControlName="email"/>
@@ -451,7 +453,7 @@
                                       <img [src]="photo.image" alt="First Slide" class="photoList" width="302"
                                            height="320"
                                            (click)="showPhotoFull(photo.fullImage)">
-                                      <button class="btn btn-sm btn-danger removeItemCarousel" [disabled]="!hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
+                                      <button class="btn btn-sm btn-danger removeItemCarousel" *ngIf="!hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
                                               (click)="removeByGuid(photo, 1)"><i class="fa fa-trash fa-2x"
                                                                                   aria-hidden="true"></i></button>
                                     </div>
