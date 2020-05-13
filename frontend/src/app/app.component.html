@@ -1,8 +1,11 @@
 <div class="wrapper">
   <app-nav></app-nav>
-  <router-outlet>
+  <router-outlet (activate)="onActivate($event)" >
     <app-create-claim-btn></app-create-claim-btn>
+    <app-scroll-up></app-scroll-up>
   </router-outlet>
+  <br>
+  <br>
   <toast-messages></toast-messages>
   <ngx-ui-loader></ngx-ui-loader>
   <app-footer></app-footer>
