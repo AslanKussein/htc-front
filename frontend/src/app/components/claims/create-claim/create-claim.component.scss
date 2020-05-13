@@ -29,17 +29,24 @@ legend {
 }
 
 .btn2 {
-  width: 200px!important;
+  width: 200px !important;
 }
 
 .disabledDev {
-  pointer-events: none!important;
-  opacity: 0.4!important;
+  pointer-events: none !important;
+  opacity: 0.4 !important;
 }
 
 .removeItemCarousel {
- z-index: 100;
-  margin:5px 0 0 37%
+  z-index: 100;
+  margin: 5px 0 0 37%
 }
 
-.carousel-indicators {width: 10%}
+.carousel-indicators {
+  width: 10%
+}
+
+textarea {
+  border: none;
+  border-bottom: 1px solid black;
+}

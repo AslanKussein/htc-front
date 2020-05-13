@@ -211,6 +211,9 @@ export class Util {
   }
 
   hasRGRole() {
+    if (this.isNullOrEmpty(JSON.parse(localStorage.getItem('currentUser')).roles)) {
+      return false;
+    }
     for (const routerElement of JSON.parse(localStorage.getItem('currentUser')).roles) {
       if (routerElement == 'РГ') {
         return true;

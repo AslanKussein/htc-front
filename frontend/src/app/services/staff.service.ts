@@ -19,11 +19,11 @@ export class StaffService {
   getUserList(search: any): Observable<any> {
     let params = new HttpParams();
     params = params.append('locale', String(language.language));
-    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/users`, {params});
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/users`, {params});
   }
 
   getUserById(obj): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/users/`+obj.id);
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/users/`+obj.id);
   }
 
   getUserInfo(obj): Observable<any> {
@@ -38,23 +38,23 @@ export class StaffService {
     if(!this.util.isNullOrEmpty(obj.search)){
       params = params.append('value',obj.search);
     }
-    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/users/filter`,{params});
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/users/filter`,{params});
   }
 
   getRoleList(search: any): Observable<any> {
     let params = new HttpParams();
     params = params.append('locale', String(language.language));
-    return this.http.get<any>(`${this.configService.apiRoleManagerUrl}/roles`, {params});
+    return this.http.get<any>(`${this.configService.apiRoleManagerUrl}/api/roles`, {params});
   }
 
   getGroupList(search: any): Observable<any> {
     let params = new HttpParams();
     params = params.append('locale', String(language.language));
-    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/groups`, {params});
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/groups`, {params});
   }
 
   public createUser(obj): Observable<any> {
-    return this.http.post(`${this.configService.apiUserManagerUrl}/users`, obj)
+    return this.http.post(`${this.configService.apiUserManagerUrl}/api/users`, obj)
       .pipe(
         tap(data => {
           console.log(data)

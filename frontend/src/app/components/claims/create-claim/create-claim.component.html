@@ -7,7 +7,8 @@
            aria-selected="true" translate> claim.title</a>
       </li>
       <li class="nav-item" *ngIf="this.applicationId">
-        <a class="nav-link" id="contractOU-tab" data-toggle="tab" href="#contractOU" role="tab" aria-controls="contractOU"
+        <a class="nav-link" id="contractOU-tab" data-toggle="tab" href="#contractOU" role="tab"
+           aria-controls="contractOU"
            aria-selected="false" translate>claim.contractOU</a>
       </li>
       <li class="nav-item" *ngIf="this.applicationId">
@@ -74,6 +75,7 @@
                           <ng-select
                             [class.disabledDev]="hasShowApplicationGroup('UPDATE_DEAL_DATA') && this.applicationId"
                             [items]="operationType"
+                            [readonly]="this.applicationId"
                             [(ngModel)]="applicationForm.operationTypeId"
                             formControlName="operationTypeId"
                             placeholder="{{ 'patterns.chooseElement' | translate }}">
@@ -229,71 +231,71 @@
                           </div>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <div class="md-form"
-                               [class.disabledDev]="hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO') && hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO')">
-                          <textarea id="form7" class="md-textarea form-control" rows="1" maxlength="1000"
-                                    [(ngModel)]="applicationForm.note" formControlName="note"></textarea>
-                            <label for="form7" translate>claim.comments</label>
-                          </div>
+                      <div class="row"
+                           [class.disabledDev]="hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO') && hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO')">
+                        <div class="col-sm">
+                          <label for="form7" translate>claim.comments</label>
+
+                          <textarea class="col-sm-12 control"
+                                    required data-error="Please enter customer notes"
+                                    [(ngModel)]="applicationForm.note" formControlName="note" maxlength="1000"></textarea>
                         </div>
                       </div>
-                      <div
-                        [hidden]="hasShowApplicationGroup('VIEW_DEAL_DATA') || hasShowApplicationGroup('UPDATE_DEAL_DATA')">
-                        <div class="row">
-                          <div class="col-sm">
-                            <label>Номер договора
-                              <span class="text-danger" *ngIf="!applicationForm.contractNumber">&nbsp;*</span>
-                            </label>
-                            <input type="text" class="form-control" maxlength="10" formControlName="contractNumber"
-                                   [(ngModel)]="applicationForm.contractNumber"
-                                   placeholder="{{'Номер договора' | translate}}"
-                                   [readonly]="hasShowApplicationGroup('UPDATE_DEAL_DATA')"/>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-sm">
-                            <label for="fillFromAndTo" translate>claim.validator.contractPeriod
-                              <span class="text-danger" *ngIf="!applicationForm.contractPeriod">&nbsp;*</span>
-                            </label>
-                            <input type="text" id="fillFromAndTo" class="form-control" bsDatepicker #ru="bsDatepicker"
-                                   [(ngModel)]="applicationForm.contractPeriod"
-                                   [readonly]="hasShowApplicationGroup('UPDATE_DEAL_DATA')"
-                                   placeholder="{{'claim.validator.contractPeriod' | translate}}"
-                                   formControlName="contractPeriod"/>
-                            <div *ngIf="f.contractPeriod.touched && f.contractPeriod.invalid" class="text-danger">
-                              <div *ngIf="f.contractPeriod.errors.required" translate>claim.requiredField</div>
-                            </div>
-                          </div>
-                          <div class="col-sm">
-                            <label for="fillFromAnd" translate>claim.validator.amount
-                              <span class="text-danger" *ngIf="!applicationForm.amount">&nbsp;*</span>
-                            </label>
-                            <input type="text" id="fillFromAnd" class="form-control" [(ngModel)]="applicationForm.amount"
-                                   maxlength="20" mask="separator.2" thousandSeparator=" "
-                                   oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                   formControlName="amount" min="0"
-                                   placeholder="{{'claim.validator.amount' | translate}}"
-                                   [readonly]="hasShowApplicationGroup('UPDATE_DEAL_DATA')"/>
-                            <div *ngIf="f.amount.touched && f.amount.invalid" class="text-danger">
-                              <div *ngIf="f.amount.errors.required" translate>claim.requiredField</div>
-                            </div>
-                          </div>
-                          <div class="col-sm-5">
-                            <label class="control-labels" translate>Комиссия включена в
-                              стоимость</label>
-                            <div class="row">
-                              <div class="col-sm">
-                                <input type="checkbox" class="form-control"
-                                       [(ngModel)]="applicationForm.isCommissionIncludedInThePrice"
-                                       formControlName="isCommissionIncludedInThePrice"
-                                       [readonly]="hasShowApplicationGroup('UPDATE_DEAL_DATA')"/>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <!--                      <div-->
+                      <!--                        [hidden]="hasShowApplicationGroup('VIEW_DEAL_DATA') || hasShowApplicationGroup('UPDATE_DEAL_DATA')">-->
+                      <!--                        <div class="row">-->
+                      <!--                          <div class="col-sm">-->
+                      <!--                            <label>Номер договора-->
+                      <!--                              <span class="text-danger" *ngIf="!applicationForm.contractNumber">&nbsp;*</span>-->
+                      <!--                            </label>-->
+                      <!--                            <input type="text" class="form-control" maxlength="10" formControlName="contractNumber"-->
+                      <!--                                   [(ngModel)]="applicationForm.contractNumber"-->
+                      <!--                                   placeholder="{{'Номер договора' | translate}}"-->
+                      <!--                                   [readonly]="hasShowApplicationGroup('UPDATE_DEAL_DATA')"/>-->
+                      <!--                          </div>-->
+                      <!--                        </div>-->
+                      <!--                        <div class="row">-->
+                      <!--                          <div class="col-sm">-->
+                      <!--                            <label for="fillFromAndTo" translate>claim.validator.contractPeriod-->
+                      <!--                              <span class="text-danger" *ngIf="!applicationForm.contractPeriod">&nbsp;*</span>-->
+                      <!--                            </label>-->
+                      <!--                            <input type="text" id="fillFromAndTo" class="form-control" bsDatepicker #ru="bsDatepicker"-->
+                      <!--                                   [(ngModel)]="applicationForm.contractPeriod"-->
+                      <!--                                   [readonly]="hasShowApplicationGroup('UPDATE_DEAL_DATA')"-->
+                      <!--                                   placeholder="{{'claim.validator.contractPeriod' | translate}}"-->
+                      <!--                                   formControlName="contractPeriod"/>-->
+                      <!--                            <div *ngIf="f.contractPeriod.touched && f.contractPeriod.invalid" class="text-danger">-->
+                      <!--                              <div *ngIf="f.contractPeriod.errors.required" translate>claim.requiredField</div>-->
+                      <!--                            </div>-->
+                      <!--                          </div>-->
+                      <!--                          <div class="col-sm">-->
+                      <!--                            <label for="fillFromAnd" translate>claim.validator.amount-->
+                      <!--                              <span class="text-danger" *ngIf="!applicationForm.amount">&nbsp;*</span>-->
+                      <!--                            </label>-->
+                      <!--                            <input type="text" id="fillFromAnd" class="form-control" [(ngModel)]="applicationForm.amount"-->
+                      <!--                                   maxlength="20" mask="separator.2" thousandSeparator=" "-->
+                      <!--                                   oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"-->
+                      <!--                                   formControlName="amount" min="0"-->
+                      <!--                                   placeholder="{{'claim.validator.amount' | translate}}"-->
+                      <!--                                   [readonly]="hasShowApplicationGroup('UPDATE_DEAL_DATA')"/>-->
+                      <!--                            <div *ngIf="f.amount.touched && f.amount.invalid" class="text-danger">-->
+                      <!--                              <div *ngIf="f.amount.errors.required" translate>claim.requiredField</div>-->
+                      <!--                            </div>-->
+                      <!--                          </div>-->
+                      <!--                          <div class="col-sm-5">-->
+                      <!--                            <label class="control-labels" translate>Комиссия включена в-->
+                      <!--                              стоимость</label>-->
+                      <!--                            <div class="row">-->
+                      <!--                              <div class="col-sm">-->
+                      <!--                                <input type="checkbox" class="form-control"-->
+                      <!--                                       [(ngModel)]="applicationForm.isCommissionIncludedInThePrice"-->
+                      <!--                                       formControlName="isCommissionIncludedInThePrice"-->
+                      <!--                                       [readonly]="hasShowApplicationGroup('UPDATE_DEAL_DATA')"/>-->
+                      <!--                              </div>-->
+                      <!--                            </div>-->
+                      <!--                          </div>-->
+                      <!--                        </div>-->
+                      <!--                      </div>-->
                     </div>
                   </div>
                 </div>
@@ -453,7 +455,8 @@
                                       <img [src]="photo.image" alt="First Slide" class="photoList" width="302"
                                            height="320"
                                            (click)="showPhotoFull(photo.fullImage)">
-                                      <button class="btn btn-sm btn-danger removeItemCarousel" *ngIf="!hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
+                                      <button class="btn btn-sm btn-danger removeItemCarousel"
+                                              *ngIf="!hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
                                               (click)="removeByGuid(photo, 1)"><i class="fa fa-trash fa-2x"
                                                                                   aria-hidden="true"></i></button>
                                     </div>
@@ -476,7 +479,8 @@
 
                                 <div class='carousel-item'>
                                   <a class='btn btn-sm btn-danger' *ngFor="let photo of photoList;let i = index"
-                                     (click)="removeByGuid(photo, 2)"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
+                                     (click)="removeByGuid(photo, 2)"><i class="fa fa-trash fa-2x"
+                                                                         aria-hidden="true"></i></a>
                                 </div>
                                 <div class="carousel-inner">
                                   <div class="carousel-item" [class]="i==0 ? 'active': ''"
@@ -484,9 +488,10 @@
                                     <img [src]="plan.image" alt="First Slide" class="photoList" width="302" height="320"
                                          (click)="showPhotoFull(plan.fullImage)">
 
-                                    <button class="btn btn-sm btn-danger removeItemCarousel" [disabled]="!hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
-                                            (click)="removeByGuid(plan, 1)"><i class="fa fa-trash fa-2x"
-                                                                                aria-hidden="true"></i></button>
+                                    <button class="btn btn-sm btn-danger removeItemCarousel"
+                                            *ngIf="!hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
+                                            (click)="removeByGuid(plan, 2)"><i class="fa fa-trash fa-2x"
+                                                                               aria-hidden="true"></i></button>
                                   </div>
                                 </div>
                                 <a class="carousel-control-prev" href="#planCarousel" data-slide="prev">
@@ -624,7 +629,7 @@
                                        formControlName="houseNumber"/>
                                 <input type="text" class="form-control" maxlength="10"
                                        [hidden]="hasShowRealPropertyGroup('VIEW_SALE_OBJECT_DATA') && hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA')"
-                                       placeholder="Номер Дробь/буква/строение"
+                                       placeholder="Дробь/буква/строение"
                                        [(ngModel)]="applicationForm.houseNumberFraction"
                                        [readOnly]="readonlyChooseJK && !hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA')"
                                        formControlName="houseNumberFraction"/>
@@ -647,7 +652,8 @@
                                   <input type="number" min="0" class="form-control" maxlength="10"
                                          oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                          placeholder="{{'patterns.to2' | translate}}"
-                                         [(ngModel)]="applicationForm.numberOfRoomsTo" formControlName="numberOfRoomsTo"/>
+                                         [(ngModel)]="applicationForm.numberOfRoomsTo"
+                                         formControlName="numberOfRoomsTo"/>
                                 </div>
                               </div>
                               <div class="col-sm"
@@ -779,10 +785,7 @@
                           </div>
                           <div class="row">
                             <fieldset class="scheduler-border col-sm">
-                              <div
-                                [hidden]="hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO') && hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO') && hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO') && hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO')">
                                 <legend class="scheduler-border" translate>claim.quadrature</legend>
-                              </div>
                               <div
                                 [hidden]="hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO') && hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO') && hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO') && hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO')">
                                 <div class="row">
@@ -794,7 +797,8 @@
                                              oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                              placeholder="{{'patterns.from2' | translate}}"
                                              mask="separator.2" thousandSeparator=" "
-                                             [(ngModel)]="applicationForm.totalAreaFrom" formControlName="totalAreaFrom"/>
+                                             [(ngModel)]="applicationForm.totalAreaFrom"
+                                             formControlName="totalAreaFrom"/>
                                       <input type="text" min="0" class="form-control" maxlength="10"
                                              oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                              placeholder="{{'patterns.to2' | translate}}"
@@ -863,7 +867,8 @@
                                              oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                              placeholder="{{'patterns.to2' | translate}}"
                                              mask="separator.2" thousandSeparator=" "
-                                             [(ngModel)]="applicationForm.kitchenAreaTo" formControlName="kitchenAreaTo"/>
+                                             [(ngModel)]="applicationForm.kitchenAreaTo"
+                                             formControlName="kitchenAreaTo"/>
                                     </div>
                                   </div>
                                   <div class="col-sm" *ngIf="applicationForm.operationTypeId?.code != '001001'">
@@ -891,7 +896,8 @@
                                              mask="separator.2" thousandSeparator=" "
                                              oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                              placeholder="{{'patterns.to2' | translate}}"
-                                             [(ngModel)]="applicationForm.balconyAreaTo" formControlName="balconyAreaTo"/>
+                                             [(ngModel)]="applicationForm.balconyAreaTo"
+                                             formControlName="balconyAreaTo"/>
                                     </div>
                                   </div>
                                   <div class="col-sm"
@@ -931,7 +937,7 @@
                                            [(ngModel)]="applicationForm.ceilingHeight" maxlength="10"
                                            mask="separator.2" thousandSeparator=" "
                                            placeholder="{{'claim.heightWall' | translate}}"
-                                           [readonly]="hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
+                                           [readonly]="readonlyChooseJK && !hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
                                            oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                            formControlName="ceilingHeight" min="0"/>
                                   </div>
@@ -966,7 +972,8 @@
                                            formControlName="numberOfBedrooms" min="1" pattern="\d*"/>
                                     <div *ngIf="f.numberOfBedrooms.touched && f.numberOfBedrooms.invalid"
                                          class="text-danger">
-                                      <div *ngIf="f.numberOfBedrooms.errors.required" translate>claim.requiredField</div>
+                                      <div *ngIf="f.numberOfBedrooms.errors.required" translate>claim.requiredField
+                                      </div>
                                     </div>
                                   </div>
                                   <div class="col-sm">
@@ -1045,7 +1052,8 @@
                                              oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
                                       <div *ngIf="f.numberOfFloors.touched && f.numberOfFloors.invalid"
                                            class="text-danger">
-                                        <div *ngIf="f.numberOfFloors.errors.required" translate>claim.requiredField</div>
+                                        <div *ngIf="f.numberOfFloors.errors.required" translate>claim.requiredField
+                                        </div>
                                       </div>
                                     </div>
                                   </div>

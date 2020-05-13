@@ -153,9 +153,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       theSizeOfTrades: [null, Validators.nullValidator],
       possibleReasonForBiddingIdList: [null, Validators.nullValidator],
       note: [null, Validators.nullValidator],
-      contractPeriod: [null, Validators.required],
-      isCommissionIncludedInThePrice: [null, Validators.nullValidator],
-      amount: [null, Validators.required],
       cadastralNumber: [null, Validators.nullValidator],
       cadastralNumber1: [null, Validators.nullValidator],
       cadastralNumber2: [null, Validators.nullValidator],
@@ -195,7 +192,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       purchaseInfoDto: [null, Validators.nullValidator],
       apartmentNumber: [null, Validators.nullValidator],
       agent: [null, Validators.nullValidator],
-      contractNumber: [null, Validators.required],
     });
     this.cdRef.detectChanges();
     this.loadDictionary();
@@ -206,7 +202,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       this.ngxLoader.stop();
     }
     window.scrollTo(0,0);
-
   }
 
   hasShowClientGroup(operation: string) {
@@ -363,7 +358,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   setResidenceComplexType() {
     if (!this.util.isNullOrEmpty(this.applicationForm.residentialComplexId)) {
-      console.log(this.applicationForm.residentialComplexId)
       this.applicationForm.streetId = this.applicationForm.residentialComplexId?.streetId;//Улица
       this.applicationForm.houseNumber = this.applicationForm.residentialComplexId?.houseNumber;//Номер дома
       this.applicationForm.houseNumberFraction = this.applicationForm.residentialComplexId?.houseNumberFraction;//номер дробь
@@ -420,12 +414,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.applicationForm.probabilityOfBidding = this.util.toString(data?.probabilityOfBidding);
     this.applicationForm.theSizeOfTrades = data?.theSizeOfTrades;
     this.applicationForm.possibleReasonForBiddingIdList = data?.possibleReasonForBiddingIdList;
-    this.applicationForm.contractPeriod = new Date(data?.contractPeriod);
-    this.applicationForm.amount = data?.amount;
-    this.applicationForm.isCommissionIncludedInThePrice = data?.isCommissionIncludedInThePrice;
     this.applicationForm.note = data?.note;
     this.applicationForm.agent = data?.agent;
-    this.applicationForm.contractNumber = data?.contractNumber;
   }
 
   fillApplicationFormPurchaseInfoDto(data: any) {
@@ -594,8 +584,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   fillApplication() {
     this.application = new ApplicationDto(this.applicationForm.operationTypeId?.value, this.applicationForm.objectPrice, this.applicationForm.mortgage,
       this.applicationForm.encumbrance, this.applicationForm.sharedOwnershipProperty, this.applicationForm.exchange,
-      this.applicationForm.probabilityOfBidding, this.applicationForm.theSizeOfTrades, this.applicationForm.possibleReasonForBiddingIdList,
-      this.applicationForm.contractPeriod, this.applicationForm.amount, this.applicationForm.isCommissionIncludedInThePrice, this.applicationForm.note, this.applicationForm.agent, this.applicationForm.contractNumber);
+      this.applicationForm.probabilityOfBidding, this.applicationForm.theSizeOfTrades, this.applicationForm.possibleReasonForBiddingIdList, this.applicationForm.note, this.applicationForm.agent);
   }
 
   fillPurchaseInfoDto() {
@@ -736,7 +725,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   cancel() {
-    this.saved = true;
     this.util.dnHref('home')
   }
 

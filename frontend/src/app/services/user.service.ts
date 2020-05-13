@@ -18,7 +18,7 @@ export class UserService {
    * findUserByLogin
    */
   findUserByLogin(): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/users/info`, {}).pipe(
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/users/info`, {}).pipe(
       tap(data => {
       }),
       catchError(this.handleError)
@@ -29,7 +29,7 @@ export class UserService {
    * getAgents
    */
   getAgents(): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/agents`, {}).pipe(
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/agents`, {}).pipe(
       tap(data => {
       }),
       catchError(this.handleError)
