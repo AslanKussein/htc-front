@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {User} from "../../models/users";
-import {AuthenticationService} from "../../services/authentication.service";
+import {environment} from "../../../environments/environment.prod";
 
 @Component({
   selector: 'app-footer',
@@ -9,11 +8,10 @@ import {AuthenticationService} from "../../services/authentication.service";
 })
 export class FooterComponent implements OnInit {
   year: number;
-  currentUser: User;
+  currentApplicationVersion = environment.appVersion;
 
-  constructor(private authenticationService: AuthenticationService) {
+  constructor() {
     this.year = new Date().getFullYear();
-    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
   ngOnInit(): void {

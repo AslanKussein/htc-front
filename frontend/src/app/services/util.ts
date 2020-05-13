@@ -190,12 +190,12 @@ export class Util {
 
   generatorPreviewUrl(uuid: string) {
     const fm = `${this.configService.apiFileManagerUrl}`;
-    return fm + '/download/' + uuid + '/preview?access_token=' + this.getCurrentUser().access_token;
+    return fm + '/api/download/' + uuid + '/preview?access_token=' + this.getCurrentUser().access_token;
   }
 
   generatorFullUrl(uuid: string) {
     const fm = `${this.configService.apiFileManagerUrl}`;
-    return fm + '/download/' + uuid + '?access_token=' + this.getCurrentUser().access_token;
+    return fm + '/api/download/' + uuid + '?access_token=' + this.getCurrentUser().access_token;
   }
 
   isNumeric(val: any): val is number | string {
@@ -220,5 +220,9 @@ export class Util {
       }
     }
     return false;
+  }
+
+  nvl(val: any, val2: any) {
+    return this.isNullOrEmpty(val2) ? val : val2;
   }
 }
