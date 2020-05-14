@@ -38,7 +38,6 @@ import {ExitDeactivate} from "./helpers/canDeactivate/exitDeactivate";
 import {UserService} from "./services/user.service";
 import {NotificationService} from "./services/notification.service";
 import {ModalComponent} from "./components/claims/create-claim/modal.window/modal.component";
-import {ActsComponent} from "./components/claims/create-claim/acts/acts.component";
 import {DicControlComponent} from './components/dic-control/dic-control.component';
 import {MyObjectsComponent} from './components/profile/my-objects/my-objects.component';
 import {MyClaimsComponent} from './components/profile/my-claims/my-claims.component';

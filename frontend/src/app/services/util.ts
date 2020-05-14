@@ -38,6 +38,18 @@ export class Util {
     return list;
   }
 
+  toSelectArrayNewDic(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
+    const list = [];
+    if (data) {
+      const len = data.length;
+      for (let i = 0; i < len; i++) {
+        console.log(data[i])
+        list.push({value:  data[i][idField], label: data[i].multiLang[labelField], code: data[i]['code']});
+      }
+    }
+    return list;
+  }
+
   toSelectArrayId(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
     const list = [];
     if (data) {
@@ -163,7 +175,7 @@ export class Util {
     return JSON.parse(localStorage.getItem('currentUser'))
   }
 
-  getDictionaryValueById(data: Dic[], id: any) {
+  getDictionaryValueById(data, id: any) {
     for (const obj of data) {
       if (obj['value'] == id) {
         return obj;

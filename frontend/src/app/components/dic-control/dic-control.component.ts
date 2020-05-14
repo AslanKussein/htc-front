@@ -21,7 +21,7 @@ export class DicControlComponent implements OnInit {
 
   modalRef: BsModalRef;
   modalRef2: BsModalRef;
-  dictionary: Dic[];
+  dictionary: any;
   cities: Dic[];
   districts: Dic[];
   streets: Dic[];
@@ -36,6 +36,7 @@ export class DicControlComponent implements OnInit {
   actions: string;
   dicName: string;
   clickColumnDic: any;
+  dictionaryes: any
   currentUser: User;
   adminRoles: boolean;
   totalItems = 0;
@@ -92,18 +93,26 @@ export class DicControlComponent implements OnInit {
 
   formData = {
     code: '',
-    nameEn: '',
-    nameRu: '',
-    nameKz: '',
+    multiLang:{
+      nameEn: '',
+      nameRu: '',
+      nameKz: '',
+    },
+    parentId:null,
+
   };
 
 
   clearForm() {
     this.formData = {
       code: '',
-      nameEn: '',
-      nameRu: '',
-      nameKz: '',
+      multiLang:{
+        nameEn: '',
+        nameRu: '',
+        nameKz: '',
+      },
+      parentId:null,
+
     };
 
     this.formRes = {
@@ -142,6 +151,7 @@ export class DicControlComponent implements OnInit {
     this.loadResidenceComplex(1);
     this.resident = true;
     this.dicName = 'residential-complexes';
+    this.loadDicAll();
 
   }
 
@@ -180,11 +190,54 @@ export class DicControlComponent implements OnInit {
     this.ngxLoader.stop();
   }
 
+
+  loadDicAll() {
+    let search = {
+      dictionaryName: 'AllDict',
+      pageableDto: {
+        direction: "ASC",
+        // pageNumber: pageNo - 1,
+        pageSize: 16,
+        sortBy: "id"
+      }
+    };
+    this.dicService.getDicsAllPageable(search).subscribe(res => {
+      if (res != null && res.data != null) {
+        this.dictionaryes = res.data.data;
+      }
+      this.ngxLoader.stop();
+    });
+  }
+
+  loadDicPageableByDicName(dicName, pageNo) {
+    let search = {
+      dictionaryName: dicName,
+      pageableDto: {
+        direction: "ASC",
+        pageNumber: pageNo - 1,
+        pageSize: 10,
+        sortBy: "id"
+      }
+    };
+
+    console.log(search)
+    this.dicService.getDicsAllPageable(search).subscribe(res => {
+      if (res != null && res.data != null) {
+        this.dictionary = res.data.data;
+        this.totalItems = res.total;
+        this.currentPage = res.pageNumber + 1;
+      }
+      this.ngxLoader.stop();
+    });
+  }
+
   loadResidenceComplex(pageNo: number) {
     const searchFilter = {};
     let params = new HttpParams();
     params = params.append('pageNumber', String(pageNo - 1))
     params = params.append('pageSize', String(this.itemsPerPage))
+    params = params.append('direction', 'ASC')
+    params = params.append('sortBy', 'id')
 
     this.dicService.getResidentialComplexesPageable(params).subscribe(res => {
       if (res != null && res.data != null) {
@@ -194,7 +247,7 @@ export class DicControlComponent implements OnInit {
       }
       this.ngxLoader.stop();
     });
-  } 
+  }
 
   loadDictionaryForEdit(dic) {
     this.ngxLoader.start();
@@ -203,18 +256,26 @@ export class DicControlComponent implements OnInit {
     if (dic == 'residential-complexes') {
       this.loadResidenceComplex(1);
     } else {
-      this.dicService.getDics(dic).subscribe(data => {
-        this.dictionary = data;
-        this.ngxLoader.stop();
-      });
+      this.loadDicPageableByDicName(dic, 1)
+      // this.dicService.getDics(dic).subscribe(data => {
+      //   this.dictionary = data;
+      //   this.ngxLoader.stop();
+      // });
     }
     this.clickColumnDic = null;
   }
 
   pageChanged(event: any): void {
-    if (this.currentPage !== event.page) {
-      this.loadResidenceComplex(event.page);
+    if(this.dicName=='residential-complexes'){
+      if (this.currentPage !== event.page) {
+        this.loadResidenceComplex(event.page);
+      }
+    }else{
+      if (this.currentPage !== event.page) {
+        this.loadDicPageableByDicName(this.dicName,event.page);
+      }
     }
+
   }
 
   addDic() {
@@ -276,8 +337,8 @@ export class DicControlComponent implements OnInit {
         }
       );
     } else {
-      this.dicService.deleteDic(this.clickColumnDic, this.dicName).subscribe(data => {
-          if (data == null) {
+      this.dicService.deleteDicNew(this.clickColumnDic, this.dicName).subscribe(data => {
+          if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
             this.loadDictionaryForEdit(this.dicName);
             this.modalRef.hide();
@@ -294,7 +355,7 @@ export class DicControlComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.actions,this.dicName)
+    console.log(this.actions, this.dicName)
     if (this.actions == 'ADD') {
       if (this.dicName == 'residential-complexes') {
         console.log(this.formRes)
@@ -318,11 +379,19 @@ export class DicControlComponent implements OnInit {
         );
 
       } else {
-        if (this.util.isNullOrEmpty(this.formData.code) || this.util.isNullOrEmpty(this.formData.nameRu)) {
+        if (this.util.isNullOrEmpty(this.formData.multiLang.nameRu)) {
           this.notifyService.showError('Пожалуйста, заполните все поля', "");
           return;
         }
-        this.dicService.saveDic(this.formData, this.dicName).subscribe(data => {
+        let saveForm = {
+          dictionaryName: this.dicName,
+          nameEn: this.formData.multiLang.nameEn,
+          nameKz: this.formData.multiLang.nameKz,
+          nameRu: this.formData.multiLang.nameRu,
+          parentId: this.formData.parentId
+        };
+
+        this.dicService.saveDicNew(saveForm).subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
             this.loadDictionaryForEdit(this.dicName);
@@ -357,12 +426,20 @@ export class DicControlComponent implements OnInit {
         });
 
       } else {
-        if (this.util.isNullOrEmpty(this.formData.code) || this.util.isNullOrEmpty(this.formData.nameRu)) {
+        if (this.util.isNullOrEmpty(this.formData.multiLang.nameRu)) {
           this.notifyService.showError('Пожалуйста, заполните все поля', "");
           return;
         }
-        this.dicService.updateDic(this.formData, this.dicName).subscribe(data => {
-          if (data == null) {
+        let saveForm = {
+          dictionaryName: this.dicName,
+          nameEn: this.formData.multiLang.nameEn,
+          nameKz: this.formData.multiLang.nameKz,
+          nameRu: this.formData.multiLang.nameRu,
+          parentId: this.formData.parentId
+        };
+
+        this.dicService.updateDicNew(this.formData, saveForm).subscribe(data => {
+          if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
             this.loadDictionaryForEdit(this.dicName);
             this.modalRef.hide();
@@ -381,6 +458,7 @@ export class DicControlComponent implements OnInit {
   clickTr(obj) {
     this.editOrDelete = true;
     this.clickColumnDic = obj;
+    console.log(this.clickColumnDic)
   }
 
   openModal2(template: TemplateRef<any>) {

@@ -1,5 +1,5 @@
 <div class="map">
-  <angular-yandex-map [center]="[51.12, 71.43]"  (yaclick)="onLoad($event)" [zoom]="8" >
+  <angular-yandex-map [center]="[51.12, 71.43]"  (yaclick)="onLoad($event)" [zoom]="20" >
     <angular-yandex-placemark
       [geometry]="cord"
       [options]="placemarkOptions"
@@ -9,6 +9,9 @@
     <angular-yandex-control
       [type]="'SearchControl'"
       [parameters]="parameters"
+      [(ngModel)]="streetId"
+      (ngModelChange)="onControlLoad($event)"
     ></angular-yandex-control>
   </angular-yandex-map>
+
 </div>

@@ -42,7 +42,6 @@ const routes: Routes = [
   {path: 'create-claim/:id', component: CreateClaimComponent, canActivate: [AuthGuard]},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate]},
   {path: 'test', component: ClaimEventsComponent, canActivate: [AuthGuard]},
-  {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate], children: createClaimChild},
   {path: 'client-card/:id', component: ClientCardComponent, canActivate: [AuthGuard]},
 ];
 

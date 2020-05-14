@@ -12,13 +12,13 @@
       <br/>
       <div>
         <div>
-          <h3>ID - {{profile?.id}}</h3>
+          <h3>ID - {{formClient?.id}}</h3>
         </div>
         <div class="row" style="border: solid 1px black; padding: 5px; ">
           <div class="col-sm-5">
             <div class="row">
-              <h2 class="font-weight-bolder text-uppercase">&nbsp;&nbsp; &nbsp;{{profile?.firstName}}
-                {{profile?.surname}} {{profile?.patronymic}}</h2>
+              <h2 class="font-weight-bolder text-uppercase">&nbsp;&nbsp; &nbsp;{{formClient?.firstName}}
+                {{formClient?.surname}} {{formClient?.patronymic}}</h2>
               <h2>&nbsp;&nbsp; &nbsp;{{gender}}</h2>
             </div>
 
@@ -28,7 +28,7 @@
               <div class="col-sm-10">
                 <div class="input-group">
                   <input type="text" class="form-control" placeholder="Телефон" id="inputEmail3MD" [disabled]="true"
-                         [(ngModel)]="profile.phoneNumber" prefix="+7" mask="(000) 000 00 00">
+                         [(ngModel)]="formClient.phoneNumber" prefix="+7" mask="(000) 000 00 00">
                   <div class="input-group-append">
                     <span class="input-group-text"><i aria-hidden="true" class="fa fa-whatsapp text-success"></i></span>
                     <span class="input-group-text"><i aria-hidden="true" class="fa fa-telegram text-primary"></i></span>
@@ -42,10 +42,18 @@
               <div class="col-sm-10">
                 <div class="input-group">
                   <input type="text" class="form-control" placeholder="e-mail" id="mail" [disabled]="true"
-                         [(ngModel)]="profile.email">
+                         [(ngModel)]="formClient.email">
                   <div class="input-group-append">
                     <span class="input-group-text"><i aria-hidden="true" class="fa fa-google-plus text-info"></i></span>
                   </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="mail" class="col-sm-2 col-form-label"><i class="fa fa-paperclip fa-2x"></i></label>
+              <div class="col-sm-10">
+                <div *ngFor="let obj of clientFiles">
+                  <p *ngIf="!obj.isDeleted">{{obj.filename}}</p>
                 </div>
               </div>
             </div>
@@ -147,6 +155,12 @@
                 <label class="col-sm col-form-label">Файл<span class="text-danger">&nbsp;*</span></label>
                 <i class="fa fa-paperclip"></i>
                 <input type="file" (change)="onFileChanged($event)">
+                <div *ngFor="let obj of clientFiles">
+                  <p *ngIf="!obj.isDeleted">{{obj.filename}} <a (click)="removeFileById(obj.guid)"> <i class="fa fa-times-circle fa-2x"></i></a> </p>
+                </div>
+
+
+
               </div>
             </div>
             <div class="col-sm">
@@ -162,14 +176,14 @@
                   <div *ngIf="!formClient.phoneNumber" translate>claim.requiredField</div>
                 </div>
               </div>
-              <div *ngFor="let item of formClient.addPhoneNumbers;let index = index">
+              <div *ngFor="let item of formClient.clientPhoneNumbersDtoList;let index = index">
 
                 <label class="col-sm col-form-label">Доп телефон</label>
-                <input type="text" class="col-sm form-control" [(ngModel)]="item.phoneNumber">
+                <input type="text" class="col-sm form-control" [(ngModel)]="item.phoneNumber" prefix="+7" mask="(000) 000 00 00">
               </div>
               <div>
                 <label class="col-sm col-form-label">Почта<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.email" [disabled]="true">
+                <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.email"  [disabled]="true">
               </div>
               <div >
                 <label class="col-sm col-form-label">Пол</label>

@@ -4,15 +4,15 @@
       <br/>
       <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
+          <a class="nav-link active" id="pills-home-tab" (click)="addObjectTypes(1)" data-toggle="pill" href="#pills-home" role="tab"
              aria-controls="pills-home" aria-selected="true">Квартиры</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
+          <a class="nav-link" id="pills-profile-tab" data-toggle="pill" (click)="addObjectTypes(2)"  href="#pills-profile" role="tab"
              aria-controls="pills-profile" aria-selected="false">Дом</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
+          <a class="nav-link" id="pills-contact-tab" data-toggle="pill" (click)="addObjectTypes(null)"  href="#pills-contact" role="tab"
              aria-controls="pills-contact" aria-selected="false">Все</a>
         </li>
       </ul>
@@ -70,7 +70,7 @@
                                [items]="districts"
                                [(ngModel)]="formData.districtsId"
                                bindValue="value"
-                               placeholder="{{ 'claim.barter' | translate }}">
+                               [searchable]="false">
                     </ng-select>
                   </div>
                 </div>
@@ -82,7 +82,8 @@
                       [items]="homeTypes"
                       bindValue="value"
                       [(ngModel)]="formData.typeHome"
-                      [ngModelOptions]="{standalone: true}">
+                      [ngModelOptions]="{standalone: true}"
+                      [searchable]="false">
                     </ng-select>
                   </div>
                 </div>
@@ -94,7 +95,8 @@
                       [items]="residentialComplexes"
                       bindValue="value"
                       [(ngModel)]="formData.residentialComplexes"
-                      [ngModelOptions]="{standalone: true}">
+                      [ngModelOptions]="{standalone: true}"
+                      [searchable]="false">
                     </ng-select>
                   </div>
                 </div>
@@ -153,7 +155,8 @@
                     <ng-select
                       [items]="dicDynamic" bindValue="value"
                       [ngModelOptions]="{standalone: true}"
-                      [(ngModel)]="formData.zalog">
+                      [(ngModel)]="formData.zalog"
+                      [searchable]="false">
                     </ng-select>
                   </div>
                 </div>
@@ -255,7 +258,8 @@
                   <div class="col-sm">
                     <ng-select name="districtsId"
                                [items]="districts" bindValue="value"
-                               [(ngModel)]="formData.districtsId">
+                               [(ngModel)]="formData.districtsId"
+                               [searchable]="false">
                     </ng-select>
                   </div>
                 </div>
@@ -265,7 +269,8 @@
                   <div class="col-sm">
                     <ng-select name="typeHome"
                                [items]="homeTypes" bindValue="value"
-                               [(ngModel)]="formData.typeHome">
+                               [(ngModel)]="formData.typeHome"
+                               [searchable]="false">
                     </ng-select>
                   </div>
                 </div>
@@ -326,7 +331,7 @@
                   <div class="col-sm">
                     <ng-select name="zalog"
                                [items]="dicDynamic" bindValue="value"
-
+                               [searchable]="false"
                                [(ngModel)]="formData.zalog">
                     </ng-select>
                   </div>
@@ -426,7 +431,7 @@
                   <div class="col-sm">
                     <ng-select name="districtsId"
                                [items]="districts" bindValue="value"
-
+                               [searchable]="false"
                                [(ngModel)]="formData.districtsId">
                     </ng-select>
                   </div>
@@ -437,7 +442,7 @@
                   <div class="col-sm">
                     <ng-select name="typeHome"
                                [items]="homeTypes" bindValue="value"
-
+                               [searchable]="false"
                                [(ngModel)]="formData.typeHome">
                     </ng-select>
                   </div>
@@ -448,6 +453,7 @@
                   <div class="col-sm">
                     <ng-select name="residentialComplexes"
                                [items]="residentialComplexes" bindValue="value"
+                               [searchable]="false"
                                [(ngModel)]="formData.residentialComplexes">
                     </ng-select>
                   </div>
@@ -508,7 +514,7 @@
                     <ng-select name="zalog"
                                [items]="dicDynamic" bindValue="value"
 
-
+                               [searchable]="false"
                                [(ngModel)]="formData.zalog">
                     </ng-select>
                   </div>
