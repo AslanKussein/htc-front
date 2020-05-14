@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {Dic} from "../models/dic";
 import {ConfigService} from "./config.service";
 import {isArray} from "rxjs/internal-compatibility";
+import {formatDate} from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class Util {
     localStorage.setItem('url', href);
     this.router.navigate([href]);
   }
+
   navigateByUrl(href) {
     this.router.navigateByUrl(href);
   }
@@ -32,7 +34,7 @@ export class Util {
     if (data) {
       const len = data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value:  data[i][idField], label: data[i][labelField], code: data[i]['code']});
+        list.push({value: data[i][idField], label: data[i][labelField], code: data[i]['code']});
       }
     }
     return list;
@@ -55,7 +57,12 @@ export class Util {
     if (data) {
       const len = data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value: data[i][idField], label: data[i][labelField], code: data[i]['code'], operationCode: data[i]['operationCode']});
+        list.push({
+          value: data[i][idField],
+          label: data[i][labelField],
+          code: data[i]['code'],
+          operationCode: data[i]['operationCode']
+        });
       }
     }
     return list;
@@ -65,12 +72,14 @@ export class Util {
     const list = [];
     if (data) {
       const len = data.data.length;
-      for (let i = 0; i < len; i++) {
-        list.push({
-          value: '' + data.data[i][idField],
-          label: data.data[i]['surname']?.toUpperCase() + ' ' + data.data[i]['name']?.toUpperCase() + ' (' + data.data[i]['applicationCount'] + ')',
-          applicationCount: data.data[i]['applicationCount']
-        });
+      if (len > 0) {
+        for (let i = 0; i < len; i++) {
+          list.push({
+            value: '' + data.data[i][idField],
+            label: data.data[i]['surname']?.toUpperCase() + ' ' + data.data[i]['name']?.toUpperCase() + ' (' + this.isNullOrEmpty(data.data[i]['applicationCount']) ? 0 : data.data[i]['applicationCount'] + ')',
+            applicationCount: data.data[i]['applicationCount']
+          });
+        }
       }
     }
     return list;
@@ -81,7 +90,11 @@ export class Util {
     if (data) {
       const len = data.data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value: data.data[i][idField], label: data.data[i][labelField], description: data.data[i]['description']});
+        list.push({
+          value: data.data[i][idField],
+          label: data.data[i][labelField],
+          description: data.data[i]['description']
+        });
       }
     }
     return list;
@@ -132,7 +145,7 @@ export class Util {
       for (let i = 0; i < len; i++) {
         list.push({
           value: '' + data[i]['id'],
-          id:data[i]['id'],
+          id: data[i]['id'],
           label: data[i]['houseName'],
           countryId: data[i]['countryId'],
           cityId: data[i]['cityId'],
@@ -189,12 +202,12 @@ export class Util {
 
   generatorPreviewUrl(uuid: string) {
     const fm = `${this.configService.apiFileManagerUrl}`;
-    return fm + '/download/' + uuid + '/preview?access_token=' + this.getCurrentUser().access_token;
+    return fm + '/api/download/' + uuid + '/preview?access_token=' + this.getCurrentUser().access_token;
   }
 
   generatorFullUrl(uuid: string) {
     const fm = `${this.configService.apiFileManagerUrl}`;
-    return fm + '/download/' + uuid + '?access_token=' + this.getCurrentUser().access_token;
+    return fm + '/api/download/' + uuid + '?access_token=' + this.getCurrentUser().access_token;
   }
 
   isNumeric(val: any): val is number | string {
@@ -203,5 +216,25 @@ export class Util {
     // subtraction forces infinities to NaN
     // adding 1 corrects loss of precision from parseFloat (#15100)
     return !isArray(val) && (val - parseFloat(val) + 1) >= 0;
+  }
+
+  formatDate(date: any) {
+    return formatDate(date, 'dd.MM.yyyy HH:mm', 'en-US');
+  }
+
+  hasRGRole() {
+    if (this.isNullOrEmpty(JSON.parse(localStorage.getItem('currentUser')).roles)) {
+      return false;
+    }
+    for (const routerElement of JSON.parse(localStorage.getItem('currentUser')).roles) {
+      if (routerElement == 'РГ') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  nvl(val: any, val2: any) {
+    return this.isNullOrEmpty(val2) ? val : val2;
   }
 }

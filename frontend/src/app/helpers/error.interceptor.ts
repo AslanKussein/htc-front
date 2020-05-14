@@ -7,6 +7,8 @@ import {ConfigService} from "../services/config.service";
 import {NotificationService} from "../services/notification.service";
 import {Util} from "../services/util";
 import {NgxUiLoaderService} from "ngx-ui-loader";
+import {LoginModalComponent} from "../components/login/login-modal/login-modal.component";
+import {BsModalService} from "ngx-bootstrap";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -18,7 +20,8 @@ export class ErrorInterceptor implements HttpInterceptor {
               private configService: ConfigService,
               private notificationService: NotificationService,
               private util: Util,
-              private ngxLoader: NgxUiLoaderService) {
+              private ngxLoader: NgxUiLoaderService,
+              private modalService: BsModalService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -28,11 +31,11 @@ export class ErrorInterceptor implements HttpInterceptor {
         return this.handle401Error(request, next);
       } else if (err.status === 400) {
         if (err.url.includes(this.configService.authUrl)) {
-          if (err.error.error_description.includes('Refresh token expired') && err.error.error.includes('invalid_grant')) {
+          if (err.error.error_description.includes('Refresh token expired')) {
             this.authenticationService.logout();
             location.reload(true);
           } else {
-            this.authenticationService.showAuthModal();
+            this.showAuthModal();
           }
         }
       }
@@ -45,6 +48,15 @@ export class ErrorInterceptor implements HttpInterceptor {
       const error = err.error.message || err.statusText;
       return throwError(error);
     }))
+  }
+
+  showAuthModal() {
+    this.modalService.show(LoginModalComponent, {
+      class: 'modal-lg',
+      initialState: {
+        centered: true
+      }
+    });
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {

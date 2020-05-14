@@ -16,16 +16,12 @@ export class ApplicationDto implements BaseEntity {
   public probabilityOfBidding?: boolean;//Вероятность торга
   public theSizeOfTrades?: number;//Размер торга
   public possibleReasonForBiddingIdList?: number;//ID возможной причины торга
-  public contractPeriod?: any;//Срок действия договора
-  public amount?: number;//Сумма по договору
-  public isCommissionIncludedInThePrice?: boolean;//Комиссия включена в стоимость
   public note?: string;//Примечание
   public clientDto?: ClientDto;//Модель сущности Клиент
   public realPropertyRequestDto?: RealPropertyRequestDto;//Модель сущности недвижимости
   private agent: string;//Логин агента, на кого назначена заявка
-  private contractNumber: string;//Номер договора
 
-  constructor(operationTypeId: number, objectPrice: number, mortgage: boolean, encumbrance: boolean, sharedOwnershipProperty: boolean, exchange: boolean, probabilityOfBidding: boolean, theSizeOfTrades: number, possibleReasonForBiddingIdList: number, contractPeriod: any, amount: number, isCommissionIncludedInThePrice: boolean, note: string, agent: string, contractNumber: string) {
+  constructor(operationTypeId: number, objectPrice: number, mortgage: boolean, encumbrance: boolean, sharedOwnershipProperty: boolean, exchange: boolean, probabilityOfBidding: boolean, theSizeOfTrades: number, possibleReasonForBiddingIdList: number, note: string, agent: string) {
     this.operationTypeId = operationTypeId;
     this.objectPrice = objectPrice;
     this.mortgage = mortgage;
@@ -35,11 +31,7 @@ export class ApplicationDto implements BaseEntity {
     this.probabilityOfBidding = probabilityOfBidding;
     this.theSizeOfTrades = theSizeOfTrades;
     this.possibleReasonForBiddingIdList = possibleReasonForBiddingIdList;
-    this.contractPeriod = contractPeriod;
-    this.amount = amount;
-    this.isCommissionIncludedInThePrice = isCommissionIncludedInThePrice;
     this.note = note;
     this.agent = agent;
-    this.contractNumber = contractNumber;
   }
 }

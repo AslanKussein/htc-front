@@ -17,7 +17,7 @@ export class UploaderService {
     const uploadData = new FormData();
     uploadData.append('file', selectedFile, selectedFile.name);
 
-    return this.http.post<any>(`${this.configService.apiFileManagerUrl}/upload`, uploadData)
+    return this.http.post<any>(`${this.configService.apiFileManagerUrl}/api/upload`, uploadData)
       .pipe(
         tap(data => {
         }),
@@ -40,7 +40,7 @@ export class UploaderService {
 
 
   public getPhotoById(guid): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/download/` + guid, {})
+    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/api/download/` + guid, {})
       .pipe(
         tap(data => {
         }),
@@ -63,14 +63,14 @@ export class UploaderService {
    * временно
    */
   public getPhotoByIdPreview(guid: string): Observable<string> {
-    return this.http.get<string>(`${this.configService.apiFileManagerUrl}/download/${guid}/preview`).pipe(
+    return this.http.get<string>(`${this.configService.apiFileManagerUrl}/api/download/${guid}/preview`).pipe(
       map((res) => res)
     )
 
   }
 
   public removePhotoById(guid): Observable<any> {
-    return this.http.delete<any>(`${this.configService.apiFileManagerUrl}/delete/` + guid, {})
+    return this.http.delete<any>(`${this.configService.apiFileManagerUrl}/api/delete/` + guid, {})
       .pipe(
         tap(data => {
         }),

@@ -20,7 +20,7 @@
           <label for="form7">Описание события</label>
           <textarea class="form-control" formControlName="description" rows="1"></textarea>
         </div>
-        <div class="col-sm">
+        <div class="col-sm" *ngIf="eventsForm.value.eventTypeId == 1">
           <label for="form7">ID заявки - {{this.applicationId}}</label>
           <textarea id="form7" class="form-control" rows="1" readonly></textarea>
         </div>
@@ -51,13 +51,15 @@
     <div>
 
       <div *ngFor="let events of eventsData; let i = index">
-        <div class="event-block" [class.disabledDev]="false">
+        <div class="event-block">
           <br/>
           <div class="row">
             <div class="col-sm-2">
               <label>Добавить событие</label>
               <ng-select
+                readonly="true"
                 [items]="appStatusesSort"
+                [(ngModel)]="events.eventType.id"
                 bindValue="value"
                 placeholder="{{ 'patterns.chooseElement' | translate }}">
               </ng-select>
@@ -67,32 +69,48 @@
               <i aria-hidden="true" *ngIf="events.eventType?.id == 2" class="fa fa-phone fa-2x">Звонок</i>
               <i aria-hidden="true" *ngIf="events.eventType?.id == 3" class="fa fa-handshake-o fa-2x">Встреча</i>
             </div>
-            <div class="col-sm">
+            <div class="col-sm" [class.disabledDev]="events.disabledDev">
               <label for="form7">Описание события</label>
               <textarea class="form-control" [value]="events.description" rows="1"></textarea>
             </div>
-            <div class="col-sm">
+            <div class="col-sm" *ngIf="events?.eventType?.id == 1" [class.disabledDev]="events.disabledDev">
               <label for="form7">ID заявки - {{this.applicationId}}</label>
-              <textarea class="form-control"  rows="1" readonly></textarea>
+              <textarea class="form-control" rows="1" readonly></textarea>
             </div>
             <div class="col-sm-1">
-              <button type="button" (click)="deleteEvent(events.id)" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+              <div class="row">
+                <button type="button" (click)="deleteEvent(events?.eventId)" class="btn btn-danger">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+              </div>
+              <br/>
+              <div class="row">
+                <button type="button" (click)="editEvent(events)" class="btn btn-light">
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </button>
+              </div>
             </div>
           </div>
-          <div class="row">
+          <div class="row" [class.disabledDev]="events.disabledDev">
             <div class="col-sm-2">
               <label translate>Дата и Время:</label>
-              <input type="text" [(ngModel)]="eventsDTO.eventDate" (ngModelChange)="getDateByString(events)" class="form-control"
+              <input type="text" [(ngModel)]="events.eventDate" class="form-control"
                      bsDatepicker #ru="bsDatepicker"/>
             </div>
             <div class="col-sm-2" style="margin: -7px;">
-              <ngb-timepicker ></ngb-timepicker>
+              <ngb-timepicker [(ngModel)]="events.time"></ngb-timepicker>
             </div>
             <div class="col-sm">
               <label for="form7">Комментарий</label>
               <textarea class="form-control" [value]="events.comment" rows="1"></textarea>
             </div>
           </div>
+        </div>
+        <div class="row" *ngIf="!events.disabledDev">
+          <button type="button" class="btn btn-btn btn2 btn-secondary" (click)="this.changeDisableDev(events, true)">Отмена</button>
+          <button type="button" class="btn btn-btn btn2 btn-success" (click)="update(events)">
+            Сохранить
+          </button>
         </div>
       </div>
 

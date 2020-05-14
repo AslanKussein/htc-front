@@ -18,10 +18,10 @@ export class ProfileService {
    * @param search
    */
   getProfile(): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/profile`);
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/profile`);
   }
   updateProfile(obj:any): Observable<any> {
-    return this.http.put<any>(`${this.configService.apiUserManagerUrl}/profile`,obj);
+    return this.http.put<any>(`${this.configService.apiUserManagerUrl}/api/profile`,obj);
   }
 
 }

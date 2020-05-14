@@ -1,4 +1,4 @@
-<div class="card-body card-bg" ngxUiLoaderBlurred>
+<div class="card-body card-bg" ngxUiLoaderBlurred >
   <div class="card">
     <div class="card-body">
       <div class="row">
@@ -32,61 +32,80 @@
         </div>
         <div class="col-sm" [formGroup]="applicationLightForm">
           <div class="form-group row">
-            <label for="surName" class="col-sm-2 col-form-label" translate>surname</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="surName" [(ngModel)]="applicationLightForm.surName"
+            <label for="surName" class="col-sm-3 float-left" translate>surname
+              <span class="text-danger" *ngIf="!applicationLightForm.value.surName">&nbsp;*</span>
+            </label>
+            <div class="col-sm">
+              <input type="text" class="form-control" id="surName"
                      formControlName="surName"/>
+              <div *ngIf="f.surName.touched && f.surName.invalid" class="text-danger">
+                <div *ngIf="f.surName.errors.required" translate>claim.requiredField</div>
+              </div>
             </div>
           </div>
           <div class="form-group row">
-            <label for="name" class="col-sm-2 col-form-label" translate>name</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="name" [(ngModel)]="applicationLightForm.name"
+            <label for="name" class="col-sm-3 col-form-label" translate>name
+              <span class="text-danger" *ngIf="!applicationLightForm.value.name">&nbsp;*</span>
+            </label>
+            <div class="col-sm">
+              <input type="text" class="form-control" id="name"
                      formControlName="name"/>
+              <div *ngIf="f.name.touched && f.name.invalid" class="text-danger">
+                <div *ngIf="f.name.errors.required" translate>claim.requiredField</div>
+              </div>
             </div>
           </div>
           <div class="form-group row">
-            <label for="patronymic" class="col-sm-2 col-form-label" translate>patronymic</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="patronymic" [(ngModel)]="applicationLightForm.patronymic"
+            <label for="patronymic" class="col-sm-3 col-form-label" translate>patronymic</label>
+            <div class="col-sm">
+              <input type="text" class="form-control" id="patronymic"
                      formControlName="patronymic">
             </div>
           </div>
           <div class="form-group row">
-            <label for="phoneNumber" class="col-sm-2 col-form-label" translate>claim.contacts</label>
-            <div class="col-sm-10">
+            <label for="phoneNumber" class="col-sm-3 col-form-label" translate>claim.contacts
+              <span class="text-danger" *ngIf="!applicationLightForm.value.phoneNumber">&nbsp;*</span>
+            </label>
+            <div class="col-sm">
               <input type="text" id="phoneNumber" class="form-control"
-                     [(ngModel)]="applicationLightForm.phoneNumber" name="phoneNumber"
+                     name="phoneNumber"
                      [formControl]="applicationLightForm.controls['phoneNumber']"
                      prefix="+7" mask=' (000) 000-0000' [showMaskTyped]="true"
                      placeHolderCharacter="0" (change)="searchByPhone()"/>
+              <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
+                <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>
+              </div>
             </div>
           </div>
           <div class="form-group row">
-            <label for="form7" class="col-sm-2 col-form-label" translate>claim.comments</label>
-            <div class="col-sm-10">
-              <textarea id="form7" class="md-textarea form-control" rows="4"
-                        [(ngModel)]="applicationLightForm.note" formControlName="note"></textarea>
+            <label for="form7" class="col-sm-3 col-form-label" translate>claim.comments</label>
+            <div class="col-sm">
+              <textarea id="form7" class="md-textarea form-control" rows="4" formControlName="note"></textarea>
             </div>
           </div>
-          <div class="form-group row">
-            <label for="form7" class="col-sm-2 col-form-label" translate>Выберите агента</label>
-            <div class="col-sm-10">
+          <div class="form-group row" *ngIf="hasRGRole()">
+            <label for="form7" class="col-sm-3 col-form-label" translate>Выберите агента
+              <span class="text-danger" *ngIf="!applicationLightForm.value.agentList">&nbsp;*</span>
+            </label>
+            <div class="col-sm">
               <ng-select
                 [items]="agentList"
-                [(ngModel)]="applicationLightForm.agentLogin"
                 formControlName="agentLogin"
                 bindValue="value"
                 placeholder="{{ 'patterns.chooseElement' | translate }}">
               </ng-select>
+              <div *ngIf="f.agentLogin.touched && f.agentLogin.invalid" class="text-danger">
+                <div *ngIf="f.agentLogin.errors.required" translate>claim.requiredField</div>
+              </div>
             </div>
           </div>
           <div class="form-group row">
-            <label for="form7" class="col-sm-2 col-form-label" translate>claim.operation</label>
-            <div class="col-sm-10">
+            <label for="form7" class="col-sm-3 col-form-label" translate>claim.operation
+              <span class="text-danger" *ngIf="!applicationLightForm.value.operationType">&nbsp;*</span>
+            </label>
+            <div class="col-sm">
               <ng-select
                 [items]="operationType"
-                [(ngModel)]="applicationLightForm.operationTypeId"
                 formControlName="operationTypeId"
                 placeholder="{{ 'patterns.chooseElement' | translate }}">
               </ng-select>
@@ -97,7 +116,7 @@
           </div>
 
           <button class="btn btn-link float-left" (click)="clear()" translate>clear</button>
-          <button class="btn btn-success float-right" (click)="onSave()" translate>patterns.save</button>
+          <button class="btn btn-success float-right" [disabled]="!this.applicationLightForm.valid" (click)="onSave()" translate>patterns.save</button>
         </div>
       </div>
       <br/>

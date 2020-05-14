@@ -1,14 +1,11 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpRequest} from '@angular/common/http';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
-import {catchError, first, map, mapTo, tap} from 'rxjs/operators';
+import {HttpClient, HttpHeaders, HttpParams, HttpRequest} from '@angular/common/http';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {first, map, tap} from 'rxjs/operators';
 import {User} from "../models/users";
 import {ConfigService} from "./config.service";
 import {Util} from "./util";
 import {UserService} from "./user.service";
-import {ModalComponent} from "../components/claims/create-claim/modal.window/modal.component";
-import {LoginModalComponent} from "../components/login/login-modal/login-modal.component";
-import {BsModalService} from "ngx-bootstrap";
 import {NotificationService} from "./notification.service";
 
 @Injectable({providedIn: 'root'})
@@ -26,7 +23,6 @@ export class AuthenticationService {
   constructor(private http: HttpClient,
               private configService: ConfigService,
               private util: Util,
-              private modalService: BsModalService,
               private userService: UserService,
               private notifyService: NotificationService) {
     this.currentUserSubject = new BehaviorSubject<User>(this.util.getCurrentUser());
@@ -97,15 +93,6 @@ export class AuthenticationService {
     localStorage.removeItem(this.JWT_TOKEN);
     this.currentUserSubject.next(null);
     this.util.dnHref(['/login']);
-  }
-
-  showAuthModal() {
-    this.modalService.show(LoginModalComponent, {
-      class: 'modal-lg',
-      initialState: {
-        centered: true
-      }
-    });
   }
 
   getJwtToken() {

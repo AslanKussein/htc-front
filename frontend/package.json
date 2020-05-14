@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config  proxy.conf.json --host htc.dilau.kz --port 80",
-    "build": "ng build --prod --output-path dist/META-INF/resources",
+    "prebuild": "npm --no-git-tag-version version patch",
+    "build": "ng build --prod --output-path dist/META-INF/resources --aot",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

@@ -12,7 +12,7 @@
     [refresh]="refresh"
     [events]="events"
     [locale]="locale"
-    (dayClicked)="dayClicked($event.day)"
+    (dayClicked)="getEventsByClick($event.day)"
     [activeDayIsOpen]="activeDayIsOpen"
     [weekStartsOn]="1"
     (eventClicked)="handleEvent($event.event)"
@@ -22,15 +22,54 @@
 
 <ng-template #modalContent let-close="close">
   <div class="modal-header">
-    <h5 class="modal-title">Подробнее</h5>
+    <h5 class="modal-title">Просмотр события</h5>
     <button type="button" class="close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <div>
-      Event:
-      <pre>{{ modalData?.event | json }}</pre>
+    <div class="row">
+      <div class="col-sm">
+        <table class="table table-bordered table-sm">
+          <thead class="text-center">
+          <tr>
+            <th>ID</th>
+            <th>Дата и время</th>
+            <th>События</th>
+            <th>Операция</th>
+            <th>ID заявки</th>
+            <th>Описание</th>
+            <th>Комментарий</th>
+          </tr>
+          </thead>
+          <tbody style="cursor: pointer">
+          <tr *ngFor="let ev of eventsData;let i = index">
+            <td>{{i+1}}</td>
+            <td>{{format(ev?.eventDate)}}</td>
+            <td>{{getDicNameByLanguage(ev, 'eventType')}}</td>
+            <td>{{getDicNameByLanguage(ev, 'operationType')}}</td>
+            <td>
+              <a (click)="close()" [routerLink]="['/create-claim/', ev?.applicationId]">{{ev.applicationId}}</a>
+            </td>
+            <td>{{ev.description}}</td>
+            <td>{{ev.comment}}</td>
+          </tr>
+          </tbody>
+        </table>
+
+        <pagination [(ngModel)]="currentPage"
+                    [totalItems]="totalItems"
+                    [itemsPerPage]="itemsPerPage"
+                    [maxSize]="10"
+                    [rotate]="true"
+                    [boundaryLinks]="true"
+                    previousText="&lsaquo;"
+                    nextText="&rsaquo;"
+                    firstText="&laquo;"
+                    lastText="&raquo;"
+                    (pageChanged)="pageChanged($event)">
+        </pagination>
+      </div>
     </div>
   </div>
   <div class="modal-footer">

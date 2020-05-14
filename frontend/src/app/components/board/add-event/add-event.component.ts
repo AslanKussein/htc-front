@@ -46,7 +46,7 @@ export class AddEventComponent implements OnInit {
 
   createValue() {
     let text = this.boardSelect?.operationType.name[this.util.getDicNameByLanguage()];
-    text += " - " + this.boardSelect?.numberOfRooms;
+    text += " - " + this.boardSelect?.numberOfRooms + ' ком. ' + this.boardSelect?.objectType.name[this.util.getDicNameByLanguage()];
     text += " цена " + this.boardSelect?.price;
     this.text = text;
   }
