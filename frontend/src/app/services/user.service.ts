@@ -3,7 +3,6 @@ import {ConfigService} from './config.service';
 import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, tap} from "rxjs/operators";
-import {NotificationService} from "./notification.service";
 
 @Injectable({
   providedIn: 'root'

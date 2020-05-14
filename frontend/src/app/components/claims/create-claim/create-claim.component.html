@@ -215,6 +215,7 @@
                                  oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                  [(ngModel)]="applicationForm.theSizeOfTrades"
                                  mask="separator.2" thousandSeparator=" "
+                                 onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
                                  placeholder="{{'claim.bidAmount' | translate}}"
                                  [readOnly]="hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO') && hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO')"
                                  formControlName="theSizeOfTrades" min="0"/>
