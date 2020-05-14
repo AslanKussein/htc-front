@@ -38,7 +38,6 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate {
       this.agentRoles = false;
       this.rgRoles = false;
       for (const role of this.currentUser.roles) {
-        console.log(this.currentUser.roles)
         if (role == 'AGENT_GROUP_CHOOSE') {
           this.agentRoles = true;
         }
@@ -46,7 +45,9 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate {
           this.rgRoles = true;
         }
       }
+
     }
+    this.agentRoles = true;
   }
 
   ngOnInit(): void {

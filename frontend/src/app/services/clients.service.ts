@@ -22,15 +22,15 @@ export class ClientsService {
   }
 
   getClientById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/clients/`+id);
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/api/clients/`+id);
   }
 
   updateClientById(form: any): Observable<any> {
-    return this.http.put<any>(`${this.configService.apiDataManagerUrl}/clients/`+form.id,form);
+    return this.http.put<any>(`${this.configService.apiDataManagerUrl}/api/clients/`+form.id,form);
   }
 
   findClientByPhoneNumber(phoneNumber): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/clients/search/by-phone-number?phoneNumber=`+phoneNumber);
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/api/clients/search/by-phone-number?phoneNumber=`+phoneNumber);
   }
 
 }

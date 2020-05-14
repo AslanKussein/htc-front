@@ -22,6 +22,15 @@ export class DicService {
       );
   }
 
+  public getDicsAllPageable(search): Observable<any> {
+    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/open-api/dictionary/list/pageable`, search)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+
   public getResidentialComplexesPageable(search: any): Observable<any> {
     return this.http.post<any>(`${this.configService.apiDataManagerUrl}/api/residential-complexes/getAllPageable`, search);
   }
@@ -67,6 +76,15 @@ export class DicService {
       );
   }
 
+  public saveDicNew(obj): Observable<any> {
+    return this.http.post(`${this.configService.apiDataManagerUrl}/open-api/dictionary`, obj)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+
   public updateDic(obj,dicName): Observable<any> {
     return this.http.put(`${this.configService.apiDataManagerUrl}/open-api/dictionaries/`+dicName+'/'+obj.id, obj)
       .pipe(
@@ -76,8 +94,25 @@ export class DicService {
       );
   }
 
+  public updateDicNew(obj,form): Observable<any> {
+    return this.http.put(`${this.configService.apiDataManagerUrl}/open-api/dictionary/`+obj.id, form)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+
   public deleteDic(obj,dicName): Observable<any> {
     return this.http.delete(`${this.configService.apiDataManagerUrl}/open-api/dictionaries/`+dicName+'/'+obj.id)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+  public deleteDicNew(obj,dicName): Observable<any> {
+    return this.http.delete(`${this.configService.apiDataManagerUrl}/open-api/dictionary/`+dicName+'/'+obj.id)
       .pipe(
         tap(data => {
         }),

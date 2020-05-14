@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {ILoadEvent} from "angular8-yandex-maps";
 import {IEvent} from 'angular8-yandex-maps/lib/types/types';
 
@@ -10,8 +10,20 @@ import {IEvent} from 'angular8-yandex-maps/lib/types/types';
 })
 export class YandexMapComponent implements OnInit {
 
-  public  cord: any;
-  ddd:any;
+  public cord: any;
+  ddd: any;
+  search: any;
+  modelMap: any;
+  streetId: number;
+
+  // @Input()
+  // set act(act: any) {
+  //   console.log('****************************************')
+  //   console.log(act)
+  //   this.streetId = act;
+  //   // $('#mapSearch').trigger('change');
+  //   console.log(this.streetId)
+  // }
 
   public parameters = {
     options: {
@@ -44,24 +56,46 @@ export class YandexMapComponent implements OnInit {
 
 
   onLoad2(event) {
-    if(event.type=='dragend'){
+    if (event.type == 'dragend') {
       console.log(event)
-      this.cord=event.instance.geometry.getCoordinates();
+      this.cord = event.instance.geometry.getCoordinates();
       event.instance.geometry.setCoordinates(this.cord);
     }
-    }
+  }
 
   onLoad3(event) {
-      this.cord=event.instance.geometry.getCoordinates();
-      event.instance.geometry.setCoordinates(this.cord);
-      this.ddd=event.instance;
+    console.log(2)
+    this.cord = event.instance.geometry.getCoordinates();
+    event.instance.geometry.setCoordinates(this.cord);
+    this.ddd = event.instance;
 
-    }
+  }
 
-   savecoordinats (){
+  savecoordinats() {
     let new_coords = [this.cord[0].toFixed(4), this.cord[1].toFixed(4)];
 
   }
+
+   onControlLoad(event) {
+    console.log(66);
+    event.instance.search('333');
+  }
+
+  searchByStreet(str, event): void {
+
+     console.log(this.ddd);
+    // this.search.instance.search(str);
+  }
+
+  getEvent(event){
+    this.modelMap=event;
+  }
+
+
+  asd() {
+    console.log('7789778')
+  }
+
 
 
 }

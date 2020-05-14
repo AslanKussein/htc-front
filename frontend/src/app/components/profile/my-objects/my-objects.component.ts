@@ -4,6 +4,7 @@ import {Util} from "../../../services/util";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {BsLocaleService} from "ngx-bootstrap";
+import {NotificationService} from "../../../services/notification.service";
 
 @Component({
   selector: 'app-my-objects',
@@ -15,6 +16,7 @@ export class MyObjectsComponent implements OnInit {
 
   constructor(private objectService: ObjectService,
               private localeService: BsLocaleService,
+              private notifyService: NotificationService,
               private util: Util) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
@@ -48,6 +50,9 @@ export class MyObjectsComponent implements OnInit {
       this.objectsData = res.data.data.data;
       this.totalItems = res.data.total;
       this.currentPage = res.data.pageNumber + 1;
+      if(res.data.data.size==0){
+        this.notifyService.showInfo('Ничего не найдено!', 'Внимание');
+      }
     });
   }
 

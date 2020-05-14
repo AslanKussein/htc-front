@@ -478,14 +478,18 @@
                                        placeholder="{{'claim.numberHouse' | translate}}"
                                        mask="separator.2" thousandSeparator=" "
                                        [(ngModel)]="applicationForm.houseNumber" maxlength="10"
+                                       (ngModelChange)="getMap()"
+
                                        oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                        onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
                                        [readOnly]="readonlyChooseJK && !hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
-                                       formControlName="houseNumber"/>
+                                       formControlName="houseNumber"
+                                       />
                                 <input type="text" class="form-control" maxlength="10"
                                        [hidden]="hasShowRealPropertyGroup('VIEW_SALE_OBJECT_DATA') && hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA')"
                                        placeholder="Дробь/буква/строение"
                                        [(ngModel)]="applicationForm.houseNumberFraction"
+                                       (ngModelChange)="getMap()"
                                        [readOnly]="readonlyChooseJK && !hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA')"
                                        formControlName="houseNumberFraction"/>
                               </div>
@@ -873,6 +877,28 @@
                                 </div>
                               </div>
                             </fieldset>
+                          </div>
+
+                        <!--<app-yandex-map ></app-yandex-map>-->
+                          <div class="map">
+                            <angular-yandex-map [center]="[51.12, 71.43]"  (yaclick)="onLoad($event)" [zoom]="12" >
+                              <angular-yandex-placemark
+                                [geometry]="cord"
+                                [options]="placemarkOptions"
+                                (drag)="onLoad2($event)"
+                                (load)="onLoad3($event)"
+                              ></angular-yandex-placemark>
+                              <angular-yandex-control
+                                [type]="'SearchControl'"
+                                [ngModelOptions]="{standalone: true}"
+                                name="fieldName" ngDefaultControl
+                                [parameters]="parameters"
+                                [ngModel]="applicationForm.houseNumber"
+                                (load)="onControlLoad($event)"
+
+                              ></angular-yandex-control>
+                            </angular-yandex-map>
+
                           </div>
                         </div>
                         <div class="col-sm-6">

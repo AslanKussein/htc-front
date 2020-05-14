@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Util} from "../../../services/util";
 import {ClientsService} from "../../../services/clients.service";
+import {Notification} from "rxjs/internal/Notification";
+import {NotificationService} from "../../../services/notification.service";
 
 @Component({
   selector: 'app-my-clients',
@@ -17,7 +19,8 @@ export class MyClientsComponent implements OnInit {
   currentPage = 1;
 
   constructor(private util: Util,
-              private clientsService: ClientsService,) {
+              private clientsService: ClientsService,
+              private  notifyService: NotificationService) {
   }
 
   ngOnInit(): void {
@@ -44,10 +47,11 @@ export class MyClientsComponent implements OnInit {
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = this.itemsPerPage;
     this.clientsService.getClientList(searchFilter).subscribe(res => {
-      if (res != null && res.data != null && !res.data.data.empty) {
         this.clientsData = res.data.data.data;
         this.totalItems = res.data.total;
         this.currentPage = res.data.pageNumber + 1;
+      if(res.data.data.size==0){
+        this.notifyService.showInfo('Ничего не найдено!', 'Внимание');
       }
     });
     this.loading = false;

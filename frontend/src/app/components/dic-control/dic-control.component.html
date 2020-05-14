@@ -9,21 +9,21 @@
           </div>
           <div style="border: solid 1px black; padding: 5px">
             <a (click)="loadDictionaryForEdit('residential-complexes'); resident=true"><h5>ЖК</h5></a>
-            <a (click)="loadDictionaryForEdit('COUNTRIES'); resident=false"><h5>Страна </h5></a>
-            <a (click)="loadDictionaryForEdit('CITIES'); resident=false"><h5>Город</h5></a>
-            <a (click)="loadDictionaryForEdit('DISTRICTS'); resident=false"><h5>Районы</h5></a>
-            <a (click)="loadDictionaryForEdit('STREETS'); resident=false"><h5>Улицы</h5></a>
-            <a (click)="loadDictionaryForEdit('PROPERTY_DEVELOPERS'); resident=false"><h5>Застройщик</h5></a>
-            <a (click)="loadDictionaryForEdit('TYPE_OF_ELEVATOR'); resident=false"><h5>Тип лифта</h5></a>
-            <a (click)="loadDictionaryForEdit('MATERIALS_OF_CONSTRUCTION'); resident=false"><h5>Материал постройки
+            <a (click)="loadDictionaryForEdit('Country'); resident=false"><h5>Страна </h5></a>
+            <a (click)="loadDictionaryForEdit('City'); resident=false"><h5>Город</h5></a>
+            <a (click)="loadDictionaryForEdit('District'); resident=false"><h5>Районы</h5></a>
+            <a (click)="loadDictionaryForEdit('Street'); resident=false"><h5>Улицы</h5></a>
+            <a (click)="loadDictionaryForEdit('PropertyDeveloper'); resident=false"><h5>Застройщик</h5></a>
+            <a (click)="loadDictionaryForEdit('TypeOfElevator'); resident=false"><h5>Тип лифта</h5></a>
+            <a (click)="loadDictionaryForEdit('MaterialOfConstruction'); resident=false"><h5>Материал постройки
               (квартира)</h5></a>
-            <a (click)="loadDictionaryForEdit('MATERIALS_OF_CONSTRUCTION'); resident=false"><h5>Материал постройки
+            <a (click)="loadDictionaryForEdit('MaterialOfConstruction'); resident=false"><h5>Материал постройки
               (дом)</h5></a>
-            <a (click)="loadDictionaryForEdit('SEWERAGE_SYSTEMS'); resident=false"><h5>Канализация</h5></a>
-            <a (click)="loadDictionaryForEdit('HEATING_SYSTEMS'); resident=false"><h5>Отопление</h5></a>
-            <a (click)="loadDictionaryForEdit('PARKING_TYPES'); resident=false"><h5>Парковка</h5></a>
-            <a (click)="loadDictionaryForEdit('YARD_TYPES'); resident=false"><h5>Двор</h5></a>
-            <a (click)="loadDictionaryForEdit('POSSIBLE_REASONS_FOR_BIDDING'); resident=false"><h5>Возможные причины
+            <a (click)="loadDictionaryForEdit('ParkingType'); resident=false"><h5>Канализация</h5></a>
+            <a (click)="loadDictionaryForEdit('HeatingSystem'); resident=false"><h5>Отопление</h5></a>
+            <a (click)="loadDictionaryForEdit('ParkingType'); resident=false"><h5>Парковка</h5></a>
+            <a (click)="loadDictionaryForEdit('YardType'); resident=false"><h5>Двор</h5></a>
+            <a (click)="loadDictionaryForEdit('PossibleReasonForBidding'); resident=false"><h5>Возможные причины
               торга</h5></a>
           </div>
         </div>
@@ -43,7 +43,7 @@
             <table *ngIf="resident" class="table table-bordered text-center">
               <thead class="text-center">
               <tr>
-                <!--<th>Страна</th>-->
+                <th>Id</th>
                 <th>Город</th>
                 <th>Район</th>
                 <th>Улица</th>
@@ -71,7 +71,7 @@
               <tbody style="cursor: pointer">
               <tr *ngFor="let dic of residentialComplexes;let i = index" (click)="clickTr(dic)"
                   [ngClass]="{'rowBlue': (dic==clickColumnDic)}">
-                <!--<td>{{dic.code}}</td>-->
+                <td>{{dic.id}}</td>
                 <td>
                   <ng-select
                     [disabled]="true"
@@ -215,7 +215,7 @@
             <table *ngIf="!resident" class="table table-bordered text-center table-sm">
               <thead class="text-center">
               <tr>
-                <th>Код</th>
+                <!--<th>Код</th>-->
                 <th>nameEn</th>
                 <th>nameKz</th>
                 <th>nameRu</th>
@@ -225,13 +225,26 @@
               <tr *ngFor="let dic of dictionary;let i = index" (click)="clickTr(dic)"
                   [ngClass]="{'rowBlue': (dic==clickColumnDic)}"
               >
-                <td>{{dic.code}}</td>
-                <td>{{dic.nameEn}}</td>
-                <td>{{dic.nameKz}}</td>
-                <td>{{dic.nameRu}}</td>
+                <!--<td>{{dic.code}}</td>-->
+                <td>{{dic.multiLang.nameEn}}</td>
+                <td>{{dic.multiLang.nameKz}}</td>
+                <td>{{dic.multiLang.nameRu}}</td>
               </tr>
               </tbody>
             </table>
+            <pagination [(ngModel)]="currentPage"
+                        *ngIf="!resident"
+                        [totalItems]="totalItems"
+                        [itemsPerPage]="itemsPerPage"
+                        [maxSize]="10"
+                        [rotate]="true"
+                        [boundaryLinks]="true"
+                        previousText="&lsaquo;"
+                        nextText="&rsaquo;"
+                        firstText="&laquo;"
+                        lastText="&raquo;"
+                        (pageChanged)="pageChanged($event)">
+            </pagination>
           </div>
         </div>
 
@@ -272,29 +285,29 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="col-sm" *ngIf="!resident">
-            <label class="col-sm col-form-label">Код<span class="text-danger">&nbsp;*</span></label>
-            <input type="text" class="col-sm form-control" name="Username"
-                   [(ngModel)]="formData.code">
-            <div *ngIf="!formData.code" class="text-danger">
-              <div *ngIf="!formData.code" translate>claim.requiredField</div>
-            </div>
-          </div>
+          <!--<div class="col-sm" *ngIf="!resident">-->
+            <!--<label class="col-sm col-form-label">Код<span class="text-danger">&nbsp;*</span></label>-->
+            <!--<input type="text" class="col-sm form-control" name="Username"-->
+                   <!--[(ngModel)]="formData.code">-->
+            <!--<div *ngIf="!formData.code" class="text-danger">-->
+              <!--<div *ngIf="!formData.code" translate>claim.requiredField</div>-->
+            <!--</div>-->
+          <!--</div>-->
           <div class="col-sm" *ngIf="!resident">
             <label class="col-sm col-form-label">nameEn<span class="text-danger">&nbsp;*</span></label>
-            <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formData.nameEn">
+            <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formData.multiLang.nameEn">
           </div>
           <div class="col-sm" *ngIf="!resident">
             <label class="col-sm col-form-label">nameRu<span
               class="text-danger">&nbsp;*</span></label>
-            <input type="text" class="col-sm form-control" name="nameRu" [(ngModel)]="formData.nameRu">
-            <div *ngIf="!formData.nameRu" class="text-danger">
-              <div *ngIf="!formData.nameRu" translate>claim.requiredField</div>
+            <input type="text" class="col-sm form-control" name="nameRu" [(ngModel)]="formData.multiLang.nameRu">
+            <div *ngIf="!formData.multiLang.nameRu" class="text-danger">
+              <div *ngIf="!formData.multiLang.nameRu" translate>claim.requiredField</div>
             </div>
           </div>
           <div class="col-sm" *ngIf="!resident">
             <label class="col-sm col-form-label">nameKz<span class="text-danger">&nbsp;*</span></label>
-            <input type="text" class="col-sm form-control" name="nameKz" [(ngModel)]="formData.nameKz">
+            <input type="text" class="col-sm form-control" name="nameKz" [(ngModel)]="formData.multiLang.nameKz">
           </div>
 
           <!--ЖК начало-->

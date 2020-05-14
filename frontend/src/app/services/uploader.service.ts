@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs/index';
 import {catchError, tap} from 'rxjs/internal/operators';
 import {map} from 'rxjs/operators';
@@ -25,8 +25,31 @@ export class UploaderService {
       );
   }
 
+
+  public getHeadersById(guid): Observable<any> {
+    console.log(guid)
+    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/download/` + guid, {
+      observe: 'response'
+    })
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+
   public getPhotoById(guid): Observable<any> {
     return this.http.get<any>(`${this.configService.apiFileManagerUrl}/api/download/` + guid, {})
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public getFileInfoUsingGET(guid): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/info/` + guid, {})
       .pipe(
         tap(data => {
         }),

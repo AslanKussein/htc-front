@@ -17,6 +17,7 @@ import {NewsComponent} from "./components/news/news.component";
 import {CloseDealComponent} from "./components/board/close-deal/close-deal.component";
 import {AddEventComponent} from "./components/board/add-event/add-event.component";
 import {ClaimEventsComponent} from "./components/claims/create-claim/claim-events/claim-events.component";
+import {ClientCardComponent} from "./components/profile/my-clients/client-card/client-card.component";
 
 // определение дочерних маршрутов
 const itemRoutes: Routes = [
@@ -39,6 +40,8 @@ const routes: Routes = [
   {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
   {path: 'create-claim/:id', component: CreateClaimComponent, canActivate: [AuthGuard]},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate]},
+  {path: 'test', component: ClaimEventsComponent, canActivate: [AuthGuard]},
+  {path: 'client-card/:id', component: ClientCardComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

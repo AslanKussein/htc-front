@@ -11,6 +11,7 @@ import {ObjectService} from "../../services/object.service";
 import {UploaderService} from "../../services/uploader.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {BigDecimalPeriod} from "../../models/common/bigDecimalPeriod";
+import {NotificationService} from "../../services/notification.service";
 
 
 @Component({
@@ -25,6 +26,7 @@ export class ObjectsComponent implements OnInit {
   residentialComplexes: Dic[];
   dicDynamic: Dic[];
   homeTypes: Dic[];
+  objectTypes: Dic[];
   myObject: boolean;
   objectMy: any;
   objectMyModel: number;
@@ -33,6 +35,7 @@ export class ObjectsComponent implements OnInit {
               private localeService: BsLocaleService,
               private objectService: ObjectService,
               private uploadService: UploaderService,
+              private notifyService: NotificationService,
               private dicService: DicService,
               private util: Util,
               private ngxLoader: NgxUiLoaderService) {
@@ -62,7 +65,8 @@ export class ObjectsComponent implements OnInit {
     distance: '',
     garage: '',
     attic: '',
-    my: null
+    my: null,
+    objectTypes:1
   };
 
   ngOnInit(): void {
@@ -122,7 +126,8 @@ export class ObjectsComponent implements OnInit {
       distance: '',
       garage: '',
       attic: '',
-      my: null
+      my: null,
+      objectTypes:1
     };
   }
 
@@ -141,6 +146,9 @@ export class ObjectsComponent implements OnInit {
     if (!this.util.isNullOrEmpty(this.formData.residentialComplexes)) {
       searchFilter['residentialComplexId'] = parseInt(this.formData.residentialComplexes);
     }
+    if (!this.util.isNullOrEmpty(this.formData.objectTypes)) {
+      searchFilter['objectTypeId'] = this.formData.objectTypes;
+    }
     if (!this.util.isNullOrEmpty(this.formData.numKvart)) {
       searchFilter['apartmentNumber'] = parseInt(this.formData.numKvart);
     }
@@ -157,6 +165,7 @@ export class ObjectsComponent implements OnInit {
     if (!this.util.isNullOrEmpty(this.formData.numberOfRooms)) {
       searchFilter['numberOfRooms'] = parseInt(this.formData.numberOfRooms);
     }
+
     if (!this.util.isNullOrEmpty(this.formData.my)) {
       searchFilter['my'] = this.formData.my;
     }
@@ -166,6 +175,9 @@ export class ObjectsComponent implements OnInit {
       this.objectsData = res.data.data.data;
       this.totalItems = res.data.total;
       this.currentPage = res.data.pageNumber + 1;
+      if(res.data.data.size==0){
+        this.notifyService.showInfo('Ничего не найдено!', 'Внимание');
+      }
     });
     this.ngxLoader.stop();
   }
@@ -206,5 +218,13 @@ export class ObjectsComponent implements OnInit {
     this.dicService.getDics('YES_NO').subscribe(data => {
       this.dicDynamic = this.util.toSelectArray(data);
     });
+
+    this.dicService.getDics('OBJECT_TYPES').subscribe(data => {
+      this.objectTypes = this.util.toSelectArray(data);
+    });
+  }
+
+  addObjectTypes(id){
+    this.formData.objectTypes=id;
   }
 }

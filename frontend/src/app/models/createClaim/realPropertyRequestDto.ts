@@ -44,4 +44,6 @@ export class RealPropertyRequestDto {
   public numberOfApartments?: number;//""Общее количество квартир"
   public landArea?: number;//""Площадь участка"
   public purchaseInfoDto?: PurchaseInfoDto;//"Параметры при Покупке
+  public latitude?: number;//
+  public longitude?: number;//
 }

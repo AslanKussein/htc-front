@@ -7,6 +7,7 @@ import {ruLocale} from "ngx-bootstrap/locale";
 import {BsLocaleService} from "ngx-bootstrap";
 import {Util} from "../../../services/util";
 import {formatDate} from "@angular/common";
+import {NotificationService} from "../../../services/notification.service";
 
 @Component({
   selector: 'app-my-claims',
@@ -19,6 +20,7 @@ export class MyClaimsComponent implements OnInit {
   constructor(private localeService: BsLocaleService,
               private claimService: ClaimService,
               private dicService: DicService,
+              private notifyService: NotificationService,
               private util: Util) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
@@ -45,7 +47,7 @@ export class MyClaimsComponent implements OnInit {
     let searchFilter = {};
 
     searchFilter['my'] = true;
-    searchFilter['direction'] = 'ASC';
+    // searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
     searchFilter['text'] = this.text;
     searchFilter['pageNumber'] = pageNo - 1;
@@ -54,6 +56,9 @@ export class MyClaimsComponent implements OnInit {
       this.claimData = res.data.data.data;
       this.totalItems = res.data.total;
       this.currentPage = res.data.pageNumber + 1;
+      if(res.data.data.size==0){
+        this.notifyService.showInfo('Ничего не найдено!', 'Внимание');
+      }
     });
     this.loading = false;
   }

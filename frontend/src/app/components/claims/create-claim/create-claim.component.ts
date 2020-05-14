@@ -26,6 +26,9 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {RoleManagerService} from "../../../services/roleManager.service";
 import {HttpParams} from "@angular/common/http";
 import {UserService} from "../../../services/user.service";
+import {ILoadEvent} from "angular8-yandex-maps";
+import {YandexMapComponent} from "./yandex-map/yandex-map.component";
+import {tap} from "rxjs/internal/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -34,9 +37,17 @@ import {UserService} from "../../../services/user.service";
 @Component({
   selector: 'app-create-claim',
   templateUrl: './create-claim.component.html',
-  styleUrls: ['./create-claim.component.scss']
+  styleUrls: ['./create-claim.component.scss'],
+  providers: [YandexMapComponent]
 })
 export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
+
+  cord: any;
+  ddd: any;
+  search: any;
+  modelMap: any;
+  latitude: number;
+  longitude: number;
 
   application: ApplicationDto;
   selectedFile: File;
@@ -92,7 +103,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
               private actRoute: ActivatedRoute,
               private ngxLoader: NgxUiLoaderService,
               private roleManagerService: RoleManagerService,
-              private userService: UserService) {
+              private userService: UserService,
+              private yandexMap: YandexMapComponent) {
     this.config.notFoundText = 'Данные не найдены';
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
@@ -194,6 +206,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       purchaseInfoDto: [null, Validators.nullValidator],
       apartmentNumber: [null, Validators.nullValidator],
       agent: [null, Validators.nullValidator],
+      latitude: [null, Validators.nullValidator],
+      longitude: [null, Validators.nullValidator],
     });
     this.cdRef.detectChanges();
     this.loadDictionary();
@@ -204,6 +218,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       this.ngxLoader.stop();
     }
     window.scrollTo(0,0);
+
+    this.cord = [51.12, 71.43]
+
+    this.modelMap=[];
   }
 
   hasShowClientGroup(operation: string) {
@@ -655,6 +673,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.application.realPropertyRequestDto.heatingSystemId = this.applicationForm.heatingSystemId;
     this.application.realPropertyRequestDto.numberOfApartments = this.applicationForm.numberOfApartments;
     this.application.realPropertyRequestDto.landArea = this.applicationForm.landArea;
+    this.application.realPropertyRequestDto.latitude = this.applicationForm.latitude;
+    this.application.realPropertyRequestDto.longitude = this.applicationForm.longitude;
   }
 
   fillRealPropertyOwnerDto(data: any) {
@@ -836,4 +856,63 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   hasRGRole() {
     return this.util.hasRGRole();
   }
+
+  getMap() {
+    if (!this.util.isNullOrEmpty(this.applicationForm.streetId)) {
+      let str = this.util.getDictionaryValueById(this.streets, this.applicationForm.streetId).label + ' ' + this.applicationForm.houseNumber;
+      if (!this.util.isNullOrEmpty(this.applicationForm.houseNumberFraction)) {
+        str = str + '/' + this.applicationForm.houseNumberFraction;
+
+      }
+      this.modelMap.instance.search(str).then(data => {
+        this.ddd.geometry.setCoordinates([data.responseMetaData.SearchResponse.Point.coordinates[1], data.responseMetaData.SearchResponse.Point.coordinates[0]])
+        this.applicationForm.latitude=data.responseMetaData.SearchResponse.Point.coordinates[1];
+        this.applicationForm.longitude=data.responseMetaData.SearchResponse.Point.coordinates[0];
+      });
+    }
+  }
+
+  public parameters = {
+    options: {
+      provider: 'yandex#search'
+    }
+  };
+
+  public placemarkOptions = {
+    preset: "twirl#redIcon",
+    draggable: true,
+    iconImageSize: [32, 32]
+  };
+
+  onLoad(event) {
+    this.cord = event.event.get('coords')
+    this.ddd.geometry.setCoordinates(this.cord);
+    this.applicationForm.latitude=this.cord[0];
+    this.applicationForm.longitude=this.cord[1];
+  }
+
+  onLoad2(event) {
+    if (event.type == 'dragend') {
+      this.cord = event.instance.geometry.getCoordinates();
+      event.instance.geometry.setCoordinates(this.cord);
+      this.applicationForm.latitude=this.cord[0];
+      this.applicationForm.longitude=this.cord[1];
+    }
+  }
+
+  onLoad3(event) {
+    this.cord = event.instance.geometry.getCoordinates();
+    event.instance.geometry.setCoordinates(this.cord);
+    this.ddd = event.instance;
+  }
+
+  onControlLoad(event) {
+    this.modelMap = event;
+  }
+
+
+
+
+
+
 }
