@@ -10,7 +10,7 @@ export class ConfigService {
   apiFileManagerUrl = 'https://fm-htc.dilau.kz/api';
   // apiFileManagerUrl = 'http://localhost:8080';
   apiViewManagerUrl = 'https://vm-htc.dilau.kz';
-  apiUserManagerUrl = 'https://um-htc.dilau.kz/api';
+  apiUserManagerUrl = 'https://um-htc.dilau.kz';
   apiRoleManagerUrl = 'https://rm-htc.dilau.kz';
 
   constructor() {
