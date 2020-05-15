@@ -290,7 +290,7 @@
                                  [(ngModel)]="applicationForm.phoneNumber" name="phoneNumber"
                                  [formControl]="applicationForm.controls['phoneNumber']"
                                  prefix="+7" mask=' (000) 000-0000' [showMaskTyped]="true"
-                                 placeHolderCharacter="0" (ngModelChange)="searchByPhone()"
+                                 placeHolderCharacter="0" (change)="searchByPhone(applicationForm.phoneNumber)"
                                  [readOnly]="hasShowClientGroup('UPDATE_CLIENT_DATA')"/>
 
                           <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">

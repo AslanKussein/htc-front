@@ -26,9 +26,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {RoleManagerService} from "../../../services/roleManager.service";
 import {HttpParams} from "@angular/common/http";
 import {UserService} from "../../../services/user.service";
-import {ILoadEvent} from "angular8-yandex-maps";
 import {YandexMapComponent} from "./yandex-map/yandex-map.component";
-import {tap} from "rxjs/internal/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +46,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   modelMap: any;
   latitude: number;
   longitude: number;
-
   application: ApplicationDto;
   selectedFile: File;
   photoList: any[] = [];
@@ -85,7 +82,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   aboutObject: boolean = false;
   aboutPhoto: boolean = false;
   activeTab: string = 'create';
-
+  existsClient: boolean = false;
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -217,11 +214,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     } else {
       this.ngxLoader.stop();
     }
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
 
     this.cord = [51.12, 71.43]
 
-    this.modelMap=[];
+    this.modelMap = [];
   }
 
   hasShowClientGroup(operation: string) {
@@ -333,7 +330,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
           if (data != null) {
             this.fillApplicationForm(data);
             this.fillApplicationFormPurchaseInfoDto(data.realPropertyRequestDto?.purchaseInfoDto);
-            this.fillApplicationFormClientData(data.clientDto);
+            this.searchByPhone(data.clientLogin);
             this.fillApplicationFormRealPropertyRequestDto(data.realPropertyRequestDto);
             this.cdRef.detectChanges();
             this.ngxLoader.stop();
@@ -405,11 +402,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.applicationForm.cityId = this.util.nvl(this.applicationForm.residentialComplexId?.cityId, null);//город
   }
 
-  searchByPhone() {
-    if (this.applicationForm.phoneNumber != null && this.applicationForm.phoneNumber.length == 10 && this.applicationId == null) {
-      this.ownerService.searchByPhone('7' + this.applicationForm.phoneNumber)
+  searchByPhone(phoneNumber) {
+    if (phoneNumber != null && phoneNumber.length == 10 && this.applicationId == null) {
+      this.ownerService.searchByPhone(this.applicationForm.phoneNumber)
         .subscribe(res => {
           this.fillApplicationFormClientData(res);
+          this.existsClient = true;
         });
     }
   }
@@ -419,7 +417,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.applicationForm.firstName = res?.firstName;
     this.applicationForm.surname = res?.surname;
     this.applicationForm.patronymic = res?.patronymic;
-    this.applicationForm.phoneNumber = res?.phoneNumber?.length == 11 ? res.phoneNumber.substr(1) : res.phoneNumber;
+    this.applicationForm.phoneNumber = res.phoneNumber;
     this.applicationForm.email = res?.email;
     this.applicationForm.gender = res?.gender;
   }
@@ -678,7 +676,20 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   fillRealPropertyOwnerDto(data: any) {
-    this.application.clientDto = new ClientDto(data.clientId, data.firstName, data.surname, data.patronymic, '7' + data.phoneNumber, data.email, data.gender);
+    if (!this.existsClient) {
+      this.createClient()
+    }
+    this.application.clientLogin = data.phoneNumber;
+  }
+
+  createClient() {
+    let dto = new ClientDto();
+    dto.firstName = this.applicationForm.firstName;
+    dto.surname = this.applicationForm.surname;
+    dto.patronymic = this.applicationForm.patronymic;
+    dto.email = this.applicationForm.email;
+    dto.gender = this.applicationForm.gender;
+    this.userService.createUserClient(dto).subscribe();
   }
 
   submit() {
@@ -696,8 +707,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     if (this.applicationForm?.operationTypeId?.code == '001001') {
       this.fillPurchaseInfoDto();
     }
-
-    console.log(this.application.clientDto)
 
     let result = false;
     const controls = this.applicationForm.controls;
@@ -866,8 +875,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       }
       this.modelMap.instance.search(str).then(data => {
         this.ddd.geometry.setCoordinates([data.responseMetaData.SearchResponse.Point.coordinates[1], data.responseMetaData.SearchResponse.Point.coordinates[0]])
-        this.applicationForm.latitude=data.responseMetaData.SearchResponse.Point.coordinates[1];
-        this.applicationForm.longitude=data.responseMetaData.SearchResponse.Point.coordinates[0];
+        this.applicationForm.latitude = data.responseMetaData.SearchResponse.Point.coordinates[1];
+        this.applicationForm.longitude = data.responseMetaData.SearchResponse.Point.coordinates[0];
       });
     }
   }
@@ -887,16 +896,16 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   onLoad(event) {
     this.cord = event.event.get('coords')
     this.ddd.geometry.setCoordinates(this.cord);
-    this.applicationForm.latitude=this.cord[0];
-    this.applicationForm.longitude=this.cord[1];
+    this.applicationForm.latitude = this.cord[0];
+    this.applicationForm.longitude = this.cord[1];
   }
 
   onLoad2(event) {
     if (event.type == 'dragend') {
       this.cord = event.instance.geometry.getCoordinates();
       event.instance.geometry.setCoordinates(this.cord);
-      this.applicationForm.latitude=this.cord[0];
-      this.applicationForm.longitude=this.cord[1];
+      this.applicationForm.latitude = this.cord[0];
+      this.applicationForm.longitude = this.cord[1];
     }
   }
 
@@ -909,10 +918,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   onControlLoad(event) {
     this.modelMap = event;
   }
-
-
-
-
 
 
 }

@@ -6,7 +6,7 @@ import {ClientDto} from './createClaim/clientDto';
  */
 export class ApplicationLightDto implements BaseEntity {
   public id?: number;//ID заявки
-  public clientDto?: ClientDto;//Модель сущности Клиент
+  public clientLogin?: string;//Модель сущности Клиент
   public operationTypeId?: number = null;//тип операции
   public note?: string;//Примечание
   public agentLogin?: string;//Логин агента, на кого назначена заявка

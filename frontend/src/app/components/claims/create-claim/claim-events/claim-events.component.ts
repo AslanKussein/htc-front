@@ -43,8 +43,7 @@ export class ClaimEventsComponent implements OnInit {
               private notificationService: NotificationService) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
-    this.applicationId = 175;
-    // this.applicationId = this.createClaimComponent?.applicationId;
+    this.applicationId = this.createClaimComponent?.applicationId;
     registerLocaleData(localeFr, 'ru-KZ');
   }
 

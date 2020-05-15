@@ -13,12 +13,8 @@ export class OwnerService {
               private http: HttpClient) {
   }
 
-  searchByPhone(number: string): Observable<any> {
-    let params = new HttpParams();
-
-    params = params.append('phoneNumber', String(number));
-
-    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/api/clients/search/by-phone-number`, {params: params})
+  searchByPhone(login: string): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/profile-client/` + login)
       .pipe(
         tap(data => {
         }),

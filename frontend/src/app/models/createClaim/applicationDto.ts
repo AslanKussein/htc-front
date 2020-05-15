@@ -17,7 +17,7 @@ export class ApplicationDto implements BaseEntity {
   public theSizeOfTrades?: number;//Размер торга
   public possibleReasonForBiddingIdList?: number;//ID возможной причины торга
   public note?: string;//Примечание
-  public clientDto?: ClientDto;//Модель сущности Клиент
+  public clientLogin?: string;//Модель сущности Клиент
   public realPropertyRequestDto?: RealPropertyRequestDto;//Модель сущности недвижимости
   private agent: string;//Логин агента, на кого назначена заявка
 

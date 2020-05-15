@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit {
   itemsPerPage = 10;
   currentPage = 1;
   applicationLightDto: ApplicationLightDto;
+  existsClient: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
               private dicService: DicService,
@@ -79,12 +80,7 @@ export class HomeComponent implements OnInit {
     this.applicationLightDto.operationTypeId = this.applicationLightForm?.value.operationTypeId?.value
     this.applicationLightDto.note = this.applicationLightForm?.value?.note;
     this.applicationLightDto.agentLogin = this.applicationLightForm?.value?.agentLogin;
-    this.applicationLightDto.clientDto = new ClientDto();
-    this.applicationLightDto.clientDto.id = this.applicationLightForm?.value?.clientId;
-    this.applicationLightDto.clientDto.firstName = this.applicationLightForm?.value?.name;
-    this.applicationLightDto.clientDto.surname = this.applicationLightForm?.value?.surName;
-    this.applicationLightDto.clientDto.patronymic = this.applicationLightForm?.value?.patronymic;
-    this.applicationLightDto.clientDto.phoneNumber = this.applicationLightForm?.value?.phoneNumber;
+    this.applicationLightDto.clientLogin = this.applicationLightForm?.value?.phoneNumber;
   }
 
   clear() {
@@ -96,20 +92,31 @@ export class HomeComponent implements OnInit {
   }
 
   searchByPhone() {
-    if (this.applicationLightForm.phoneNumber != null && this.applicationLightForm.phoneNumber.length == 10) {
-      this.ownerService.searchByPhone('7' + this.applicationLightForm.phoneNumber)
+    if (this.applicationLightForm.value.phoneNumber != null && this.applicationLightForm.value.phoneNumber.length == 10) {
+      this.ownerService.searchByPhone(this.applicationLightForm.value.phoneNumber)
         .subscribe(res => {
           this.applicationLightForm.name = !this.util.isNullOrEmpty(res.firstName) ? res.firstName : null;
           this.applicationLightForm.surName = !this.util.isNullOrEmpty(res.surname) ? res.surname : null;
           this.applicationLightForm.patronymic = !this.util.isNullOrEmpty(res.patronymic) ? res.patronymic : null;
-          this.applicationLightForm.phoneNumber = res.phoneNumber;
-          this.applicationLightForm.phoneNumber = res.phoneNumber;
-          this.applicationLightForm.clientId = res?.id;
+          this.existsClient = true;
+          this.cdRef.detectChanges()
         });
     }
   }
 
+  createClient() {
+    let dto = new ClientDto();
+    dto.firstName = this.applicationLightForm.value.name;
+    dto.surname = this.applicationLightForm.value.surName;
+    dto.patronymic = this.applicationLightForm.value.patronymic;
+    dto.phoneNumber = this.applicationLightForm.value.phoneNumber;
+    this.userService.createUserClient(dto).subscribe();
+  }
+
   onSave() {
+    if (!this.existsClient) {
+      this.createClient()
+    }
     this.fillApplicationLightDTO();
     this.claimService.saveLightApplication(this.applicationLightDto)
       .subscribe(data => {
