@@ -168,6 +168,8 @@
             </tbody>
           </table>
 
+          <h3 class="text-center" *ngIf="empty">Нет данных для отображения</h3>
+
           <pagination [(ngModel)]="currentPage"
                       [totalItems]="totalItems"
                       [itemsPerPage]="itemsPerPage"

@@ -1,5 +1,4 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {ProfileDto} from "../../../../models/profile/profileDto";
 import {AuthenticationService} from "../../../../services/authentication.service";
 import {User} from "../../../../models/users";
 import {DatePeriod} from "../../../../models/common/datePeriod";
@@ -7,7 +6,6 @@ import {formatDate} from "@angular/common";
 import {Util} from "../../../../services/util";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {ClaimService} from "../../../../services/claim.service";
-import {DicService} from "../../../../services/dic.service";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {BsLocaleService} from "ngx-bootstrap";
 import {ActivatedRoute} from "@angular/router";
@@ -17,7 +15,6 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {NotificationService} from "../../../../services/notification.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {UploaderService} from "../../../../services/uploader.service";
-import {HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'app-client-card',
@@ -51,7 +48,6 @@ export class ClientCardComponent implements OnInit {
               private notifyService: NotificationService,
               private ngxLoader: NgxUiLoaderService,
               private uploader: UploaderService,
-              private dicService: DicService,
               private authenticationService: AuthenticationService,
               private actRoute: ActivatedRoute,
               private util: Util) {

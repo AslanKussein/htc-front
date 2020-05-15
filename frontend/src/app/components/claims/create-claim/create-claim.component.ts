@@ -6,7 +6,6 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {ClaimService} from "../../../services/claim.service";
 import {NgSelectConfig} from "@ng-select/ng-select";
 import {UploaderService} from "../../../services/uploader.service";
-import {DicService} from "../../../services/dic.service";
 import {Dic} from "../../../models/dic";
 import {TranslateService} from "@ngx-translate/core";
 import {defineLocale} from "ngx-bootstrap/chronos";
@@ -31,7 +30,6 @@ import {YandexMapComponent} from "./yandex-map/yandex-map.component";
 @Injectable({
   providedIn: 'root'
 })
-
 @Component({
   selector: 'app-create-claim',
   templateUrl: './create-claim.component.html',
@@ -81,8 +79,20 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   clientDeal: boolean = false;
   aboutObject: boolean = false;
   aboutPhoto: boolean = false;
-  activeTab: string = 'create';
+  aboutMap: boolean = false;
   existsClient: boolean = false;
+  edit: boolean = true;
+  public parameters = {
+    options: {
+      provider: 'yandex#search'
+    }
+  };
+
+  public placemarkOptions = {
+    preset: "twirl#redIcon",
+    draggable: true,
+    iconImageSize: [32, 32]
+  };
 
   constructor(private util: Util,
               private notifyService: NotificationService,
@@ -90,7 +100,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
               private claimService: ClaimService,
               private config: NgSelectConfig,
               private uploader: UploaderService,
-              private dicService: DicService,
               private translate: TranslateService,
               private localeService: BsLocaleService,
               private ownerService: OwnerService,
@@ -100,12 +109,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
               private actRoute: ActivatedRoute,
               private ngxLoader: NgxUiLoaderService,
               private roleManagerService: RoleManagerService,
-              private userService: UserService,
-              private yandexMap: YandexMapComponent) {
+              private userService: UserService) {
     this.config.notFoundText = 'Данные не найдены';
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
     if (this.util.isNumeric(this.actRoute.snapshot.params.id)) {
+      this.edit = false;
+      this.saved = true;
       this.applicationId = Number(this.actRoute.snapshot.params.id);
     }
   }
@@ -115,6 +125,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   ngOnInit(): void {
+    this.cord = [51.12, 71.43]
+
+    this.modelMap = [];
     this.ngxLoader.start();
     this.getCheckOperationList();
     this.applicationForm = this.formBuilder.group({
@@ -215,10 +228,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       this.ngxLoader.stop();
     }
     window.scrollTo(0, 0);
-
-    this.cord = [51.12, 71.43]
-
-    this.modelMap = [];
   }
 
   hasShowClientGroup(operation: string) {
@@ -265,54 +274,54 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   loadDictionary() {
-    this.dicService.getDics('OPERATION_TYPES').subscribe(data => {
-      this.operationType = this.util.toSelectArray(data);
-    });
-    this.dicService.getDics('OBJECT_TYPES').subscribe(data => {
-      this.objectType = this.util.toSelectArray(data);
-    });
-    this.dicService.getDics('CITIES').subscribe(data => {
-      this.city = this.util.toSelectArray(data);
-    });
-    this.dicService.getDics('DISTRICTS').subscribe(data => {
-      this.districts = this.util.toSelectArray(data);
-    });
-    this.dicService.getDics('PARKING_TYPES').subscribe(data => {
-      this.parkingTypes = this.util.toSelectArrayId(data);
-    });
-    this.dicService.getDics('STREETS').subscribe(data => {
-      this.streets = this.util.toSelectArray(data);
-    });
-    this.dicService.getResidentialComplexes().subscribe(data => {
-      this.residentialComplexes = this.util.toSelectArrayResidenceComplex(data);
-    });
-    this.dicService.getDics('POSSIBLE_REASONS_FOR_BIDDING').subscribe(data => {
-      this.possibleReasonForBidding = this.util.toSelectArrayId(data);
-    });
-    this.dicService.getDics('COUNTRIES').subscribe(data => {
-      this.countries = this.util.toSelectArray(data);
-    });
-    this.dicService.getDics('MATERIALS_OF_CONSTRUCTION').subscribe(data => {
-      this.materials = this.util.toSelectArray(data);
-    });
-    this.dicService.getDics('YES_NO').subscribe(data => {
-      this.dicDynamic = this.util.toSelectArray(data, 'code');
-    });
-    this.dicService.getDics('TYPE_OF_ELEVATOR').subscribe(data => {
-      this.elevatorType = this.util.toSelectArray(data);
-    });
-    this.dicService.getDics('YARD_TYPES').subscribe(data => {
-      this.yardTypes = this.util.toSelectArray(data);
-    });
-    this.dicService.getDics('PROPERTY_DEVELOPERS').subscribe(data => {
-      this.propertyDevelopers = this.util.toSelectArray(data);
-    });
-    this.dicService.getDics('SEWERAGE_SYSTEMS').subscribe(data => {
-      this.sewerageSystems = this.util.toSelectArray(data);
-    });
-    this.dicService.getDics('HEATING_SYSTEMS').subscribe(data => {
-      this.heatingSystems = this.util.toSelectArray(data);
-    });
+    this.util.getAllDic('operation_types').then(res => {
+      this.operationType = res;
+    })
+    this.util.getAllDic('object_types').then(res => {
+      this.objectType = res;
+    })
+    this.util.getAllDic('cities').then(res => {
+      this.city = res;
+    })
+    this.util.getAllDic('districts').then(res => {
+      this.districts = res;
+    })
+    this.util.getAllDic('parking_types').then(res => {
+      this.parkingTypes = res;
+    })
+    this.util.getAllDic('streets').then(res => {
+      this.streets = res;
+    })
+    this.util.getAllDic('residentialComplexes').then(res => {
+      this.residentialComplexes = res;
+    })
+    this.util.getAllDic('possible_reasons_for_bidding').then(res => {
+      this.possibleReasonForBidding = res;
+    })
+    this.util.getAllDic('countries').then(res => {
+      this.countries = res;
+    })
+    this.util.getAllDic('materials_of_construction').then(res => {
+      this.materials = res;
+    })
+    this.util.getAllDic('yes_no').then(res => {
+      this.dicDynamic = res;
+    })
+    this.util.getAllDic('type_of_elevator').then(res => {
+      this.elevatorType = res;
+    })
+    this.util.getAllDic('yard_types').then(res => {
+      this.yardTypes = res;
+    })
+    this.util.getAllDic('property_developers').then(res => {
+      this.propertyDevelopers = res;
+    })
+    this.util.getAllDic('sewerage_systems').then(res => {
+      this.sewerageSystems = res;
+    })
+    this.util.getAllDic('heating_systems').then(res => {
+      this.heatingSystems = res;
+    })
     this.userService.getAgentsToAssign().subscribe(obj => {
       this.agentList = this.util.toSelectArrayRoles(obj.data, 'login');
     });
@@ -321,23 +330,16 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   loadDataById(id: number) {
     this.ngxLoader.start();
 
-    setTimeout(() => {    //<<<---    using ()=> syntax
-      if (this.util.isNullOrEmpty(this.operationType) || this.util.isNullOrEmpty(this.objectType) || this.util.isNullOrEmpty(this.residentialComplexes)) {
-        this.loadDataById(this.applicationId);
-        return
-      } else {
-        this.claimService.getClaimById(id).subscribe(data => {
-          if (data != null) {
-            this.fillApplicationForm(data);
-            this.fillApplicationFormPurchaseInfoDto(data.realPropertyRequestDto?.purchaseInfoDto);
-            this.searchByPhone(data.clientLogin);
-            this.fillApplicationFormRealPropertyRequestDto(data.realPropertyRequestDto);
-            this.cdRef.detectChanges();
-            this.ngxLoader.stop();
-          }
-        });
+    this.claimService.getClaimById(id).subscribe(data => {
+      if (data != null) {
+        this.fillApplicationForm(data);
+        this.fillApplicationFormPurchaseInfoDto(data.realPropertyRequestDto?.purchaseInfoDto);
+        this.searchByPhone(data.clientLogin);
+        this.fillApplicationFormRealPropertyRequestDto(data.realPropertyRequestDto);
+        this.cdRef.detectChanges();
+        this.ngxLoader.stop();
       }
-    }, 1000);
+    });
   }
 
   setPossibleReasonForBidding() {
@@ -431,7 +433,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.applicationForm.exchange = this.util.toString(data?.exchange);
     this.applicationForm.probabilityOfBidding = this.util.toString(data?.probabilityOfBidding);
     this.applicationForm.theSizeOfTrades = data?.theSizeOfTrades;
-    this.applicationForm.possibleReasonForBiddingIdList = data?.possibleReasonForBiddingIdList;
+    this.setPossibleReasonForBidding();
+    setTimeout(()=>{this.applicationForm.possibleReasonForBiddingIdList = this.util.nvl(data?.possibleReasonForBiddingIdList, null);},1000);
     this.applicationForm.note = data?.note;
     this.applicationForm.agent = data?.agent;
   }
@@ -756,6 +759,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   cancel() {
+    if (this.edit) {
+      this.saved = false;
+      this.canDeactivate();
+    }
     this.util.dnHref('home')
   }
 
@@ -783,6 +790,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     }
     if (id == 8) {
       this.aboutPhoto = true;
+
+    }
+    if (id == 9) {
+      this.aboutMap = false;
+    }
+    if (id == 10) {
+      this.aboutMap = true;
     }
   }
 
@@ -851,47 +865,31 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
-  changeTab(tab: string) {
-    this.activeTab = tab;
-    if (tab == 'create') {
-      let url = 'create-claim';
-      if (this.applicationId) {
-        url = 'create-claim/' + this.applicationId;
-      }
-      this.util.dnHref(url);
-    }
-  }
-
   hasRGRole() {
     return this.util.hasRGRole();
   }
 
   getMap() {
+    setTimeout(() => {
+      if (!this.util.isNullOrEmpty(this.modelMap)) {
+        this.loadMap();
+      }
+    }, 1000)
+  }
+
+  loadMap() {
     if (!this.util.isNullOrEmpty(this.applicationForm.streetId)) {
       let str = this.util.getDictionaryValueById(this.streets, this.applicationForm.streetId).label + ' ' + this.applicationForm.houseNumber;
       if (!this.util.isNullOrEmpty(this.applicationForm.houseNumberFraction)) {
         str = str + '/' + this.applicationForm.houseNumberFraction;
-
       }
       this.modelMap.instance.search(str).then(data => {
         this.ddd.geometry.setCoordinates([data.responseMetaData.SearchResponse.Point.coordinates[1], data.responseMetaData.SearchResponse.Point.coordinates[0]])
         this.applicationForm.latitude = data.responseMetaData.SearchResponse.Point.coordinates[1];
         this.applicationForm.longitude = data.responseMetaData.SearchResponse.Point.coordinates[0];
       });
-    }
+      }
   }
-
-  public parameters = {
-    options: {
-      provider: 'yandex#search'
-    }
-  };
-
-  public placemarkOptions = {
-    preset: "twirl#redIcon",
-    draggable: true,
-    iconImageSize: [32, 32]
-  };
 
   onLoad(event) {
     this.cord = event.event.get('coords')
@@ -919,5 +917,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.modelMap = event;
   }
 
+  onEdit() {
+    this.edit = true;
+    this.saved = false;
+    this.cdRef.detectChanges();
+  }
 
 }

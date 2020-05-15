@@ -1,7 +1,6 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {ApplicationLightDto} from "../../models/applicationLightDto";
-import {DicService} from "../../services/dic.service";
 import {Util} from "../../services/util";
 import {Dic} from "../../models/dic";
 import {NotificationService} from "../../services/notification.service";
@@ -32,7 +31,6 @@ export class HomeComponent implements OnInit {
   existsClient: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
-              private dicService: DicService,
               private util: Util,
               private notification: NotificationService,
               private claimService: ClaimService,
@@ -64,10 +62,9 @@ export class HomeComponent implements OnInit {
     }
 
     this.cdRef.detectChanges()
-
-    this.dicService.getDics('OPERATION_TYPES').subscribe(data => {
-      this.operationType = this.util.toSelectArray(data);
-    });
+    this.util.getAllDic('operation_types').then(res=>{
+      this.operationType = res;
+    })
     this.userService.getAgents().subscribe(obj => {
       this.agentList = this.util.toSelectArrayRoles(obj, 'login');
     });
@@ -147,9 +144,7 @@ export class HomeComponent implements OnInit {
         this.claimLightData = res.data.data.data;
         this.totalItems = res.data.total;
         this.currentPage = res.data.pageNumber + 1;
-
       }
-
     });
     this.ngxLoader.stop();
   }

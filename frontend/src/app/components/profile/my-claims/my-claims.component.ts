@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {DatePeriod} from "../../../models/common/datePeriod";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ClaimService} from "../../../services/claim.service";
-import {DicService} from "../../../services/dic.service";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {BsLocaleService} from "ngx-bootstrap";
 import {Util} from "../../../services/util";
@@ -19,7 +17,6 @@ export class MyClaimsComponent implements OnInit {
 
   constructor(private localeService: BsLocaleService,
               private claimService: ClaimService,
-              private dicService: DicService,
               private notifyService: NotificationService,
               private util: Util) {
     defineLocale('ru', ruLocale);

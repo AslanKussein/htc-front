@@ -26,7 +26,6 @@ import {ErrorInterceptor} from "./helpers/error.interceptor";
 import {JwtInterceptor} from "./helpers/jwt.interceptor";
 import {ToastrModule} from 'ngx-toastr';
 import {UploaderService} from "./services/uploader.service";
-import {DicService} from "./services/dic.service";
 import {ChartsModule} from 'ng2-charts';
 import {CalendarModule, DateAdapter} from 'angular-calendar';
 import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
@@ -57,7 +56,9 @@ import {LoginModalComponent} from './components/login/login-modal/login-modal.co
 import {CloseDealComponent} from "./components/board/close-deal/close-deal.component";
 import {AddEventComponent} from "./components/board/add-event/add-event.component";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import { ClaimEventsComponent } from './components/claims/create-claim/claim-events/claim-events.component';
+import {ClaimEventsComponent} from './components/claims/create-claim/claim-events/claim-events.component';
+import {NgxIndexedDBModule, DBConfig} from 'ngx-indexed-db';
+import {dbConfig} from "./helpers/indexedDb";
 
 registerLocaleData(localeRu, localeKz);
 
@@ -65,36 +66,35 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
 
-
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        BoardComponent,
-        ClaimsComponent,
-        ProfileComponent,
-        ObjectsComponent,
-        StaffsComponent,
-        CreateClaimComponent,
-        LoginComponent,
-        DicControlComponent,
-        MyObjectsComponent,
-        MyClaimsComponent,
-        HomeComponent,
-        CreateClaimBtnComponent,
-        ChartsComponent,
-        CalendarComponent,
-        MyClientsComponent,
-        ClientCardComponent,
-        YandexMapComponent,
-        NavComponent,
-        FooterComponent,
-        LoginModalComponent,
-        CloseDealComponent,
-        AddEventComponent,
-        ClaimEventsComponent,
-    ],
+  declarations: [
+    AppComponent,
+    BoardComponent,
+    ClaimsComponent,
+    ProfileComponent,
+    ObjectsComponent,
+    StaffsComponent,
+    CreateClaimComponent,
+    LoginComponent,
+    DicControlComponent,
+    MyObjectsComponent,
+    MyClaimsComponent,
+    HomeComponent,
+    CreateClaimBtnComponent,
+    ChartsComponent,
+    CalendarComponent,
+    MyClientsComponent,
+    ClientCardComponent,
+    YandexMapComponent,
+    NavComponent,
+    FooterComponent,
+    LoginModalComponent,
+    CloseDealComponent,
+    AddEventComponent,
+    ClaimEventsComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -124,13 +124,13 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
       useFactory: adapterFactory,
     }),
     NgxUiLoaderModule,
-    NgbModule
+    NgbModule,
+    NgxIndexedDBModule.forRoot(dbConfig)
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     UploaderService,
-    DicService,
     ExitDeactivate,
     UserService,
     NotificationService

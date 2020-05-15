@@ -6,7 +6,6 @@ import {ruLocale} from 'ngx-bootstrap/locale';
 import {BsLocaleService} from 'ngx-bootstrap';
 import {ClaimService} from '../../services/claim.service';
 import {Dic} from '../../models/dic';
-import {DicService} from '../../services/dic.service';
 import {Util} from '../../services/util';
 import {DatePeriod} from '../../models/common/datePeriod';
 import {NotificationService} from '../../services/notification.service';
@@ -22,7 +21,6 @@ export class ClaimsComponent implements OnInit {
 
   constructor(private localeService: BsLocaleService,
               private claimService: ClaimService,
-              private dicService: DicService,
               private util: Util,
               private notification: NotificationService,
               private ngxLoader: NgxUiLoaderService) {
@@ -49,6 +47,7 @@ export class ClaimsComponent implements OnInit {
   totalItems = 0;
   itemsPerPage = 30;
   currentPage = 1;
+  empty: boolean = false;
 
   clearForm() {
     this.formData = {
@@ -68,12 +67,13 @@ export class ClaimsComponent implements OnInit {
   ngOnInit(): void {
     this.ngxLoader.start();
     this.findClaims(1);
-    this.dicService.getDics('OPERATION_TYPES').subscribe(data => {
-      this.operationType = this.util.toSelectArray(data);
-    });
-    this.dicService.getDics('APPLICATION_STATUSES').subscribe(data => {
-      this.appStatuses = this.util.toSelectArray(data);
-    });
+    this.util.getAllDic('operation_types').then(res=>{
+      this.operationType = res;
+    })
+    this.util.getAllDic('application_statuses').then(res=>{
+      this.appStatuses = res;
+    })
+
     this.ngxLoader.stop();
   }
 
@@ -111,7 +111,7 @@ export class ClaimsComponent implements OnInit {
         this.totalItems = res.data.total;
         this.currentPage = res.data.pageNumber + 1;
         if (res.data.data.empty) {
-          this.notification.showInfo('информация', 'Нет данных');
+          this.empty = true;
         }
       }
     });
