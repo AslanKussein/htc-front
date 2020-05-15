@@ -57,7 +57,7 @@ import {CloseDealComponent} from "./components/board/close-deal/close-deal.compo
 import {AddEventComponent} from "./components/board/add-event/add-event.component";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {ClaimEventsComponent} from './components/claims/create-claim/claim-events/claim-events.component';
-import {NgxIndexedDBModule, DBConfig} from 'ngx-indexed-db';
+import {NgxIndexedDBModule} from 'ngx-indexed-db';
 import {dbConfig} from "./helpers/indexedDb";
 
 registerLocaleData(localeRu, localeKz);
