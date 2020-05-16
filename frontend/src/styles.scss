@@ -75,6 +75,15 @@ app-charts {
   margin: 5px;
 }
 
+.disabledDev {
+  pointer-events: none !important;
+  opacity: 0.6 !important;
+}
+.disabled {
+  pointer-events: none !important;
+  opacity: 0.6 !important;
+}
+
 .accordion-header {
   height: 50px;
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Util} from "../../../services/util";
 import {ClientsService} from "../../../services/clients.service";
-import {Notification} from "rxjs/internal/Notification";
 import {NotificationService} from "../../../services/notification.service";
 
 @Component({

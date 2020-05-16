@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {language} from "../../environments/language";
 import {Router} from "@angular/router";
-import {Dic} from "../models/dic";
+import {NgxIndexedDBService} from 'ngx-indexed-db';
 import {ConfigService} from "./config.service";
 import {isArray} from "rxjs/internal-compatibility";
 import {formatDate} from '@angular/common';
+import {UploaderService} from "./uploader.service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class Util {
   _language = language;
 
   constructor(private router: Router,
-              private configService: ConfigService) {
+              private configService: ConfigService,
+              private dbService: NgxIndexedDBService) {
   }
 
   dnHref(href) {
@@ -46,7 +48,7 @@ export class Util {
       const len = data.length;
       for (let i = 0; i < len; i++) {
         console.log(data[i])
-        list.push({value:  data[i][idField], label: data[i].multiLang[labelField], code: data[i]['code']});
+        list.push({value: data[i][idField], label: data[i].multiLang[labelField], code: data[i]['code']});
       }
     }
     return list;
@@ -201,13 +203,11 @@ export class Util {
   }
 
   generatorPreviewUrl(uuid: string) {
-    const fm = `${this.configService.apiFileManagerUrl}`;
-    return fm + '/api/download/' + uuid + '/preview?access_token=' + this.getCurrentUser().access_token;
+    return `${this.configService.apiFileManagerUrl}` + '/api/download/' + uuid + '/preview?access_token=' + this.getCurrentUser().access_token;
   }
 
   generatorFullUrl(uuid: string) {
-    const fm = `${this.configService.apiFileManagerUrl}`;
-    return fm + '/api/download/' + uuid + '?access_token=' + this.getCurrentUser().access_token;
+    return `${this.configService.apiFileManagerUrl}` + '/api/download/' + uuid + '?access_token=' + this.getCurrentUser().access_token;
   }
 
   isNumeric(val: any): val is number | string {
@@ -236,5 +236,13 @@ export class Util {
 
   nvl(val: any, val2: any) {
     return this.isNullOrEmpty(val2) ? val : val2;
+  }
+
+  length(data: any) {
+    return data?.length;
+  }
+
+  getAllDic(code: string) {
+    return this.dbService.getAll(code);
   }
 }

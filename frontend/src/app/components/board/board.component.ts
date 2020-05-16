@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {BoardService} from "../../services/board.service";
-import {DicService} from "../../services/dic.service";
 import {Dic} from "../../models/dic";
 import {Util} from "../../services/util";
 import {NotificationService} from "../../services/notification.service";
@@ -32,7 +31,6 @@ export class BoardComponent implements OnInit {
   }
 
   constructor(private boardService: BoardService,
-              private dicService: DicService,
               private util: Util,
               private notificationService: NotificationService,
               private ngxLoader: NgxUiLoaderService,
@@ -41,10 +39,11 @@ export class BoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.ngxLoader.start();
-    this.dicService.getDics('APPLICATION_STATUSES').subscribe(data => {
-      this.appStatuses = this.util.toSelectArray(data);
+    this.util.getAllDic('application_statuses').then(res=>{
+      this.appStatuses = res;
       this.sortStatusesDic(this.activeTab);
-    });
+    })
+
     this.userService.getAgents().subscribe(obj => {
       this.agentList = obj.data;
     });

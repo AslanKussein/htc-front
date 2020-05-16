@@ -1,6 +1,5 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {BsModalService, BsModalRef} from 'ngx-bootstrap/modal';
-import {DicService} from "../../services/dic.service";
 import {Dic} from "../../models/dic";
 import {Util} from "../../services/util";
 import {ruLocale} from "ngx-bootstrap/locale";
@@ -23,7 +22,6 @@ export class StaffsComponent implements OnInit {
 
   constructor(private modalService: BsModalService,
               private localeService: BsLocaleService,
-              private dicService: DicService,
               private staffService: StaffService,
               private notifyService: NotificationService,
               private util: Util,

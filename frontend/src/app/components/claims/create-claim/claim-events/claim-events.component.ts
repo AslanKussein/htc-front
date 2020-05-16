@@ -5,7 +5,6 @@ import {registerLocaleData} from "@angular/common";
 import localeFr from "@angular/common/locales/ru-KZ";
 import {BsLocaleService} from "ngx-bootstrap";
 import {Dic} from "../../../../models/dic";
-import {DicService} from "../../../../services/dic.service";
 import {Util} from "../../../../services/util";
 import {FormBuilder, Validators} from "@angular/forms";
 import {CreateClaimComponent} from "../create-claim.component";
@@ -35,7 +34,6 @@ export class ClaimEventsComponent implements OnInit {
   eventsDTO: EventsDTO;
 
   constructor(private localeService: BsLocaleService,
-              private dicService: DicService,
               private util: Util,
               private formBuilder: FormBuilder,
               private createClaimComponent: CreateClaimComponent,
@@ -43,8 +41,7 @@ export class ClaimEventsComponent implements OnInit {
               private notificationService: NotificationService) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
-    this.applicationId = 175;
-    // this.applicationId = this.createClaimComponent?.applicationId;
+    this.applicationId = this.createClaimComponent?.applicationId;
     registerLocaleData(localeFr, 'ru-KZ');
   }
 
@@ -63,9 +60,9 @@ export class ClaimEventsComponent implements OnInit {
   }
 
   sortStatus() {
-    this.dicService.getDics('EVENT_TYPES').subscribe(data => {
-      this.appStatusesSort = this.util.toSelectArray(data);
-    });
+    this.util.getAllDic('event_types').then(res=>{
+      this.appStatusesSort = res;
+    })
   }
 
   pageChanged(event: any): void {

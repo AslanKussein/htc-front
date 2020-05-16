@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Util} from "../../services/util";
 import {User} from "../../models/users";
 import {AuthenticationService} from "../../services/authentication.service";
@@ -7,9 +7,7 @@ import {ProfileDto} from "../../models/profile/profileDto";
 import {UploaderService} from "../../services/uploader.service";
 import {NotificationService} from "../../services/notification.service";
 import {ComponentCanDeactivate} from "../../helpers/canDeactivate/componentCanDeactivate";
-import {CreateClaimComponent} from "../claims/create-claim/create-claim.component";
 import {Observable} from "rxjs/index";
-import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 
 @Component({

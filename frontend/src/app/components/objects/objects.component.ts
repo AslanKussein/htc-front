@@ -3,7 +3,6 @@ import {Router} from "@angular/router";
 import {BsLocaleService} from "ngx-bootstrap";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {defineLocale} from "ngx-bootstrap/chronos";
-import {DicService} from "../../services/dic.service";
 import {Dic} from "../../models/dic";
 import {language} from "../../../environments/language";
 import {Util} from "../../services/util";
@@ -36,8 +35,8 @@ export class ObjectsComponent implements OnInit {
               private objectService: ObjectService,
               private uploadService: UploaderService,
               private notifyService: NotificationService,
-              private dicService: DicService,
               private util: Util,
+              private uploaderService: UploaderService,
               private ngxLoader: NgxUiLoaderService) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
@@ -66,7 +65,7 @@ export class ObjectsComponent implements OnInit {
     garage: '',
     attic: '',
     my: null,
-    objectTypes:1
+    objectTypes: 1
   };
 
   ngOnInit(): void {
@@ -127,7 +126,7 @@ export class ObjectsComponent implements OnInit {
       garage: '',
       attic: '',
       my: null,
-      objectTypes:1
+      objectTypes: 1
     };
   }
 
@@ -175,7 +174,7 @@ export class ObjectsComponent implements OnInit {
       this.objectsData = res.data.data.data;
       this.totalItems = res.data.total;
       this.currentPage = res.data.pageNumber + 1;
-      if(res.data.data.size==0){
+      if (res.data.data.size == 0) {
         this.notifyService.showInfo('Ничего не найдено!', 'Внимание');
       }
     });
@@ -184,9 +183,11 @@ export class ObjectsComponent implements OnInit {
 
   getImgUrl(obj: any) {
     if (!this.util.isNullOrEmpty(obj.photos.PHOTO)) {
-      return this.util.generatorPreviewUrl(obj.photos.PHOTO[0])
+      if (obj.photos.PHOTO[0].length > 10) {
+          return this.util.generatorPreviewUrl(obj.photos.PHOTO[0])
+      }
+      return null;
     }
-    return null;
   }
 
   getCountFoto(obj: any) {
@@ -204,27 +205,24 @@ export class ObjectsComponent implements OnInit {
   }
 
   loadDictionary() {
-    this.dicService.getDics('DISTRICTS').subscribe(data => {
-      this.districts = this.util.toSelectArray(data);
-    });
-    this.dicService.getDics('MATERIALS_OF_CONSTRUCTION').subscribe(data => {
-      this.homeTypes = this.util.toSelectArray(data);
-    });
-
-    this.dicService.getResidentialComplexes().subscribe(data => {
-      this.residentialComplexes = this.util.toSelectArrayResidenceComplex(data);
-    });
-
-    this.dicService.getDics('YES_NO').subscribe(data => {
-      this.dicDynamic = this.util.toSelectArray(data);
-    });
-
-    this.dicService.getDics('OBJECT_TYPES').subscribe(data => {
-      this.objectTypes = this.util.toSelectArray(data);
-    });
+    this.util.getAllDic('districts').then(res => {
+      this.districts = res;
+    })
+    this.util.getAllDic('materials_of_construction').then(res => {
+      this.homeTypes = res;
+    })
+    this.util.getAllDic('yes_no').then(res => {
+      this.dicDynamic = res;
+    })
+    this.util.getAllDic('object_types').then(res => {
+      this.objectTypes = res;
+    })
+    this.util.getAllDic('residentialComplexes').then(res => {
+      this.residentialComplexes = res;
+    })
   }
 
-  addObjectTypes(id){
-    this.formData.objectTypes=id;
+  addObjectTypes(id) {
+    this.formData.objectTypes = id;
   }
 }
