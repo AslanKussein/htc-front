@@ -135,12 +135,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       operationTypeId: [null, Validators.required],
       objectTypeId: [null, Validators.required],
       objectPrice: [0, Validators.nullValidator],
-      surname: [null, Validators.required],
-      firstName: [null, Validators.required],
+      surname: [null, Validators.nullValidator],
+      firstName: [null, Validators.nullValidator],
       patronymic: [null, Validators.nullValidator],
       clientId: [null, Validators.nullValidator],
       phoneNumber: [null, Validators.required],
-      email: [null, [Validators.email, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
+      email: [null, [Validators.nullValidator]],
       objectPriceFrom: [null, Validators.nullValidator],
       objectPriceTo: [null, Validators.nullValidator],
       mortgage: [null, Validators.nullValidator],
@@ -599,6 +599,30 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
         this.applicationForm.controls['livingArea'].setValidators([Validators.required]);
         this.applicationForm.controls["livingArea"].updateValueAndValidity();
       }
+    }
+    if (!this.util.isNullOrEmpty(this.applicationForm.phoneNumber)) {
+      this.applicationForm.controls['firstName'].setValidators([Validators.required]);
+      this.applicationForm.controls["firstName"].updateValueAndValidity();
+      this.applicationForm.controls['surname'].setValidators([Validators.required]);
+      this.applicationForm.controls["surname"].updateValueAndValidity();
+      this.applicationForm.controls['phoneNumber'].setValidators([Validators.required]);
+      this.applicationForm.controls["phoneNumber"].updateValueAndValidity();
+      if (!this.util.isNullOrEmpty(this.applicationForm.email)) {
+        this.applicationForm.controls['email'].setValidators([Validators.email, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]);
+        this.applicationForm.controls["email"].updateValueAndValidity();
+      } else {
+        this.applicationForm.controls['email'].setValidators(Validators.nullValidator);
+        this.applicationForm.controls["email"].updateValueAndValidity();
+      }
+    } else {
+      this.applicationForm.controls['firstName'].setValidators([Validators.nullValidator]);
+      this.applicationForm.controls["firstName"].updateValueAndValidity();
+      this.applicationForm.controls['surname'].setValidators([Validators.nullValidator]);
+      this.applicationForm.controls["surname"].updateValueAndValidity();
+      this.applicationForm.controls['phoneNumber'].setValidators([Validators.nullValidator]);
+      this.applicationForm.controls["phoneNumber"].updateValueAndValidity();
+      this.applicationForm.controls['email'].setValidators(Validators.nullValidator);
+      this.applicationForm.controls["email"].updateValueAndValidity();
     }
   }
 

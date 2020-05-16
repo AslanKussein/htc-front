@@ -21,10 +21,8 @@ export class UploaderService {
       .pipe(
         tap(data => {
         }),
-        catchError(this.handleError)
       );
   }
-
 
   public getHeadersById(guid): Observable<any> {
     console.log(guid)
@@ -34,17 +32,14 @@ export class UploaderService {
       .pipe(
         tap(data => {
         }),
-        catchError(this.handleError)
       );
   }
-
 
   public getPhotoById(guid): Observable<any> {
     return this.http.get<any>(`${this.configService.apiFileManagerUrl}/api/download/` + guid, {})
       .pipe(
         tap(data => {
         }),
-        catchError(this.handleError)
       );
   }
 
@@ -53,7 +48,6 @@ export class UploaderService {
       .pipe(
         tap(data => {
         }),
-        catchError(this.handleError)
       );
   }
 
@@ -74,7 +68,6 @@ export class UploaderService {
       .pipe(
         tap(data => {
         }),
-        catchError(this.handleError)
       );
   }
 
@@ -86,19 +79,6 @@ export class UploaderService {
       .pipe(
         tap(data => {
         }),
-        catchError(this.handleError)
       );
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    if (error instanceof ErrorEvent) {
-      console.error('An error occurred:', error.message);
-    } else {
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.message}`);
-    }
-    return throwError(
-      error);
   }
 }

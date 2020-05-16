@@ -64,7 +64,7 @@ export class ObjectsComponent implements OnInit {
     garage: '',
     attic: '',
     my: null,
-    objectTypes:1
+    objectTypes: 1
   };
 
   ngOnInit(): void {
@@ -125,7 +125,7 @@ export class ObjectsComponent implements OnInit {
       garage: '',
       attic: '',
       my: null,
-      objectTypes:1
+      objectTypes: 1
     };
   }
 
@@ -173,7 +173,7 @@ export class ObjectsComponent implements OnInit {
       this.objectsData = res.data.data.data;
       this.totalItems = res.data.total;
       this.currentPage = res.data.pageNumber + 1;
-      if(res.data.data.size==0){
+      if (res.data.data.size == 0) {
         this.notifyService.showInfo('Ничего не найдено!', 'Внимание');
       }
     });
@@ -182,7 +182,9 @@ export class ObjectsComponent implements OnInit {
 
   getImgUrl(obj: any) {
     if (!this.util.isNullOrEmpty(obj.photos.PHOTO)) {
-      return this.util.generatorPreviewUrl(obj.photos.PHOTO[0])
+      if (obj.photos.PHOTO[0].length > 10)
+        console.log(this.util.generatorPreviewUrl(obj.photos.PHOTO[0]))
+        return this.util.generatorPreviewUrl(obj.photos.PHOTO[0])
     }
     return null;
   }
@@ -202,24 +204,24 @@ export class ObjectsComponent implements OnInit {
   }
 
   loadDictionary() {
-    this.util.getAllDic('districts').then(res=>{
+    this.util.getAllDic('districts').then(res => {
       this.districts = res;
     })
-    this.util.getAllDic('materials_of_construction').then(res=>{
+    this.util.getAllDic('materials_of_construction').then(res => {
       this.homeTypes = res;
     })
-    this.util.getAllDic('yes_no').then(res=>{
+    this.util.getAllDic('yes_no').then(res => {
       this.dicDynamic = res;
     })
-    this.util.getAllDic('object_types').then(res=>{
+    this.util.getAllDic('object_types').then(res => {
       this.objectTypes = res;
     })
-    this.util.getAllDic('residentialComplexes').then(res=>{
+    this.util.getAllDic('residentialComplexes').then(res => {
       this.residentialComplexes = res;
     })
   }
 
-  addObjectTypes(id){
-    this.formData.objectTypes=id;
+  addObjectTypes(id) {
+    this.formData.objectTypes = id;
   }
 }
