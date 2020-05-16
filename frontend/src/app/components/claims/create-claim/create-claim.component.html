@@ -423,6 +423,25 @@
                        data-parent="#accordionAboutObject">
                     <div class="card-body" [class.disabled]="!edit">
                       <div class="row">
+                        <div class="col-sm">
+                          <label for="patronymic">Полный адрес
+<!--                            <span class="text-danger" *ngIf="!applicationForm.numberOfRooms">&nbsp;*</span>-->
+                          </label>
+                          <ng-select
+                            [items]="kazPost"
+                            [(ngModel)]="applicationForm.kazPost"
+                            (search)="getDataKzPost($event)"
+                            (autocomplete)="true"
+                            (clear)="true"
+                            formControlName="kazPost"
+                            placeholder="{{'Полный адрес' | translate }}">
+                          </ng-select>
+                          <div *ngIf="f.kazPost.touched && f.kazPost.invalid" class="text-danger">
+                            <div *ngIf="f.kazPost.errors.required" translate>claim.requiredField</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
                         <div class="col-sm-6">
                           <div class="row"
                                [hidden]="hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO') && hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO') && hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO') && hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO')">
@@ -1193,7 +1212,7 @@
             </div>
           </div>
           <br/>
-          <div class="row">
+          <div class="row" *ngIf="this.applicationForm?.operationTypeId?.code == '001002'">
             <div class="col-sm">
               <div class="accordion" id="accordionPhoto">
                 <div class="card z-depth-0 bordered">

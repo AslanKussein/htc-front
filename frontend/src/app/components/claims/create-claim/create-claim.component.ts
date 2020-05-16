@@ -26,6 +26,7 @@ import {RoleManagerService} from "../../../services/roleManager.service";
 import {HttpParams} from "@angular/common/http";
 import {UserService} from "../../../services/user.service";
 import {YandexMapComponent} from "./yandex-map/yandex-map.component";
+import { KazPostService } from 'src/app/services/kaz.post.service';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   operationType: Dic[];
   objectType: Dic[];
   city: Dic[];
+  kazPost: any;
   districts: Dic[];
   parkingTypes: Dic[];
   streets: Dic[];
@@ -109,7 +111,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
               private actRoute: ActivatedRoute,
               private ngxLoader: NgxUiLoaderService,
               private roleManagerService: RoleManagerService,
-              private userService: UserService) {
+              private userService: UserService,
+              private kazPostService: KazPostService) {
     this.config.notFoundText = 'Данные не найдены';
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
@@ -218,6 +221,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       agent: [null, Validators.nullValidator],
       latitude: [null, Validators.nullValidator],
       longitude: [null, Validators.nullValidator],
+      kazPost: [null, Validators.required]
     });
     this.cdRef.detectChanges();
     this.loadDictionary();
@@ -950,4 +954,17 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.cdRef.detectChanges();
   }
 
+  getDataKzPost(event) {
+    if (this.util.length(event.term) > 3) {
+      console.log(event.term)
+      this.kazPostService.getDataPost(event.term).subscribe(res=>{
+        this.kazPost = this.util.toSelectArrayPost(res.data)
+        this.cdRef.detectChanges();
+
+        console.log(this.kazPost)
+      })
+    }
+
+
+  }
 }

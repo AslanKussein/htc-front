@@ -72,6 +72,9 @@ export class ClaimEventsComponent implements OnInit {
   }
 
   getEventsByApplicationId(pageNo: number) {
+    if (!this.applicationId) {
+      return
+    }
     let searchParams = {};
     searchParams['applicationId'] = this.applicationId;
     searchParams['pageNumber'] = pageNo - 1;
