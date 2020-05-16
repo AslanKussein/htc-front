@@ -39,7 +39,7 @@ export class BoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.ngxLoader.start();
-    this.util.getAllDic('application_statuses').then(res=>{
+    this.util.getAllDic('ApplicationStatus').then(res=>{
       this.appStatuses = res;
       this.sortStatusesDic(this.activeTab);
     })

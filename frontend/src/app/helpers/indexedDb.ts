@@ -1,85 +1,85 @@
 import {DBConfig} from 'ngx-indexed-db';
 export const dbConfig: DBConfig  = {
-  name: 'dicData7',
+  name: 'dicDataDb3',
   version: 3,
   objectStoresMeta: [
     {
-      store: 'operation_types',
+      store: 'OperationType',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'object_types',
+      store: 'ObjectType',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'cities',
+      store: 'City',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'districts',
+      store: 'District',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'parking_types',
+      store: 'ParkingType',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'streets',
+      store: 'Street',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'possible_reasons_for_bidding',
+      store: 'PossibleReasonForBidding',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'countries',
+      store: 'Country',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'materials_of_construction',
+      store: 'MaterialOfConstruction',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'yes_no',
+      store: 'YES_NO',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'type_of_elevator',
+      store: 'TypeOfElevator',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'yard_types',
+      store: 'YardType',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'property_developers',
+      store: 'PropertyDeveloper',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'sewerage_systems',
+      store: 'Sewerage',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'heating_systems',
+      store: 'HeatingSystem',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
     {
-      store: 'application_statuses',
+      store: 'ApplicationStatus',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     },
@@ -89,7 +89,7 @@ export const dbConfig: DBConfig  = {
       storeSchema: []
     },
     {
-      store: 'event_types',
+      store: 'EventType',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     }

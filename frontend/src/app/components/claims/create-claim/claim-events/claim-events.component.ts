@@ -60,7 +60,7 @@ export class ClaimEventsComponent implements OnInit {
   }
 
   sortStatus() {
-    this.util.getAllDic('event_types').then(res=>{
+    this.util.getAllDic('EventType').then(res=>{
       this.appStatusesSort = res;
     })
   }

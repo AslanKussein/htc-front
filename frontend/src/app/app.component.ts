@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {NgxIndexedDBService} from 'ngx-indexed-db';
-import {DicService} from "./services/dic.service";
 import {language} from "../environments/language";
+import {NewDicService} from "./services/new.dic.service";
+import {DicService} from "./services/dic.service";
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ export class AppComponent {
   _language = language;
 
   constructor(private dbService: NgxIndexedDBService,
+              private newDicService: NewDicService,
               private dicService: DicService) {
     this.loadDictionary();
   }
@@ -36,12 +38,15 @@ export class AppComponent {
   toSelectArray(code: string, data, idField = 'id', labelField = this.getDicNameByLanguage()) {
     if (data) {
       const len = data.length;
-      if (code == 'yes_no') {
+      if (code == 'YES_NO') {
         idField = 'code';
       }
       for (let i = 0; i < len; i++) {
+        let label = code == 'YES_NO' ? data[i][labelField] : data[i].multiLang[labelField];
         this.dbService.add(code, {
-          value: data[i][idField], label: data[i][labelField], code: data[i]['code'],
+          value: data[i][idField],
+          label: label,
+          code: data[i]['code'],
           operationCode: data[i]['operationCode']
         }).then(
           () => {
@@ -108,11 +113,15 @@ export class AppComponent {
       data => {
         if (data.length == 0) {
           if (dicCode == 'residentialComplexes') {
-            this.dicService.getResidentialComplexes().subscribe(obj => {
+            this.newDicService.getResidentialComplexes().subscribe(obj => {
               this.toSelectArrayResidenceComplex(obj);
             });
-          } else {
+          } else if (dicCode == 'YES_NO') {
             this.dicService.getDics(dicCode).subscribe(data => {
+              this.toSelectArray(dicCode, data);
+            })
+          } else {
+            this.newDicService.getDictionary(dicCode).subscribe(data => {
               this.toSelectArray(dicCode, data);
             });
           }
@@ -125,23 +134,23 @@ export class AppComponent {
   }
 
   loadDictionary() {
-    this.addToDB('operation_types');
-    this.addToDB('object_types');
-    this.addToDB('cities');
-    this.addToDB('districts');
-    this.addToDB('parking_types');
-    this.addToDB('streets');
-    this.addToDB('possible_reasons_for_bidding');
-    this.addToDB('countries');
-    this.addToDB('materials_of_construction');
-    this.addToDB('yes_no');
-    this.addToDB('type_of_elevator');
-    this.addToDB('yard_types');
-    this.addToDB('property_developers');
-    this.addToDB('sewerage_systems');
-    this.addToDB('heating_systems');
-    this.addToDB('application_statuses');
+    this.addToDB('OperationType');
+    this.addToDB('ObjectType');
+    this.addToDB('City');
+    this.addToDB('District');
+    this.addToDB('ParkingType');
+    this.addToDB('Street');
+    this.addToDB('PossibleReasonForBidding');
+    this.addToDB('Country');
+    this.addToDB('MaterialOfConstruction');
+    this.addToDB('YES_NO');
+    this.addToDB('TypeOfElevator');
+    this.addToDB('YardType');
+    this.addToDB('PropertyDeveloper');
+    this.addToDB('Sewerage');
+    this.addToDB('HeatingSystem');
+    this.addToDB('ApplicationStatus');
     this.addToDB('residentialComplexes');
-    this.addToDB('event_types');
+    this.addToDB('EventType');
   }
 }

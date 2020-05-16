@@ -205,16 +205,16 @@ export class ObjectsComponent implements OnInit {
   }
 
   loadDictionary() {
-    this.util.getAllDic('districts').then(res => {
+    this.util.getAllDic('District').then(res => {
       this.districts = res;
     })
-    this.util.getAllDic('materials_of_construction').then(res => {
+    this.util.getAllDic('MaterialOfConstruction').then(res => {
       this.homeTypes = res;
     })
-    this.util.getAllDic('yes_no').then(res => {
+    this.util.getAllDic('YES_NO').then(res => {
       this.dicDynamic = res;
     })
-    this.util.getAllDic('object_types').then(res => {
+    this.util.getAllDic('ObjectType').then(res => {
       this.objectTypes = res;
     })
     this.util.getAllDic('residentialComplexes').then(res => {

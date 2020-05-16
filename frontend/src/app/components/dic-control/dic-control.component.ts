@@ -163,28 +163,28 @@ export class DicControlComponent implements OnInit {
   }
 
   loadDictionary() {
-    this.dicService.getDics('CITIES').subscribe(data => {
+    this.dicService.getDics('City').subscribe(data => {
       this.cities = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('DISTRICTS').subscribe(data => {
+    this.dicService.getDics('District').subscribe(data => {
       this.districts = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('STREETS').subscribe(data => {
+    this.dicService.getDics('Street').subscribe(data => {
       this.streets = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('PROPERTY_DEVELOPERS').subscribe(data => {
+    this.dicService.getDics('PropertyDeveloper').subscribe(data => {
       this.propertyDevelopers = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('MATERIALS_OF_CONSTRUCTION').subscribe(data => {
+    this.dicService.getDics('MaterialOfConstruction').subscribe(data => {
       this.materialsOfConstruction = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('TYPE_OF_ELEVATOR').subscribe(data => {
+    this.dicService.getDics('TypeOfElevator').subscribe(data => {
       this.typeOfElevator = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('PARKING_TYPES').subscribe(data => {
+    this.dicService.getDics('ParkingType').subscribe(data => {
       this.parkingTypes = this.util.toSelectArray(data);
     });
-    this.dicService.getDics('YARD_TYPES').subscribe(data => {
+    this.dicService.getDics('YardType').subscribe(data => {
       this.yardTypes = this.util.toSelectArray(data);
     });
     this.ngxLoader.stop();

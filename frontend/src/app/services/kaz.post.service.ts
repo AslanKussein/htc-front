@@ -17,8 +17,8 @@ export class KazPostService {
   /**
    * findUserByLogin
    */
-  getDataPost(data: string): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiKazPostUrl}/api/byAddress/` + data + `?from=0`, {}).pipe(
+  getDataPost(data: string, page: number): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiKazPostUrl}/api/byAddress/` + data + `?from=` + page, {}).pipe(
     // return this.http.get<any>(`${this.configService.apiKazPostUrl}/api/byAddress/%D0%B0%D1%81%D1%82%D0%B0%D0%BD%D0%B0%20%D0%BA%D1%83%D0%BD%D0%B0%D0%B5%D0%B2%D0%B0%208?from=0`, {}).pipe(
       tap(data => {
       }),

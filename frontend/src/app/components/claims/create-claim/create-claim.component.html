@@ -431,8 +431,9 @@
                             [items]="kazPost"
                             [(ngModel)]="applicationForm.kazPost"
                             (search)="getDataKzPost($event)"
-                            (autocomplete)="true"
-                            (clear)="true"
+                            (autocomplete)="'true'"
+                            (clear)="'true'"
+                            (scrollToEnd)="onScrollEnd()"
                             formControlName="kazPost"
                             placeholder="{{'Полный адрес' | translate }}">
                           </ng-select>
