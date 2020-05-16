@@ -36,6 +36,7 @@ export class ObjectsComponent implements OnInit {
               private uploadService: UploaderService,
               private notifyService: NotificationService,
               private util: Util,
+              private uploaderService: UploaderService,
               private ngxLoader: NgxUiLoaderService) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
@@ -182,11 +183,11 @@ export class ObjectsComponent implements OnInit {
 
   getImgUrl(obj: any) {
     if (!this.util.isNullOrEmpty(obj.photos.PHOTO)) {
-      if (obj.photos.PHOTO[0].length > 10)
-        console.log(this.util.generatorPreviewUrl(obj.photos.PHOTO[0]))
-        return this.util.generatorPreviewUrl(obj.photos.PHOTO[0])
+      if (obj.photos.PHOTO[0].length > 10) {
+          return this.util.generatorPreviewUrl(obj.photos.PHOTO[0])
+      }
+      return null;
     }
-    return null;
   }
 
   getCountFoto(obj: any) {

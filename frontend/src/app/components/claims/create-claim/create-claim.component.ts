@@ -874,19 +874,22 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   fillPicture(guid: any, id: number) {
-
     let uuid = guid.uuid != null ? guid.uuid : guid;
-    let obj = {};
-    obj['guid'] = uuid;
-    obj['image'] = this.util.generatorPreviewUrl(uuid);
-    obj['fullImage'] = this.util.generatorFullUrl(uuid);
-    if (id == 1) {
-      this.photoList.push(obj);
-    } else if (id == 2) {
-      this.photoPlanList.push(obj);
-    } else if (id == 3) {
-      this.photo3DList.push(obj);
-    }
+    this.uploader.getFileInfoUsingGET(uuid).subscribe(res => {
+      if (res.size > 0) {
+        let obj = {};
+        obj['guid'] = uuid;
+        obj['image'] = this.util.generatorPreviewUrl(uuid);
+        obj['fullImage'] = this.util.generatorFullUrl(uuid);
+        if (id == 1) {
+          this.photoList.push(obj);
+        } else if (id == 2) {
+          this.photoPlanList.push(obj);
+        } else if (id == 3) {
+          this.photo3DList.push(obj);
+        }
+      }
+    })
   }
 
   hasRGRole() {

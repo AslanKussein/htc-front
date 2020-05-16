@@ -5,6 +5,7 @@ import {NgxIndexedDBService} from 'ngx-indexed-db';
 import {ConfigService} from "./config.service";
 import {isArray} from "rxjs/internal-compatibility";
 import {formatDate} from '@angular/common';
+import {UploaderService} from "./uploader.service";
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +48,7 @@ export class Util {
       const len = data.length;
       for (let i = 0; i < len; i++) {
         console.log(data[i])
-        list.push({value:  data[i][idField], label: data[i].multiLang[labelField], code: data[i]['code']});
+        list.push({value: data[i][idField], label: data[i].multiLang[labelField], code: data[i]['code']});
       }
     }
     return list;
@@ -202,13 +203,11 @@ export class Util {
   }
 
   generatorPreviewUrl(uuid: string) {
-    const fm = `${this.configService.apiFileManagerUrl}`;
-    return fm + '/api/download/' + uuid + '/preview?access_token=' + this.getCurrentUser().access_token;
+    return `${this.configService.apiFileManagerUrl}` + '/api/download/' + uuid + '/preview?access_token=' + this.getCurrentUser().access_token;
   }
 
   generatorFullUrl(uuid: string) {
-    const fm = `${this.configService.apiFileManagerUrl}`;
-    return fm + '/api/download/' + uuid + '?access_token=' + this.getCurrentUser().access_token;
+    return `${this.configService.apiFileManagerUrl}` + '/api/download/' + uuid + '?access_token=' + this.getCurrentUser().access_token;
   }
 
   isNumeric(val: any): val is number | string {

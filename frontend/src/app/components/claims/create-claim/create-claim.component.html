@@ -1220,7 +1220,7 @@
                   </div>
                   <div id="collapsePhoto" class="collapse show" aria-labelledby="headingPhoto"
                        data-parent="#accordionPhoto">
-                    <div class="card-body" [class.disabled]="!edit">
+                    <div class="card-body">
                       <div class="row">
                         <div class="row">
                           <div class="col-sm" *ngIf="photoList.length > 0">
@@ -1239,7 +1239,7 @@
                                            height="320"
                                            (click)="showPhotoFull(photo.fullImage)">
                                       <button class="btn btn-sm btn-danger removeItemCarousel"
-                                              *ngIf="!hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
+                                              *ngIf="edit && !hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
                                               (click)="removeByGuid(photo, 1)"><i class="fa fa-trash fa-2x"
                                                                                   aria-hidden="true"></i></button>
                                     </div>
@@ -1261,12 +1261,6 @@
                               </legend>
                               <div id="photoPlanList" class="carousel slide" data-ride="carousel"
                                    style="width: 302px;">
-
-                                <div class='carousel-item'>
-                                  <a class='btn btn-sm btn-danger' *ngFor="let photo of photoList;let i = index"
-                                     (click)="removeByGuid(photo, 2)"><i class="fa fa-trash fa-2x"
-                                                                         aria-hidden="true"></i></a>
-                                </div>
                                 <div class="carousel-inner">
                                   <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                        *ngFor="let plan of photoPlanList;let i = index">
@@ -1275,7 +1269,7 @@
                                          (click)="showPhotoFull(plan.fullImage)">
 
                                     <button class="btn btn-sm btn-danger removeItemCarousel"
-                                            *ngIf="!hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
+                                            *ngIf="edit && !hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
                                             (click)="removeByGuid(plan, 2)"><i class="fa fa-trash fa-2x"
                                                                                aria-hidden="true"></i></button>
                                   </div>
@@ -1297,12 +1291,6 @@
                               </legend>
                               <div id="photo3DList" class="carousel slide" data-ride="carousel"
                                    style="width: 302px;">
-
-                                <div class='carousel-item'>
-                                  <a class='btn btn-sm btn-danger' *ngFor="let photo of photo3DList;let i = index"
-                                     (click)="removeByGuid(photo, 3)"><i class="fa fa-trash fa-2x"
-                                                                         aria-hidden="true"></i></a>
-                                </div>
                                 <div class="carousel-inner">
                                   <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                        *ngFor="let plan of photo3DList;let i = index">
@@ -1311,7 +1299,7 @@
                                          (click)="showPhotoFull(plan.fullImage)">
 
                                     <button class="btn btn-sm btn-danger removeItemCarousel"
-                                            *ngIf="!hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
+                                            *ngIf="edit && !hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO')"
                                             (click)="removeByGuid(plan, 3)"><i class="fa fa-trash fa-2x"
                                                                                aria-hidden="true"></i></button>
                                   </div>
