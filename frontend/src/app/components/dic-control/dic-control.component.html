@@ -7,24 +7,27 @@
           <div style="border: solid 1px black; padding: 5px">
             <h3>Все справочники </h3>
           </div>
-          <div style="border: solid 1px black; padding: 5px">
+          <div  style="border: solid 1px black; padding: 5px">
             <a (click)="loadDictionaryForEdit('residential-complexes'); resident=true"><h5>ЖК</h5></a>
-            <a (click)="loadDictionaryForEdit('Country'); resident=false"><h5>Страна </h5></a>
-            <a (click)="loadDictionaryForEdit('City'); resident=false"><h5>Город</h5></a>
-            <a (click)="loadDictionaryForEdit('District'); resident=false"><h5>Районы</h5></a>
-            <a (click)="loadDictionaryForEdit('Street'); resident=false"><h5>Улицы</h5></a>
-            <a (click)="loadDictionaryForEdit('PropertyDeveloper'); resident=false"><h5>Застройщик</h5></a>
-            <a (click)="loadDictionaryForEdit('TypeOfElevator'); resident=false"><h5>Тип лифта</h5></a>
-            <a (click)="loadDictionaryForEdit('MaterialOfConstruction'); resident=false"><h5>Материал постройки
-              (квартира)</h5></a>
-            <a (click)="loadDictionaryForEdit('MaterialOfConstruction'); resident=false"><h5>Материал постройки
-              (дом)</h5></a>
-            <a (click)="loadDictionaryForEdit('ParkingType'); resident=false"><h5>Канализация</h5></a>
-            <a (click)="loadDictionaryForEdit('HeatingSystem'); resident=false"><h5>Отопление</h5></a>
-            <a (click)="loadDictionaryForEdit('ParkingType'); resident=false"><h5>Парковка</h5></a>
-            <a (click)="loadDictionaryForEdit('YardType'); resident=false"><h5>Двор</h5></a>
-            <a (click)="loadDictionaryForEdit('PossibleReasonForBidding'); resident=false"><h5>Возможные причины
-              торга</h5></a>
+            <p *ngFor="let dic of dictionaryes">
+              <a (click)="loadDictionaryForEdit(dic.code); resident=false"><h5>{{dic.multiLang.nameRu}}</h5></a>
+            </p>
+            <!--<a (click)="loadDictionaryForEdit('Country'); resident=false"><h5>Страна </h5></a>-->
+            <!--<a (click)="loadDictionaryForEdit('City'); resident=false"><h5>Город</h5></a>-->
+            <!--<a (click)="loadDictionaryForEdit('District'); resident=false"><h5>Районы</h5></a>-->
+            <!--<a (click)="loadDictionaryForEdit('Street'); resident=false"><h5>Улицы</h5></a>-->
+            <!--<a (click)="loadDictionaryForEdit('PropertyDeveloper'); resident=false"><h5>Застройщик</h5></a>-->
+            <!--<a (click)="loadDictionaryForEdit('TypeOfElevator'); resident=false"><h5>Тип лифта</h5></a>-->
+            <!--<a (click)="loadDictionaryForEdit('MaterialOfConstruction'); resident=false"><h5>Материал постройки-->
+              <!--(квартира)</h5></a>-->
+            <!--<a (click)="loadDictionaryForEdit('MaterialOfConstruction'); resident=false"><h5>Материал постройки-->
+              <!--(дом)</h5></a>-->
+            <!--<a (click)="loadDictionaryForEdit('ParkingType'); resident=false"><h5>Канализация</h5></a>-->
+            <!--<a (click)="loadDictionaryForEdit('HeatingSystem'); resident=false"><h5>Отопление</h5></a>-->
+            <!--<a (click)="loadDictionaryForEdit('ParkingType'); resident=false"><h5>Парковка</h5></a>-->
+            <!--<a (click)="loadDictionaryForEdit('YardType'); resident=false"><h5>Двор</h5></a>-->
+            <!--<a (click)="loadDictionaryForEdit('PossibleReasonForBidding'); resident=false"><h5>Возможные причины-->
+              <!--торга</h5></a>-->
           </div>
         </div>
 
