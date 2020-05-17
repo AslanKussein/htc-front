@@ -26,6 +26,7 @@ import {RoleManagerService} from "../../../services/roleManager.service";
 import {HttpParams} from "@angular/common/http";
 import {UserService} from "../../../services/user.service";
 import {YandexMapComponent} from "./yandex-map/yandex-map.component";
+import { KazPostService } from 'src/app/services/kaz.post.service';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   operationType: Dic[];
   objectType: Dic[];
   city: Dic[];
+  kazPost: any;
   districts: Dic[];
   parkingTypes: Dic[];
   streets: Dic[];
@@ -109,7 +111,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
               private actRoute: ActivatedRoute,
               private ngxLoader: NgxUiLoaderService,
               private roleManagerService: RoleManagerService,
-              private userService: UserService) {
+              private userService: UserService,
+              private kazPostService: KazPostService) {
     this.config.notFoundText = 'Данные не найдены';
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
@@ -218,6 +221,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       agent: [null, Validators.nullValidator],
       latitude: [null, Validators.nullValidator],
       longitude: [null, Validators.nullValidator],
+      kazPost: [null, Validators.required]
     });
     this.cdRef.detectChanges();
     this.loadDictionary();
@@ -274,52 +278,52 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   loadDictionary() {
-    this.util.getAllDic('operation_types').then(res => {
+    this.util.getAllDic('OperationType').then(res => {
       this.operationType = res;
     })
-    this.util.getAllDic('object_types').then(res => {
+    this.util.getAllDic('ObjectType').then(res => {
       this.objectType = res;
     })
-    this.util.getAllDic('cities').then(res => {
+    this.util.getAllDic('City').then(res => {
       this.city = res;
     })
-    this.util.getAllDic('districts').then(res => {
+    this.util.getAllDic('District').then(res => {
       this.districts = res;
     })
-    this.util.getAllDic('parking_types').then(res => {
+    this.util.getAllDic('ParkingType').then(res => {
       this.parkingTypes = res;
     })
-    this.util.getAllDic('streets').then(res => {
+    this.util.getAllDic('Street').then(res => {
       this.streets = res;
     })
     this.util.getAllDic('residentialComplexes').then(res => {
       this.residentialComplexes = res;
     })
-    this.util.getAllDic('possible_reasons_for_bidding').then(res => {
+    this.util.getAllDic('PossibleReasonForBidding').then(res => {
       this.possibleReasonForBidding = res;
     })
-    this.util.getAllDic('countries').then(res => {
+    this.util.getAllDic('Country').then(res => {
       this.countries = res;
     })
-    this.util.getAllDic('materials_of_construction').then(res => {
+    this.util.getAllDic('MaterialOfConstruction').then(res => {
       this.materials = res;
     })
-    this.util.getAllDic('yes_no').then(res => {
+    this.util.getAllDic('YES_NO').then(res => {
       this.dicDynamic = res;
     })
-    this.util.getAllDic('type_of_elevator').then(res => {
+    this.util.getAllDic('TypeOfElevator').then(res => {
       this.elevatorType = res;
     })
-    this.util.getAllDic('yard_types').then(res => {
+    this.util.getAllDic('YardType').then(res => {
       this.yardTypes = res;
     })
-    this.util.getAllDic('property_developers').then(res => {
+    this.util.getAllDic('PropertyDeveloper').then(res => {
       this.propertyDevelopers = res;
     })
-    this.util.getAllDic('sewerage_systems').then(res => {
+    this.util.getAllDic('Sewerage').then(res => {
       this.sewerageSystems = res;
     })
-    this.util.getAllDic('heating_systems').then(res => {
+    this.util.getAllDic('HeatingSystem').then(res => {
       this.heatingSystems = res;
     })
     this.userService.getAgentsToAssign().subscribe(obj => {
@@ -950,4 +954,28 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.cdRef.detectChanges();
   }
 
+  apiParam: string;
+  apiPage: number = 0;
+
+  onScrollEnd() {
+    this.apiPage = this.apiPage + 40;
+    this.searchDataPost(this.apiParam, this.apiPage);
+  }
+
+  getDataKzPost(event) {
+    if (!this.util.isNullOrEmpty(event?.term)) {
+      if (this.util.length(event.term) > 3) {
+        this.apiParam = event.term;
+        this.searchDataPost(this.apiParam, this.apiPage);
+
+      }
+    }
+  }
+
+  searchDataPost(val: string, page: number) {
+    this.kazPostService.getDataPost(val, page).subscribe(res=>{
+      this.kazPost = this.util.toSelectArrayPost(res.data)
+      this.kazPost = [...this.kazPost, this.util.toSelectArrayPost(res.data)];
+    })
+  }
 }

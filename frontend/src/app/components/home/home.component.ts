@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
     }
 
     this.cdRef.detectChanges()
-    this.util.getAllDic('operation_types').then(res=>{
+    this.util.getAllDic('OperationType').then(res=>{
       this.operationType = res;
     })
     this.userService.getAgents().subscribe(obj => {

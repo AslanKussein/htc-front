@@ -67,10 +67,10 @@ export class ClaimsComponent implements OnInit {
   ngOnInit(): void {
     this.ngxLoader.start();
     this.findClaims(1);
-    this.util.getAllDic('operation_types').then(res=>{
+    this.util.getAllDic('OperationType').then(res=>{
       this.operationType = res;
     })
-    this.util.getAllDic('application_statuses').then(res=>{
+    this.util.getAllDic('ApplicationStatus').then(res=>{
       this.appStatuses = res;
     })
 

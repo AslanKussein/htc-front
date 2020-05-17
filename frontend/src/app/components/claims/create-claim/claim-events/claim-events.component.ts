@@ -60,7 +60,7 @@ export class ClaimEventsComponent implements OnInit {
   }
 
   sortStatus() {
-    this.util.getAllDic('event_types').then(res=>{
+    this.util.getAllDic('EventType').then(res=>{
       this.appStatusesSort = res;
     })
   }
@@ -72,6 +72,9 @@ export class ClaimEventsComponent implements OnInit {
   }
 
   getEventsByApplicationId(pageNo: number) {
+    if (!this.applicationId) {
+      return
+    }
     let searchParams = {};
     searchParams['applicationId'] = this.applicationId;
     searchParams['pageNumber'] = pageNo - 1;

@@ -54,22 +54,6 @@ export class Util {
     return list;
   }
 
-  toSelectArrayId(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
-    const list = [];
-    if (data) {
-      const len = data.length;
-      for (let i = 0; i < len; i++) {
-        list.push({
-          value: data[i][idField],
-          label: data[i][labelField],
-          code: data[i]['code'],
-          operationCode: data[i]['operationCode']
-        });
-      }
-    }
-    return list;
-  }
-
   toSelectArrayRoles(data, idField = 'id') {
     const list = [];
     if (data) {
@@ -244,5 +228,31 @@ export class Util {
 
   getAllDic(code: string) {
     return this.dbService.getAll(code);
+  }
+
+  toSelectArrayPost(data) {
+    const list = [];
+    if (data) {
+      const len = data.length;
+
+      let fieldName;
+      switch (this._language.language) {
+        case "kz":
+          fieldName = 'addressKaz';
+          break;
+        default:
+          fieldName = 'addressRus';
+          break;
+      }
+
+      for (let i = 0; i < len; i++) {
+        list.push({
+          value: data[i]['id'],
+          label: data[i][fieldName],
+          fullAddress: data[i]['fullAddress']
+        });
+      }
+    }
+    return list;
   }
 }

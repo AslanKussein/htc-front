@@ -4,6 +4,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs/index';
 import {catchError, tap} from 'rxjs/internal/operators';
 import {language} from "../../environments/language";
+import {DeprecatedCommand} from "@angular/cli/commands/deprecated-impl";
 
 @Injectable({
   providedIn: 'root'
