@@ -7,7 +7,7 @@ import {ConfigService} from "./config.service";
 import {Util} from "./util";
 import {UserService} from "./user.service";
 import {NotificationService} from "./notification.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService {
@@ -24,7 +24,7 @@ export class AuthenticationService {
   constructor(private http: HttpClient,
               private configService: ConfigService,
               private util: Util,
-              private router: Router,
+              private activatedRoute: ActivatedRoute,
               private userService: UserService,
               private notifyService: NotificationService) {
     this.currentUserSubject = new BehaviorSubject<User>(this.util.getCurrentUser());
@@ -91,7 +91,7 @@ export class AuthenticationService {
   }
 
   logout() {
-    if (!['/login'].includes(this.router.url)) {
+    if (!['login'].includes(this.activatedRoute.snapshot.url[0].path)) {
       localStorage.removeItem('currentUser');
       localStorage.removeItem(this.JWT_TOKEN);
       this.currentUserSubject.next(null);
