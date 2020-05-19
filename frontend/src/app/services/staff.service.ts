@@ -44,13 +44,13 @@ export class StaffService {
   getRoleList(search: any): Observable<any> {
     let params = new HttpParams();
     params = params.append('locale', String(language.language));
-    return this.http.get<any>(`${this.configService.apiRoleManagerUrl}/api/roles`, {params});
+    return this.http.get<any>(`${this.configService.apiRoleManagerUrl}/roles`, {params});
   }
 
   getGroupList(search: any): Observable<any> {
     let params = new HttpParams();
     params = params.append('locale', String(language.language));
-    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/groups`, {params});
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/groups`, {params});
   }
 
   public createUser(obj): Observable<any> {
