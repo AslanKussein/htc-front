@@ -62,6 +62,7 @@ export class DicControlComponent implements OnInit {
         }
       }
     }
+    this.adminRoles = true;
   }
 
   formRes = {
@@ -163,29 +164,29 @@ export class DicControlComponent implements OnInit {
   }
 
   loadDictionary() {
-    this.dicService.getDics('City').subscribe(data => {
-      this.cities = this.util.toSelectArray(data);
+    this.util.getAllDic('City').then(res => {
+      this.cities = res;
     });
-    this.dicService.getDics('District').subscribe(data => {
-      this.districts = this.util.toSelectArray(data);
+    this.util.getAllDic('District').then(data => {
+      this.districts = data;
     });
-    this.dicService.getDics('Street').subscribe(data => {
-      this.streets = this.util.toSelectArray(data);
+    this.util.getAllDic('Street').then(data => {
+      this.streets = data;
     });
-    this.dicService.getDics('PropertyDeveloper').subscribe(data => {
-      this.propertyDevelopers = this.util.toSelectArray(data);
+    this.util.getAllDic('PropertyDeveloper').then(data => {
+      this.propertyDevelopers = data
     });
-    this.dicService.getDics('MaterialOfConstruction').subscribe(data => {
-      this.materialsOfConstruction = this.util.toSelectArray(data);
+    this.util.getAllDic('MaterialOfConstruction').then(data => {
+      this.materialsOfConstruction = data
     });
-    this.dicService.getDics('TypeOfElevator').subscribe(data => {
-      this.typeOfElevator = this.util.toSelectArray(data);
+    this.util.getAllDic('TypeOfElevator').then(data => {
+      this.typeOfElevator = data
     });
-    this.dicService.getDics('ParkingType').subscribe(data => {
-      this.parkingTypes = this.util.toSelectArray(data);
+    this.util.getAllDic('ParkingType').then(data => {
+      this.parkingTypes = data
     });
-    this.dicService.getDics('YardType').subscribe(data => {
-      this.yardTypes = this.util.toSelectArray(data);
+    this.util.getAllDic('YardType').then(data => {
+      this.yardTypes = data
     });
     this.ngxLoader.stop();
   }
