@@ -7,6 +7,7 @@ import {ConfigService} from "./config.service";
 import {Util} from "./util";
 import {UserService} from "./user.service";
 import {NotificationService} from "./notification.service";
+import {Router} from "@angular/router";
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService {
@@ -23,6 +24,7 @@ export class AuthenticationService {
   constructor(private http: HttpClient,
               private configService: ConfigService,
               private util: Util,
+              private router: Router,
               private userService: UserService,
               private notifyService: NotificationService) {
     this.currentUserSubject = new BehaviorSubject<User>(this.util.getCurrentUser());
@@ -89,10 +91,12 @@ export class AuthenticationService {
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem(this.JWT_TOKEN);
-    this.currentUserSubject.next(null);
-    this.util.dnHref(['/login']);
+    if (!['/login'].includes(this.router.url)) {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem(this.JWT_TOKEN);
+      this.currentUserSubject.next(null);
+      this.util.dnHref(['/login']);
+    }
   }
 
   getJwtToken() {
