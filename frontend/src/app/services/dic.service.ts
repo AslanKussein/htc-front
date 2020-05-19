@@ -32,6 +32,24 @@ export class DicService {
       );
   }
 
+  public getDicsByDicName(dicName): Observable<any> {
+    let search = {
+      dictionaryName: dicName,
+      pageableDto: {
+        direction: "ASC",
+        pageSize: 100,
+        sortBy: "id"
+      }
+    };
+
+    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/open-api/dictionary/list/pageable`, search)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(this.handleError)
+      );
+  }
+
   public getResidentialComplexesPageable(search: any): Observable<any> {
     return this.http.post<any>(`${this.configService.apiDataManagerUrl}/api/residential-complexes/getAllPageable`, search);
   }
