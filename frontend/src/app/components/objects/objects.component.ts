@@ -9,7 +9,7 @@ import {Util} from "../../services/util";
 import {ObjectService} from "../../services/object.service";
 import {UploaderService} from "../../services/uploader.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
-import {BigDecimalPeriod} from "../../models/common/bigDecimalPeriod";
+import {NumberPeriod} from "../../models/common/numberPeriod";
 import {NotificationService} from "../../services/notification.service";
 
 
@@ -154,12 +154,12 @@ export class ObjectsComponent implements OnInit {
     if (!this.util.isNullOrEmpty(this.formData.zalog)) {
       searchFilter['encumbrance'] = parseInt(this.formData.zalog);
     }
-    searchFilter['price'] = new BigDecimalPeriod(this.formData?.priceFrom, this.formData?.priceTo);
-    searchFilter['floor'] = new BigDecimalPeriod(this.formData?.floorFrom, this.formData?.floorTo);
-    searchFilter['floorInTheHouse'] = new BigDecimalPeriod(this.formData?.floorsFrom, this.formData?.floorsTo);
-    searchFilter['totalArea'] = new BigDecimalPeriod(this.formData?.totalAreaFrom, this.formData?.totalAreaTo);
-    searchFilter['livingArea'] = new BigDecimalPeriod(this.formData?.livingSpaceFrom, this.formData?.livingSpaceTo);
-    searchFilter['kitchenArea'] = new BigDecimalPeriod(this.formData?.kitchenAreaFrom, this.formData?.kitchenAreaTo);
+    searchFilter['price'] = new NumberPeriod(this.formData?.priceFrom, this.formData?.priceTo);
+    searchFilter['floor'] = new NumberPeriod(this.formData?.floorFrom, this.formData?.floorTo);
+    searchFilter['floorInTheHouse'] = new NumberPeriod(this.formData?.floorsFrom, this.formData?.floorsTo);
+    searchFilter['totalArea'] = new NumberPeriod(this.formData?.totalAreaFrom, this.formData?.totalAreaTo);
+    searchFilter['livingArea'] = new NumberPeriod(this.formData?.livingSpaceFrom, this.formData?.livingSpaceTo);
+    searchFilter['kitchenArea'] = new NumberPeriod(this.formData?.kitchenAreaFrom, this.formData?.kitchenAreaTo);
 
     if (!this.util.isNullOrEmpty(this.formData.numberOfRooms)) {
       searchFilter['numberOfRooms'] = parseInt(this.formData.numberOfRooms);

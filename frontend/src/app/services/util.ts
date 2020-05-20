@@ -5,7 +5,6 @@ import {NgxIndexedDBService} from 'ngx-indexed-db';
 import {ConfigService} from "./config.service";
 import {isArray} from "rxjs/internal-compatibility";
 import {formatDate} from '@angular/common';
-import {UploaderService} from "./uploader.service";
 
 @Injectable({
   providedIn: 'root'
@@ -259,5 +258,39 @@ export class Util {
       }
     }
     return list;
+  }
+
+  hasShowClientGroup(operation: string, roles: any) {
+    if (!this.isNullOrEmpty(roles)) {
+      for (const data of roles) {
+        if (data.code === 'CLIENT_GROUP') {
+          return !data.operations.includes(operation);
+        }
+      }
+    }
+  }
+
+  hasShowApplicationGroup(operation: string, roles: any) {
+    if (!this.isNullOrEmpty(roles)) {
+      for (const data of roles) {
+        if (data.code === 'APPLICATION_GROUP') {
+          return !data.operations.includes(operation);
+        }
+      }
+    }
+  }
+
+  hasShowRealPropertyGroup(operation: string, roles: any) {
+    if (!this.isNullOrEmpty(roles)) {
+      for (const data of roles) {
+        if (data.code === 'REAL_PROPERTY_GROUP') {
+          return !data.operations.includes(operation);
+        }
+      }
+    }
+  }
+
+  keyPress(event) {
+    return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57
   }
 }

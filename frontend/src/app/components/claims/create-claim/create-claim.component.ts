@@ -16,17 +16,22 @@ import {Observable} from "rxjs";
 import {ComponentCanDeactivate} from "../../../helpers/canDeactivate/componentCanDeactivate";
 import {ConfigService} from "../../../services/config.service";
 import {ModalComponent} from "./modal.window/modal.component";
-import {RealPropertyRequestDto} from "../../../models/createClaim/realPropertyRequestDto";
+import {RealPropertyDto} from "../../../models/createClaim/realPropertyDto";
 import {ClientDto} from "../../../models/createClaim/clientDto";
 import {PurchaseInfoDto} from "../../../models/createClaim/purchaseInfoDto";
-import {BigDecimalPeriod} from "../../../models/common/bigDecimalPeriod";
+import {NumberPeriod} from "../../../models/common/numberPeriod";
 import {ActivatedRoute} from "@angular/router";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {RoleManagerService} from "../../../services/roleManager.service";
 import {HttpParams} from "@angular/common/http";
 import {UserService} from "../../../services/user.service";
 import {YandexMapComponent} from "./yandex-map/yandex-map.component";
-import { KazPostService } from 'src/app/services/kaz.post.service';
+import {KazPostService} from 'src/app/services/kaz.post.service';
+import {ApplicationPurchaseDataDto} from "../../../models/createClaim/applicationPurchaseDataDto";
+import {ContractDto} from "../../../models/createClaim/contractDto";
+import {BuildingDto} from "../../../models/createClaim/buildingDto";
+import {GeneralCharacteristicsDto} from "../../../models/createClaim/generalCharacteristicsDto";
+import {ApplicationSellDataDto} from "../../../models/createClaim/applicationSellDataDto";
 
 @Injectable({
   providedIn: 'root'
@@ -96,7 +101,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     iconImageSize: [32, 32]
   };
 
-  constructor(private util: Util,
+  constructor(public util: Util,
               private notifyService: NotificationService,
               private formBuilder: FormBuilder,
               private claimService: ClaimService,
@@ -180,6 +185,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       theSizeOfTrades: [null, Validators.nullValidator],
       possibleReasonForBiddingIdList: [null, Validators.nullValidator],
       note: [null, Validators.nullValidator],
+      description: [null, Validators.nullValidator],
       cadastralNumber: [null, Validators.nullValidator],
       cadastralNumber1: [null, Validators.nullValidator],
       cadastralNumber2: [null, Validators.nullValidator],
@@ -214,7 +220,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       sewerageId: [null, Validators.nullValidator],
       photoIdList: [[], Validators.nullValidator],
       housingPlanImageIdList: [[], Validators.nullValidator],
-      realPropertyRequestDto: [new RealPropertyRequestDto(), Validators.nullValidator],
+      realPropertyRequestDto: [new RealPropertyDto(), Validators.nullValidator],
       ownerDto: [null, Validators.nullValidator],
       purchaseInfoDto: [null, Validators.nullValidator],
       apartmentNumber: [null, Validators.nullValidator],
@@ -232,36 +238,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       this.ngxLoader.stop();
     }
     window.scrollTo(0, 0);
-  }
-
-  hasShowClientGroup(operation: string) {
-    if (!this.util.isNullOrEmpty(this.roles)) {
-      for (const data of this.roles) {
-        if (data.code === 'CLIENT_GROUP') {
-          return !data.operations.includes(operation);
-        }
-      }
-    }
-  }
-
-  hasShowApplicationGroup(operation: string) {
-    if (!this.util.isNullOrEmpty(this.roles)) {
-      for (const data of this.roles) {
-        if (data.code === 'APPLICATION_GROUP') {
-          return !data.operations.includes(operation);
-        }
-      }
-    }
-  }
-
-  hasShowRealPropertyGroup(operation: string) {
-    if (!this.util.isNullOrEmpty(this.roles)) {
-      for (const data of this.roles) {
-        if (data.code === 'REAL_PROPERTY_GROUP') {
-          return !data.operations.includes(operation);
-        }
-      }
-    }
   }
 
   getCheckOperationList() {
@@ -438,7 +414,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.applicationForm.probabilityOfBidding = this.util.toString(data?.probabilityOfBidding);
     this.applicationForm.theSizeOfTrades = data?.theSizeOfTrades;
     this.setPossibleReasonForBidding();
-    setTimeout(()=>{this.applicationForm.possibleReasonForBiddingIdList = this.util.nvl(data?.possibleReasonForBiddingIdList, null);},1000);
+    setTimeout(() => {
+      this.applicationForm.possibleReasonForBiddingIdList = this.util.nvl(data?.possibleReasonForBiddingIdList, null);
+    }, 1000);
     this.applicationForm.note = data?.note;
     this.applicationForm.agent = data?.agent;
   }
@@ -630,80 +608,132 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
-  fillApplication() {
-    this.application = new ApplicationDto(this.applicationForm.operationTypeId?.value, this.applicationForm.objectPrice, this.applicationForm.mortgage,
-      this.applicationForm.encumbrance, this.applicationForm.sharedOwnershipProperty, this.applicationForm.exchange,
-      this.applicationForm.probabilityOfBidding, this.applicationForm.theSizeOfTrades, this.applicationForm.possibleReasonForBiddingIdList, this.applicationForm.note, this.applicationForm.agent);
+  fillApplicationPurchaseDataDto() {
+    return this.application.applicationPurchaseDataDto = new ApplicationPurchaseDataDto(
+      null,
+      this.applicationForm.cityId,
+      this.applicationForm.districtId,
+      this.applicationForm.mortgage,
+      this.applicationForm.note,
+      this.applicationForm.probabilityOfBidding,
+      this.applicationForm.theSizeOfTrades,
+      new NumberPeriod(this.applicationForm?.objectPriceFrom, this.applicationForm?.objectPriceTo),
+      this.applicationForm.possibleReasonForBiddingIdList
+    )
   }
 
   fillPurchaseInfoDto() {
-    this.application.realPropertyRequestDto.purchaseInfoDto = new PurchaseInfoDto(new BigDecimalPeriod(this.applicationForm?.objectPriceFrom, this.applicationForm?.objectPriceTo),
-      new BigDecimalPeriod(this.applicationForm?.numberOfFloorsFrom, this.applicationForm?.numberOfFloorsTo),
-      new BigDecimalPeriod(this.applicationForm?.floorFrom, this.applicationForm?.floorTo),
-      new BigDecimalPeriod(this.applicationForm?.numberOfRoomsFrom, this.applicationForm?.numberOfRoomsTo),
-      new BigDecimalPeriod(this.applicationForm?.totalAreaFrom, this.applicationForm?.totalAreaTo),
-      new BigDecimalPeriod(this.applicationForm?.livingAreaFrom, this.applicationForm?.livingAreaTo),
-      new BigDecimalPeriod(this.applicationForm?.kitchenAreaFrom, this.applicationForm?.kitchenAreaTo),
-      new BigDecimalPeriod(this.applicationForm?.balconyAreaFrom, this.applicationForm?.balconyAreaTo),
-      new BigDecimalPeriod(this.applicationForm?.ceilingHeightFrom, this.applicationForm?.ceilingHeightTo),
-      new BigDecimalPeriod(this.applicationForm?.numberOfBedroomsFrom, this.applicationForm?.numberOfBedroomsTo),
-      new BigDecimalPeriod(this.applicationForm?.landAreaFrom, this.applicationForm?.landAreaTo)
-    );
+    return this.application.purchaseInfoDto = new PurchaseInfoDto(
+      null,//todo
+      new NumberPeriod(this.applicationForm?.balconyAreaFrom, this.applicationForm?.balconyAreaTo),
+      new NumberPeriod(this.applicationForm?.ceilingHeightFrom, this.applicationForm?.ceilingHeightTo),
+      this.applicationForm.concierge,
+      null,//todo
+      null,
+      new NumberPeriod(this.applicationForm?.kitchenAreaFrom, this.applicationForm?.kitchenAreaTo),
+      new NumberPeriod(this.applicationForm?.landAreaFrom, this.applicationForm?.landAreaTo),
+      new NumberPeriod(this.applicationForm?.livingAreaFrom, this.applicationForm?.livingAreaTo),
+      this.applicationForm?.materialOfConstructionId,
+      new NumberPeriod(this.applicationForm?.numberOfBedroomsFrom, this.applicationForm?.numberOfBedroomsTo),
+      new NumberPeriod(this.applicationForm?.numberOfFloorsFrom, this.applicationForm?.numberOfFloorsTo),
+      new NumberPeriod(this.applicationForm?.numberOfRoomsFrom, this.applicationForm?.numberOfRoomsTo),
+      this.applicationForm.parkingTypeIds,
+      this.applicationForm.playground,
+      new NumberPeriod(this.applicationForm?.totalAreaFrom, this.applicationForm?.totalAreaTo),
+      this.applicationForm.typeOfElevatorList,
+      this.applicationForm.wheelchair,
+      this.applicationForm.yardTypeId,
+      null//todo
+    )
   }
 
-  fillRealPropertyRequestDto() {
-    this.application.realPropertyRequestDto = new RealPropertyRequestDto();
-    this.application.realPropertyRequestDto.objectTypeId = this.applicationForm.objectTypeId?.value;
-    this.application.realPropertyRequestDto.cityId = this.applicationForm.cityId;
-    this.application.realPropertyRequestDto.cadastralNumber = this.applicationForm.cadastralNumber + ':' +
-      this.applicationForm.cadastralNumber1 + ':' + this.applicationForm.cadastralNumber2 + ':' + this.applicationForm.cadastralNumber3;
-    this.application.realPropertyRequestDto.residentialComplexId = this.applicationForm.residentialComplexId?.value;
-    this.application.realPropertyRequestDto.streetId = this.applicationForm.streetId;
-    this.application.realPropertyRequestDto.houseNumber = this.applicationForm.houseNumber;
-    this.application.realPropertyRequestDto.houseNumberFraction = this.applicationForm.houseNumberFraction;
-    this.application.realPropertyRequestDto.floor = this.applicationForm.floor;
-    this.application.realPropertyRequestDto.apartmentNumber = this.applicationForm.apartmentNumber
-    this.application.realPropertyRequestDto.numberOfRooms = this.applicationForm.numberOfRooms;
-    this.application.realPropertyRequestDto.totalArea = this.applicationForm.totalArea;
-    this.application.realPropertyRequestDto.livingArea = this.applicationForm.livingArea;
-    this.application.realPropertyRequestDto.kitchenArea = this.applicationForm.kitchenArea;
-    this.application.realPropertyRequestDto.balconyArea = this.applicationForm.balconyArea;
-    this.application.realPropertyRequestDto.ceilingHeight = this.applicationForm.ceilingHeight;
-    this.application.realPropertyRequestDto.numberOfBedrooms = this.applicationForm.numberOfBedrooms;
-    this.application.realPropertyRequestDto.atelier = this.applicationForm.atelier;
-    this.application.realPropertyRequestDto.separateBathroom = this.applicationForm.separateBathroom;
-    this.application.realPropertyRequestDto.districtId = this.applicationForm.districtId;
-    this.application.realPropertyRequestDto.numberOfFloors = this.applicationForm.numberOfFloors;
-    this.application.realPropertyRequestDto.apartmentsOnTheSite = this.applicationForm.apartmentsOnTheSite;
-    this.application.realPropertyRequestDto.materialOfConstructionId = this.applicationForm.materialOfConstructionId;
-    this.application.realPropertyRequestDto.yearOfConstruction = this.applicationForm.yearOfConstruction;
-    this.application.realPropertyRequestDto.typeOfElevatorList = this.applicationForm.typeOfElevatorList;
-    this.application.realPropertyRequestDto.concierge = this.applicationForm.concierge;
-    this.application.realPropertyRequestDto.wheelchair = this.applicationForm.wheelchair;
-    this.application.realPropertyRequestDto.yardTypeId = this.applicationForm.yardTypeId;
-    this.application.realPropertyRequestDto.playground = this.applicationForm.playground;
-    this.application.realPropertyRequestDto.parkingTypeId = this.applicationForm.parkingTypeId;
-    this.application.realPropertyRequestDto.propertyDeveloperId = this.applicationForm.propertyDeveloperId;
-    this.application.realPropertyRequestDto.housingClass = this.applicationForm.housingClass;
-    this.application.realPropertyRequestDto.housingCondition = this.applicationForm.housingCondition;
-    this.application.realPropertyRequestDto.photoIdList = [];
-    for (const ph of this.photoList) {
-      this.application.realPropertyRequestDto.photoIdList.push(ph.guid);
-    }
-    this.application.realPropertyRequestDto.housingPlanImageIdList = [];
-    for (const ph of this.photoPlanList) {
-      this.application.realPropertyRequestDto.housingPlanImageIdList.push(ph.guid);
-    }
-    this.application.realPropertyRequestDto.virtualTourImageIdList = [];
-    for (const ph of this.photo3DList) {
-      this.application.realPropertyRequestDto.virtualTourImageIdList.push(ph.guid);
-    }
-    this.application.realPropertyRequestDto.sewerageId = this.applicationForm.sewerageId;
-    this.application.realPropertyRequestDto.heatingSystemId = this.applicationForm.heatingSystemId;
-    this.application.realPropertyRequestDto.numberOfApartments = this.applicationForm.numberOfApartments;
-    this.application.realPropertyRequestDto.landArea = this.applicationForm.landArea;
-    this.application.realPropertyRequestDto.latitude = this.applicationForm.latitude;
-    this.application.realPropertyRequestDto.longitude = this.applicationForm.longitude;
+  fillBuildingDto() {
+    return this.application.realPropertyDto.buildingDto = new BuildingDto(
+      this.applicationForm.cityId,
+      this.applicationForm.districtId,
+      this.applicationForm.houseNumber,
+      this.applicationForm.houseNumberFraction,
+      this.latitude,
+      this.longitude,
+      null,//todo
+      this.applicationForm.cityId
+    )
+  }
+
+  fillGeneralCharacteristicsDto() {
+    return this.application.realPropertyDto.generalCharacteristicsDto = new GeneralCharacteristicsDto(
+      this.applicationForm.apartmentsOnTheSite,
+      this.applicationForm.ceilingHeight,
+      this.applicationForm.concierge,
+      null,//todo "Состояние жилья"
+      this.applicationForm.housingClass,
+      null,
+      this.applicationForm.materialOfConstructionId,
+      this.applicationForm.numberOfApartments,
+      this.applicationForm.numberOfFloors,
+      this.applicationForm.parkingTypeIds,
+      this.applicationForm.playground,
+      this.applicationForm.propertyDeveloperId,
+      this.applicationForm.typeOfElevatorList
+    )
+  }
+
+  fillRealPropertyDto() {
+    return this.application.realPropertyDto = new RealPropertyDto(
+      this.applicationForm.apartmentNumber,
+      this.applicationForm.atelier,
+      this.applicationForm.balconyArea,
+      this.fillBuildingDto(),
+      this.applicationForm.cadastralNumber,
+      this.applicationForm.floor,
+      this.fillGeneralCharacteristicsDto(),
+      this.applicationForm.heatingSystemId,
+      null,
+      this.applicationForm.kitchenArea,
+      this.applicationForm.landArea,
+      this.applicationForm.livingArea,
+      null,//todo метадата
+      null,//todo статус метадаты
+      this.applicationForm.numberOfBedrooms,
+      this.applicationForm.numberOfRooms,
+      this.applicationForm.separateBathroom,
+      this.applicationForm.sewerageId,
+      this.applicationForm.totalArea
+    )
+  }
+
+  fillSellDataDto() {
+    return this.application.sellDataDto = new ApplicationSellDataDto(
+      this.applicationForm.description, // описание
+      this.applicationForm.encumbrance,
+      this.applicationForm.exchange,
+      this.photoPlanList,
+      null,
+      this.applicationForm.mortgage,
+      this.applicationForm.note,
+      this.applicationForm.objectPrice,
+      this.photoList,
+      this.applicationForm.possibleReasonForBiddingIdList,
+      this.applicationForm.probabilityOfBidding,
+      this.applicationForm.sharedOwnershipProperty,
+      this.applicationForm.theSizeOfTrades,
+      this.photo3DList
+    )
+  }
+
+  fillApplication() {//++
+    this.application = new ApplicationDto(
+      null,
+      this.applicationForm.operationTypeId?.value,
+      this.applicationForm.phoneNumber,
+      this.applicationForm.agentLogin,
+      new ContractDto(),
+      this.fillApplicationPurchaseDataDto(),
+      this.applicationForm.objectTypeId?.value,
+      this.fillPurchaseInfoDto(),
+      this.fillRealPropertyDto(),
+      this.fillSellDataDto()
+    );
   }
 
   fillRealPropertyOwnerDto(data: any) {
@@ -732,8 +762,15 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
       this.ngxLoader.stop();
 
     }
+
+    if (!this.util.isNullOrEmpty(this.applicationForm.parkingTypeId)) {
+      if (this.applicationForm.parkingTypeId.indexOf("1") == 0) {
+        this.applicationForm.parkingTypeId = [];
+        this.applicationForm.parkingTypeId.push("1");
+      }
+    }
+
     this.fillApplication();
-    this.fillRealPropertyRequestDto();
     this.fillRealPropertyOwnerDto(this.applicationForm);
     if (this.applicationForm?.operationTypeId?.code == '001001') {
       this.fillPurchaseInfoDto();
@@ -753,13 +790,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     if (result) {
       this.ngxLoader.stop();
       return;
-    }
-
-    if (!this.util.isNullOrEmpty(this.application.realPropertyRequestDto.parkingTypeId)) {
-      if (this.application.realPropertyRequestDto.parkingTypeId.indexOf("1") == 0) {
-        this.application.realPropertyRequestDto.parkingTypeId = [];
-        this.application.realPropertyRequestDto.parkingTypeId.push("1");
-      }
     }
 
     if (this.applicationId != null) {
@@ -849,9 +879,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   removeByGuid(obj: any, id: number) {
-    this.uploader.removePhotoById(obj.guid)
-      .subscribe(data => {
-      });
+    this.uploader.removePhotoById(obj.guid).subscribe();
     if (id == 1) {
       this.photoList.splice(this.photoList.indexOf(obj), 1);
     } else if (id == 2) {
@@ -919,7 +947,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
         this.applicationForm.latitude = data.responseMetaData.SearchResponse.Point.coordinates[1];
         this.applicationForm.longitude = data.responseMetaData.SearchResponse.Point.coordinates[0];
       });
-      }
+    }
   }
 
   onLoad(event) {
@@ -973,7 +1001,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   searchDataPost(val: string, page: number) {
-    this.kazPostService.getDataPost(val, page).subscribe(res=>{
+    this.kazPostService.getDataPost(val, page).subscribe(res => {
       this.kazPost = this.util.toSelectArrayPost(res.data)
       this.kazPost = [...this.kazPost, this.util.toSelectArrayPost(res.data)];
     })

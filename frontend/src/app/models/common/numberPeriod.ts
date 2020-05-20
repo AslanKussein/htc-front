@@ -1,4 +1,4 @@
-export class BigDecimalPeriod {
+export class NumberPeriod {
   public from?: number;
   public to?: number;
 
