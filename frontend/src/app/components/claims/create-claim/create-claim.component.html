@@ -131,20 +131,20 @@
                                      placeholder="{{'patterns.from' | translate}}" maxlength="20"
                                      mask="separator" thousandSeparator=" "
                                      oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                     onkeypress="util.keyPress($event)"
+                                     (keypress)="util.keyPress($event)"
                                      [(ngModel)]="applicationForm.objectPriceFrom" formControlName="objectPriceFrom"/>
                               <input type="text" min="0" max="20" class="form-control"
                                      mask="separator" thousandSeparator=" "
                                      [readOnly]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles)"
                                      placeholder="{{'patterns.to' | translate}}" maxlength="20"
                                      oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                     onkeypress="util.keyPress($event)"
+                                     (keypress)="util.keyPress($event)"
                                      [(ngModel)]="applicationForm.objectPriceTo" formControlName="objectPriceTo"/>
                             </div>
                             <input type="text" id="form1" class="form-control" maxlength="20"
                                    [readOnly]="util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
                                    oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                   onkeypress="util.keyPress($event)"
+                                   (keypress)="util.keyPress($event)"
                                    *ngIf="!isSell()"
                                    mask="separator" suffix=" ₸" thousandSeparator=" "
                                    placeholder="{{'claim.objectPriceInLim' | translate}}"
@@ -237,7 +237,7 @@
                                    oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                    [(ngModel)]="applicationForm.theSizeOfTrades"
                                    mask="separator.2" thousandSeparator=" "
-                                   onkeypress="util.keyPress($event)"
+                                   (keypress)="util.keyPress($event)"
                                    placeholder="{{'claim.bidAmount' | translate}}"
                                    [readOnly]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles) &&
                                    util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
@@ -461,7 +461,6 @@
                             (search)="getDataKzPost($event)"
                             (autocomplete)="'true'"
                             (clear)="'true'"
-                            (scrollToEnd)="onScrollEnd()"
                             formControlName="kazPost"
                             placeholder="{{'Полный адрес' | translate }}">
                           </ng-select>
@@ -542,7 +541,7 @@
                                        (ngModelChange)="getMap()"
 
                                        oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                       onkeypress="util.keyPress($event)"
+                                       (keypress)="util.keyPress($event)"
                                        [readOnly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
                                        formControlName="houseNumber"
                                 />
@@ -570,14 +569,14 @@
                                   <input type="number" min="0" class="form-control" maxlength="10"
                                          oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                          placeholder="{{'patterns.from2' | translate}}"
-                                         onkeypress="util.keyPress($event)"
+                                         (keypress)="util.keyPress($event)"
                                          [(ngModel)]="applicationForm.numberOfRoomsFrom"
                                          formControlName="numberOfRoomsFrom"/>
                                   <input type="number" min="0" class="form-control" maxlength="10"
                                          oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                          placeholder="{{'patterns.to2' | translate}}"
                                          [(ngModel)]="applicationForm.numberOfRoomsTo"
-                                         onkeypress="util.keyPress($event)"
+                                         (keypress)="util.keyPress($event)"
                                          formControlName="numberOfRoomsTo"/>
                                 </div>
                               </div>
@@ -590,7 +589,7 @@
                                        placeholder="{{ 'claim.roomCount' | translate }}" maxlength="2"
                                        oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                        [(ngModel)]="applicationForm.numberOfRooms"
-                                       onkeypress="util.keyPress($event)"
+                                       (keypress)="util.keyPress($event)"
                                        formControlName="numberOfRooms"/>
                                 <div *ngIf="f.numberOfRooms.touched && f.numberOfRooms.invalid" class="text-danger">
                                   <div *ngIf="f.numberOfRooms.errors.required" translate>claim.requiredField</div>
@@ -622,28 +621,28 @@
                                          placeholder="00:000:000"
                                          [(ngModel)]="applicationForm.cadastralNumber" mask="00:000:000"
                                          formControlName="cadastralNumber"
-                                         onkeypress="util.keyPress($event)"
+                                         (keypress)="util.keyPress($event)"
                                          [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
                                   <input type="text" class="form-control"
                                          [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber1 == null)}"
                                          [(ngModel)]="applicationForm.cadastralNumber1" maxlength="12"
                                          formControlName="cadastralNumber1"
                                          placeholder=":000000000000"
-                                         onkeypress="util.keyPress($event)"
+                                         (keypress)="util.keyPress($event)"
                                          [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
                                   <input type="text" class="form-control"
                                          [(ngModel)]="applicationForm.cadastralNumber2" maxlength="12"
                                          [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber2 == null)}"
                                          formControlName="cadastralNumber2"
                                          placeholder=":000000000000"
-                                         onkeypress="util.keyPress($event)"
+                                         (keypress)="util.keyPress($event)"
                                          [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
                                   <input type="text" class="form-control"
                                          [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber3 == null)}"
                                          [(ngModel)]="applicationForm.cadastralNumber3" maxlength="12"
                                          formControlName="cadastralNumber3"
                                          placeholder=":000000000000"
-                                         onkeypress="util.keyPress($event)"
+                                         (keypress)="util.keyPress($event)"
                                          [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
                                 </div>
                                 <div *ngIf="f.cadastralNumber.touched && f.cadastralNumber.invalid" class="text-danger">
@@ -668,13 +667,13 @@
                                          oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                          placeholder="{{'patterns.from2' | translate}}"
                                          mask="separator.2" thousandSeparator=" "
-                                         onkeypress="util.keyPress($event)"
+                                         (keypress)="util.keyPress($event)"
                                          [(ngModel)]="applicationForm.floorFrom" formControlName="floorFrom"/>
                                   <input type="text" min="0" class="form-control"
                                          placeholder="{{'patterns.to2' | translate}}" maxlength="10"
                                          oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                          mask="separator.2" thousandSeparator=" "
-                                         onkeypress="util.keyPress($event)"
+                                         (keypress)="util.keyPress($event)"
                                          [(ngModel)]="applicationForm.floorTo" formControlName="floorTo"/>
                                 </div>
                                 <div *ngIf="!isSell()">
@@ -683,7 +682,7 @@
                                          [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
                                          oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                          [(ngModel)]="applicationForm.floor"
-                                         onkeypress="util.keyPress($event)"
+                                         (keypress)="util.keyPress($event)"
                                          mask="separator.2" thousandSeparator=" "
                                          formControlName="floor"/>
                                 </div>
@@ -890,13 +889,13 @@
                                       <input type="number" min="0" class="form-control" maxlength="10"
                                              oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                              placeholder="{{'patterns.from2' | translate}}"
-                                             onkeypress="util.keyPress($event)"
+                                             (keypress)="util.keyPress($event)"
                                              [(ngModel)]="applicationForm.numberOfBedroomsFrom"
                                              formControlName="numberOfBedroomsFrom"/>
                                       <input type="number" min="0" class="form-control" maxlength="10"
                                              oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                              placeholder="{{'patterns.to2' | translate}}"
-                                             onkeypress="util.keyPress($event)"
+                                             (keypress)="util.keyPress($event)"
                                              [(ngModel)]="applicationForm.numberOfBedroomsTo"
                                              formControlName="numberOfBedroomsTo"/>
                                     </div>
@@ -910,7 +909,7 @@
                                            oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                            [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
                                            placeholder="{{'claim.badRoomCount' | translate}}"
-                                           onkeypress="util.keyPress($event)"
+                                           (keypress)="util.keyPress($event)"
                                            formControlName="numberOfBedrooms" min="1" pattern="\d*"/>
                                     <div *ngIf="f.numberOfBedrooms.touched && f.numberOfBedrooms.invalid"
                                          class="text-danger">
@@ -985,12 +984,12 @@
                                       <input type="number" min="0" class="form-control"
                                              placeholder="{{'patterns.from2' | translate}}"
                                              [(ngModel)]="applicationForm.numberOfFloorsFrom"
-                                             onkeypress="util.keyPress($event)"
+                                             (keypress)="util.keyPress($event)"
                                              formControlName="numberOfFloorsFrom"/>
                                       <input type="number" min="0" class="form-control"
                                              placeholder="{{'patterns.to2' | translate}}"
                                              [(ngModel)]="applicationForm.numberOfFloorsTo"
-                                             onkeypress="util.keyPress($event)"
+                                             (keypress)="util.keyPress($event)"
                                              formControlName="numberOfFloorsTo"/>
                                     </div>
                                     <div *ngIf="!isSell()">
@@ -999,7 +998,7 @@
                                              placeholder="{{'claim.flatHouse' | translate}}"
                                              [readonly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
                                              formControlName="numberOfFloors" min="0" maxlength="10"
-                                             onkeypress="util.keyPress($event)"
+                                             (keypress)="util.keyPress($event)"
                                              oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
                                       <div *ngIf="f.numberOfFloors.touched && f.numberOfFloors.invalid"
                                            class="text-danger">
@@ -1010,14 +1009,28 @@
                                   </div>
                                   <div class="col-sm" *ngIf="applicationForm.objectTypeId?.code=='003001'">
                                     <label for="apartmentsOnTheSite" translate>claim.appInFlat</label>
-                                    <input type="number" id="apartmentsOnTheSite" class="form-control"
+                                    <input type="number" id="apartmentsOnTheSite" class="form-control" *ngIf="isBuy()"
                                            [(ngModel)]="applicationForm.apartmentsOnTheSite"
                                            placeholder="{{'claim.appInFlat' | translate}}"
-                                           onkeypress="util.keyPress($event)"
+                                           (keypress)="util.keyPress($event)"
                                            formControlName="apartmentsOnTheSite" min="1" maxlength="10"
                                            [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                            util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
                                            oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
+                                    <div class="input-group" *ngIf="isSell()">
+                                      <input type="text" class="form-control"
+                                             placeholder="{{'patterns.from' | translate}}"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             (keypress)="util.keyPress($event)"
+                                             [(ngModel)]="applicationForm.apartmentsOnTheSiteFrom"
+                                             formControlName="apartmentsOnTheSiteFrom"/>
+                                      <input type="text" class="form-control" maxlength="10"
+                                             placeholder="{{'patterns.to' | translate}}"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             (keypress)="util.keyPress($event)"
+                                             [(ngModel)]="applicationForm.apartmentsOnTheSiteTo"
+                                             formControlName="apartmentsOnTheSiteTo"/>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -1081,7 +1094,7 @@
                                   <input type="number" id="numberOfApartments" class="form-control"
                                          [(ngModel)]="applicationForm.numberOfApartments"
                                          placeholder="Кол-во кв"
-                                         onkeypress="util.keyPress($event)"
+                                         (keypress)="util.keyPress($event)"
                                          [readonly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
                                          formControlName="numberOfApartments" min="1" maxlength="10"
                                          oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
@@ -1104,16 +1117,26 @@
                                     placeholder="{{ 'claim.material' | translate }}">
                                   </ng-select>
                                 </div>
-                                <div class="col-sm" *ngIf="isBuy()">
+                                <div class="col-sm">
                                   <label for="yearOfConstruction" translate>claim.buildYear</label>
-                                  <input type="text" id="yearOfConstruction" class="form-control" maxlength="4"
-                                         oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                  <input type="text" *ngIf="isBuy()" id="yearOfConstruction" class="form-control"
                                          [(ngModel)]="applicationForm.yearOfConstruction"
-                                         mask="0000"
-                                         placeholder="{{'claim.buildYear' | translate}}"
+                                         mask="0000" placeholder="{{'claim.buildYear' | translate}}"
                                          [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                          util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
-                                         formControlName="yearOfConstruction" min="1"/>
+                                         formControlName="yearOfConstruction"/>
+                                  <div class="input-group" *ngIf="isSell()">
+                                    <input type="text" class="form-control"
+                                           placeholder="{{'patterns.from' | translate}}"
+                                           mask="0000"
+                                           [(ngModel)]="applicationForm.yearOfConstructionFrom"
+                                           formControlName="yearOfConstructionFrom"/>
+                                    <input type="text" class="form-control"
+                                           placeholder="{{'patterns.to' | translate}}"
+                                           mask="0000"
+                                           [(ngModel)]="applicationForm.yearOfConstructionTo"
+                                           formControlName="yearOfConstructionTo"/>
+                                  </div>
                                 </div>
                                 <div class="col-sm" *ngIf="applicationForm.objectTypeId?.code=='003001'">
                                   <label class="control-labels" translate>claim.lift</label>

@@ -95,6 +95,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       provider: 'yandex#search'
     }
   };
+  apiParam: string;
+  apiPage: number = 0;
 
   public placemarkOptions = {
     preset: "twirl#redIcon",
@@ -229,7 +231,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       agent: [null, Validators.nullValidator],
       latitude: [null, Validators.nullValidator],
       longitude: [null, Validators.nullValidator],
-      kazPost: [null, Validators.required]
+      kazPost: [null, Validators.required],
+      yearOfConstructionFrom: [null, Validators.nullValidator],
+      yearOfConstructionTo: [null, Validators.nullValidator],
+      apartmentsOnTheSiteFrom: [null, Validators.nullValidator],
+      apartmentsOnTheSiteTo: [null, Validators.nullValidator],
     });
     this.cdRef.detectChanges();
     this.loadDictionary();
@@ -643,11 +649,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   fillPurchaseInfoDto() {
     return this.application.purchaseInfoDto = new PurchaseInfoDto(
-      null,//todo
+      new NumberPeriod(this.applicationForm.apartmentsOnTheSiteFrom, this.applicationForm.apartmentsOnTheSiteTo),
       new NumberPeriod(this.applicationForm?.balconyAreaFrom, this.applicationForm?.balconyAreaTo),
       new NumberPeriod(this.applicationForm?.ceilingHeightFrom, this.applicationForm?.ceilingHeightTo),
       this.applicationForm.concierge,
-      null,//todo
+      new NumberPeriod(this.applicationForm?.floorFrom, this.applicationForm?.floorTo),
       null,
       new NumberPeriod(this.applicationForm?.kitchenAreaFrom, this.applicationForm?.kitchenAreaTo),
       new NumberPeriod(this.applicationForm?.landAreaFrom, this.applicationForm?.landAreaTo),
@@ -662,7 +668,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.typeOfElevatorList,
       this.applicationForm.wheelchair,
       this.applicationForm.yardTypeId,
-      null//todo
+      new NumberPeriod(this.applicationForm.yearOfConstructionFrom, this.applicationForm.yearOfConstructionTo)
     )
   }
 
@@ -674,7 +680,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.houseNumberFraction,
       this.latitude,
       this.longitude,
-      null,//todo
+      null,//todo postcode
       this.applicationForm.cityId
     )
   }
@@ -755,11 +761,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     );
   }
 
-  fillRealPropertyOwnerDto(data: any) {
+  fillRealPropertyOwnerDto(clientLogin: string) {
     if (!this.existsClient) {
       this.createClient()
     }
-    this.application.clientLogin = data.phoneNumber;
+    this.application.clientLogin = clientLogin;
   }
 
   createClient() {
@@ -789,6 +795,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       }
     }
 
+    this.fillRealPropertyOwnerDto(this.applicationForm.phoneNumber);
     this.fillApplication();
 
     let result = false;
@@ -997,13 +1004,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.cdRef.detectChanges();
   }
 
-  apiParam: string;
-  apiPage: number = 0;
-
-  onScrollEnd() {
-    this.apiPage = this.apiPage + 40;
-    this.searchDataPost(this.apiParam, this.apiPage);
-  }
+  // onScrollEnd() {
+  //   this.apiPage = this.apiPage + 40;
+  //   this.searchDataPost(this.apiParam, this.apiPage);
+  // }
 
   getDataKzPost(event) {
     if (!this.util.isNullOrEmpty(event?.term)) {

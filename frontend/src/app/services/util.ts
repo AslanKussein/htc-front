@@ -85,21 +85,6 @@ export class Util {
     return list;
   }
 
-  toSelectArrayGroup(data, idField = 'id', surname = 'surname',name='name') {
-    const list = [];
-    if (data) {
-      const len = data.data.length;
-      for (let i = 0; i < len; i++) {
-        list.push({
-          value: data.data[i][idField],
-          label: data.data[i][surname]+' '+data.data[i][name],
-          description: data.data[i]['description']
-        });
-      }
-    }
-    return list;
-  }
-
   getDicName() {
     let fieldName;
     fieldName = 'name';
@@ -305,7 +290,7 @@ export class Util {
     }
   }
 
-  keyPress(event) {
+  keyPress(event: KeyboardEvent) {
     return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57
   }
 }
