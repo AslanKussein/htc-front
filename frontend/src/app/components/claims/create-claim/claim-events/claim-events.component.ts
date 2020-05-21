@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {registerLocaleData} from "@angular/common";
@@ -11,14 +11,15 @@ import {CreateClaimComponent} from "../create-claim.component";
 import {EventsService} from "../../../../services/events.service";
 import {NotificationService} from "../../../../services/notification.service";
 import {EventsDTO} from "../../../../models/eventsDTO";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-claim-events',
   templateUrl: './claim-events.component.html',
   styleUrls: ['./claim-events.component.scss']
 })
-export class ClaimEventsComponent implements OnInit {
-
+export class ClaimEventsComponent implements OnInit, OnDestroy {
+  subscriptions: Subscription = new Subscription();
   time: {
     "hour": 0,
     "minute": 0,
@@ -60,7 +61,7 @@ export class ClaimEventsComponent implements OnInit {
   }
 
   sortStatus() {
-    this.util.getAllDic('EventType').then(res=>{
+    this.util.getAllDic('EventType').then(res => {
       this.appStatusesSort = res;
     })
   }
@@ -79,7 +80,7 @@ export class ClaimEventsComponent implements OnInit {
     searchParams['applicationId'] = this.applicationId;
     searchParams['pageNumber'] = pageNo - 1;
     searchParams['pageSize'] = this.itemsPerPage;
-    this.eventsService.getEventsByApplicationId(searchParams).subscribe(res => {
+    this.subscriptions.add(this.eventsService.getEventsByApplicationId(searchParams).subscribe(res => {
       if (res != null && res.data != null) {
         for (const argument of res.data.data.data) {
           let obj = {};
@@ -100,7 +101,7 @@ export class ClaimEventsComponent implements OnInit {
         this.totalItems = res.data.total;
         this.currentPage = res.data.pageNumber + 1;
       }
-    })
+    }));
   }
 
   setDateTime() {
@@ -112,11 +113,11 @@ export class ClaimEventsComponent implements OnInit {
 
   save() {
     this.setDateTime();
-    this.eventsService.addEvent(this.eventsForm.value).subscribe(res => {
+    this.subscriptions.add(this.eventsService.addEvent(this.eventsForm.value).subscribe(res => {
       this.eventsService.putCommentEvent(res, this.eventsForm.value.comment).subscribe();
       this.notificationService.showSuccess('Информация', 'Событие добавлено');
       this.getEventsByApplicationId(1);
-    })
+    }))
   }
 
   update(events: any) {
@@ -130,11 +131,11 @@ export class ClaimEventsComponent implements OnInit {
     if (this.util.isNullOrEmpty(events.eventDate)) {
       this.notificationService.showInfo('Информация', 'Введите дату');
     }
-    this.eventsService.updateEvent(events.eventId, events).subscribe(res => {
+    this.subscriptions.add(this.eventsService.updateEvent(events.eventId, events).subscribe(res => {
       this.changeDisableDev(events, true);
       this.notificationService.showSuccess('Информация', 'Событие изменено');
       this.eventsService.putCommentEvent(res, events.comment).subscribe();
-    });
+    }));
   }
 
   getTime(date: any) {
@@ -146,9 +147,9 @@ export class ClaimEventsComponent implements OnInit {
 
   deleteEvent(id: any) {
     if (confirm("Вы действительно хотите удалить событие?")) {
-      this.eventsService.deleteEventById(id).subscribe(res => {
+      this.subscriptions.add(this.eventsService.deleteEventById(id).subscribe(res => {
         this.getEventsByApplicationId(1);
-      });
+      }));
     }
   }
 
@@ -158,5 +159,9 @@ export class ClaimEventsComponent implements OnInit {
 
   editEvent(events: any) {
     this.changeDisableDev(events, false);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

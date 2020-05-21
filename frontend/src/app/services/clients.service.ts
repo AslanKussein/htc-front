@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {catchError, tap} from "rxjs/operators";
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,15 +21,15 @@ export class ClientsService {
   }
 
   getClientById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/api/clients/`+id);
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/api/clients/` + id);
   }
 
   updateClientById(form: any): Observable<any> {
-    return this.http.put<any>(`${this.configService.apiDataManagerUrl}/api/clients/`+form.id,form);
+    return this.http.put<any>(`${this.configService.apiDataManagerUrl}/api/clients/` + form.id, form);
   }
 
   findClientByPhoneNumber(phoneNumber): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/api/clients/search/by-phone-number?phoneNumber=`+phoneNumber);
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/api/clients/search/by-phone-number?phoneNumber=` + phoneNumber);
   }
 
 }

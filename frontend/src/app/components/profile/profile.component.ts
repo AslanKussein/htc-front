@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Util} from "../../services/util";
 import {User} from "../../models/users";
 import {AuthenticationService} from "../../services/authentication.service";
@@ -9,14 +9,15 @@ import {NotificationService} from "../../services/notification.service";
 import {ComponentCanDeactivate} from "../../helpers/canDeactivate/componentCanDeactivate";
 import {Observable} from "rxjs/index";
 import {NgxUiLoaderService} from "ngx-ui-loader";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, ComponentCanDeactivate {
-
+export class ProfileComponent implements OnInit, ComponentCanDeactivate, OnDestroy {
+  subscriptions: Subscription = new Subscription();
   selectedFile: File;
   currentUser: User;
   profile: ProfileDto;
@@ -31,7 +32,7 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate {
               private profileService: ProfileService,
               private authenticationService: AuthenticationService,
               private ngxLoader: NgxUiLoaderService) {
-    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    this.subscriptions.add(this.authenticationService.currentUser.subscribe(x => this.currentUser = x));
     if (this.currentUser.roles != null) {
       this.agentRoles = false;
       this.rgRoles = false;
@@ -57,9 +58,9 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate {
   }
 
   getProfile() {
-    this.profileService.getProfile().subscribe(res => {
+    this.subscriptions.add(this.profileService.getProfile().subscribe(res => {
       this.profile = res;
-    });
+    }));
   }
 
   editProfile() {
@@ -68,26 +69,26 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate {
 
   saveProfile() {
     this.save = false;
-    this.profileService.updateProfile(this.profile).subscribe(res => {
+    this.subscriptions.add(this.profileService.updateProfile(this.profile).subscribe(res => {
         this.profile = res;
         this.notifyService.showSuccess('Данные сохранены', "");
       }, err => {
         this.notifyService.showError('warning', err);
 
       }
-    );
+    ));
   }
 
 
   onFileChanged(event) {
     this.selectedFile = event.target.files[0];
     this.loading = true;
-    this.uploader.uploadData(this.selectedFile)
+    this.subscriptions.add(this.uploader.uploadData(this.selectedFile)
       .subscribe(data => {
         if (data != null) {
           this.profile.photoUuid = data.uuid;
         }
-      });
+      }));
   }
 
   getSrcImg(photoUuid) {
@@ -106,5 +107,7 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
-
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 }

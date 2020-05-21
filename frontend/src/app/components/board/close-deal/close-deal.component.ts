@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Util} from "../../../services/util";
 import {BoardComponent} from "../board.component";
 import {ActivatedRoute} from "@angular/router";

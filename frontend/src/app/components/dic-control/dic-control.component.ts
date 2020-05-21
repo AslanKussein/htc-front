@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
 import {DicService} from "../../services/dic.service";
 import {Dic} from "../../models/dic";
 import {Util} from "../../services/util";
@@ -11,13 +11,14 @@ import {User} from "../../models/users";
 import {AuthenticationService} from "../../services/authentication.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {HttpParams} from "@angular/common/http";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-dic-control',
   templateUrl: './dic-control.component.html',
   styleUrls: ['./dic-control.component.scss']
 })
-export class DicControlComponent implements OnInit {
+export class DicControlComponent implements OnInit, OnDestroy {
 
   modalRef: BsModalRef;
   modalRef2: BsModalRef;
@@ -42,6 +43,7 @@ export class DicControlComponent implements OnInit {
   totalItems = 0;
   itemsPerPage = 30;
   currentPage = 1;
+  subscriptions: Subscription = new Subscription();
 
   constructor(private util: Util,
               private modalService: BsModalService,
@@ -52,7 +54,7 @@ export class DicControlComponent implements OnInit {
               private ngxLoader: NgxUiLoaderService) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
-    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    this.subscriptions.add(this.authenticationService.currentUser.subscribe(x => this.currentUser = x));
     if (this.currentUser.roles != null) {
       this.adminRoles = false;
       for (const role of this.currentUser.roles) {
@@ -202,12 +204,12 @@ export class DicControlComponent implements OnInit {
         sortBy: "id"
       }
     };
-    this.dicService.getDicsAllPageable(search).subscribe(res => {
+    this.subscriptions.add(this.dicService.getDicsAllPageable(search).subscribe(res => {
       if (res != null && res.data != null) {
         this.dictionaryes = res.data.data;
       }
       this.ngxLoader.stop();
-    });
+    }));
   }
 
   loadDicPageableByDicName(dicName, pageNo) {
@@ -222,14 +224,14 @@ export class DicControlComponent implements OnInit {
     };
 
     console.log(search)
-    this.dicService.getDicsAllPageable(search).subscribe(res => {
+    this.subscriptions.add(this.dicService.getDicsAllPageable(search).subscribe(res => {
       if (res != null && res.data != null) {
         this.dictionary = res.data.data;
         this.totalItems = res.total;
         this.currentPage = res.pageNumber + 1;
       }
       this.ngxLoader.stop();
-    });
+    }));
   }
 
   loadResidenceComplex(pageNo: number) {
@@ -240,14 +242,14 @@ export class DicControlComponent implements OnInit {
     params = params.append('direction', 'ASC')
     params = params.append('sortBy', 'id')
 
-    this.dicService.getResidentialComplexesPageable(params).subscribe(res => {
+    this.subscriptions.add(this.dicService.getResidentialComplexesPageable(params).subscribe(res => {
       if (res != null && res.data != null) {
         this.residentialComplexes = this.util.toSelectArrayResidenceComplex(res.data.data);
         this.totalItems = res.total;
         this.currentPage = res.pageNumber + 1;
       }
       this.ngxLoader.stop();
-    });
+    }));
   }
 
   loadDictionaryForEdit(dic) {
@@ -292,7 +294,7 @@ export class DicControlComponent implements OnInit {
     } else {
       if (this.dicName == 'residential-complexes') {
 
-        this.dicService.getResidentialComplexesById(this.clickColumnDic.id).subscribe(data => {
+        this.subscriptions.add(this.dicService.getResidentialComplexesById(this.clickColumnDic.id).subscribe(data => {
             if (data != null) {
               this.formRes = data;
             }
@@ -301,7 +303,7 @@ export class DicControlComponent implements OnInit {
             this.modalRef.hide();
             this.clearForm();
           }
-        );
+        ));
       } else {
         this.formData = this.clickColumnDic;
       }
@@ -323,7 +325,7 @@ export class DicControlComponent implements OnInit {
 
   deleteById() {
     if (this.dicName == 'residential-complexes') {
-      this.dicService.deleteResidentalComplex(this.clickColumnDic).subscribe(data => {
+      this.subscriptions.add(this.dicService.deleteResidentalComplex(this.clickColumnDic).subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
             this.loadDictionaryForEdit(this.dicName);///////////////
@@ -336,9 +338,9 @@ export class DicControlComponent implements OnInit {
           this.modalRef.hide();
           this.clearForm();
         }
-      );
+      ));
     } else {
-      this.dicService.deleteDicNew(this.clickColumnDic, this.dicName).subscribe(data => {
+      this.subscriptions.add(this.dicService.deleteDicNew(this.clickColumnDic, this.dicName).subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
             this.loadDictionaryForEdit(this.dicName);
@@ -351,7 +353,7 @@ export class DicControlComponent implements OnInit {
           this.modalRef.hide();
           this.clearForm();
         }
-      );
+      ));
     }
   }
 
@@ -364,7 +366,7 @@ export class DicControlComponent implements OnInit {
           this.notifyService.showError('Пожалуйста, заполните все поля', "");
           return;
         }
-        this.dicService.saveResidentalComplex(this.formRes).subscribe(data => {
+        this.subscriptions.add(this.dicService.saveResidentalComplex(this.formRes).subscribe(data => {
             if (data != null) {
               this.notifyService.showSuccess('success', 'Успешно сохранено');
               this.loadDictionaryForEdit(this.dicName);
@@ -377,7 +379,7 @@ export class DicControlComponent implements OnInit {
             this.modalRef.hide();
             this.clearForm();
           }
-        );
+        ));
 
       } else {
         if (this.util.isNullOrEmpty(this.formData.multiLang.nameRu)) {
@@ -392,7 +394,7 @@ export class DicControlComponent implements OnInit {
           parentId: this.formData.parentId
         };
 
-        this.dicService.saveDicNew(saveForm).subscribe(data => {
+        this.subscriptions.add(this.dicService.saveDicNew(saveForm).subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
             this.loadDictionaryForEdit(this.dicName);
@@ -404,7 +406,7 @@ export class DicControlComponent implements OnInit {
           this.loadDictionaryForEdit(this.dicName);
           this.modalRef.hide();
           this.clearForm();
-        });
+        }));
       }
     } else {
       if (this.dicName == 'residential-complexes') {
@@ -412,7 +414,7 @@ export class DicControlComponent implements OnInit {
           this.notifyService.showError('Пожалуйста, заполните все поля', "");
           return;
         }
-        this.dicService.updateResidentalComplex(this.formRes).subscribe(data => {
+        this.subscriptions.add(this.dicService.updateResidentalComplex(this.formRes).subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
             this.loadDictionaryForEdit(this.dicName);
@@ -424,7 +426,7 @@ export class DicControlComponent implements OnInit {
           this.loadDictionaryForEdit(this.dicName);
           this.modalRef.hide();
           this.clearForm();
-        });
+        }));
 
       } else {
         if (this.util.isNullOrEmpty(this.formData.multiLang.nameRu)) {
@@ -439,7 +441,7 @@ export class DicControlComponent implements OnInit {
           parentId: this.formData.parentId
         };
 
-        this.dicService.updateDicNew(this.formData, saveForm).subscribe(data => {
+        this.subscriptions.add(this.dicService.updateDicNew(this.formData, saveForm).subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
             this.loadDictionaryForEdit(this.dicName);
@@ -451,7 +453,7 @@ export class DicControlComponent implements OnInit {
           this.loadDictionaryForEdit(this.dicName);
           this.modalRef.hide();
           this.clearForm();
-        });
+        }));
       }
     }
   };
@@ -471,5 +473,9 @@ export class DicControlComponent implements OnInit {
     this.modalRef.hide();
 
     this.clearForm();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

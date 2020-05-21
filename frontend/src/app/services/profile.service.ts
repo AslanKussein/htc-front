@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {catchError, tap} from "rxjs/operators";
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +14,13 @@ export class ProfileService {
 
   /**
    * Просмотр реестра клиентов
-   * @param search
    */
   getProfile(): Observable<any> {
     return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/profile`);
   }
-  updateProfile(obj:any): Observable<any> {
-    return this.http.put<any>(`${this.configService.apiUserManagerUrl}/api/profile`,obj);
+
+  updateProfile(obj: any): Observable<any> {
+    return this.http.put<any>(`${this.configService.apiUserManagerUrl}/api/profile`, obj);
   }
 
 }

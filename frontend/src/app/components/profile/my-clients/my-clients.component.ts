@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Util} from "../../../services/util";
 import {ClientsService} from "../../../services/clients.service";
 import {NotificationService} from "../../../services/notification.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-my-clients',
   templateUrl: './my-clients.component.html',
   styleUrls: ['./my-clients.component.scss']
 })
-export class MyClientsComponent implements OnInit {
-
+export class MyClientsComponent implements OnInit, OnDestroy {
+  subscriptions: Subscription = new Subscription();
   loading: boolean = false;
   clientsData = [];
   text: string;
@@ -45,15 +46,18 @@ export class MyClientsComponent implements OnInit {
     searchFilter['text'] = this.text;
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = this.itemsPerPage;
-    this.clientsService.getClientList(searchFilter).subscribe(res => {
+    this.subscriptions.add(this.clientsService.getClientList(searchFilter).subscribe(res => {
         this.clientsData = res.data.data.data;
         this.totalItems = res.data.total;
         this.currentPage = res.data.pageNumber + 1;
       if(res.data.data.size==0){
         this.notifyService.showInfo('Ничего не найдено!', 'Внимание');
       }
-    });
+    }));
     this.loading = false;
   }
 
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 }

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
 import {HttpClient} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {Observable} from 'rxjs';
 import {EventsDTO} from "../models/eventsDTO";
 
 @Injectable({

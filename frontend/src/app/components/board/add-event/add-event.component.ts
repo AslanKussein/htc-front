@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {BsLocaleService} from "ngx-bootstrap";
@@ -9,14 +9,15 @@ import {registerLocaleData} from "@angular/common";
 import localeFr from '@angular/common/locales/ru-KZ';
 import {FormBuilder, Validators} from "@angular/forms";
 import {NotificationService} from "../../../services/notification.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-add-event',
   templateUrl: './add-event.component.html',
   styleUrls: ['./add-event.component.scss']
 })
-export class AddEventComponent implements OnInit {
-
+export class AddEventComponent implements OnInit, OnDestroy {
+  subscriptions: Subscription = new Subscription();
   time: {
     "hour": 0,
     "minute": 0,
@@ -76,16 +77,20 @@ export class AddEventComponent implements OnInit {
 
   addEvent() {
     this.setDateTime();
-    this.eventsService.addEvent(this.eventsForm.value).subscribe(res => {
+    this.subscriptions.add(this.eventsService.addEvent(this.eventsForm.value).subscribe(res => {
       this.eventsService.putCommentEvent(res, this.eventsForm.value.comment).subscribe();
       this.notificationService.showSuccess('Информация', 'Статус изменен');
       this.board.sortStatusesDic(this.board.activeTab);
-    })
+    }))
   }
 
   cancel() {
     this.util.dnHref('board');
     this.board.displayBoardContent = true;
     this.board.sortStatusesDic(this.board.activeTab);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }
