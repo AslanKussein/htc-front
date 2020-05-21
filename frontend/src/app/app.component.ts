@@ -154,6 +154,7 @@ export class AppComponent implements OnDestroy {
     this.addToDB('ApplicationStatus');
     this.addToDB('residentialComplexes');
     this.addToDB('EventType');
+    this.addToDB('HouseCondition');
   }
 
   ngOnDestroy() {

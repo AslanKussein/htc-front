@@ -1,6 +1,6 @@
 import {DBConfig} from 'ngx-indexed-db';
 export const dbConfig: DBConfig  = {
-  name: new Date().toDateString(),
+  name: new Date().toDateString()+1,
   version: 3,
   objectStoresMeta: [
     {
@@ -90,6 +90,11 @@ export const dbConfig: DBConfig  = {
     },
     {
       store: 'EventType',
+      storeConfig: { keyPath: 'value', autoIncrement: true },
+      storeSchema: []
+    },
+    {
+      store: 'HouseCondition',
       storeConfig: { keyPath: 'value', autoIncrement: true },
       storeSchema: []
     }

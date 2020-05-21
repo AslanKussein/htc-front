@@ -67,6 +67,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   heatingSystems: Dic[];
   agentList: Dic[];
   sewerageSystems: Dic[];
+  houseCondition: Dic[];
   countries: Dic[];
   materials: Dic[];
   sortMaterials: Dic[] = [];
@@ -193,7 +194,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       cadastralNumber3: [null, Validators.nullValidator],
       propertyDeveloperId: [null, Validators.nullValidator],
       housingClass: [null, Validators.nullValidator],
-      housingCondition: [null, Validators.nullValidator],
+      houseConditionId: [null, Validators.nullValidator],
       numberOfApartments: [null, Validators.nullValidator],
       floor: [null, Validators.nullValidator],
       floorFrom: [null, Validators.nullValidator],
@@ -300,6 +301,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.util.getAllDic('Sewerage').then(res => {
       this.sewerageSystems = res;
     })
+    this.util.getAllDic('HouseCondition').then(res => {
+      this.houseCondition = res;
+    })
     this.util.getAllDic('HeatingSystem').then(res => {
       this.heatingSystems = res;
     })
@@ -379,7 +383,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.applicationForm.playground = this.util.nvl(this.util.toString(this.applicationForm.residentialComplexId?.playground), null);//Детская площадка
     this.applicationForm.propertyDeveloperId = this.util.nvl(this.applicationForm.residentialComplexId?.propertyDeveloperId, null);//Затройщик
     this.applicationForm.housingClass = this.util.nvl(this.applicationForm.residentialComplexId?.housingClass, null);//Класс жилья
-    this.applicationForm.housingCondition = this.util.nvl(this.applicationForm.residentialComplexId?.housingCondition, null);//Состояния
+    this.applicationForm.houseConditionId = this.util.nvl(this.applicationForm.residentialComplexId?.houseConditionId, null);//Состояния
     this.applicationForm.numberOfApartments = this.util.nvl(this.applicationForm.residentialComplexId?.numberOfApartments, null);//Кол-во кв
     this.applicationForm.ceilingHeight = this.util.nvl(this.applicationForm.residentialComplexId?.ceilingHeight, null);//Кол-во кв
     this.applicationForm.cityId = this.util.nvl(this.applicationForm.residentialComplexId?.cityId, null);//город
@@ -491,7 +495,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.applicationForm.parkingTypeId = data?.parkingTypeId;
     this.applicationForm.propertyDeveloperId = data?.propertyDeveloperId;
     this.applicationForm.housingClass = data?.housingClass;
-    this.applicationForm.housingCondition = data?.housingCondition;
+    this.applicationForm.houseConditionId = data?.houseConditionId;
     this.applicationForm.sewerageId = data?.sewerageId;
     this.applicationForm.heatingSystemId = data?.heatingSystemId;
     this.applicationForm.numberOfApartments = data?.numberOfApartments;
@@ -533,9 +537,23 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     });
   }
 
+  /**
+   * Продать
+   */
+  isBuy() {
+    return this.applicationForm?.operationTypeId?.code == '001002';
+  }
+
+  /**
+   * КУпить;
+   */
+  isSell() {
+    return this.applicationForm?.operationTypeId?.code == '001001';
+  }
+
   validate() {
     if (this.applicationForm?.objectTypeId?.code == '003001') { //кв
-      if (this.applicationForm?.operationTypeId?.code == '001002') {//продать
+      if (this.isBuy()) {//продать
         this.applicationForm.controls['objectPrice'].setValidators([Validators.required]);
         this.applicationForm.controls["objectPrice"].updateValueAndValidity();
         this.applicationForm.controls['numberOfRooms'].setValidators([Validators.required]);
@@ -561,7 +579,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
           this.applicationForm.controls['districtId'].setValidators([Validators.nullValidator]);
           this.applicationForm.controls["districtId"].updateValueAndValidity();
         }
-      } else if (this.applicationForm?.operationTypeId?.code == '001001') { //купить
+      } else if (this.isSell()) { //купить
         this.applicationForm.controls['districtId'].setValidators([Validators.required]);
         this.applicationForm.controls["districtId"].updateValueAndValidity();
         this.applicationForm.controls['objectPrice'].setValidators([Validators.nullValidator]);
@@ -570,7 +588,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     } else if (this.applicationForm?.objectTypeId?.code == '003002') {//дом
       this.applicationForm.controls['districtId'].setValidators([Validators.required]);
       this.applicationForm.controls["districtId"].updateValueAndValidity();
-      if (this.applicationForm?.operationTypeId?.code == '001002') {//продать
+      if (this.isBuy()) {//продать
         this.applicationForm.controls['streetId'].setValidators([Validators.required]);
         this.applicationForm.controls["streetId"].updateValueAndValidity();
         this.applicationForm.controls['houseNumber'].setValidators([Validators.required]);
@@ -666,7 +684,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.apartmentsOnTheSite,
       this.applicationForm.ceilingHeight,
       this.applicationForm.concierge,
-      null,//todo "Состояние жилья"
+      this.applicationForm.houseConditionId,
       this.applicationForm.housingClass,
       null,
       this.applicationForm.materialOfConstructionId,
@@ -772,10 +790,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     }
 
     this.fillApplication();
-    this.fillRealPropertyOwnerDto(this.applicationForm);
-    if (this.applicationForm?.operationTypeId?.code == '001001') {
-      this.fillPurchaseInfoDto();
-    }
 
     let result = false;
     const controls = this.applicationForm.controls;

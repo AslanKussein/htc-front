@@ -5,6 +5,4 @@ export class Board {
   public empty?: boolean;
   public data?: BoardData[];
   public applicationLightDtoList?: any;
-
-
 }
