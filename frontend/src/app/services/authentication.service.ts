@@ -96,7 +96,7 @@ export class AuthenticationService implements OnDestroy {
     localStorage.removeItem('currentUser');
     localStorage.removeItem(this.JWT_TOKEN);
     this.currentUserSubject.next(null);
-    if (!['login'].includes(this.activatedRoute.snapshot['_routerState'].url.split(";")[0])) {
+    if (!['login'].includes(this.activatedRoute.snapshot['_routerState'].url.split(";")[0].replace('/',''))) {
       this.util.dnHref(['/login']);
     }
   }
