@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ClaimService} from "../../../services/claim.service";
 import {ruLocale} from "ngx-bootstrap/locale";
@@ -6,14 +6,16 @@ import {BsLocaleService} from "ngx-bootstrap";
 import {Util} from "../../../services/util";
 import {formatDate} from "@angular/common";
 import {NotificationService} from "../../../services/notification.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-my-claims',
   templateUrl: './my-claims.component.html',
   styleUrls: ['./my-claims.component.scss']
 })
-export class MyClaimsComponent implements OnInit {
+export class MyClaimsComponent implements OnInit, OnDestroy {
   text: string;
+  subscriptions: Subscription = new Subscription();
 
   constructor(private localeService: BsLocaleService,
               private claimService: ClaimService,
@@ -49,14 +51,14 @@ export class MyClaimsComponent implements OnInit {
     searchFilter['text'] = this.text;
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = this.itemsPerPage;
-    this.claimService.getClaims(searchFilter).subscribe(res => {
+    this.subscriptions.add(this.claimService.getClaims(searchFilter).subscribe(res => {
       this.claimData = res.data.data.data;
       this.totalItems = res.data.total;
       this.currentPage = res.data.pageNumber + 1;
       if(res.data.data.size==0){
         this.notifyService.showInfo('Ничего не найдено!', 'Внимание');
       }
-    });
+    }));
     this.loading = false;
   }
 
@@ -69,4 +71,7 @@ export class MyClaimsComponent implements OnInit {
     return formatDate(claim.creationDate, 'dd.MM.yyyy HH:mm', 'en-US');
   }
 
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 }

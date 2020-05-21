@@ -1,17 +1,19 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {NgxIndexedDBService} from 'ngx-indexed-db';
 import {language} from "../environments/language";
 import {NewDicService} from "./services/new.dic.service";
 import {DicService} from "./services/dic.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   title = 'htc';
   _language = language;
+  subscriptions: Subscription = new Subscription();
 
   constructor(private dbService: NgxIndexedDBService,
               private newDicService: NewDicService,
@@ -113,17 +115,17 @@ export class AppComponent {
       data => {
         if (data.length == 0) {
           if (dicCode == 'residentialComplexes') {
-            this.newDicService.getResidentialComplexes().subscribe(obj => {
+            this.subscriptions.add(this.newDicService.getResidentialComplexes().subscribe(obj => {
               this.toSelectArrayResidenceComplex(obj);
-            });
+            }));
           } else if (dicCode == 'YES_NO') {
-            this.dicService.getDics(dicCode).subscribe(data => {
+            this.subscriptions.add(this.dicService.getDics(dicCode).subscribe(data => {
               this.toSelectArray(dicCode, data);
-            })
+            }))
           } else {
-            this.newDicService.getDictionary(dicCode).subscribe(data => {
+            this.subscriptions.add(this.newDicService.getDictionary(dicCode).subscribe(data => {
               this.toSelectArray(dicCode, data);
-            });
+            }));
           }
         }
       },
@@ -152,5 +154,9 @@ export class AppComponent {
     this.addToDB('ApplicationStatus');
     this.addToDB('residentialComplexes');
     this.addToDB('EventType');
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

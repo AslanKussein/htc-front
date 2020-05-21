@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
 import {BsModalService, BsModalRef} from 'ngx-bootstrap/modal';
 import {Dic} from "../../models/dic";
 import {Util} from "../../services/util";
@@ -8,17 +8,19 @@ import {BsLocaleService} from "ngx-bootstrap";
 import {StaffService} from "../../services/staff.service";
 import {NotificationService} from "../../services/notification.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-staffs',
   templateUrl: './staffs.component.html',
   styleUrls: ['./staffs.component.scss']
 })
-export class StaffsComponent implements OnInit {
+export class StaffsComponent implements OnInit, OnDestroy {
   modalRef: BsModalRef;
   roles: Dic[];
   groups: Dic[];
   actions: string;
+  subscriptions: Subscription = new Subscription();
 
   constructor(private modalService: BsModalService,
               private localeService: BsLocaleService,
@@ -70,11 +72,11 @@ export class StaffsComponent implements OnInit {
 
   getUserInfo() {
     this.ngxLoader.start();
-    this.staffService.getUserInfo(this.filter).subscribe(res => {
+    this.subscriptions.add(this.staffService.getUserInfo(this.filter).subscribe(res => {
       if (res != null) {
         this.users = res.data;
       }
-    });
+    }));
     this.ngxLoader.stop();
   }
 
@@ -85,12 +87,12 @@ export class StaffsComponent implements OnInit {
     this.loading = true;
     searchFilter['pageNumber'] = pageNo;
     searchFilter['pageSize'] = this.itemsPerPage;
-    this.staffService.getUserList(searchFilter).subscribe(res => {
+    this.subscriptions.add(this.staffService.getUserList().subscribe(res => {
 
       if (res != null) {
         this.users = res.data;
       }
-    });
+    }));
     this.loading = false;
     this.ngxLoader.stop();
   }
@@ -101,11 +103,11 @@ export class StaffsComponent implements OnInit {
 
   loadDictionary() {
 
-    this.staffService.getRoleList('roles').subscribe(data => {
+    this.staffService.getRoleList().subscribe(data => {
       this.roles = this.util.toSelectArrayRoles2(data);
     });
 
-    this.staffService.getGroupList('groups').subscribe(data => {
+    this.staffService.getGroupList().subscribe(data => {
       this.groups = this.util.toSelectArrayRoles2(data);
     });
   }
@@ -114,7 +116,7 @@ export class StaffsComponent implements OnInit {
     this.ngxLoader.start();
     if (this.actions == 'EDIT') {
 
-      this.staffService.updateUserRolesById(this.formData)
+      this.subscriptions.add(this.staffService.updateUserRolesById(this.formData)
         .subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
@@ -125,7 +127,7 @@ export class StaffsComponent implements OnInit {
           this.notifyService.showError('warning', err.message);
           this.findObjects(1);
           this.modalRef.hide();
-        });
+        }));
 
       this.staffService.updateUserActiveById(this.formData)
         .subscribe(data => {
@@ -140,7 +142,7 @@ export class StaffsComponent implements OnInit {
 
       if (!this.util.isNullOrEmpty(this.formData.passNew) && !this.util.isNullOrEmpty(this.formData.passNew2)) {
         if (this.formData.passNew == this.formData.passNew2) {
-          this.staffService.updatePasswordById(this.formData)
+          this.subscriptions.add(this.staffService.updatePasswordById(this.formData)
             .subscribe(data => {
               if (data != null) {
                 this.notifyService.showSuccess('success', 'Успешно сохранено');
@@ -149,14 +151,14 @@ export class StaffsComponent implements OnInit {
               this.notifyService.showError('warning', err.message);
               this.findObjects(1);
               this.modalRef.hide();
-            });
+            }));
         }
       }
 
 
     }
     if (this.actions == 'ADD') {
-      this.staffService.createUser(this.formData)
+      this.subscriptions.add(this.staffService.createUser(this.formData)
         .subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
@@ -174,7 +176,7 @@ export class StaffsComponent implements OnInit {
           }
           this.findObjects(1);
           this.modalRef.hide();
-        });
+        }));
     }
     this.ngxLoader.stop();
   }
@@ -202,5 +204,9 @@ export class StaffsComponent implements OnInit {
       name: '',
       surname: ''
     };
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

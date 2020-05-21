@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs/index';
+import {Observable, throwError} from 'rxjs';
 import {catchError, tap} from 'rxjs/internal/operators';
 import {Dic} from "../models/dic";
 
@@ -21,19 +21,20 @@ export class NewDicService {
     return this.http.post(`${this.configService.apiDataManagerUrl}/open-api/dictionary`, data)
       .pipe(
         tap(),
-        catchError(this.handleError)
+        catchError(NewDicService.handleError)
       );
   }
 
   /**
    * Значение справочника по id
    * @param dicName
+   * @param id
    */
   public getDictionaryById(dicName: string, id): Observable<any> {
     return this.http.get(`${this.configService.apiDataManagerUrl}/open-api/dictionary/` + dicName + `/` + id, {})
       .pipe(
         tap(),
-        catchError(this.handleError)
+        catchError(NewDicService.handleError)
       );
   }
 
@@ -46,7 +47,7 @@ export class NewDicService {
     return this.http.delete(`${this.configService.apiDataManagerUrl}/open-api/dictionary/` + dicName + `/` + id, {})
       .pipe(
         tap(),
-        catchError(this.handleError)
+        catchError(NewDicService.handleError)
       );
   }
 
@@ -58,7 +59,7 @@ export class NewDicService {
     return this.http.get(`${this.configService.apiDataManagerUrl}/open-api/dictionary/` + dicName + `/list`, {})
       .pipe(
         tap(),
-        catchError(this.handleError)
+        catchError(NewDicService.handleError)
       );
   }
 
@@ -71,7 +72,7 @@ export class NewDicService {
     return this.http.get(`${this.configService.apiDataManagerUrl}/open-api/dictionary/` + dicName + `/list` + parentId, {})
       .pipe(
         tap(),
-        catchError(this.handleError)
+        catchError(NewDicService.handleError)
       );
   }
 
@@ -84,7 +85,7 @@ export class NewDicService {
     return this.http.put(`${this.configService.apiDataManagerUrl}/open-api/dictionary` + id, data)
       .pipe(
         tap(),
-        catchError(this.handleError)
+        catchError(NewDicService.handleError)
       );
   }
 
@@ -95,7 +96,7 @@ export class NewDicService {
     return this.http.get(`${this.configService.apiDataManagerUrl}/open-api/dictionary/allDict`, {})
       .pipe(
         tap(),
-        catchError(this.handleError)
+        catchError(NewDicService.handleError)
       );
   }
 
@@ -106,7 +107,7 @@ export class NewDicService {
     return this.http.post(`${this.configService.apiDataManagerUrl}/open-api/dictionary/allDict/pageable`, searchParams)
       .pipe(
         tap(),
-        catchError(this.handleError)
+        catchError(NewDicService.handleError)
       );
   }
 
@@ -117,7 +118,7 @@ export class NewDicService {
     return this.http.post(`${this.configService.apiDataManagerUrl}/open-api/dictionary/list/pageable`, searchParams)
       .pipe(
         tap(),
-        catchError(this.handleError)
+        catchError(NewDicService.handleError)
       );
   }
 
@@ -129,7 +130,7 @@ export class NewDicService {
     return this.http.get(`${this.configService.apiDataManagerUrl}/api/residential-complexes`, {})
       .pipe(
         tap(),
-        catchError(this.handleError)
+        catchError(NewDicService.handleError)
       );
   }
 
@@ -137,18 +138,11 @@ export class NewDicService {
     return this.http.get(`${this.configService.apiDataManagerUrl}/api/residential-complexes/` + id, {})
       .pipe(
         tap(),
-        catchError(this.handleError)
+        catchError(NewDicService.handleError)
       );
   }
 
-  private handleError(error: HttpErrorResponse) {
-    if (error instanceof ErrorEvent) {
-      console.error('An error occurred:', error.message);
-    } else {
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.message}`);
-    }
+  private static handleError(error: HttpErrorResponse) {
     return throwError(
       error);
   }

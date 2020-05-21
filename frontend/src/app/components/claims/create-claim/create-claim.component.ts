@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Injectable, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Injectable, OnDestroy, OnInit} from '@angular/core';
 import {ApplicationDto} from "../../../models/createClaim/applicationDto";
 import {Util} from "../../../services/util";
 import {NotificationService} from "../../../services/notification.service";
@@ -12,7 +12,7 @@ import {defineLocale} from "ngx-bootstrap/chronos";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {BsLocaleService, BsModalRef, BsModalService} from "ngx-bootstrap";
 import {OwnerService} from "../../../services/owner.service";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {ComponentCanDeactivate} from "../../../helpers/canDeactivate/componentCanDeactivate";
 import {ConfigService} from "../../../services/config.service";
 import {ModalComponent} from "./modal.window/modal.component";
@@ -42,7 +42,7 @@ import {ApplicationSellDataDto} from "../../../models/createClaim/applicationSel
   styleUrls: ['./create-claim.component.scss'],
   providers: [YandexMapComponent]
 })
-export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
+export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnDestroy {
 
   cord: any;
   ddd: any;
@@ -100,6 +100,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     draggable: true,
     iconImageSize: [32, 32]
   };
+  subscriptions: Subscription = new Subscription();
 
   constructor(public util: Util,
               private notifyService: NotificationService,
@@ -241,7 +242,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   getCheckOperationList() {
-    this.roleManagerService.getOperations().subscribe(
+    this.subscriptions.add(this.roleManagerService.getOperations().subscribe(
       data => {
         let params = new HttpParams();
         for (const el of data.data) {
@@ -250,7 +251,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
         this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
           this.roles = obj.data
         });
-      })
+      }))
   }
 
   loadDictionary() {
@@ -302,15 +303,15 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     this.util.getAllDic('HeatingSystem').then(res => {
       this.heatingSystems = res;
     })
-    this.userService.getAgentsToAssign().subscribe(obj => {
+    this.subscriptions.add(this.userService.getAgentsToAssign().subscribe(obj => {
       this.agentList = this.util.toSelectArrayRoles(obj.data, 'login');
-    });
+    }));
   }
 
   loadDataById(id: number) {
     this.ngxLoader.start();
 
-    this.claimService.getClaimById(id).subscribe(data => {
+    this.subscriptions.add(this.claimService.getClaimById(id).subscribe(data => {
       if (data != null) {
         this.fillApplicationForm(data);
         this.fillApplicationFormPurchaseInfoDto(data.realPropertyRequestDto?.purchaseInfoDto);
@@ -319,7 +320,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
         this.cdRef.detectChanges();
         this.ngxLoader.stop();
       }
-    });
+    }));
   }
 
   setPossibleReasonForBidding() {
@@ -386,11 +387,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   searchByPhone(phoneNumber) {
     if (phoneNumber != null && phoneNumber.length == 10 && this.applicationId == null) {
-      this.ownerService.searchByPhone(this.applicationForm.phoneNumber)
+      this.subscriptions.add(this.ownerService.searchByPhone(this.applicationForm.phoneNumber)
         .subscribe(res => {
           this.fillApplicationFormClientData(res);
           this.existsClient = true;
-        });
+        }));
     }
   }
 
@@ -514,10 +515,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   searchByClientId() {
     if (this.applicationForm?.clientId != null) {
-      this.ownerService.searchByClientId(this.applicationForm.clientId)
+      this.subscriptions.add(this.ownerService.searchByClientId(this.applicationForm.clientId)
         .subscribe(res => {
           this.fillApplicationFormClientData(res);
-        });
+        }));
     }
   }
 
@@ -750,7 +751,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     dto.patronymic = this.applicationForm.patronymic;
     dto.email = this.applicationForm.email;
     dto.gender = this.applicationForm.gender;
-    this.userService.createUserClient(dto).subscribe();
+    this.subscriptions.add(this.userService.createUserClient(dto).subscribe());
   }
 
   submit() {
@@ -780,9 +781,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     const controls = this.applicationForm.controls;
     for (const name in controls) {
       if (controls[name].invalid) {
-        this.translate.get('claim.validator.' + name).subscribe((text: string) => {
+        this.subscriptions.add(this.translate.get('claim.validator.' + name).subscribe((text: string) => {
           this.notifyService.showInfo("Ошибка", "Поле " + text + " не заполнено!!!");
-        });
+        }));
         result = true;
       }
     }
@@ -793,16 +794,16 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
     }
 
     if (this.applicationId != null) {
-      this.claimService.updateClaim(this.applicationId, this.application)
+      this.subscriptions.add(this.claimService.updateClaim(this.applicationId, this.application)
         .subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно обновлено');
           }
         }, err => {
           this.notifyService.showWarning('warning', err);
-        });
+        }));
     } else {
-      this.claimService.saveClaim(this.application)
+      this.subscriptions.add(this.claimService.saveClaim(this.application)
         .subscribe(data => {
           if (data != null) {
             this.saved = true;
@@ -811,7 +812,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
           }
         }, err => {
           this.notifyService.showWarning('warning', err);
-        });
+        }));
     }
     this.ngxLoader.stop();
   }
@@ -879,7 +880,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   removeByGuid(obj: any, id: number) {
-    this.uploader.removePhotoById(obj.guid).subscribe();
+    this.subscriptions.add(this.uploader.removePhotoById(obj.guid).subscribe());
     if (id == 1) {
       this.photoList.splice(this.photoList.indexOf(obj), 1);
     } else if (id == 2) {
@@ -897,17 +898,17 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
 
   onFileChanged(event, id: number) {
     this.selectedFile = event.target.files[0];
-    this.uploader.uploadData(this.selectedFile)
+    this.subscriptions.add(this.uploader.uploadData(this.selectedFile)
       .subscribe(data => {
         if (data != null) {
           this.fillPicture(data, id);
         }
-      });
+      }));
   }
 
   fillPicture(guid: any, id: number) {
     let uuid = guid.uuid != null ? guid.uuid : guid;
-    this.uploader.getFileInfoUsingGET(uuid).subscribe(res => {
+    this.subscriptions.add(this.uploader.getFileInfoUsingGET(uuid).subscribe(res => {
       if (res.size > 0) {
         let obj = {};
         obj['guid'] = uuid;
@@ -921,7 +922,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
           this.photo3DList.push(obj);
         }
       }
-    })
+    }))
   }
 
   hasRGRole() {
@@ -1001,9 +1002,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate {
   }
 
   searchDataPost(val: string, page: number) {
-    this.kazPostService.getDataPost(val, page).subscribe(res => {
+    this.subscriptions.add(this.kazPostService.getDataPost(val, page).subscribe(res => {
       this.kazPost = this.util.toSelectArrayPost(res.data)
       this.kazPost = [...this.kazPost, this.util.toSelectArrayPost(res.data)];
-    })
+    }))
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

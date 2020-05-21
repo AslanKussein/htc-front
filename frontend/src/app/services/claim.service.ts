@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {catchError, tap} from "rxjs/operators";
-import {NotificationService} from "./notification.service";
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -28,34 +27,22 @@ export class ClaimService {
 
   public saveClaim(obj): Observable<any> {
     return this.http.post(`${this.configService.apiDataManagerUrl}/api/applications`, obj)
-      // return this.http.post(`/ehr/api/resume/put/resume` , obj)
       .pipe(
-        tap(data => {
-          console.log(data)
-        }),
+        tap()
       );
   }
 
   public updateClaim(id: number, obj: any): Observable<any> {
     return this.http.put(`${this.configService.apiDataManagerUrl}/api/applications/` + id, obj)
-      // return this.http.post(`/ehr/api/resume/put/resume` , obj)
       .pipe(
-        tap(data => {
-          console.log(data)
-        }),
+        tap()
       );
   }
 
   public saveLightApplication(obj: any): Observable<any> {
     return this.http.post(`${this.configService.apiDataManagerUrl}/api/applications/saveLightApplication`, obj)
       .pipe(
-        tap(data => {
-          console.log(data)
-        }),
+        tap()
       );
-  }
-
-  private handleError(error: HttpErrorResponse) {
-   console.log(error)
   }
 }

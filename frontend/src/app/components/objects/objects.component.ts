@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {BsLocaleService} from "ngx-bootstrap";
 import {ruLocale} from "ngx-bootstrap/locale";
@@ -11,6 +11,7 @@ import {UploaderService} from "../../services/uploader.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {NumberPeriod} from "../../models/common/numberPeriod";
 import {NotificationService} from "../../services/notification.service";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -18,7 +19,7 @@ import {NotificationService} from "../../services/notification.service";
   templateUrl: './objects.component.html',
   styleUrls: ['./objects.component.scss']
 })
-export class ObjectsComponent implements OnInit {
+export class ObjectsComponent implements OnInit, OnDestroy {
 
   env = language;
   districts: Dic[];
@@ -29,6 +30,7 @@ export class ObjectsComponent implements OnInit {
   myObject: boolean;
   objectMy: any;
   objectMyModel: number;
+  subscriptions: Subscription = new Subscription();
 
   constructor(private router: Router,
               private localeService: BsLocaleService,
@@ -170,14 +172,14 @@ export class ObjectsComponent implements OnInit {
     }
     searchFilter['sortBy'] = 'application.objectPrice'
 
-    this.objectService.getObjects(searchFilter).subscribe(res => {
+    this.subscriptions.add(this.objectService.getObjects(searchFilter).subscribe(res => {
       this.objectsData = res.data.data.data;
       this.totalItems = res.data.total;
       this.currentPage = res.data.pageNumber + 1;
       if (res.data.data.size == 0) {
         this.notifyService.showInfo('Ничего не найдено!', 'Внимание');
       }
-    });
+    }));
     this.ngxLoader.stop();
   }
 
@@ -224,5 +226,9 @@ export class ObjectsComponent implements OnInit {
 
   addObjectTypes(id) {
     this.formData.objectTypes = id;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

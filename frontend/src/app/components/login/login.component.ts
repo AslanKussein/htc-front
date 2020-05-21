@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {AuthenticationService} from "../../services/authentication.service";
 import {NotificationService} from "../../services/notification.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";

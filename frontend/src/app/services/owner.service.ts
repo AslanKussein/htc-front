@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, tap} from "rxjs/operators";
 
@@ -18,7 +18,7 @@ export class OwnerService {
       .pipe(
         tap(data => {
         }),
-        catchError(this.handleError)
+        catchError(OwnerService.handleError)
       );
   }
 
@@ -27,7 +27,7 @@ export class OwnerService {
   }
 
 
-  private handleError(error: HttpErrorResponse) {
+  private static handleError(error: HttpErrorResponse) {
     return throwError(
       error);
   }

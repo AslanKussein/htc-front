@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {BoardService} from "../../services/board.service";
 import {Dic} from "../../models/dic";
@@ -7,13 +7,15 @@ import {NotificationService} from "../../services/notification.service";
 import {Board} from "../../models/board/board";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {UserService} from "../../services/user.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss']
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnDestroy {
+  subscriptions: Subscription = new Subscription();
 
   appStatuses: Dic[];
   appStatusesSort: Dic[];
@@ -39,14 +41,14 @@ export class BoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.ngxLoader.start();
-    this.util.getAllDic('ApplicationStatus').then(res=>{
+    this.util.getAllDic('ApplicationStatus').then(res => {
       this.appStatuses = res;
       this.sortStatusesDic(this.activeTab);
     })
 
-    this.userService.getAgents().subscribe(obj => {
+    this.subscriptions.add(this.userService.getAgents().subscribe(obj => {
       this.agentList = obj.data;
-    });
+    }));
   }
 
   getBoardData(tab: number, ids: number) {
@@ -55,7 +57,7 @@ export class BoardComponent implements OnInit {
     // searchFilter['agentLoginList'] = this.util.getCurrentUser().roles;
     searchFilter['applicationStatusList'] = ids;
     searchFilter['operationTypeId'] = tab == 3 ? null : tab;
-    this.boardService.getBoard(searchFilter).subscribe(res => {
+    this.subscriptions.add(this.boardService.getBoard(searchFilter).subscribe(res => {
       if (res.code == 200 && res.data.applicationMap != null) {
         this.appStatusesData = [];
         for (const argument of this.appStatusesSort) {
@@ -75,7 +77,7 @@ export class BoardComponent implements OnInit {
       } else {
         this.notificationService.showWarning('Информация', 'Техническая ошибка');
       }
-    });
+    }));
     this.ngxLoader.stop();
   }
 
@@ -90,6 +92,7 @@ export class BoardComponent implements OnInit {
     }
     return ids;
   }
+
   /*
     "id": 1,002001 : "Первичный контакт",
     "id": 2,002002: "Встреча",
@@ -129,12 +132,12 @@ export class BoardComponent implements OnInit {
     let ids = this.getStatusIdsByTab();
     let code = this.getStatusCodesByTab();
     for (const status of code) {
-        let m = {};
-        let dic = this.getDictionaryValueById(status);
-        m['value'] = dic['value'];
-        m['label'] = dic['label'];
-        m['code'] = status;
-        this.appStatusesSort.push(m)
+      let m = {};
+      let dic = this.getDictionaryValueById(status);
+      m['value'] = dic['value'];
+      m['label'] = dic['label'];
+      m['code'] = status;
+      this.appStatusesSort.push(m)
     }
     this.getBoardData(tab, ids);
   }
@@ -256,8 +259,12 @@ export class BoardComponent implements OnInit {
   }
 
   moveStatus(data: any) {
-    this.boardService.changeStatus(data).subscribe(res => {
+    this.subscriptions.add(this.boardService.changeStatus(data).subscribe(res => {
       this.sortStatusesDic(this.activeTab);
-    })
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

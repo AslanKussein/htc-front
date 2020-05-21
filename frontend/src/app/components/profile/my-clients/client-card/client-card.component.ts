@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
 import {AuthenticationService} from "../../../../services/authentication.service";
 import {User} from "../../../../models/users";
 import {DatePeriod} from "../../../../models/common/datePeriod";
@@ -15,18 +15,19 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {NotificationService} from "../../../../services/notification.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {UploaderService} from "../../../../services/uploader.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-client-card',
   templateUrl: './client-card.component.html',
   styleUrls: ['./client-card.component.scss']
 })
-export class ClientCardComponent implements OnInit {
+export class ClientCardComponent implements OnInit, OnDestroy {
   currentUser: User;
   selectedFile: File;
   modalRef: BsModalRef;
   modalRef2: BsModalRef;
-
+  subscriptions: Subscription = new Subscription();
   client: ClientDto;
   claimData = [];
   loading;
@@ -53,7 +54,7 @@ export class ClientCardComponent implements OnInit {
               private util: Util) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
-    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    this.subscriptions.add(this.authenticationService.currentUser.subscribe(x => this.currentUser = x));
     this.clientId = this.actRoute.snapshot.params.id;
 
     if (this.currentUser.roles != null) {
@@ -135,13 +136,13 @@ export class ClientCardComponent implements OnInit {
     searchFilter['sortBy'] = 'id';
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = 30;
-    this.claimService.getClaims(searchFilter).subscribe(res => {
+    this.subscriptions.add(this.claimService.getClaims(searchFilter).subscribe(res => {
       if (res != null && res.data != null && !res.data.data.empty) {
         this.claimData = res.data.data.data;
         this.totalItems = res.data.totalElements;
         this.itemsPerPage = res.data.data.size;
       }
-    });
+    }));
     this.loading = false;
   }
 
@@ -156,7 +157,7 @@ export class ClientCardComponent implements OnInit {
 
   getClientById(id: number) {
     this.ngxLoader.start();
-    this.clientsService.getClientById(id).subscribe(res => {
+    this.subscriptions.add(this.clientsService.getClientById(id).subscribe(res => {
       if (res != null) {
         this.formClient = res;
         if (!this.util.isNullOrEmpty(this.formClient.clientFileDtoList)) {
@@ -172,7 +173,7 @@ export class ClientCardComponent implements OnInit {
           }
         }
       }
-    });
+    }));
     this.ngxLoader.stop();
   }
 
@@ -192,15 +193,15 @@ export class ClientCardComponent implements OnInit {
       this.notifyService.showError('Пожалуйста, заполните все поля', "");
       return;
     }
-    this.clientsService.updateClientById(this.formClient).subscribe(data => {
+    this.subscriptions.add(this.clientsService.updateClientById(this.formClient).subscribe(data => {
       if (data != null) {
 
         if (!this.util.isNullOrEmpty(this.clientFiles)) {
           for (let i = 0; i < this.clientFiles.length; i++) {
             if (this.clientFiles[i].isDeleted) {
-              this.uploader.removePhotoById(this.clientFiles[i].guid).subscribe(data => {
+              this.subscriptions.add(this.uploader.removePhotoById(this.clientFiles[i].guid).subscribe(data => {
                 this.clientFiles.splice(i, 1)
-              });
+              }));
             }
 
           }
@@ -213,20 +214,20 @@ export class ClientCardComponent implements OnInit {
       this.notifyService.showError('warning', err.message.ru);
       this.modalRef.hide();
 
-    });
+    }));
     this.ngxLoader.stop();
   }
 
 
   getDataByPhoneNumber() {
     if (this.formClient.phoneNumber.length == 10) {
-      this.clientsService.findClientByPhoneNumber(this.formClient.phoneNumber).subscribe(data => {
+      this.subscriptions.add(this.clientsService.findClientByPhoneNumber(this.formClient.phoneNumber).subscribe(data => {
         if (data != null) {
           this.formClient = data;
         }
       }, err => {
         this.notifyService.showError('warning', err);
-      });
+      }));
     }
   }
 
@@ -287,7 +288,7 @@ export class ClientCardComponent implements OnInit {
 
     this.ngxLoader.start();
     this.selectedFile = event.target.files[0];
-    this.uploader.uploadData(this.selectedFile)
+    this.subscriptions.add(this.uploader.uploadData(this.selectedFile)
       .subscribe(data => {
         if (data != null) {
           if (this.formClient.clientFileDtoList == null) {
@@ -313,7 +314,7 @@ export class ClientCardComponent implements OnInit {
           });
 
         }
-      });
+      }));
     this.ngxLoader.stop();
   }
 
@@ -342,7 +343,7 @@ export class ClientCardComponent implements OnInit {
     this.clientFiles = [];
     if (len > 0) {
       for (let i = 0; i < len; i++) {
-        this.uploader.getFileInfoUsingGET(this.formClient.clientFileDtoList[i].guid).subscribe(data => {
+        this.subscriptions.add(this.uploader.getFileInfoUsingGET(this.formClient.clientFileDtoList[i].guid).subscribe(data => {
           if (data != null) {
             this.clientFiles.push({
               guid: this.formClient.clientFileDtoList[i].guid,
@@ -359,10 +360,13 @@ export class ClientCardComponent implements OnInit {
           }
         }, err => {
           this.notifyService.showError('warning', err.message);
-        });
+        }));
       }
     }
     this.ngxLoader.stop();
   }
 
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 }

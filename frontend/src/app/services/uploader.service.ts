@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs/index';
-import {catchError, tap} from 'rxjs/internal/operators';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs/index';
+import {tap} from 'rxjs/internal/operators';
 import {map} from 'rxjs/operators';
 
 @Injectable({
@@ -19,8 +19,7 @@ export class UploaderService {
 
     return this.http.post<any>(`${this.configService.apiFileManagerUrl}/api/upload`, uploadData)
       .pipe(
-        tap(data => {
-        }),
+        tap(),
       );
   }
 
@@ -30,24 +29,21 @@ export class UploaderService {
       observe: 'response'
     })
       .pipe(
-        tap(data => {
-        }),
+        tap(),
       );
   }
 
   public getPhotoById(guid): Observable<any> {
     return this.http.get<any>(`${this.configService.apiFileManagerUrl}/api/download/` + guid, {})
       .pipe(
-        tap(data => {
-        }),
+        tap(),
       );
   }
 
   public getFileInfoUsingGET(guid): Observable<any> {
     return this.http.get<any>(`${this.configService.apiFileManagerUrl}/info/` + guid, {})
       .pipe(
-        tap(data => {
-        }),
+        tap(),
       );
   }
 
@@ -66,19 +62,14 @@ export class UploaderService {
   public removePhotoById(guid): Observable<any> {
     return this.http.delete<any>(`${this.configService.apiFileManagerUrl}/api/delete/` + guid, {})
       .pipe(
-        tap(data => {
-        }),
+        tap(),
       );
   }
 
-  public getResumePhoto(getPhotoById): Observable<any> {
-    // let params = new HttpParams();
-    // params = params.append('photoId', String(getPhotoById));
-
-    return this.http.get<any>(`${this.configService.apiFileManagerUrl}//download/` + getPhotoById, {})
+  public getResumePhoto(guid): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiFileManagerUrl}//download/` + guid, {})
       .pipe(
-        tap(data => {
-        }),
+        tap(),
       );
   }
 }

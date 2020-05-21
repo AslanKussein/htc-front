@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {language} from '../../../environments/language';
 import {formatDate} from '@angular/common';
 import {defineLocale} from 'ngx-bootstrap/chronos';
@@ -9,15 +9,17 @@ import {Dic} from '../../models/dic';
 import {Util} from '../../services/util';
 import {DatePeriod} from '../../models/common/datePeriod';
 import {NotificationService} from '../../services/notification.service';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
+import {NgxUiLoaderService} from 'ngx-ui-loader';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-claims',
   templateUrl: './claims.component.html',
   styleUrls: ['./claims.component.scss']
 })
-export class ClaimsComponent implements OnInit {
+export class ClaimsComponent implements OnInit, OnDestroy {
   env = language;
+  subscriptions: Subscription = new Subscription();
 
   constructor(private localeService: BsLocaleService,
               private claimService: ClaimService,
@@ -67,10 +69,10 @@ export class ClaimsComponent implements OnInit {
   ngOnInit(): void {
     this.ngxLoader.start();
     this.findClaims(1);
-    this.util.getAllDic('OperationType').then(res=>{
+    this.util.getAllDic('OperationType').then(res => {
       this.operationType = res;
     })
-    this.util.getAllDic('ApplicationStatus').then(res=>{
+    this.util.getAllDic('ApplicationStatus').then(res => {
       this.appStatuses = res;
     })
 
@@ -104,7 +106,7 @@ export class ClaimsComponent implements OnInit {
     searchFilter['sortBy'] = 'id';
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = this.itemsPerPage;
-    this.claimService.getClaims(searchFilter).subscribe(res => {
+    this.subscriptions.add(this.claimService.getClaims(searchFilter).subscribe(res => {
       if (res != null && res.data != null) {
 
         this.claimData = res.data.data.data;
@@ -114,7 +116,7 @@ export class ClaimsComponent implements OnInit {
           this.empty = true;
         }
       }
-    });
+    }));
     this.ngxLoader.stop();
   }
 
@@ -125,5 +127,9 @@ export class ClaimsComponent implements OnInit {
 
   formatDate(claim: any) {
     return formatDate(claim.creationDate, 'dd.MM.yyyy HH:mm', 'en-US');
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }
