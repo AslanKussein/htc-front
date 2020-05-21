@@ -37,7 +37,6 @@ export class ErrorInterceptor implements HttpInterceptor {
             this.authenticationService.logout();
             location.reload(true);
           } else {
-            console.log(this.activatedRoute.snapshot['_routerState'].url.split(";")[0].replace('/',''))
             if (!['login'].includes(this.activatedRoute.snapshot['_routerState'].url.split(";")[0].replace('/',''))) {
               this.showAuthModal();
             }

@@ -45,4 +45,11 @@ export class ClaimService {
         tap()
       );
   }
+
+  public getApartmentByNumberAndPostcode(apartmentNumber: number, postCode: string): Observable<any> {
+    return this.http.get(`${this.configService.apiDataManagerUrl}/api/applications/getApartmentByNumberAndPostcode/` + apartmentNumber + `/` + postCode, {})
+      .pipe(
+        tap()
+      );
+  }
 }

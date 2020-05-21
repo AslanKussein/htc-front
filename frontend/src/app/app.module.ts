@@ -139,7 +139,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
   entryComponents: [
     ProfileComponent,
     CreateClaimComponent,
-    ModalComponent
+    ModalComponent,
   ],
   schemas: [NO_ERRORS_SCHEMA],
 

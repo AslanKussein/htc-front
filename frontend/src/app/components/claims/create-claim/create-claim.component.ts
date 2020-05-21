@@ -32,6 +32,7 @@ import {ContractDto} from "../../../models/createClaim/contractDto";
 import {BuildingDto} from "../../../models/createClaim/buildingDto";
 import {GeneralCharacteristicsDto} from "../../../models/createClaim/generalCharacteristicsDto";
 import {ApplicationSellDataDto} from "../../../models/createClaim/applicationSellDataDto";
+import { ModalChooseClaimComponent } from './modal.window.choose.claim/modal.choose.claim.component';
 
 @Injectable({
   providedIn: 'root'
@@ -1028,5 +1029,17 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  showModalChooseClaim() {
+    this.modalRef = this.modalService.show(ModalChooseClaimComponent, {
+      class: 'modal-xl',
+      initialState: {
+        title: 'Просмотр',
+        apartmentNumber: 75,
+        kazPostId: '01100100',
+        centered: true
+      }
+    });
   }
 }
