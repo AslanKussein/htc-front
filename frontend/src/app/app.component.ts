@@ -110,6 +110,20 @@ export class AppComponent implements OnDestroy {
     return list;
   }
 
+  removePrevDb() {
+    // @ts-ignore
+    window.indexedDB.databases().then((r) => {
+      for (var i = 0; i < r.length; i++) {
+        // @ts-ignore
+        if (r[i].name != this.dbService.dbConfig.name) {
+          window.indexedDB.deleteDatabase(r[i].name)
+        }
+      }
+    }).then(() => {
+      console.log('All data cleared.')
+    });
+  }
+
   addToDB(dicCode: string) {
     this.dbService.getAll(dicCode).then(
       data => {
@@ -136,6 +150,7 @@ export class AppComponent implements OnDestroy {
   }
 
   loadDictionary() {
+    this.removePrevDb();
     this.addToDB('OperationType');
     this.addToDB('ObjectType');
     this.addToDB('City');

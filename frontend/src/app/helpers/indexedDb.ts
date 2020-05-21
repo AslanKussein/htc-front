@@ -1,6 +1,6 @@
 import {DBConfig} from 'ngx-indexed-db';
 export const dbConfig: DBConfig  = {
-  name: new Date().toDateString()+1,
+  name: new Date().toDateString(),
   version: 3,
   objectStoresMeta: [
     {
