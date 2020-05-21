@@ -85,6 +85,21 @@ export class Util {
     return list;
   }
 
+  toSelectArrayGroup(data, idField = 'id', surname = 'surname',name='name') {
+    const list = [];
+    if (data) {
+      const len = data.data.length;
+      for (let i = 0; i < len; i++) {
+        list.push({
+          value: data.data[i][idField],
+          label: data.data[i][surname]+' '+data.data[i][name],
+          description: data.data[i]['description']
+        });
+      }
+    }
+    return list;
+  }
+
   getDicName() {
     let fieldName;
     fieldName = 'name';
