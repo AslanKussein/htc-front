@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Util} from "../../services/util";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-claim-btn',
@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
 export class CreateClaimBtnComponent implements OnInit {
 
   constructor(private util: Util,
-              private router: Router) {
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -21,6 +21,6 @@ export class CreateClaimBtnComponent implements OnInit {
   }
 
   isShow() {
-    return !['/create-claim', '/login'].includes(this.router.url);
+    return !['/create-claim', '/login'].includes(this.activatedRoute.snapshot['_routerState'].url.split(";")[0]);
   }
 }
