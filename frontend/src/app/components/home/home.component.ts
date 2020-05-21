@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {ApplicationLightDto} from "../../models/applicationLightDto";
 import {Util} from "../../services/util";
@@ -12,17 +12,20 @@ import {NgSelectConfig} from "@ng-select/ng-select";
 import {TranslateService} from "@ngx-translate/core";
 import {OwnerService} from "../../services/owner.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
+  subscriptions: Subscription = new Subscription();
   applicationLightForm: any;
   operationType: Dic[];
   agentList: Dic[];
+  objectType: Dic[];
   claimLightData = [];
   totalItems = 0;
   itemsPerPage = 10;
@@ -54,6 +57,7 @@ export class HomeComponent implements OnInit {
       phoneNumber: [null, Validators.required],
       note: [null, Validators.nullValidator],
       agentLogin: [null, Validators.nullValidator],
+      objectTypeId: [null, Validators.required],
     });
 
     if (this.hasRGRole()) {
@@ -65,9 +69,12 @@ export class HomeComponent implements OnInit {
     this.util.getAllDic('OperationType').then(res=>{
       this.operationType = res;
     })
-    this.userService.getAgents().subscribe(obj => {
+    this.util.getAllDic('ObjectType').then(res => {
+      this.objectType = res;
+    })
+    this.subscriptions.add(this.userService.getAgents().subscribe(obj => {
       this.agentList = this.util.toSelectArrayRoles(obj, 'login');
-    });
+    }));
 
     this.findClaims(1);
   }
@@ -78,6 +85,7 @@ export class HomeComponent implements OnInit {
     this.applicationLightDto.note = this.applicationLightForm?.value?.note;
     this.applicationLightDto.agentLogin = this.applicationLightForm?.value?.agentLogin;
     this.applicationLightDto.clientLogin = this.applicationLightForm?.value?.phoneNumber;
+    this.applicationLightDto.objectTypeId = this.applicationLightForm?.value?.objectTypeId?.value;
   }
 
   clear() {
@@ -90,14 +98,14 @@ export class HomeComponent implements OnInit {
 
   searchByPhone() {
     if (this.applicationLightForm.value.phoneNumber != null && this.applicationLightForm.value.phoneNumber.length == 10) {
-      this.ownerService.searchByPhone(this.applicationLightForm.value.phoneNumber)
+      this.subscriptions.add(this.ownerService.searchByPhone(this.applicationLightForm.value.phoneNumber)
         .subscribe(res => {
           this.applicationLightForm.name = !this.util.isNullOrEmpty(res.firstName) ? res.firstName : null;
           this.applicationLightForm.surName = !this.util.isNullOrEmpty(res.surname) ? res.surname : null;
           this.applicationLightForm.patronymic = !this.util.isNullOrEmpty(res.patronymic) ? res.patronymic : null;
           this.existsClient = true;
           this.cdRef.detectChanges()
-        });
+        }));
     }
   }
 
@@ -107,7 +115,7 @@ export class HomeComponent implements OnInit {
     dto.surname = this.applicationLightForm.value.surName;
     dto.patronymic = this.applicationLightForm.value.patronymic;
     dto.phoneNumber = this.applicationLightForm.value.phoneNumber;
-    this.userService.createUserClient(dto).subscribe();
+    this.subscriptions.add(this.userService.createUserClient(dto).subscribe());
   }
 
   onSave() {
@@ -115,7 +123,7 @@ export class HomeComponent implements OnInit {
       this.createClient()
     }
     this.fillApplicationLightDTO();
-    this.claimService.saveLightApplication(this.applicationLightDto)
+    this.subscriptions.add(this.claimService.saveLightApplication(this.applicationLightDto)
       .subscribe(data => {
         if (data != null) {
           this.findClaims(1);
@@ -123,7 +131,7 @@ export class HomeComponent implements OnInit {
         }
       }, err => {
         this.notification.showWarning('warning', err);
-      });
+      }));
   }
 
   pageChanged(event: any): void {
@@ -135,17 +143,17 @@ export class HomeComponent implements OnInit {
   findClaims(pageNo: number) {
     this.ngxLoader.start();
     const searchFilter = {};
-    searchFilter['direction'] = 'ASC';
+    searchFilter['direction'] = 'DESC';
     searchFilter['sortBy'] = 'id';
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = this.itemsPerPage;
-    this.claimService.getShortApplicationList(searchFilter).subscribe(res => {
+    this.subscriptions.add(this.claimService.getShortApplicationList(searchFilter).subscribe(res => {
       if (res != null && res.data != null) {
         this.claimLightData = res.data.data.data;
         this.totalItems = res.data.total;
         this.currentPage = res.data.pageNumber + 1;
       }
-    });
+    }));
     this.ngxLoader.stop();
   }
 
@@ -160,5 +168,9 @@ export class HomeComponent implements OnInit {
 
   hasRGRole() {
     return this.util.hasRGRole();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

@@ -114,7 +114,21 @@
               </div>
             </div>
           </div>
-
+          <div class="form-group row">
+            <label for="form7" class="col-sm-3 col-form-label" translate>claim.objectType
+              <span class="text-danger" *ngIf="!applicationLightForm.value.objectType">&nbsp;*</span>
+            </label>
+            <div class="col-sm">
+              <ng-select
+                [items]="objectType"
+                formControlName="objectTypeId"
+                placeholder="{{ 'patterns.chooseElement' | translate }}">
+              </ng-select>
+              <div *ngIf="f.objectTypeId.touched && f.objectTypeId.invalid" class="text-danger">
+                <div *ngIf="f.objectTypeId.errors.required" translate>claim.requiredField</div>
+              </div>
+            </div>
+          </div>
           <button class="btn btn-link float-left" (click)="clear()" translate>clear</button>
           <button class="btn btn-success float-right" [disabled]="!this.applicationLightForm.valid" (click)="onSave()" translate>patterns.save</button>
         </div>
@@ -130,6 +144,7 @@
             <tr>
               <th>ID заявки</th>
               <th>Операция</th>
+              <th translate>claim.objectType</th>
               <th translate>claim.crDateFrom</th>
               <th translate>fio</th>
               <th translate>phone</th>
@@ -141,6 +156,7 @@
                 <a [routerLink]="['/create-claim/', claim?.id]">{{claim.id}}</a>
               </td>
               <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
+              <td>{{getDicNameByLanguage(claim, 'objectType')}}</td>
               <td>{{formatDate(claim)}}</td>
               <td>{{claim.fullname}}</td>
               <td><span>{{claim.phone | mask: '+0 (000) 000-0000'}}</span></td>
