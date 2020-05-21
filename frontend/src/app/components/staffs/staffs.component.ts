@@ -70,6 +70,20 @@ export class StaffsComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  getGroup(){
+    this.ngxLoader.start();
+    let obj={
+      roles:135
+    };
+    this.staffService.getUserInfo(obj).subscribe(res => {
+      if (res != null) {
+        this.groups = this.util.toSelectArrayGroup(res);
+      }
+    });
+    this.ngxLoader.stop();
+  }
+
   getUserInfo() {
     this.ngxLoader.start();
     this.subscriptions.add(this.staffService.getUserInfo(this.filter).subscribe(res => {
@@ -107,9 +121,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
       this.roles = this.util.toSelectArrayRoles2(data);
     });
 
-    this.staffService.getGroupList().subscribe(data => {
-      this.groups = this.util.toSelectArrayRoles2(data);
-    });
+    this.getGroup();
   }
 
   submit() {
