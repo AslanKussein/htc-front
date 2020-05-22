@@ -61,14 +61,22 @@ export class StaffService {
   }
 
   public updateUserActiveById(obj): Observable<any> {
-    return this.http.put(`${this.configService.apiUserManagerUrl}/users/` + obj.id + `/active`, {isActive: obj.isActive})
+    return this.http.put(`${this.configService.apiUserManagerUrl}/api/users/` + obj.id + `/active`, {isActive: obj.isActive})
       .pipe(
         tap(),
       );
   }
 
   public updateUserRolesById(obj): Observable<any> {
-    return this.http.put(`${this.configService.apiUserManagerUrl}/users/` + obj.id + `/roles`, {roles: obj.roles})
+    return this.http.put(`${this.configService.apiUserManagerUrl}/api/users/` + obj.id + `/roles`, {roles: obj.roles})
+      .pipe(
+        tap(),
+      );
+  }
+
+
+  public updateUserGroupById(obj): Observable<any> {
+    return this.http.put(`${this.configService.apiUserManagerUrl}/api/users/` + obj.id + `/group`, {groupId: obj.group})
       .pipe(
         tap(),
       );
@@ -76,7 +84,7 @@ export class StaffService {
 
 
   public updatePasswordById(obj): Observable<any> {
-    return this.http.put(`${this.configService.apiUserManagerUrl}/users/` + obj.id + `/pass`, {pass: obj.passNew})
+    return this.http.put(`${this.configService.apiUserManagerUrl}/api/users/` + obj.id + `/pass`, {pass: obj.passNew})
       .pipe(
         tap(),
       );

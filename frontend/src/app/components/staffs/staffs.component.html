@@ -110,9 +110,9 @@
             <div class="col-sm">
               <label class="col-sm col-form-label">Группа<span class="text-danger">&nbsp;*</span></label>
               <ng-select name="residentialComplexes"
+                         placeholder="Группа"
                          [items]="groups"
                          bindValue="value"
-                         [disabled]="actions=='EDIT'"
                          [(ngModel)]="formData.group">
               </ng-select>
             </div>
