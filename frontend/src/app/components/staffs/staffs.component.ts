@@ -128,6 +128,19 @@ export class StaffsComponent implements OnInit, OnDestroy {
     this.ngxLoader.start();
     if (this.actions == 'EDIT') {
 
+      this.subscriptions.add(this.staffService.updateUserGroupById(this.formData)
+        .subscribe(data => {
+          if (data != null) {
+            this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.findObjects(1);
+            this.modalRef.hide();
+          }
+        }, err => {
+          this.notifyService.showError('warning', err.message);
+          this.findObjects(1);
+          this.modalRef.hide();
+        }));
+
       this.subscriptions.add(this.staffService.updateUserRolesById(this.formData)
         .subscribe(data => {
           if (data != null) {
