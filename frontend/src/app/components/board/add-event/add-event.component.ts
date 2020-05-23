@@ -1,12 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {defineLocale} from "ngx-bootstrap/chronos";
-import {ruLocale} from "ngx-bootstrap/locale";
-import {BsLocaleService} from "ngx-bootstrap";
 import {BoardComponent} from "../board.component";
 import {EventsService} from "../../../services/events.service";
 import {Util} from "../../../services/util";
-import {registerLocaleData} from "@angular/common";
-import localeFr from '@angular/common/locales/ru-KZ';
 import {FormBuilder, Validators} from "@angular/forms";
 import {NotificationService} from "../../../services/notification.service";
 import {Subscription} from "rxjs";
@@ -27,18 +22,12 @@ export class AddEventComponent implements OnInit, OnDestroy {
   eventsForm: any;
   text: string;
 
-  constructor(private localeService: BsLocaleService,
-              private board: BoardComponent,
+  constructor(private board: BoardComponent,
               private util: Util,
               private eventsService: EventsService,
               private formBuilder: FormBuilder,
               private notificationService: NotificationService) {
-    defineLocale('ru', ruLocale);
-    this.localeService.use('ru');
-    registerLocaleData(localeFr, 'ru-KZ');
     this.boardSelect = this.board.boardSelect;
-    console.log(this.boardSelect)
-
     this.board.displayBoardContent = false;
     if (this.util.isNullOrEmpty(this.boardSelect)) {
       this.cancel()

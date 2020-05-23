@@ -10,9 +10,7 @@ import {
 import {CustomDateFormatter} from './customDateFormatter';
 import {EventsService} from "../../../services/events.service";
 import {Util} from "../../../services/util";
-import {BsLocaleService} from "ngx-bootstrap";
-import {defineLocale} from "ngx-bootstrap/chronos";
-import {ruLocale} from "ngx-bootstrap/locale";
+import {SearchCommon} from "../../../models/common/search.common";
 
 @Component({
   selector: 'app-calendar',
@@ -36,7 +34,7 @@ export class CalendarComponent implements OnInit {
   view: CalendarView = CalendarView.Month;
 
   refresh: Subject<any> = new Subject();
-
+  searchCommon: SearchCommon;
 
   viewDate: Date = new Date();
 
@@ -54,10 +52,7 @@ export class CalendarComponent implements OnInit {
 
   constructor(private modal: NgbModal,
               private eventsService: EventsService,
-              private util: Util,
-              private localeService: BsLocaleService) {
-    defineLocale('ru', ruLocale);
-    this.localeService.use('ru');
+              private util: Util) {
   }
 
   ngOnInit() {
@@ -91,11 +86,6 @@ export class CalendarComponent implements OnInit {
   }
 
   getEventsByDate(pageNo: number) {
-    const searchFilter = {};
-    searchFilter['direction'] = 'ASC';
-    searchFilter['sortBy'] = 'id';
-    searchFilter['pageNumber'] = pageNo - 1;
-    searchFilter['pageSize'] = this.itemsPerPage;
     this.eventsService.getEventsByDate(addDays(this.date, 1)).subscribe(res => {
       if (res != null && res.data != null) {
         this.eventsData = res.data.data.data;

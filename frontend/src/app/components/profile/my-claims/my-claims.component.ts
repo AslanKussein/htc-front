@@ -1,8 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {defineLocale} from "ngx-bootstrap/chronos";
 import {ClaimService} from "../../../services/claim.service";
-import {ruLocale} from "ngx-bootstrap/locale";
-import {BsLocaleService} from "ngx-bootstrap";
 import {Util} from "../../../services/util";
 import {formatDate} from "@angular/common";
 import {NotificationService} from "../../../services/notification.service";
@@ -17,12 +14,9 @@ export class MyClaimsComponent implements OnInit, OnDestroy {
   text: string;
   subscriptions: Subscription = new Subscription();
 
-  constructor(private localeService: BsLocaleService,
-              private claimService: ClaimService,
+  constructor(private claimService: ClaimService,
               private notifyService: NotificationService,
               private util: Util) {
-    defineLocale('ru', ruLocale);
-    this.localeService.use('ru');
   }
 
   claimData = [];

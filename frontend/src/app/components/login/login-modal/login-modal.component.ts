@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {BsModalRef} from "ngx-bootstrap";
 import {FormBuilder, Validators} from "@angular/forms";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {NotificationService} from "../../../services/notification.service";
 import {AuthenticationService} from "../../../services/authentication.service";
+import {Util} from "../../../services/util";
+import {BsModalRef} from "ngx-bootstrap/modal";
 
 @Component({
   selector: 'app-login-modal',
@@ -15,6 +16,7 @@ export class LoginModalComponent implements OnInit {
   loginForm: any;
 
   constructor(public modalRef: BsModalRef,
+              private util: Util,
               private formBuilder: FormBuilder,
               private ngxLoader: NgxUiLoaderService,
               private notifyService: NotificationService,
@@ -52,5 +54,10 @@ export class LoginModalComponent implements OnInit {
     this.modalRef.hide();
 
     this.ngxLoader.stop()
+  }
+
+  close() {
+    this.util.dnHref('login');
+    this.modalRef.hide()
   }
 }

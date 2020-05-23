@@ -1,6 +1,4 @@
 import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {ILoadEvent} from "angular8-yandex-maps";
-import {IEvent} from 'angular8-yandex-maps/lib/types/types';
 
 
 @Component({

@@ -2,9 +2,6 @@ import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
 import {BsModalService, BsModalRef} from 'ngx-bootstrap/modal';
 import {Dic} from "../../models/dic";
 import {Util} from "../../services/util";
-import {ruLocale} from "ngx-bootstrap/locale";
-import {defineLocale} from "ngx-bootstrap/chronos";
-import {BsLocaleService} from "ngx-bootstrap";
 import {StaffService} from "../../services/staff.service";
 import {NotificationService} from "../../services/notification.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
@@ -23,13 +20,10 @@ export class StaffsComponent implements OnInit, OnDestroy {
   subscriptions: Subscription = new Subscription();
 
   constructor(private modalService: BsModalService,
-              private localeService: BsLocaleService,
               private staffService: StaffService,
               private notifyService: NotificationService,
               private util: Util,
               private ngxLoader: NgxUiLoaderService) {
-    defineLocale('ru', ruLocale);
-    this.localeService.use('ru');
   }
 
   filter = {

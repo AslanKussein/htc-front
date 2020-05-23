@@ -13,28 +13,22 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 export class LoginComponent implements OnInit {
   loginForm: any;
   submitted = false;
-  rememberMe: boolean;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private authenticationService: AuthenticationService,
-    private notifyService: NotificationService,
-    private ngxLoader: NgxUiLoaderService) {
+  constructor(private formBuilder: FormBuilder,
+              private router: Router,
+              private authenticationService: AuthenticationService,
+              private notifyService: NotificationService,
+              private ngxLoader: NgxUiLoaderService) {
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(['claims']);
     }
   }
 
   ngOnInit(): void {
-    this.ngxLoader.start()
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
-      rememberMe: ['', Validators.nullValidator]
     });
-    this.loginForm.rememberMe = localStorage.getItem('username') != null;
-    this.ngxLoader.stop()
   }
 
   get f() {
@@ -42,28 +36,17 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.ngxLoader.start()
+    this.ngxLoader.startBackground()
     this.submitted = true;
-
-    if (this.loginForm.value.username == null) {
-      this.notifyService.showError("Ошибка", "Введите Логин для входа")
-      this.ngxLoader.stop()
-      return;
-    }
-    if (this.loginForm.value.password == null) {
-      this.notifyService.showError("Ошибка", "Введите Пароль для входа")
-      this.ngxLoader.stop()
-      return;
-    }
 
     if (this.loginForm.value.username.toLocaleUpperCase() == 'ADMIN') {
       this.notifyService.showError('Ошибка', 'Не корректные данные для входа учетка admin не доступен');
 
-      this.ngxLoader.stop()
+      this.ngxLoader.stopBackground()
       return;
     }
     this.authenticationService.login(this.loginForm, 1);
 
-    this.ngxLoader.stop()
+    this.ngxLoader.stopBackground()
   }
 }

@@ -8,6 +8,7 @@ import {Util} from "./util";
 import {UserService} from "./user.service";
 import {NotificationService} from "./notification.service";
 import {ActivatedRoute} from "@angular/router";
+import {BsModalService} from "ngx-bootstrap/modal";
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService implements OnDestroy {
@@ -54,7 +55,7 @@ export class AuthenticationService implements OnDestroy {
             }
           });
           if (id == 1) {
-            this.util.dnHref('/home')
+            this.util.dnHref('/')
           }
         },
         () => {
@@ -95,9 +96,10 @@ export class AuthenticationService implements OnDestroy {
   logout() {
     localStorage.clear()
     this.currentUserSubject.next(null);
-    if (!['login'].includes(this.activatedRoute.snapshot['_routerState'].url.split(";")[0].replace('/',''))) {
+    if (!['login'].includes(this.activatedRoute.snapshot['_routerState'].url.split(";")[0].replace('/', ''))) {
       this.util.dnHref(['/login']);
     }
+    localStorage.setItem('action', 'logout');
   }
 
   getJwtToken() {
@@ -124,5 +126,6 @@ export class AuthenticationService implements OnDestroy {
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
+
 
 }

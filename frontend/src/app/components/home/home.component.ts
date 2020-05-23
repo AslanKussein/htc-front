@@ -8,7 +8,6 @@ import {ClientDto} from "../../models/createClaim/clientDto";
 import {ClaimService} from "../../services/claim.service";
 import {formatDate} from '@angular/common';
 import {UserService} from "../../services/user.service";
-import {NgSelectConfig} from "@ng-select/ng-select";
 import {TranslateService} from "@ngx-translate/core";
 import {OwnerService} from "../../services/owner.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
@@ -38,12 +37,10 @@ export class HomeComponent implements OnInit, OnDestroy {
               private notification: NotificationService,
               private claimService: ClaimService,
               private userService: UserService,
-              private config: NgSelectConfig,
               private translate: TranslateService,
               private ownerService: OwnerService,
               private ngxLoader: NgxUiLoaderService,
               private cdRef: ChangeDetectorRef) {
-    this.config.notFoundText = 'Данные не найдены';
   }
 
   ngOnInit(): void {
@@ -141,7 +138,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   findClaims(pageNo: number) {
-    this.ngxLoader.start();
+    this.ngxLoader.startBackground();
     const searchFilter = {};
     searchFilter['direction'] = 'DESC';
     searchFilter['sortBy'] = 'id';
@@ -154,7 +151,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.currentPage = res.data.pageNumber + 1;
       }
     }));
-    this.ngxLoader.stop();
+    this.ngxLoader.stopBackground();
   }
 
   getDicNameByLanguage(claim: any, column: string) {

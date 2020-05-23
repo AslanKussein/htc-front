@@ -1,4 +1,4 @@
-import {NumberPeriod} from "../common/numberPeriod";
+import {Period} from "../common/period";
 
 /**
  * Общая информация о сделке покупки объекта
@@ -12,7 +12,7 @@ export class ApplicationPurchaseDataDto {
     public note?: string,//Примечание
     public probabilityOfBidding?: boolean,//Вероятность торга
     public theSizeOfTrades?: number,//Размер торга
-    public objectPricePeriod?: NumberPeriod,//Цена объекта от и до(млн тг)
+    public objectPricePeriod?: Period,//Цена объекта от и до(млн тг)
     public possibleReasonForBiddingIdList?: number,//ID возможной причины торга
   ) {
   }
