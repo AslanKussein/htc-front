@@ -10,6 +10,7 @@ import {Subscription} from "rxjs";
 import {FormBuilder, Validators} from "@angular/forms";
 import {SearchCommon} from "../../models/common/search.common";
 import {Period} from "../../models/common/period";
+import {OwnerService} from "../../services/owner.service";
 
 @Component({
   selector: 'app-claims',
@@ -23,6 +24,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   constructor(private claimService: ClaimService,
               private util: Util,
               private formBuilder: FormBuilder,
+              private ownerService: OwnerService,
               private notification: NotificationService,
               private ngxLoader: NgxUiLoaderService) {
   }
@@ -102,6 +104,18 @@ export class ClaimsComponent implements OnInit, OnDestroy {
 
   formatDate(claim: any) {
     return formatDate(claim.creationDate, 'dd.MM.yyyy HH:mm', 'en-US');
+  }
+
+  searchByPhone(claim: any) {
+    if (!this.util.isNullOrEmpty(claim.phoneNumber)) {
+      this.subscriptions.add(this.ownerService.searchByPhone(claim.phoneNumber)
+        .subscribe(res => {
+          claim['fullName'] = res?.firstName + ' ' + res?.surname + ' ' + res?.patronymic
+          claim['email'] = res?.email;
+          claim['phoneNumber'] = '+7' + res?.phoneNumber
+          console.log(res)
+        }));
+    }
   }
 
   ngOnDestroy() {

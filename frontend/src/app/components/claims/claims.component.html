@@ -148,12 +148,13 @@
             </thead>
             <tbody style="cursor: pointer">
             <tr *ngFor="let claim of claimData;let i = index">
+              <td *ngIf="false">{{searchByPhone(claim)}}</td>
               <td>
                 <a [routerLink]="['/create-claim/', claim?.id]">{{claim.id}}</a>
               </td>
               <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
               <td>{{formatDate(claim)}}</td>
-              <td>{{claim.fullname}}</td>
+              <td>{{claim.fullName}}</td>
               <td><span>{{claim.phone | mask: '+0 (000) 000-0000'}}</span></td>
               <td>{{claim.email}}</td>
               <td>{{getDicNameByLanguage(claim, 'district')}}</td>
