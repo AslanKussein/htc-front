@@ -234,6 +234,33 @@ export class Util {
     return this.dbService.getAll(code);
   }
 
+  getDicById(code: string, val: any) {
+    this.dbService.getByKey(code, val.id).then(
+      data => {
+        if (this.isNullOrEmpty(data)) {
+          this.addDic(code, val)
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+  addDic(code: string, data: any) {
+    this.dbService.add(code, {
+      value: data?.id,
+      label: data?.nameRu
+    }).then(
+      () => {
+       console.log('added')
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
   toSelectArrayPost(data) {
     const list = [];
     if (data) {
@@ -251,9 +278,9 @@ export class Util {
 
       for (let i = 0; i < len; i++) {
         list.push({
-          value: data[i]['id'],
+          value: data[i]['postcode'],
           label: data[i][fieldName],
-          fullAddress: data[i]['fullAddress']
+          fullAddress: data[i]
         });
       }
     }

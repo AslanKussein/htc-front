@@ -23,6 +23,11 @@ export class KazPostService {
     );
   }
 
+
+  checkPostData(data: any): Observable<any> {
+    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/api/kaz-post`, data);
+  }
+
   private static handleError(error: HttpErrorResponse) {
     return throwError(
       error);

@@ -78,7 +78,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
     searchFilter['operationTypeId'] = this.applicationSearchForm.value.operationTypeId;
     searchFilter['applicationStatusList'] = this.applicationSearchForm.value.applicationStatusList;
     searchFilter['text'] = this.applicationSearchForm.value.text;
-    searchFilter['direction'] = 'ASC';
+    searchFilter['direction'] = 'DESC';
     searchFilter['sortBy'] = 'id';
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = this.itemsPerPage;

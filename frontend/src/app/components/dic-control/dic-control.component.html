@@ -364,7 +364,7 @@
           <div class="col-sm" *ngIf="resident">
             <label class="col-sm col-form-label">Год постройки</label>
             <input type="text"  maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
-                   value=${var}  class="col-sm form-control" name="yearOfConstruction"
+                   value=${var}  class="col-sm form-control" name="yearOfConstruction" mask="0000"
                    [(ngModel)]="formRes.yearOfConstruction">
           </div>
           <div class="col-sm" *ngIf="resident">
