@@ -12,6 +12,7 @@ import {AuthenticationService} from "../../services/authentication.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {HttpParams} from "@angular/common/http";
 import {Subscription} from "rxjs";
+import {KazPostService} from "../../services/kaz.post.service";
 
 @Component({
   selector: 'app-dic-control',
@@ -44,6 +45,9 @@ export class DicControlComponent implements OnInit, OnDestroy {
   itemsPerPage = 30;
   currentPage = 1;
   subscriptions: Subscription = new Subscription();
+  kazPost: any;
+  apiParam: string;
+  apiPage: number = 0;
 
   constructor(private util: Util,
               private modalService: BsModalService,
@@ -51,7 +55,8 @@ export class DicControlComponent implements OnInit, OnDestroy {
               private notifyService: NotificationService,
               private authenticationService: AuthenticationService,
               private dicService: DicService,
-              private ngxLoader: NgxUiLoaderService) {
+              private ngxLoader: NgxUiLoaderService,
+              private kazPostService: KazPostService) {
     defineLocale('ru', ruLocale);
     this.localeService.use('ru');
     this.subscriptions.add(this.authenticationService.currentUser.subscribe(x => this.currentUser = x));
@@ -477,5 +482,22 @@ export class DicControlComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  getDataKzPost(event) {
+    if (!this.util.isNullOrEmpty(event?.term)) {
+      if (this.util.length(event.term) > 3) {
+        this.apiParam = event.term;
+        this.searchDataPost(this.apiParam, this.apiPage);
+
+      }
+    }
+  }
+
+  searchDataPost(val: string, page: number) {
+    this.subscriptions.add(this.kazPostService.getDataPost(val, page).subscribe(res => {
+      this.kazPost = this.util.toSelectArrayPost(res.data)
+      this.kazPost = [...this.kazPost, this.util.toSelectArrayPost(res.data)];
+    }))
   }
 }
