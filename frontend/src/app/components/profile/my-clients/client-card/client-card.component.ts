@@ -1,13 +1,9 @@
 import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
 import {AuthenticationService} from "../../../../services/authentication.service";
 import {User} from "../../../../models/users";
-import {DatePeriod} from "../../../../models/common/datePeriod";
 import {formatDate} from "@angular/common";
 import {Util} from "../../../../services/util";
-import {ruLocale} from "ngx-bootstrap/locale";
 import {ClaimService} from "../../../../services/claim.service";
-import {defineLocale} from "ngx-bootstrap/chronos";
-import {BsLocaleService} from "ngx-bootstrap";
 import {ActivatedRoute} from "@angular/router";
 import {ClientDto} from "../../../../models/clientCard/clientDto";
 import {ClientsService} from "../../../../services/clients.service";
@@ -16,6 +12,7 @@ import {NotificationService} from "../../../../services/notification.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {UploaderService} from "../../../../services/uploader.service";
 import {Subscription} from "rxjs";
+import {Period} from "../../../../models/common/period";
 
 @Component({
   selector: 'app-client-card',
@@ -42,8 +39,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
   size: 0;
 
 
-  constructor(private localeService: BsLocaleService,
-              private claimService: ClaimService,
+  constructor(private claimService: ClaimService,
               private clientsService: ClientsService,
               private modalService: BsModalService,
               private notifyService: NotificationService,
@@ -52,8 +48,6 @@ export class ClientCardComponent implements OnInit, OnDestroy {
               private authenticationService: AuthenticationService,
               private actRoute: ActivatedRoute,
               private util: Util) {
-    defineLocale('ru', ruLocale);
-    this.localeService.use('ru');
     this.subscriptions.add(this.authenticationService.currentUser.subscribe(x => this.currentUser = x));
     this.clientId = this.actRoute.snapshot.params.id;
 
@@ -117,9 +111,9 @@ export class ClientCardComponent implements OnInit, OnDestroy {
     this.loading = true;
     let searchFilter = {};
 
-    searchFilter['createDate'] = new DatePeriod(this.formData.crDateFrom, this.formData.crDateTo);
-    searchFilter['changeDate'] = new DatePeriod(this.formData.lastModifyDateFrom, this.formData.lastModifyDateTo);
-    searchFilter['commentDate'] = new DatePeriod(this.formData.lastCommentDateFrom, this.formData.lastCommentDateTo);
+    searchFilter['createDate'] = new Period(this.formData.crDateFrom, this.formData.crDateTo);
+    searchFilter['changeDate'] = new Period(this.formData.lastModifyDateFrom, this.formData.lastModifyDateTo);
+    searchFilter['commentDate'] = new Period(this.formData.lastCommentDateFrom, this.formData.lastCommentDateTo);
 
     if (!this.util.isNullOrEmpty(this.formData.typeId)) {
       searchFilter['operationTypeId'] = this.formData.typeId;

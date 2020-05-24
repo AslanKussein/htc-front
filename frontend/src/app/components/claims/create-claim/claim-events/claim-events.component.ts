@@ -1,9 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {defineLocale} from "ngx-bootstrap/chronos";
-import {ruLocale} from "ngx-bootstrap/locale";
-import {registerLocaleData} from "@angular/common";
-import localeFr from "@angular/common/locales/ru-KZ";
-import {BsLocaleService} from "ngx-bootstrap";
 import {Dic} from "../../../../models/dic";
 import {Util} from "../../../../services/util";
 import {FormBuilder, Validators} from "@angular/forms";
@@ -34,16 +29,12 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
   currentPage = 1;
   eventsDTO: EventsDTO;
 
-  constructor(private localeService: BsLocaleService,
-              private util: Util,
+  constructor(private util: Util,
               private formBuilder: FormBuilder,
               private createClaimComponent: CreateClaimComponent,
               private eventsService: EventsService,
               private notificationService: NotificationService) {
-    defineLocale('ru', ruLocale);
-    this.localeService.use('ru');
     this.applicationId = this.createClaimComponent?.applicationId;
-    registerLocaleData(localeFr, 'ru-KZ');
   }
 
   ngOnInit(): void {

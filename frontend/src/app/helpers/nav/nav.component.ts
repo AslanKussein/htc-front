@@ -32,6 +32,10 @@ export class NavComponent implements OnInit {
     this.router.navigate([href]);
   }
 
+  isActive() {
+    return '/'+localStorage.getItem('url') == this.router.url;
+  }
+
   changeLang(language: string) {
     this._language.language = language;
     this.translate.setDefaultLang(language);

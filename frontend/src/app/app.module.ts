@@ -14,7 +14,6 @@ import {
 import {ProfileComponent} from './components/profile/profile.component';
 import {ObjectsComponent} from './components/objects/objects.component';
 import {StaffsComponent} from "./components/staffs/staffs.component";
-import {ModalModule, PaginationModule} from 'ngx-bootstrap';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgSelectModule} from '@ng-select/ng-select';
@@ -48,10 +47,9 @@ import {registerLocaleData} from "@angular/common";
 import {MyClientsComponent} from "./components/profile/my-clients/my-clients.component";
 import {ClientCardComponent} from './components/profile/my-clients/client-card/client-card.component';
 import {YandexMapComponent} from './components/claims/create-claim/yandex-map/yandex-map.component';
-import {AngularYandexMapsModule} from "angular8-yandex-maps";
 import {NavComponent} from "./helpers/nav/nav.component";
 import {FooterComponent} from "./helpers/footer/footer.component";
-import {NgxUiLoaderModule} from 'ngx-ui-loader';
+import {NgxUiLoaderConfig, NgxUiLoaderModule, PB_DIRECTION, POSITION, SPINNER} from 'ngx-ui-loader';
 import {LoginModalComponent} from './components/login/login-modal/login-modal.component';
 import {CloseDealComponent} from "./components/board/close-deal/close-deal.component";
 import {AddEventComponent} from "./components/board/add-event/add-event.component";
@@ -59,14 +57,29 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {ClaimEventsComponent} from './components/claims/create-claim/claim-events/claim-events.component';
 import {NgxIndexedDBModule} from 'ngx-indexed-db';
 import {dbConfig} from "./helpers/indexedDb";
+import {PaginationModule} from "ngx-bootstrap/pagination";
+import {ModalModule} from "ngx-bootstrap/modal";
+import {defineLocale} from "ngx-bootstrap/chronos";
+import {ruLocale} from "ngx-bootstrap/locale";
 
 registerLocaleData(localeRu, localeKz);
+defineLocale('ru', ruLocale);
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
+
+const ngxUiLoaderConfig: NgxUiLoaderConfig = {
+  bgsColor: 'indigo',
+  bgsPosition: POSITION.centerCenter,
+  bgsSize: 80,
+  bgsType: SPINNER.threeStrings, // background spinner type
+  fgsType: SPINNER.threeStrings, // foreground spinner type
+  pbDirection: PB_DIRECTION.leftToRight, // progress bar direction
+  pbThickness: 5 // progress bar thickness
+};
 
 @NgModule({
   declarations: [
@@ -117,13 +130,13 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     ToastrModule.forRoot(),
     NgxMaskModule.forRoot(options),
     MDBBootstrapModule.forRoot(),
-    AngularYandexMapsModule.forRoot('658f67a2-fd77-42e9-b99e-2bd48c4ccad4'),
+    // AngularYandexMapsModule.forRoot("658f67a2-fd77-42e9-b99e-2bd48c4ccad4"),
     ChartsModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
-    NgxUiLoaderModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     NgbModule,
     NgxIndexedDBModule.forRoot(dbConfig)
   ],
@@ -139,7 +152,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
   entryComponents: [
     ProfileComponent,
     CreateClaimComponent,
-    ModalComponent,
+    ModalComponent
   ],
   schemas: [NO_ERRORS_SCHEMA],
 

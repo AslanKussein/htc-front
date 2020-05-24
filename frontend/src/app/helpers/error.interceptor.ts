@@ -7,11 +7,11 @@ import {ConfigService} from "../services/config.service";
 import {NotificationService} from "../services/notification.service";
 import {Util} from "../services/util";
 import {NgxUiLoaderService} from "ngx-ui-loader";
-import {LoginModalComponent} from "../components/login/login-modal/login-modal.component";
-import {BsModalService} from "ngx-bootstrap";
 import {ActivatedRoute} from "@angular/router";
+import {BsModalService} from "ngx-bootstrap/modal";
+import {LoginModalComponent} from "../components/login/login-modal/login-modal.component";
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class ErrorInterceptor implements HttpInterceptor {
 
   private isRefreshing = false;
@@ -21,8 +21,8 @@ export class ErrorInterceptor implements HttpInterceptor {
               private configService: ConfigService,
               private notificationService: NotificationService,
               private util: Util,
-              private ngxLoader: NgxUiLoaderService,
               private modalService: BsModalService,
+              private ngxLoader: NgxUiLoaderService,
               private activatedRoute: ActivatedRoute) {
   }
 
@@ -37,7 +37,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             this.authenticationService.logout();
             location.reload(true);
           } else {
-            if (!['login'].includes(this.activatedRoute.snapshot['_routerState'].url.split(";")[0].replace('/',''))) {
+            if (!['login'].includes(this.activatedRoute.snapshot['_routerState'].url.split(";")[0].replace('/', ''))) {
               this.showAuthModal();
             }
           }
@@ -52,14 +52,6 @@ export class ErrorInterceptor implements HttpInterceptor {
     }))
   }
 
-  showAuthModal() {
-    this.modalService.show(LoginModalComponent, {
-      class: 'modal-lg',
-      initialState: {
-        centered: true
-      }
-    });
-  }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
 
@@ -94,5 +86,14 @@ export class ErrorInterceptor implements HttpInterceptor {
           return next.handle(request);
         }));
     }
+  }
+
+  showAuthModal() {
+    this.modalService.show(LoginModalComponent, {
+      class: 'modal-md',
+      initialState: {
+        centered: true
+      }
+    });
   }
 }

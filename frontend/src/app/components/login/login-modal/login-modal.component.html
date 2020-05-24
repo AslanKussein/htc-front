@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h4 class="modal-title pull-left">Авторизация</h4>
   <button type="button" class="close pull-right" aria-label="Close">
-    <span aria-hidden="true" (click)="modalRef.hide()">&times;</span>
+    <span aria-hidden="true" (click)="close()">&times;</span>
   </button>
 </div>
 <div class="modal-body" [formGroup]="loginForm">
@@ -9,10 +9,10 @@
 
   <input type="text" class="form-control mb-4" placeholder="Логин"
          formControlName="username" [ngModel]="loginForm.username"/>
-
   <div class="input-group mb-3">
     <input type="password" class="form-control" placeholder="Пароль" #x aria-label="password"
            aria-describedby="basic-addon2" formControlName="password" [ngModel]="loginForm.password">
+
     <div class="input-group-append">
       <a class="input-group-text" id="basic-addon2" (click)="x.type=x.type=='password'?'text':'password'"><i
         aria-hidden="true" class="fa fa-eye"></i></a>

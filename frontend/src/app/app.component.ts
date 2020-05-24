@@ -4,6 +4,8 @@ import {language} from "../environments/language";
 import {NewDicService} from "./services/new.dic.service";
 import {DicService} from "./services/dic.service";
 import {Subscription} from "rxjs";
+import {BsLocaleService} from "ngx-bootstrap/datepicker";
+import {NgSelectConfig} from "@ng-select/ng-select";
 
 @Component({
   selector: 'app-root',
@@ -17,8 +19,13 @@ export class AppComponent implements OnDestroy {
 
   constructor(private dbService: NgxIndexedDBService,
               private newDicService: NewDicService,
-              private dicService: DicService) {
+              private dicService: DicService,
+              private localeService: BsLocaleService,
+              private config: NgSelectConfig,) {
     this.loadDictionary();
+    this.localeService.use('ru');
+    this.config.notFoundText = 'Данные не найдены';
+    // registerLocaleData(localeFr, 'ru-KZ');
   }
 
   getDicNameByLanguage() {

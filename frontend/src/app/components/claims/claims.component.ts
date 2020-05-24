@@ -1,16 +1,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {language} from '../../../environments/language';
 import {formatDate} from '@angular/common';
-import {defineLocale} from 'ngx-bootstrap/chronos';
-import {ruLocale} from 'ngx-bootstrap/locale';
-import {BsLocaleService} from 'ngx-bootstrap';
 import {ClaimService} from '../../services/claim.service';
 import {Dic} from '../../models/dic';
 import {Util} from '../../services/util';
-import {DatePeriod} from '../../models/common/datePeriod';
 import {NotificationService} from '../../services/notification.service';
 import {NgxUiLoaderService} from 'ngx-ui-loader';
 import {Subscription} from "rxjs";
+import {FormBuilder, Validators} from "@angular/forms";
+import {SearchCommon} from "../../models/common/search.common";
+import {Period} from "../../models/common/period";
 
 @Component({
   selector: 'app-claims',
@@ -21,28 +20,15 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   env = language;
   subscriptions: Subscription = new Subscription();
 
-  constructor(private localeService: BsLocaleService,
-              private claimService: ClaimService,
+  constructor(private claimService: ClaimService,
               private util: Util,
+              private formBuilder: FormBuilder,
               private notification: NotificationService,
               private ngxLoader: NgxUiLoaderService) {
-    defineLocale('ru', ruLocale);
-    this.localeService.use('ru');
   }
 
-  formData = {
-    typeId: null,
-    applicationStatuses: null,
-    crDateFrom: '',
-    crDateTo: '',
-    lastModifyDateFrom: '',
-    lastModifyDateTo: '',
-    lastCommentDateFrom: '',
-    lastCommentDateTo: '',
-    textSearch: null,
-    myClaim: false
-  };
-
+  applicationSearchForm: any;
+  searchCommon: SearchCommon;
   operationType: Dic[];
   appStatuses: Dic[];
   claimData = [];
@@ -52,22 +38,22 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   empty: boolean = false;
 
   clearForm() {
-    this.formData = {
-      typeId: null,
-      applicationStatuses: null,
-      crDateFrom: '',
-      crDateTo: '',
-      lastModifyDateFrom: '',
-      lastModifyDateTo: '',
-      lastCommentDateFrom: '',
-      lastCommentDateTo: '',
-      textSearch: null,
-      myClaim: false
-    };
+    this.applicationSearchForm.reset();
   }
 
   ngOnInit(): void {
-    this.ngxLoader.start();
+    this.applicationSearchForm = this.formBuilder.group({
+      operationTypeId: [null, Validators.nullValidator],
+      applicationStatusList: [null, Validators.nullValidator],
+      crDateFrom: [null, Validators.nullValidator],
+      crDateTo: [null, Validators.nullValidator],
+      lastModifyDateFrom: [null, Validators.nullValidator],
+      lastModifyDateTo: [null, Validators.nullValidator],
+      lastCommentDateFrom: [null, Validators.nullValidator],
+      lastCommentDateTo: [null, Validators.nullValidator],
+      text: [null, Validators.nullValidator],
+    });
+
     this.findClaims(1);
     this.util.getAllDic('OperationType').then(res => {
       this.operationType = res;
@@ -75,8 +61,6 @@ export class ClaimsComponent implements OnInit, OnDestroy {
     this.util.getAllDic('ApplicationStatus').then(res => {
       this.appStatuses = res;
     })
-
-    this.ngxLoader.stop();
   }
 
   pageChanged(event: any): void {
@@ -86,29 +70,20 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   }
 
   findClaims(pageNo: number) {
-    this.ngxLoader.start();
-    const searchFilter = {};
-
-    searchFilter['createDate'] = new DatePeriod(this.formData.crDateFrom, this.formData.crDateTo);
-    searchFilter['changeDate'] = new DatePeriod(this.formData.lastModifyDateFrom, this.formData.lastModifyDateTo);
-    searchFilter['commentDate'] = new DatePeriod(this.formData.lastCommentDateFrom, this.formData.lastCommentDateTo);
-
-    if (!this.util.isNullOrEmpty(this.formData.typeId)) {
-      searchFilter['operationTypeId'] = this.formData.typeId;
-    }
-    searchFilter["my"] = this.formData.myClaim;
-    if (!this.util.isNullOrEmpty(this.formData.applicationStatuses)) {
-      searchFilter['applicationStatusList'] = this.formData.applicationStatuses;
-    }
-
-    searchFilter['text'] = this.formData.textSearch;
+    this.ngxLoader.startBackground();
+    let searchFilter = {};
+    searchFilter['createDate'] = new Period(this.applicationSearchForm.value.crDateFrom, this.applicationSearchForm.value.crDateTo);
+    searchFilter['changeDate'] = new Period(this.applicationSearchForm.value.lastModifyDateFrom, this.applicationSearchForm.value.lastModifyDateTo);
+    searchFilter['commentDate'] = new Period(this.applicationSearchForm.value.lastCommentDateFrom, this.applicationSearchForm.value.lastCommentDateTo);
+    searchFilter['operationTypeId'] = this.applicationSearchForm.value.operationTypeId;
+    searchFilter['applicationStatusList'] = this.applicationSearchForm.value.applicationStatusList;
+    searchFilter['text'] = this.applicationSearchForm.value.text;
     searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = this.itemsPerPage;
     this.subscriptions.add(this.claimService.getClaims(searchFilter).subscribe(res => {
       if (res != null && res.data != null) {
-
         this.claimData = res.data.data.data;
         this.totalItems = res.data.total;
         this.currentPage = res.data.pageNumber + 1;
@@ -117,7 +92,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
         }
       }
     }));
-    this.ngxLoader.stop();
+    this.ngxLoader.stopBackground();
   }
 
   getDicNameByLanguage(claim: any, column: string) {

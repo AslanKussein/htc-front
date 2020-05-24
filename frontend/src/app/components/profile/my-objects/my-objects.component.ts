@@ -1,9 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ObjectService} from "../../../services/object.service";
 import {Util} from "../../../services/util";
-import {defineLocale} from "ngx-bootstrap/chronos";
-import {ruLocale} from "ngx-bootstrap/locale";
-import {BsLocaleService} from "ngx-bootstrap";
 import {NotificationService} from "../../../services/notification.service";
 import {Subscription} from "rxjs";
 
@@ -17,11 +14,8 @@ export class MyObjectsComponent implements OnInit, OnDestroy {
   subscriptions: Subscription = new Subscription();
 
   constructor(private objectService: ObjectService,
-              private localeService: BsLocaleService,
               private notifyService: NotificationService,
               private util: Util) {
-    defineLocale('ru', ruLocale);
-    this.localeService.use('ru');
   }
 
   ngOnInit(): void {

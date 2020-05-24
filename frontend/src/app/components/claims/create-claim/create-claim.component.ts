@@ -1,16 +1,12 @@
-import {ChangeDetectorRef, Component, Injectable, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Injectable, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ApplicationDto} from "../../../models/createClaim/applicationDto";
 import {Util} from "../../../services/util";
 import {NotificationService} from "../../../services/notification.service";
 import {FormBuilder, Validators} from "@angular/forms";
 import {ClaimService} from "../../../services/claim.service";
-import {NgSelectConfig} from "@ng-select/ng-select";
 import {UploaderService} from "../../../services/uploader.service";
 import {Dic} from "../../../models/dic";
 import {TranslateService} from "@ngx-translate/core";
-import {defineLocale} from "ngx-bootstrap/chronos";
-import {ruLocale} from "ngx-bootstrap/locale";
-import {BsLocaleService, BsModalRef, BsModalService} from "ngx-bootstrap";
 import {OwnerService} from "../../../services/owner.service";
 import {Observable, Subscription} from "rxjs";
 import {ComponentCanDeactivate} from "../../../helpers/canDeactivate/componentCanDeactivate";
@@ -19,7 +15,7 @@ import {ModalComponent} from "./modal.window/modal.component";
 import {RealPropertyDto} from "../../../models/createClaim/realPropertyDto";
 import {ClientDto} from "../../../models/createClaim/clientDto";
 import {PurchaseInfoDto} from "../../../models/createClaim/purchaseInfoDto";
-import {NumberPeriod} from "../../../models/common/numberPeriod";
+import {Period} from "../../../models/common/period";
 import {ActivatedRoute} from "@angular/router";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {RoleManagerService} from "../../../services/roleManager.service";
@@ -32,7 +28,8 @@ import {ContractDto} from "../../../models/createClaim/contractDto";
 import {BuildingDto} from "../../../models/createClaim/buildingDto";
 import {GeneralCharacteristicsDto} from "../../../models/createClaim/generalCharacteristicsDto";
 import {ApplicationSellDataDto} from "../../../models/createClaim/applicationSellDataDto";
-import { ModalChooseClaimComponent } from './modal.window.choose.claim/modal.choose.claim.component';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +41,7 @@ import { ModalChooseClaimComponent } from './modal.window.choose.claim/modal.cho
   providers: [YandexMapComponent]
 })
 export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnDestroy {
+  @ViewChild('modalContent', {static: true}) modalContent: TemplateRef<any>;
 
   cord: any;
   ddd: any;
@@ -91,6 +89,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   aboutMap: boolean = false;
   existsClient: boolean = false;
   edit: boolean = true;
+  firstStep: boolean = true;
   public parameters = {
     options: {
       provider: 'yandex#search'
@@ -105,15 +104,14 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     iconImageSize: [32, 32]
   };
   subscriptions: Subscription = new Subscription();
+  data: any;
 
   constructor(public util: Util,
               private notifyService: NotificationService,
               private formBuilder: FormBuilder,
               private claimService: ClaimService,
-              private config: NgSelectConfig,
               private uploader: UploaderService,
               private translate: TranslateService,
-              private localeService: BsLocaleService,
               private ownerService: OwnerService,
               private configService: ConfigService,
               private cdRef: ChangeDetectorRef,
@@ -122,10 +120,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
               private ngxLoader: NgxUiLoaderService,
               private roleManagerService: RoleManagerService,
               private userService: UserService,
+              private modal: NgbModal,
               private kazPostService: KazPostService) {
-    this.config.notFoundText = 'Данные не найдены';
-    defineLocale('ru', ruLocale);
-    this.localeService.use('ru');
     if (this.util.isNumeric(this.actRoute.snapshot.params.id)) {
       this.edit = false;
       this.saved = true;
@@ -141,7 +137,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.cord = [51.12, 71.43]
 
     this.modelMap = [];
-    this.ngxLoader.start();
+    this.ngxLoader.startBackground();
     this.getCheckOperationList();
     this.applicationForm = this.formBuilder.group({
       id: [null, Validators.nullValidator],
@@ -232,7 +228,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       agent: [null, Validators.nullValidator],
       latitude: [null, Validators.nullValidator],
       longitude: [null, Validators.nullValidator],
-      kazPost: [null, Validators.required],
+      postcode: [null, Validators.required],
       yearOfConstructionFrom: [null, Validators.nullValidator],
       yearOfConstructionTo: [null, Validators.nullValidator],
       apartmentsOnTheSiteFrom: [null, Validators.nullValidator],
@@ -244,7 +240,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     if (this.applicationId != null) {
       this.loadDataById(this.applicationId);
     } else {
-      this.ngxLoader.stop();
+      this.ngxLoader.stopBackground();
     }
     window.scrollTo(0, 0);
   }
@@ -320,7 +316,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   loadDataById(id: number) {
-    this.ngxLoader.start();
+    this.ngxLoader.startBackground();
 
     this.subscriptions.add(this.claimService.getClaimById(id).subscribe(data => {
       if (data != null) {
@@ -329,7 +325,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.searchByPhone(data.clientLogin);
         this.fillApplicationFormRealPropertyRequestDto(data.realPropertyRequestDto);
         this.cdRef.detectChanges();
-        this.ngxLoader.stop();
+        this.ngxLoader.stopBackground();
       }
     }));
   }
@@ -459,15 +455,19 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.applicationForm.landAreaTo = data?.landAreaPeriod?.to;
   }
 
+  fillCadastralNumber(data: string) {
+    let splited = data.split(':');
+    this.applicationForm.cadastralNumber = splited[0];
+    this.applicationForm.cadastralNumber1 = splited[1];
+    this.applicationForm.cadastralNumber2 = splited[2];
+    this.applicationForm.cadastralNumber3 = splited[3];
+  }
+
   fillApplicationFormRealPropertyRequestDto(data: any) {
     this.applicationForm.objectTypeId = this.util.getDictionaryValueById(this.objectType, data?.objectTypeId.toString());
     this.applicationForm.cityId = data?.cityId;
     if (!this.util.isNullOrEmpty(data?.cadastralNumber)) {
-      let splited = data.cadastralNumber.split(':');
-      this.applicationForm.cadastralNumber = splited[0];
-      this.applicationForm.cadastralNumber1 = splited[1];
-      this.applicationForm.cadastralNumber2 = splited[2];
-      this.applicationForm.cadastralNumber3 = splited[3];
+      this.fillCadastralNumber(data?.cadastralNumber);
     }
     if (!this.util.isNullOrEmpty(data?.residentialComplexId)) {
       this.applicationForm.residentialComplexId = this.util.getDictionaryValueById(this.residentialComplexes, data?.residentialComplexId);
@@ -643,33 +643,33 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.note,
       this.applicationForm.probabilityOfBidding,
       this.applicationForm.theSizeOfTrades,
-      new NumberPeriod(this.applicationForm?.objectPriceFrom, this.applicationForm?.objectPriceTo),
+      new Period(this.applicationForm?.objectPriceFrom, this.applicationForm?.objectPriceTo),
       this.applicationForm.possibleReasonForBiddingIdList
     )
   }
 
   fillPurchaseInfoDto() {
     return this.application.purchaseInfoDto = new PurchaseInfoDto(
-      new NumberPeriod(this.applicationForm.apartmentsOnTheSiteFrom, this.applicationForm.apartmentsOnTheSiteTo),
-      new NumberPeriod(this.applicationForm?.balconyAreaFrom, this.applicationForm?.balconyAreaTo),
-      new NumberPeriod(this.applicationForm?.ceilingHeightFrom, this.applicationForm?.ceilingHeightTo),
+      new Period(this.applicationForm.apartmentsOnTheSiteFrom, this.applicationForm.apartmentsOnTheSiteTo),
+      new Period(this.applicationForm?.balconyAreaFrom, this.applicationForm?.balconyAreaTo),
+      new Period(this.applicationForm?.ceilingHeightFrom, this.applicationForm?.ceilingHeightTo),
       this.applicationForm.concierge,
-      new NumberPeriod(this.applicationForm?.floorFrom, this.applicationForm?.floorTo),
+      new Period(this.applicationForm?.floorFrom, this.applicationForm?.floorTo),
       null,
-      new NumberPeriod(this.applicationForm?.kitchenAreaFrom, this.applicationForm?.kitchenAreaTo),
-      new NumberPeriod(this.applicationForm?.landAreaFrom, this.applicationForm?.landAreaTo),
-      new NumberPeriod(this.applicationForm?.livingAreaFrom, this.applicationForm?.livingAreaTo),
+      new Period(this.applicationForm?.kitchenAreaFrom, this.applicationForm?.kitchenAreaTo),
+      new Period(this.applicationForm?.landAreaFrom, this.applicationForm?.landAreaTo),
+      new Period(this.applicationForm?.livingAreaFrom, this.applicationForm?.livingAreaTo),
       this.applicationForm?.materialOfConstructionId,
-      new NumberPeriod(this.applicationForm?.numberOfBedroomsFrom, this.applicationForm?.numberOfBedroomsTo),
-      new NumberPeriod(this.applicationForm?.numberOfFloorsFrom, this.applicationForm?.numberOfFloorsTo),
-      new NumberPeriod(this.applicationForm?.numberOfRoomsFrom, this.applicationForm?.numberOfRoomsTo),
+      new Period(this.applicationForm?.numberOfBedroomsFrom, this.applicationForm?.numberOfBedroomsTo),
+      new Period(this.applicationForm?.numberOfFloorsFrom, this.applicationForm?.numberOfFloorsTo),
+      new Period(this.applicationForm?.numberOfRoomsFrom, this.applicationForm?.numberOfRoomsTo),
       this.applicationForm.parkingTypeIds,
       this.applicationForm.playground,
-      new NumberPeriod(this.applicationForm?.totalAreaFrom, this.applicationForm?.totalAreaTo),
+      new Period(this.applicationForm?.totalAreaFrom, this.applicationForm?.totalAreaTo),
       this.applicationForm.typeOfElevatorList,
       this.applicationForm.wheelchair,
       this.applicationForm.yardTypeId,
-      new NumberPeriod(this.applicationForm.yearOfConstructionFrom, this.applicationForm.yearOfConstructionTo)
+      new Period(this.applicationForm.yearOfConstructionFrom, this.applicationForm.yearOfConstructionTo)
     )
   }
 
@@ -780,12 +780,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   submit() {
-    this.ngxLoader.start();
+    this.ngxLoader.startBackground();
     this.validate();
     if (!this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber) && (this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber1) ||
       this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber2) || this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber3))) {
       this.notifyService.showError("Ошибка", "Длина поле кадастровый номер не верно");
-      this.ngxLoader.stop();
+      this.ngxLoader.stopBackground();
 
     }
 
@@ -974,6 +974,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   onLoad(event) {
+    if (!this.isBuy()) {
+      return;
+    }
     this.cord = event.event.get('coords')
     this.ddd.geometry.setCoordinates(this.cord);
     this.applicationForm.latitude = this.cord[0];
@@ -981,6 +984,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   onLoad2(event) {
+    if (!this.isBuy()) {
+      return;
+    }
     if (event.type == 'dragend') {
       this.cord = event.instance.geometry.getCoordinates();
       event.instance.geometry.setCoordinates(this.cord);
@@ -990,12 +996,18 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   onLoad3(event) {
+    if (!this.isBuy()) {
+      return;
+    }
     this.cord = event.instance.geometry.getCoordinates();
     event.instance.geometry.setCoordinates(this.cord);
     this.ddd = event.instance;
   }
 
   onControlLoad(event) {
+    if (!this.isBuy()) {
+      return;
+    }
     this.modelMap = event;
   }
 
@@ -1005,10 +1017,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.cdRef.detectChanges();
   }
 
-  // onScrollEnd() {
-  //   this.apiPage = this.apiPage + 40;
-  //   this.searchDataPost(this.apiParam, this.apiPage);
-  // }
+  onScrollEnd() {
+    this.apiPage = this.apiPage + 40;
+    this.searchDataPost(this.apiParam, this.apiPage);
+  }
 
   getDataKzPost(event) {
     if (!this.util.isNullOrEmpty(event?.term)) {
@@ -1027,19 +1039,79 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     }))
   }
 
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+  onSuccess() {
+    this.fillRealPropertyFromKazPostId(this.data.realPropertyDto);
+  }
+
+  fillRealPropertyFromKazPostId(data) {
+    this.applicationForm.apartmentNumber = data?.apartmentNumber;
+    this.applicationForm.atelier = data?.atelier;
+    this.applicationForm.balconyArea = data?.balconyArea;
+    this.fillCadastralNumber(data?.cadastralNumber);
+    this.applicationForm.floor = data?.floor;
+    this.applicationForm.floor = data?.floor;
+    this.applicationForm.heatingSystemId = data?.heatingSystemId;
+    this.applicationForm.kitchenArea = data?.kitchenArea;
+    this.applicationForm.landArea = data?.landArea;
+    this.applicationForm.livingArea = data?.livingArea;
+    this.applicationForm.numberOfBedrooms = data?.numberOfBedrooms;
+    this.applicationForm.numberOfRooms = data?.numberOfRooms;
+    this.applicationForm.separateBathroom = data?.separateBathroom;
+    this.applicationForm.sewerageId = data?.sewerageId;
+    this.applicationForm.totalArea = data?.totalArea;
+    let buildingDto = data?.buildingDto;
+    if (!this.util.isNullOrEmpty(buildingDto)) {
+      this.applicationForm.cityId = buildingDto.cityId;
+      this.applicationForm.districtId = buildingDto.districtId;
+      this.applicationForm.houseNumber = buildingDto.houseNumber;
+      this.applicationForm.houseNumberFraction = buildingDto.houseNumberFraction;
+      this.applicationForm.latitude = buildingDto.latitude;
+      this.applicationForm.longitude = buildingDto.longitude;
+      this.applicationForm.postcode = buildingDto.postcode;
+      this.applicationForm.streetId = buildingDto.streetId;
+    }
+    let generalCharacteristicsDto = data?.generalCharacteristicsDto;
+    if (!this.util.isNullOrEmpty(generalCharacteristicsDto)) {
+      this.applicationForm.apartmentsOnTheSite = generalCharacteristicsDto.apartmentsOnTheSite;
+      this.applicationForm.ceilingHeight = generalCharacteristicsDto.ceilingHeight;
+      this.applicationForm.concierge = generalCharacteristicsDto.concierge;
+      this.applicationForm.houseConditionId = generalCharacteristicsDto.houseConditionId;
+      this.applicationForm.housingClass = generalCharacteristicsDto.housingClass;
+      this.applicationForm.materialOfConstructionId = generalCharacteristicsDto.materialOfConstructionId;
+      this.applicationForm.numberOfApartments = generalCharacteristicsDto.numberOfApartments;
+      this.applicationForm.numberOfFloors = generalCharacteristicsDto.numberOfFloors;
+      this.applicationForm.parkingTypeIds = generalCharacteristicsDto.parkingTypeIds;
+      this.applicationForm.playground = generalCharacteristicsDto.playground;
+      this.applicationForm.propertyDeveloperId = generalCharacteristicsDto.propertyDeveloperId;
+      this.applicationForm.typeOfElevatorList = generalCharacteristicsDto.typeOfElevatorList;
+      this.applicationForm.wheelchair = generalCharacteristicsDto.wheelchair;
+      this.applicationForm.yardTypeId = generalCharacteristicsDto.yardTypeId;
+      this.applicationForm.yearOfConstruction = generalCharacteristicsDto.yearOfConstruction;
+    }
+    this.cdRef.detectChanges();
   }
 
   showModalChooseClaim() {
-    this.modalRef = this.modalService.show(ModalChooseClaimComponent, {
-      class: 'modal-xl',
-      initialState: {
-        title: 'Просмотр',
-        apartmentNumber: 75,
-        kazPostId: '01100100',
-        centered: true
+    if (!this.isBuy()) {
+      return;
+    }
+    let objNumber = this.util.nvl(this.applicationForm.houseNumber, this.applicationForm.apartmentNumber);
+    let postcode = this.util.nvl('01100100', this.applicationForm.postcode);
+    setTimeout(() => {
+      if (!this.util.isNullOrEmpty(objNumber) && !this.util.isNullOrEmpty(postcode)) {
+        this.subscriptions.add(
+          this.claimService.getApartmentByNumberAndPostcode(objNumber, postcode).subscribe(res => {
+            if (!this.util.isNullOrEmpty(res)) {
+              this.data = res;
+              this.modal.open(this.modalContent, {size: 'lg'});
+            }
+          })
+        );
       }
-    });
+    }, 1000);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }
