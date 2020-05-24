@@ -378,21 +378,15 @@
                           <input type="text" id="clientId" class="form-control"
                                  [(ngModel)]="applicationForm.clientId"
                                  formControlName="clientId" [readOnly]="true"
-                                 placeholder="{{'claim.clientID' | translate}}"
-                                 (ngModelChange)="searchByClientId()"/>
+                                 placeholder="{{'claim.clientID' | translate}}"/>
                         </div>
                         <div class="col-sm"
                              [hidden]="util.hasShowClientGroup('VIEW_CLIENT_DATA', roles) && util.hasShowClientGroup('UPDATE_CLIENT_DATA', roles)">
-                          <label for="email" translate>claim.email
-                            <span class="text-danger" *ngIf="!applicationForm.email">&nbsp;*</span>
-                          </label>
+                          <label for="email" translate>claim.email</label>
                           <input type="text" id="email" class="form-control" [(ngModel)]="applicationForm.email"
                                  placeholder="{{'claim.email' | translate}}"
                                  [readOnly]="util.hasShowClientGroup('UPDATE_CLIENT_DATA', roles)"
                                  formControlName="email"/>
-                          <div *ngIf="f.email.touched && f.email.invalid" class="text-danger">
-                            <div *ngIf="f.email.errors.pattern" translate>Введите корректные данные</div>
-                          </div>
                         </div>
                       </div>
                       <div class="row"
@@ -460,9 +454,9 @@
                               </label>
                               <ng-select
                                 [items]="kazPost"
-                                [(ngModel)]="applicationForm.kazPost"
+                                [(ngModel)]="applicationForm.postcode"
                                 (search)="getDataKzPost($event)"
-                                (ngModelChange)="showModalChooseClaim();"
+                                (ngModelChange)="checkPostData();"
                                 (autocomplete)="'true'"
                                 (clear)="'true'"
                                 formControlName="postcode"
@@ -473,7 +467,7 @@
                               </div>
                             </div>
                             <div class="col-sm-6"
-                                 *ngIf="isBuy() && applicationForm.objectTypeId?.code == '003002'">
+                                 *ngIf="isBuy() && isHouse()">
                               <label for="patronymic" translate>claim.numberHouse
                                 <span class="text-danger" *ngIf="!applicationForm.houseNumber">&nbsp;*</span>
                               </label>
@@ -504,7 +498,7 @@
                             </div>
                             <div class="col-sm-6"
                                  [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)">
-                              <div *ngIf="isBuy() && applicationForm.objectTypeId?.code == '003001'">
+                              <div *ngIf="isBuy() && isApartment()">
                                 <label translate>Номер квартиры</label>
                                 <div class="input-group">
                                   <input type="number" min="1" class="form-control"
@@ -564,7 +558,7 @@
                             </div>
                             <div class="col-sm"
                                  [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
-                                 *ngIf="applicationForm.objectTypeId?.code=='003001' && isBuy()">
+                                 *ngIf="isApartment() && isBuy()">
                               <label for="patronymic" translate>claim.building</label>
                               <ng-select
                                 [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
@@ -665,7 +659,7 @@
                               util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles) &&
                               util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                               util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
-                              <div class="col-sm" *ngIf="applicationForm.objectTypeId?.code == '003001'">
+                              <div class="col-sm" *ngIf="isApartment()">
                                 <label>Этаж</label>
                                 <div class="input-group" *ngIf="isSell()"
                                      [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
@@ -694,7 +688,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm" *ngIf="applicationForm.objectTypeId?.code=='003002'">
+                            <div class="col-sm" *ngIf="isHouse()">
                               <label for="patronymic" translate>claim.validator.landArea
                                 <span class="text-danger" *ngIf="!applicationForm.landArea">&nbsp;*</span>
                               </label>
@@ -826,7 +820,7 @@
                                            formControlName="kitchenArea" min="0"/>
                                   </div>
                                   <div class="col-sm"
-                                       *ngIf="isSell() && applicationForm.objectTypeId?.code=='003001'">
+                                       *ngIf="isSell() && isApartment()">
                                     <label translate>claim.balcony</label>
                                     <div class="input-group"
                                          [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
@@ -845,7 +839,7 @@
                                     </div>
                                   </div>
                                   <div class="col-sm"
-                                       *ngIf="!isSell() && applicationForm.objectTypeId?.code=='003001'">
+                                       *ngIf="!isSell() && isApartment()">
                                     <label for="balconyArea" translate>claim.balcony </label>
                                     <input type="text" id="balconyArea" class="form-control"
                                            [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
@@ -856,7 +850,7 @@
                                            formControlName="balconyArea" min="0"/>
                                   </div>
                                   <div class="col-sm"
-                                       *ngIf="isSell() && applicationForm.objectTypeId?.code=='003001'">
+                                       *ngIf="isSell() && isApartment()">
                                     <label translate>claim.heightWall</label>
                                     <div class="input-group"
                                          [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
@@ -875,7 +869,7 @@
                                     </div>
                                   </div>
                                   <div class="col-sm"
-                                       *ngIf="!isSell() && applicationForm.objectTypeId?.code=='003001'">
+                                       *ngIf="!isSell() && isApartment()">
                                     <label for="ceilingHeight" translate>claim.heightWall</label>
                                     <input type="text" id="ceilingHeight" class="form-control"
                                            [(ngModel)]="applicationForm.ceilingHeight" maxlength="10"
@@ -887,7 +881,7 @@
                                   </div>
                                 </div>
 
-                                <div class="row" *ngIf="applicationForm.objectTypeId?.code=='003001'">
+                                <div class="row" *ngIf="isApartment()">
                                   <div class="col-sm" *ngIf="isSell()">
                                     <label translate>claim.badRoomCount</label>
                                     <div class="input-group"
@@ -1013,7 +1007,7 @@
                                       </div>
                                     </div>
                                   </div>
-                                  <div class="col-sm" *ngIf="applicationForm.objectTypeId?.code=='003001'">
+                                  <div class="col-sm" *ngIf="isApartment()">
                                     <label for="apartmentsOnTheSite" translate>claim.appInFlat</label>
                                     <input type="number" id="apartmentsOnTheSite" class="form-control" *ngIf="isBuy()"
                                            [(ngModel)]="applicationForm.apartmentsOnTheSite"
@@ -1044,7 +1038,7 @@
                                    [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                    util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)">
                                 <div class="col-sm"
-                                     *ngIf="applicationForm.objectTypeId?.code=='003001' && isBuy()">
+                                     *ngIf="isApartment() && isBuy()">
                                   <label class="control-labels">Застройщик</label>
                                   <ng-select
                                     [readonly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
@@ -1056,7 +1050,7 @@
                                   </ng-select>
                                 </div>
                                 <div class="col-sm"
-                                     *ngIf="applicationForm.objectTypeId?.code=='003001' && isBuy()">
+                                     *ngIf="isApartment() && isBuy()">
                                   <label class="control-labels" for="housingClass">Класс жилья</label>
                                   <input type="text" id="housingClass" class="form-control" maxlength="20"
                                          [(ngModel)]="applicationForm.housingClass"
@@ -1074,7 +1068,7 @@
                                     placeholder="Состояние">
                                   </ng-select>
                                 </div>
-                                <div class="col-sm" *ngIf="this.applicationForm?.objectTypeId?.code == '003002'">
+                                <div class="col-sm" *ngIf="isHouse()">
                                   <label class="control-labels">Канализация</label>
                                   <ng-select
                                     [items]="sewerageSystems"
@@ -1084,7 +1078,7 @@
                                     placeholder="Канализация">
                                   </ng-select>
                                 </div>
-                                <div class="col-sm" *ngIf="this.applicationForm?.objectTypeId?.code == '003002'">
+                                <div class="col-sm" *ngIf="isHouse()">
                                   <label class="control-labels">Отопление</label>
                                   <ng-select
                                     [items]="heatingSystems"
@@ -1095,7 +1089,7 @@
                                   </ng-select>
                                 </div>
                                 <div class="col-sm"
-                                     *ngIf="applicationForm.objectTypeId?.code=='003001' && isBuy()">
+                                     *ngIf="isApartment() && isBuy()">
                                   <label class="control-labels">Кол-во кв</label>
                                   <input type="number" id="numberOfApartments" class="form-control"
                                          [(ngModel)]="applicationForm.numberOfApartments"
@@ -1144,7 +1138,7 @@
                                            formControlName="yearOfConstructionTo"/>
                                   </div>
                                 </div>
-                                <div class="col-sm" *ngIf="applicationForm.objectTypeId?.code=='003001'">
+                                <div class="col-sm" *ngIf="isApartment()">
                                   <label class="control-labels" translate>claim.lift</label>
                                   <ng-select
                                     [items]="elevatorType"
@@ -1165,7 +1159,7 @@
                             util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles) &&
                             util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                             util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
-                            <div class="row" *ngIf="applicationForm.objectTypeId?.code=='003001'">
+                            <div class="row" *ngIf="isApartment()">
                               <fieldset class="scheduler-border col-sm-11">
                                 <legend class="scheduler-border" translate>claim.porch</legend>
                                 <div class="row">
@@ -1196,7 +1190,7 @@
                                 </div>
                               </fieldset>
                             </div>
-                            <div class="row" *ngIf="applicationForm.objectTypeId?.code=='003001'">
+                            <div class="row" *ngIf="isApartment()">
                               <fieldset class="scheduler-border col-sm-11">
                                 <legend class="scheduler-border" translate>claim.territory</legend>
                                 <div class="row">
