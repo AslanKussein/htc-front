@@ -365,7 +365,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   setResidenceComplexType() {
-    console.log(this.applicationForm.residentialComplexId)
+    if (this.applicationId && !this.edit) return;
     this.readonlyChooseJK = !this.util.isNullOrEmpty(this.applicationForm.residentialComplexId);
     this.applicationForm.streetId = this.util.nvl(this.applicationForm.residentialComplexId?.streetId, null);//Улица
     this.applicationForm.houseNumber = this.util.nvl(this.applicationForm.residentialComplexId?.houseNumber, null);//Номер дома
@@ -413,6 +413,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   fillApplicationForm(data: any) {
     this.applicationForm.operationTypeId = this.util.getDictionaryValueById(this.operationType, data?.operationTypeId);
     this.applicationForm.objectTypeId = this.util.getDictionaryValueById(this.objectType, data?.objectTypeId);
+    this.setPossibleReasonForBidding();
     this.applicationForm.agent = data?.agent;
     if (!this.util.isNullOrEmpty(data?.purchaseDataDto)) {
       this.applicationForm.cityId = data?.purchaseDataDto?.cityId;
@@ -423,7 +424,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.theSizeOfTrades = data?.purchaseDataDto?.theSizeOfTrades;
       this.applicationForm.objectPriceFrom = data?.purchaseDataDto?.objectPricePeriod?.from;
       this.applicationForm.objectPriceTo = data?.purchaseDataDto?.objectPricePeriod?.to;
-      this.setPossibleReasonForBidding();
       setTimeout(() => {
         this.applicationForm.possibleReasonForBiddingIdList = this.util.nvl(data?.purchaseDataDto?.possibleReasonForBiddingIdList, null);
       }, 1000);
@@ -513,11 +513,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.sharedOwnershipProperty = this.util.toString(data?.sellDataDto?.sharedOwnershipProperty);
       this.applicationForm.note = data?.sellDataDto?.note;
       this.applicationForm.objectPrice = data?.sellDataDto?.objectPrice;
-      this.setPossibleReasonForBidding();
       setTimeout(() => {
         this.applicationForm.possibleReasonForBiddingIdList = this.util.nvl(data?.sellDataDto?.possibleReasonForBiddingIdList, null);
       }, 1000);
-      this.applicationForm.probabilityOfBidding = data?.sellDataDto?.probabilityOfBidding;
+      this.applicationForm.probabilityOfBidding = this.util.toString(data?.sellDataDto?.probabilityOfBidding);
       this.applicationForm.theSizeOfTrades = data?.sellDataDto?.theSizeOfTrades;
       if (!this.util.isNullOrEmpty(data?.sellDataDto?.photoIdList)) {
         for (const ph of data?.sellDataDto.photoIdList) {
