@@ -15,7 +15,7 @@ export class ApplicationDto implements BaseEntity {
     public clientLogin?: string,//Модель сущности Клиент
     public agent?: string,//Логин агента, на кого назначена заявка
     public contractDto?: ContractDto,//Идентификационные данные сделки
-    public applicationPurchaseDataDto?: ApplicationPurchaseDataDto,//Общая информация о сделке покупки объекта
+    public purchaseDataDto?: ApplicationPurchaseDataDto,//Общая информация о сделке покупки объекта
     public objectTypeId?: number,//ID типа объекта
     public purchaseInfoDto?: PurchaseInfoDto,//Общая информация об объекте покупки
     public realPropertyDto?: RealPropertyDto,//Модель сущности недвижимости

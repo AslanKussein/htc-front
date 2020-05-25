@@ -88,7 +88,6 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
           obj['disabledDev'] = true
           this.eventsData.push(obj)
         }
-        console.log(this.eventsData)
         this.totalItems = res.data.total;
         this.currentPage = res.data.pageNumber + 1;
       }

@@ -234,7 +234,7 @@ export class Util {
     return this.dbService.getAll(code);
   }
 
-  getDicById(code: string, val: any) {
+  addDicById(code: string, val: any) {
     this.dbService.getByKey(code, val.id).then(
       data => {
         if (this.isNullOrEmpty(data)) {
@@ -248,17 +248,7 @@ export class Util {
   }
 
   addDic(code: string, data: any) {
-    this.dbService.add(code, {
-      value: data?.id,
-      label: data?.nameRu
-    }).then(
-      () => {
-       console.log('added')
-      },
-      error => {
-        console.log(error);
-      }
-    );
+    this.dbService.add(code, {value: data?.id, label: data?.nameRu}).then();
   }
 
   toSelectArrayPost(data) {
