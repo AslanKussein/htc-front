@@ -128,7 +128,6 @@ export class DicControlComponent implements OnInit, OnDestroy {
         nameKz: '',
       },
       parentId: null,
-
     };
     this.formRes = {
       apartmentsOnTheSite: '',
@@ -375,7 +374,6 @@ export class DicControlComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    console.log(this.actions, this.dicName)
     if (this.actions == 'ADD') {
       if (this.dicName == 'residential-complexes') {
         console.log(this.formRes)
@@ -487,7 +485,6 @@ export class DicControlComponent implements OnInit, OnDestroy {
   closeModal() {
     this.modalRef2.hide();
     this.modalRef.hide();
-
     this.clearForm();
   }
 
