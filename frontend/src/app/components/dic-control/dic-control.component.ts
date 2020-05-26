@@ -5,7 +5,6 @@ import {Util} from "../../services/util";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {defineLocale} from "ngx-bootstrap/chronos";
-import {BsLocaleService} from "ngx-bootstrap";
 import {NotificationService} from "../../services/notification.service";
 import {User} from "../../models/users";
 import {AuthenticationService} from "../../services/authentication.service";
@@ -54,15 +53,12 @@ export class DicControlComponent implements OnInit, OnDestroy {
 
   constructor(private util: Util,
               private modalService: BsModalService,
-              private localeService: BsLocaleService,
               private notifyService: NotificationService,
               private authenticationService: AuthenticationService,
               private dicService: DicService,
               private newDicService: NewDicService,
               private ngxLoader: NgxUiLoaderService,
               private kazPostService: KazPostService) {
-    defineLocale('ru', ruLocale);
-    this.localeService.use('ru');
     this.subscriptions.add(this.authenticationService.currentUser.subscribe(x => this.currentUser = x));
     if (this.currentUser.roles != null) {
       this.adminRoles = false;
