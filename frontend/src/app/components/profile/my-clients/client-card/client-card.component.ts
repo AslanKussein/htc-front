@@ -31,7 +31,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
   totalItems = 0;
   itemsPerPage = 30;
   currentPage = 1;
-  clientId: number;
+  clientId: string;
   gender: string;
   agentRoles: boolean;
   rgRoles: boolean;
@@ -49,7 +49,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
               private actRoute: ActivatedRoute,
               private util: Util) {
     this.subscriptions.add(this.authenticationService.currentUser.subscribe(x => this.currentUser = x));
-    this.clientId = this.actRoute.snapshot.params.id;
+    this.clientId = this.actRoute.snapshot.params.id.slice(1, 11);
 
     if (this.currentUser.roles != null) {
       this.agentRoles = false;
@@ -149,7 +149,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
     return formatDate(claim.creationDate, 'dd.MM.yyyy HH:mm', 'en-US');
   }
 
-  getClientById(id: number) {
+  getClientById(id: string) {
     this.ngxLoader.start();
     this.subscriptions.add(this.clientsService.getClientById(id).subscribe(res => {
       if (res != null) {
@@ -187,6 +187,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
       this.notifyService.showError('Пожалуйста, заполните все поля', "");
       return;
     }
+    this.formClient.phoneNumber=this.clientId;
     this.subscriptions.add(this.clientsService.updateClientById(this.formClient).subscribe(data => {
       if (data != null) {
 
@@ -205,7 +206,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
         this.modalRef.hide();
       }
     }, err => {
-      this.notifyService.showError('warning', err.message.ru);
+      this.notifyService.showError('warning', err.message);
       this.modalRef.hide();
 
     }));
@@ -254,32 +255,30 @@ export class ClientCardComponent implements OnInit, OnDestroy {
   }
 
   onFileChanged(event) {
-    if (this.clientFiles.length > 9) {
-      this.notifyService.showWarning('Количество загружаемых файлов не более 10 шт.', 'Внимание!');
-      return;
-    }
-    if (this.clientFiles.length > 0) {
-      console.log(this.clientFiles)
-      const len = this.clientFiles.length;
-      this.size = 0;
-      if (len > 0) {
-        for (let i = 0; i < len; i++) {
-          this.size = this.size + this.clientFiles[i].size;
-          if (this.clientFiles.length == i + 1) {
-            this.size = this.size + event.target.files[0].size;
-            if (this.size > 20971520) {
-              this.notifyService.showWarning('Общий размер прикрепляемых файлов должен быть не более 20 Мб.', 'Внимание!');
-              return;
+    if(this.clientFiles!=null){
+      if (this.clientFiles.length > 9) {
+        this.notifyService.showWarning('Количество загружаемых файлов не более 10 шт.', 'Внимание!');
+        return;
+      }
+      if (this.clientFiles.length > 0) {
+        console.log(this.clientFiles)
+        const len = this.clientFiles.length;
+        this.size = 0;
+        if (len > 0) {
+          for (let i = 0; i < len; i++) {
+            this.size = this.size + this.clientFiles[i].size;
+            if (this.clientFiles.length == i + 1) {
+              this.size = this.size + event.target.files[0].size;
+              if (this.size > 20971520) {
+                this.notifyService.showWarning('Общий размер прикрепляемых файлов должен быть не более 20 Мб.', 'Внимание!');
+                return;
 
+              }
             }
           }
         }
       }
-
-
     }
-
-
     this.ngxLoader.start();
     this.selectedFile = event.target.files[0];
     this.subscriptions.add(this.uploader.uploadData(this.selectedFile)

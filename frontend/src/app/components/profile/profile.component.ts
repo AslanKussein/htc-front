@@ -50,7 +50,7 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate, OnDestr
   }
 
   ngOnInit(): void {
-    this.ngxLoader.start();
+    // this.ngxLoader.start();
     this.profile = new ProfileDto();
     this.getProfile();
     this.save = false;

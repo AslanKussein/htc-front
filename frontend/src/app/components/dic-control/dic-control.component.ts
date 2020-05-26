@@ -3,12 +3,17 @@ import {DicService} from "../../services/dic.service";
 import {Dic} from "../../models/dic";
 import {Util} from "../../services/util";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
+import {ruLocale} from "ngx-bootstrap/locale";
+import {defineLocale} from "ngx-bootstrap/chronos";
+import {BsLocaleService} from "ngx-bootstrap";
 import {NotificationService} from "../../services/notification.service";
 import {User} from "../../models/users";
 import {AuthenticationService} from "../../services/authentication.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {HttpParams} from "@angular/common/http";
 import {Subscription} from "rxjs";
+import {KazPostService} from "../../services/kaz.post.service";
+import {NewDicService} from "../../services/new.dic.service";
 
 @Component({
   selector: 'app-dic-control',
@@ -25,7 +30,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
   streets: Dic[];
   propertyDevelopers: Dic[];
   materialsOfConstruction: Dic[];
-  residentialComplexes: Dic[];
+  residentialComplexes: any;
   typeOfElevator: Dic[];
   parkingTypes: Dic[];
   yardTypes: Dic[];
@@ -41,13 +46,23 @@ export class DicControlComponent implements OnInit, OnDestroy {
   itemsPerPage = 30;
   currentPage = 1;
   subscriptions: Subscription = new Subscription();
+  kazPost: any;
+  apiParam: string;
+  apiPage: number = 0;
+  postCode: string;
+  postcode: any;
 
   constructor(private util: Util,
               private modalService: BsModalService,
+              private localeService: BsLocaleService,
               private notifyService: NotificationService,
               private authenticationService: AuthenticationService,
               private dicService: DicService,
-              private ngxLoader: NgxUiLoaderService) {
+              private newDicService: NewDicService,
+              private ngxLoader: NgxUiLoaderService,
+              private kazPostService: KazPostService) {
+    defineLocale('ru', ruLocale);
+    this.localeService.use('ru');
     this.subscriptions.add(this.authenticationService.currentUser.subscribe(x => this.currentUser = x));
     if (this.currentUser.roles != null) {
       this.adminRoles = false;
@@ -63,25 +78,29 @@ export class DicControlComponent implements OnInit, OnDestroy {
 
   formRes = {
     apartmentsOnTheSite: '',
+    buildingDto: {
+      cityId: null,
+      districtId: null,
+      houseNumber: null,
+      houseNumberFraction: '',
+      latitude: null,
+      longitude: null,
+      postcode: '',
+      streetId: null,
+    },
     ceilingHeight: null,
-    cityId: null,
     concierge: false,
-    districtId: null,
     houseName: '',
-    houseNumber: null,
-    houseNumberFraction: '',
     housingClass: '',
-    housingCondition: '',
+    housingConditionId: null,
     materialOfConstructionId: null,
     numberOfApartments: 0,
     numberOfEntrances: 0,
     numberOfFloors: 0,
     playground: false,
     propertyDeveloperId: null,
-    streetId: 0,
     typeOfElevatorIdList: [],
     parkingTypeIds: [],
-
     wheelchair: false,
     yardTypeId: null,
     countryId: null,
@@ -90,12 +109,12 @@ export class DicControlComponent implements OnInit, OnDestroy {
 
   formData = {
     code: '',
-    multiLang:{
+    multiLang: {
       nameEn: '',
       nameRu: '',
       nameKz: '',
     },
-    parentId:null,
+    parentId: null,
 
   };
 
@@ -103,33 +122,37 @@ export class DicControlComponent implements OnInit, OnDestroy {
   clearForm() {
     this.formData = {
       code: '',
-      multiLang:{
+      multiLang: {
         nameEn: '',
         nameRu: '',
         nameKz: '',
       },
-      parentId:null,
+      parentId: null,
 
     };
-
     this.formRes = {
       apartmentsOnTheSite: '',
+      "buildingDto": {
+        cityId: null,
+        districtId: null,
+        houseNumber: null,
+        houseNumberFraction: '',
+        latitude: null,
+        longitude: null,
+        postcode: '',
+        streetId: null,
+      },
       ceilingHeight: null,
-      cityId: null,
       concierge: false,
-      districtId: null,
       houseName: '',
-      houseNumber: null,
-      houseNumberFraction: '',
       housingClass: '',
-      housingCondition: '',
+      housingConditionId: null,
       materialOfConstructionId: null,
       numberOfApartments: 0,
       numberOfEntrances: 0,
       numberOfFloors: 0,
       playground: false,
       propertyDeveloperId: null,
-      streetId: 0,
       typeOfElevatorIdList: [],
       parkingTypeIds: [],
       wheelchair: false,
@@ -238,7 +261,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(this.dicService.getResidentialComplexesPageable(params).subscribe(res => {
       if (res != null && res.data != null) {
-        this.residentialComplexes = this.util.toSelectArrayResidenceComplex(res.data.data);
+        this.residentialComplexes = res.data.data;
         this.totalItems = res.total;
         this.currentPage = res.pageNumber + 1;
       }
@@ -263,13 +286,13 @@ export class DicControlComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(event: any): void {
-    if(this.dicName=='residential-complexes'){
+    if (this.dicName == 'residential-complexes') {
       if (this.currentPage !== event.page) {
         this.loadResidenceComplex(event.page);
       }
-    }else{
+    } else {
       if (this.currentPage !== event.page) {
-        this.loadDicPageableByDicName(this.dicName,event.page);
+        this.loadDicPageableByDicName(this.dicName, event.page);
       }
     }
 
@@ -288,7 +311,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
     } else {
       if (this.dicName == 'residential-complexes') {
 
-        this.subscriptions.add(this.dicService.getResidentialComplexesById(this.clickColumnDic.id).subscribe(data => {
+        this.subscriptions.add(this.newDicService.getResidentialComplexesByPostcode(this.clickColumnDic.buildingDto?.postcode).subscribe(data => {
             if (data != null) {
               this.formRes = data;
             }
@@ -356,7 +379,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
     if (this.actions == 'ADD') {
       if (this.dicName == 'residential-complexes') {
         console.log(this.formRes)
-        if (this.util.isNullOrEmpty(this.formRes.cityId) || this.util.isNullOrEmpty(this.formRes.streetId) || this.util.isNullOrEmpty(this.formRes.houseNumber)) {
+        if (this.util.isNullOrEmpty(this.formRes.buildingDto.cityId) || this.util.isNullOrEmpty(this.formRes.buildingDto.streetId) || this.util.isNullOrEmpty(this.formRes.buildingDto.houseNumber)) {
           this.notifyService.showError('Пожалуйста, заполните все поля', "");
           return;
         }
@@ -404,7 +427,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
       }
     } else {
       if (this.dicName == 'residential-complexes') {
-        if (this.util.isNullOrEmpty(this.formRes.cityId) || this.util.isNullOrEmpty(this.formRes.streetId) || this.util.isNullOrEmpty(this.formRes.houseNumber)) {
+        if (this.util.isNullOrEmpty(this.formRes.buildingDto.cityId) || this.util.isNullOrEmpty(this.formRes.buildingDto.streetId) || this.util.isNullOrEmpty(this.formRes.buildingDto.houseNumber)) {
           this.notifyService.showError('Пожалуйста, заполните все поля', "");
           return;
         }
@@ -455,7 +478,6 @@ export class DicControlComponent implements OnInit, OnDestroy {
   clickTr(obj) {
     this.editOrDelete = true;
     this.clickColumnDic = obj;
-    console.log(this.clickColumnDic)
   }
 
   openModal2(template: TemplateRef<any>) {
@@ -472,4 +494,51 @@ export class DicControlComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
+
+  getDataKzPost(event) {
+    if (!this.util.isNullOrEmpty(event?.term)) {
+      if (this.util.length(event.term) > 3) {
+        this.apiParam = event.term;
+        this.searchDataPost(this.apiParam, this.apiPage);
+
+      }
+    }
+  }
+
+  searchDataPost(val: string, page: number) {
+    this.subscriptions.add(this.kazPostService.getDataPost(val, page).subscribe(res => {
+      this.kazPost = this.util.toSelectArrayPost(res.data)
+      this.kazPost = [...this.kazPost, this.util.toSelectArrayPost(res.data)];
+    }))
+  }
+
+  checkPostData() {
+
+    if (!this.util.isNullOrEmpty(this.postcode?.fullAddress)) {
+      this.ngxLoader.start();
+
+      this.subscriptions.add(this.kazPostService.checkPostData(this.postcode?.fullAddress).subscribe(res => {
+        this.formRes.buildingDto.postcode = this.postcode?.value;
+        this.util.addDicById('Street', res.street);
+        this.util.addDicById('District', res.district);
+        this.util.addDicById('City', res.city);
+        let interval;
+        let timeLeft: number = 1;
+        interval = setInterval(() => {
+          if (timeLeft > 0) {
+            timeLeft--;
+          } else {
+            this.loadDictionary();
+            this.formRes.buildingDto.cityId = res.city.id;
+            this.formRes.buildingDto.districtId = res.district.id;
+            this.formRes.buildingDto.streetId = res.street.id;
+            this.ngxLoader.stop();
+
+          }
+        }, 1000)
+
+      }));
+    }
+  }
+
 }

@@ -53,7 +53,7 @@ export class MyObjectsComponent implements OnInit, OnDestroy {
   }
 
   getImgUrl(obj: any) {
-    if (!this.util.isNullOrEmpty(obj.photos.PHOTO)) {
+    if (!this.util.isNullOrEmpty(obj.photos)&&!this.util.isNullOrEmpty(obj.photos.PHOTO)) {
       return this.util.generatorPreviewUrl(obj.photos.PHOTO[0])
     }
     return null;
@@ -61,13 +61,13 @@ export class MyObjectsComponent implements OnInit, OnDestroy {
 
   getCountFoto(obj: any) {
     let s;
-    if (!this.util.isNullOrEmpty(obj.PHOTO)) {
+    if (!this.util.isNullOrEmpty(obj)&&!this.util.isNullOrEmpty(obj.PHOTO)) {
       s = obj.PHOTO.length + '/'
     }
-    if (!this.util.isNullOrEmpty(obj.HOUSING_PLAN)) {
+    if (!this.util.isNullOrEmpty(obj)&&!this.util.isNullOrEmpty(obj.HOUSING_PLAN)) {
       s = s + obj.HOUSING_PLAN.length + '/'
     }
-    if (!this.util.isNullOrEmpty(obj.VIRTUAL_TOUR)) {
+    if (!this.util.isNullOrEmpty(obj)&&!this.util.isNullOrEmpty(obj.VIRTUAL_TOUR)) {
       s = s + obj.VIRTUAL_TOUR.length
     }
     return s;
