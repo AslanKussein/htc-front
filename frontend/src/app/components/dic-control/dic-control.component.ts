@@ -13,6 +13,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {HttpParams} from "@angular/common/http";
 import {Subscription} from "rxjs";
 import {KazPostService} from "../../services/kaz.post.service";
+import {NewDicService} from "../../services/new.dic.service";
 
 @Component({
   selector: 'app-dic-control',
@@ -57,6 +58,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
               private notifyService: NotificationService,
               private authenticationService: AuthenticationService,
               private dicService: DicService,
+              private newDicService: NewDicService,
               private ngxLoader: NgxUiLoaderService,
               private kazPostService: KazPostService) {
     defineLocale('ru', ruLocale);
@@ -309,7 +311,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
     } else {
       if (this.dicName == 'residential-complexes') {
 
-        this.subscriptions.add(this.dicService.getResidentialComplexesById(this.clickColumnDic.id).subscribe(data => {
+        this.subscriptions.add(this.newDicService.getResidentialComplexesByPostcode(this.clickColumnDic.buildingDto?.postcode).subscribe(data => {
             if (data != null) {
               this.formRes = data;
             }
@@ -476,7 +478,6 @@ export class DicControlComponent implements OnInit, OnDestroy {
   clickTr(obj) {
     this.editOrDelete = true;
     this.clickColumnDic = obj;
-    console.log(this.clickColumnDic)
   }
 
   openModal2(template: TemplateRef<any>) {
