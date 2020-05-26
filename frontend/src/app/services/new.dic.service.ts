@@ -143,7 +143,7 @@ export class NewDicService {
   }
 
   public getResidentialComplexesByPostcode(postcode: string): Observable<any> {
-    return this.http.get(`${this.configService.apiDataManagerUrl}/api/residential-complexes/` + postcode, {})
+    return this.http.get(`${this.configService.apiDataManagerUrl}/api/residential-complexes/byPostcode/` + postcode, {})
       .pipe(
         tap(),
         catchError(NewDicService.handleError)
