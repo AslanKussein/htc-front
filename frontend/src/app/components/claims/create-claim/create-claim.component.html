@@ -451,25 +451,55 @@
                         <fieldset class="scheduler-border col-sm">
                           <legend class="scheduler-border" translate>Унификация объекта</legend>
                           <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm">
+                              <div class="row">
+                                <div class="col-sm text-center">
+                                  <input type="radio" id="address" value="address" class="custom-control-input"
+                                         [(ngModel)]="applicationForm.unification" formControlName="unification">
+                                  <label class="custom-control-label" for="address">По полному адресу</label>
+                                </div>
+                                <div class="col-sm float-left">
+                                  <input type="radio" id="residence" value="residence"
+                                         class="custom-control-input"
+                                         [(ngModel)]="applicationForm.unification" formControlName="unification">
+                                  <label class="custom-control-label" for="residence">ЖК</label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-6" *ngIf="this.applicationForm.unification == 'address'">
                               <label for="patronymic">Полный адрес
                                 <span class="text-danger" *ngIf="!applicationForm.postcode">&nbsp;*</span>
                               </label>
                               <ng-select
                                 [items]="kazPost"
+                                [searchFn]="customSearchFn"
                                 [(ngModel)]="applicationForm.postcode"
                                 (search)="getDataKzPost($event)"
                                 (ngModelChange)="checkPostData();"
-                                (autocomplete)="'true'"
                                 (clear)="'true'"
                                 formControlName="postcode"
                                 placeholder="{{'Полный адрес' | translate }}">
                               </ng-select>
-                              <div *ngIf="f.postcode.touched && f.postcode.invalid" class="text-danger">
+                              <div *ngIf="f.postcode.touched && f.postcode.invalid || !f.unification.valid" class="text-danger">
                                 <div *ngIf="f.postcode.errors.required" translate>claim.requiredField</div>
                               </div>
                             </div>
-                            <div class="col-sm-6"
+                            <div class="col-sm"
+                                 [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
+                                 *ngIf="isApartment() && isBuy() && this.applicationForm.unification == 'residence'">
+                              <label for="patronymic" translate>claim.building</label>
+                              <ng-select
+                                [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                [items]="residentialComplexes"
+                                [(ngModel)]="applicationForm.residentialComplexId"
+                                (ngModelChange)="setResidenceComplexType()"
+                                formControlName="residentialComplexId"
+                                placeholder="{{ 'claim.building' | translate }}">
+                              </ng-select>
+                            </div>
+                            <div class="col-sm"
                                  *ngIf="isBuy() && isHouse()">
                               <label for="patronymic" translate>claim.numberHouse
                                 <span class="text-danger" *ngIf="!applicationForm.houseNumber">&nbsp;*</span>
@@ -499,7 +529,7 @@
                                 <div *ngIf="f.houseNumber.errors.required" translate>claim.requiredField</div>
                               </div>
                             </div>
-                            <div class="col-sm-6"
+                            <div class="col-sm"
                                  [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)">
                               <div *ngIf="isBuy() && isApartment()">
                                 <label translate>Номер квартиры</label>
@@ -558,19 +588,6 @@
                               <div *ngIf="f.streetId.touched && f.streetId.invalid" class="text-danger">
                                 <div *ngIf="f.streetId.errors.required" translate>claim.requiredField</div>
                               </div>
-                            </div>
-                            <div class="col-sm"
-                                 [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
-                                 *ngIf="isApartment() && isBuy()">
-                              <label for="patronymic" translate>claim.building</label>
-                              <ng-select
-                                [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
-                                [items]="residentialComplexes"
-                                [(ngModel)]="applicationForm.residentialComplexId"
-                                (ngModelChange)="setResidenceComplexType()"
-                                formControlName="residentialComplexId"
-                                placeholder="{{ 'claim.building' | translate }}">
-                              </ng-select>
                             </div>
                           </div>
                           <div class="row">
@@ -1486,6 +1503,7 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-sm">
+        <h5 *ngIf="data.applicationByRealPropertyDtoList?.length > 3">Установлено ограничение создания не более 3 заявок по одному объекту недвижимости. Данный объект находится в работе у следующих агентов</h5>
         <table class="table table-bordered table-sm">
           <thead class="text-center">
           <tr>
@@ -1509,6 +1527,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" (click)="close()" class="btn btn-outline-secondary btn2">Отмена</button>
-    <button type="button" (click)="onSuccess();close()" class="btn btn-outline-primary btn2">Ok</button>
+    <button type="button" *ngIf="data.applicationByRealPropertyDtoList?.length < 4" (click)="onSuccess();close()" class="btn btn-outline-primary btn2">Ok</button>
   </div>
 </ng-template>

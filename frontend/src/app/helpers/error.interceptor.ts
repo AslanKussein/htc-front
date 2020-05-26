@@ -43,7 +43,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           }
         }
       }
-      if (err.status != 400 && !this.util.isNullOrEmpty(err.error.message.ru)) {
+      if (err.status != 400 && !this.util.isNullOrEmpty(err.error.message?.ru)) {
         this.notificationService.showInfo('Информация', err.error.message[this.util.getError()])
       }
 

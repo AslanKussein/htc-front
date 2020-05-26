@@ -130,7 +130,7 @@ export class Util {
       for (let i = 0; i < len; i++) {
 
         list.push({
-          value: '' + data[i]['id'],
+          value: data[i]['id'],
           id: data[i]['id'],
           label: data[i]['houseName'],
           countryId: data[i]['countryId'],
