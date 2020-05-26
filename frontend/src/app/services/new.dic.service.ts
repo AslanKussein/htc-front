@@ -142,6 +142,14 @@ export class NewDicService {
       );
   }
 
+  public getResidentialComplexesByPostcode(postcode: string): Observable<any> {
+    return this.http.get(`${this.configService.apiDataManagerUrl}/api/residential-complexes/` + postcode, {})
+      .pipe(
+        tap(),
+        catchError(NewDicService.handleError)
+      );
+  }
+
   private static handleError(error: HttpErrorResponse) {
     return throwError(
       error);
