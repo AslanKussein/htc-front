@@ -25,7 +25,7 @@ export class UploaderService {
 
   public getHeadersById(guid): Observable<any> {
     console.log(guid)
-    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/download/` + guid, {
+    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/api/download/` + guid, {
       observe: 'response'
     })
       .pipe(
@@ -41,7 +41,7 @@ export class UploaderService {
   }
 
   public getFileInfoUsingGET(guid): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/info/` + guid, {})
+    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/api/info/` + guid, {})
       .pipe(
         tap(),
       );

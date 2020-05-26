@@ -19,11 +19,11 @@
       </thead>
       <tbody style="cursor: pointer">
       <tr *ngFor="let client of clientsData;let i = index">
-        <td><a [routerLink]="['/client-card/', client?.clientId]">{{client.clientId}}</a></td>
+        <td><a [routerLink]="['/client-card/', client?.phoneNumber]">{{client.clientId}}</a></td>
         <td>{{client.fullname}}</td>
         <td>{{client.phoneNumber}}</td>
-        <td>{{client.target[getDicNameByLanguage()]}}</td>
-        <td>{{client.status[getDicNameByLanguage()]}}</td>
+        <td>{{client.target?.nameRu}}</td>
+        <td>{{client.status?.nameRu}}</td>
       </tr>
       </tbody>
     </table>

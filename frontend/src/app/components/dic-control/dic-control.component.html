@@ -308,6 +308,22 @@
           <!--</ng-select>-->
           <!--</div>-->
           <div class="col-sm" *ngIf="resident">
+
+              <label>Полный адрес
+                <span class="text-danger">&nbsp;*</span>
+              </label>
+              <ng-select
+                [items]="kazPost"
+                [(ngModel)]="postcode"
+                (search)="getDataKzPost($event)"
+                (ngModelChange)="checkPostData();"
+                (autocomplete)="'true'"
+                (clear)="'true'"
+                placeholder="{{'Полный адрес' | translate }}">
+              </ng-select>
+
+          </div>
+          <div class="col-sm" *ngIf="resident">
             <label class="col-sm col-form-label">Город<span class="text-danger">&nbsp;*</span></label>
             <ng-select
               required="true"

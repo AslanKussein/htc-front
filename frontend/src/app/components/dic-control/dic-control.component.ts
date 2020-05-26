@@ -48,6 +48,8 @@ export class DicControlComponent implements OnInit, OnDestroy {
   kazPost: any;
   apiParam: string;
   apiPage: number = 0;
+  postCode: string;
+  postcode: any;
 
   constructor(private util: Util,
               private modalService: BsModalService,
@@ -500,4 +502,17 @@ export class DicControlComponent implements OnInit, OnDestroy {
       this.kazPost = [...this.kazPost, this.util.toSelectArrayPost(res.data)];
     }))
   }
+
+  checkPostData() {
+
+    if (!this.util.isNullOrEmpty(this.postcode?.fullAddress)) {
+      this.subscriptions.add(this.kazPostService.checkPostData(this.postcode?.fullAddress).subscribe(res => {
+        this.postCode = this.postcode?.value;
+        // this.util.getDicById('Street', res.streetList)
+        // this.util.getDicById('District', res.districtList)
+        // this.util.getDicById('City', res.cityList)
+      }));
+    }
+  }getClientList
+
 }

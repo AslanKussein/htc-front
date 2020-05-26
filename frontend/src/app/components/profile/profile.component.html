@@ -10,8 +10,8 @@
       <br/>
       <div class="row">
         <div class="col-sm">
-          <img [src]="getSrcImg(profile?.photoUuid)" class="avatar img-circle img-thumbnail"
-               alt="avatar">
+          <!--<img [src]="getSrcImg(profile?.photoUuid)" class="avatar img-circle img-thumbnail"-->
+               <!--alt="avatar">-->
           <a *ngIf="!save" (click)="editProfile()"><i style="color: blue" class="fa fa-edit fa-2x"></i></a>
           <a *ngIf="save" (click)="saveProfile()"><i style="color: blue" class="fa fa-save fa-2x"></i></a>
           <br>

@@ -42,14 +42,15 @@ export class MyClientsComponent implements OnInit, OnDestroy {
     let searchFilter = {};
     searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
-    searchFilter['my'] = true;
+    // searchFilter['my'] = true;
     searchFilter['text'] = this.text;
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = this.itemsPerPage;
     this.subscriptions.add(this.clientsService.getClientList(searchFilter).subscribe(res => {
+      console.log(res)
         this.clientsData = res.data.data.data;
-        this.totalItems = res.data.total;
-        this.currentPage = res.data.pageNumber + 1;
+      this.totalItems = res.data.total;
+      this.currentPage = res.data.pageNumber + 1;
       if(res.data.data.size==0){
         this.notifyService.showInfo('Ничего не найдено!', 'Внимание');
       }
