@@ -59,14 +59,16 @@ export class Util {
       const len = data.data.length;
       if (len > 0) {
         for (let i = 0; i < len; i++) {
+          let count = this.isNullOrEmpty(data.data[i]['applicationCount']) ? 0 : data.data[i]['applicationCount'];
           list.push({
-            value: '' + data.data[i][idField],
-            label: data.data[i]['surname']?.toUpperCase() + ' ' + data.data[i]['name']?.toUpperCase() + ' (' + this.isNullOrEmpty(data.data[i]['applicationCount']) ? 0 : data.data[i]['applicationCount'] + ')',
-            applicationCount: data.data[i]['applicationCount']
+            value: data.data[i][idField],
+            label: data.data[i]['surname']?.toUpperCase().concat(' ', data.data[i]['name']?.toUpperCase(), ' (', count, ')'),
+            applicationCount: count
           });
         }
       }
     }
+
     return list;
   }
 
