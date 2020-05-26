@@ -191,12 +191,12 @@ export class Util {
   }
 
   generatorPreviewUrl(uuid: string) {
-    return `${this.configService.apiFileManagerUrl}` + '/api/download/' + uuid + '/preview?access_token=' + this.getCurrentUser().access_token;
+    return `${this.configService.apiFileManagerUrl}` + '/open-api/download/' + uuid + '/preview';
   }
 
   generatorFullUrl(uuid: string) {
-    return `${this.configService.apiFileManagerUrl}` + '/api/download/' + uuid + '?access_token=' + this.getCurrentUser().access_token;
-  }
+    return `${this.configService.apiFileManagerUrl}` + '/open-api/download/' + uuid;
+}
 
   isNumeric(val: any): val is number | string {
     // parseFloat NaNs numeric-cast false positives (null|true|false|"")
@@ -235,8 +235,10 @@ export class Util {
   }
 
   addDicById(code: string, val: any) {
+    console.log(val)
     this.dbService.getByKey(code, val.id).then(
       data => {
+        console.log(22)
         if (this.isNullOrEmpty(data)) {
           this.addDic(code, val)
         }
