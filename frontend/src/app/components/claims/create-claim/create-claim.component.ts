@@ -324,7 +324,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.heatingSystems = res;
     })
     this.subscriptions.add(this.userService.getAgentsToAssign().subscribe(obj => {
-      this.agentList = this.util.toSelectArrayRoles(obj.data, 'login');
+      this.agentList = this.util.toSelectArrayRoles(obj.data.data, 'login');
     }));
   }
 
