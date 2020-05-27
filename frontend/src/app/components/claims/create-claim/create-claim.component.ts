@@ -8,7 +8,7 @@ import {UploaderService} from "../../../services/uploader.service";
 import {Dic} from "../../../models/dic";
 import {TranslateService} from "@ngx-translate/core";
 import {OwnerService} from "../../../services/owner.service";
-import {Observable, Subscription} from "rxjs";
+import {Observable, Subject, Subscription} from "rxjs";
 import {ComponentCanDeactivate} from "../../../helpers/canDeactivate/componentCanDeactivate";
 import {ConfigService} from "../../../services/config.service";
 import {ModalComponent} from "./modal.window/modal.component";
@@ -30,7 +30,6 @@ import {GeneralCharacteristicsDto} from "../../../models/createClaim/generalChar
 import {ApplicationSellDataDto} from "../../../models/createClaim/applicationSellDataDto";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
-import {error} from "@angular/compiler/src/util";
 import {NewDicService} from "../../../services/new.dic.service";
 
 @Injectable({
@@ -91,7 +90,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   aboutMap: boolean = false;
   existsClient: boolean = false;
   edit: boolean = true;
-  firstStep: boolean = true;
   public parameters = {
     options: {
       provider: 'yandex#search'
@@ -108,6 +106,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   subscriptions: Subscription = new Subscription();
   data: any;
   postCode: string;
+  private subject: Subject<string> = new Subject();
 
   constructor(public util: Util,
               private notifyService: NotificationService,
@@ -131,6 +130,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.saved = true;
       this.applicationId = Number(this.actRoute.snapshot.params.id);
     }
+
   }
 
   get f() {
@@ -237,7 +237,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       yearOfConstructionTo: [null, Validators.nullValidator],
       apartmentsOnTheSiteFrom: [null, Validators.nullValidator],
       apartmentsOnTheSiteTo: [null, Validators.nullValidator],
-      unification: [null, Validators.required],
+      unification: [null, this.applicationId ? Validators.nullValidator : Validators.required],
     });
     this.cdRef.detectChanges();
     this.loadDictionary();
@@ -750,21 +750,33 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   fillSellDataDto() {
+    let photoList = [];
+    this.photoList.forEach(photo => {
+      photoList.push(photo.guid);
+    })
+    let photoPlanList = [];
+    this.photoPlanList.forEach(photo => {
+      photoPlanList.push(photo.guid);
+    })
+    let photo3DList = [];
+    this.photo3DList.forEach(photo => {
+      photo3DList.push(photo.guid);
+    })
     return this.application.sellDataDto = new ApplicationSellDataDto(
       this.applicationForm.description, // описание
       this.applicationForm.encumbrance,
       this.applicationForm.exchange,
-      this.photoPlanList,
+      photoPlanList,
       null,
       this.applicationForm.mortgage,
       this.applicationForm.note,
       this.applicationForm.objectPrice,
-      this.photoList,
+      photoList,
       this.applicationForm.possibleReasonForBiddingIdList,
       this.applicationForm.probabilityOfBidding,
       this.applicationForm.sharedOwnershipProperty,
       this.applicationForm.theSizeOfTrades,
-      this.photo3DList
+      photo3DList
     )
   }
 
@@ -784,7 +796,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   createClientIfNotPresent(clientLogin: string) {
-    if (!this.existsClient) {
+    if (!this.existsClient && !this.applicationId) {
       this.createClient()
     }
     this.application.clientLogin = clientLogin;
@@ -1040,14 +1052,17 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.searchDataPost(this.apiParam, this.apiPage);
   }
 
-  getDataKzPost(event) {
-    if (!this.util.isNullOrEmpty(event?.term)) {
-      if (this.util.length(event.term) > 3) {
-        this.apiParam = event.term;
-        this.searchDataPost(this.apiParam, this.apiPage);
+  timer: any;
 
+  getDataKzPost(event) {
+    clearTimeout(this.timer);
+    let me = this;
+    this.timer = setTimeout(function () {
+      if (!me.util.isNullOrEmpty(event)) {
+        me.apiParam = event.term;
+        me.searchDataPost(me.apiParam, me.apiPage);
       }
-    }
+    }, 300);
   }
 
   searchDataPost(val: string, page: number) {

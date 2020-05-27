@@ -274,16 +274,6 @@
                                       maxlength="1000"></textarea>
                           </div>
                         </div>
-                        <div class="row"
-                             [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)">
-                          <div class="col-sm">
-                            <label translate>Описание</label>
-                            <textarea rows="1" class="col-sm-12 control"
-                                      [(ngModel)]="applicationForm.description" formControlName="description"
-                                      maxlength="1000"></textarea>
-                          </div>
-                        </div>
-                        <br/>
                         <br/>
                         <br/>
                       </div>
@@ -475,7 +465,6 @@
                               <ng-select
                                 [items]="kazPost"
                                 [searchFn]="customSearchFn"
-                                [(ngModel)]="applicationForm.postcode"
                                 (search)="getDataKzPost($event)"
                                 (ngModelChange)="checkPostData();"
                                 (clear)="'true'"
@@ -543,6 +532,7 @@
                                 </div>
                               </div>
                             </div>
+                            <div class="col-sm-1"></div>
                           </div>
                         </fieldset>
                       </div>
@@ -1253,6 +1243,15 @@
                                   </div>
                                 </div>
                               </fieldset>
+                            </div>
+                            <div class="row mb-4"
+                                 [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_OBJECT_INFO', roles)">
+                              <div class="col-sm" *ngIf="isApartment() && isBuy()">
+                                <label translate>Описание</label>
+                                <textarea rows="1" class="col-sm-12 control"
+                                          [(ngModel)]="applicationForm.description" formControlName="description"
+                                          maxlength="1000"></textarea>
+                              </div>
                             </div>
                           </div>
                         </div>
