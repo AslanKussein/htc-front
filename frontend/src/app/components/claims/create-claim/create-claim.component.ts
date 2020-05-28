@@ -510,7 +510,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     clearTimeout(this.timer)
     let me = this;
     this.timer = setTimeout(function () {
-      me.searchByPhone(this.applicationForm.phoneNumber);
+      me.searchByPhone(me.applicationForm.phoneNumber);
     }, 800);
   }
 
