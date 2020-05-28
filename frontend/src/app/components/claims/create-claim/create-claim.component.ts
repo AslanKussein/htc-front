@@ -985,36 +985,34 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       return;
     }
 
-    setTimeout(() => {
-      this.fillApplication();
+    this.fillApplication();
 
-      console.log(this.application)
+    console.log(this.application)
 
-      if (this.applicationId != null) {
-        this.subscriptions.add(this.claimService.updateClaim(this.applicationId, this.application)
-          .subscribe(data => {
-            if (data != null) {
-              this.notifyService.showSuccess('success', 'Успешно обновлено');
-            }
-          }, err => {
-            this.ngxLoader.stopBackground();
-            this.notifyService.showWarning('warning', err);
-          }));
-      } else {
-        this.subscriptions.add(this.claimService.saveClaim(this.application)
-          .subscribe(data => {
-            if (data != null) {
-              this.saved = true;
-              this.util.dnHref('claims')
-              this.notifyService.showSuccess('success', 'Успешно сохранено');
-            }
-          }, err => {
-            this.ngxLoader.stopBackground();
-            this.notifyService.showWarning('warning', err);
-          }));
-      }
-      this.ngxLoader.stopBackground();
-    }, 1000);
+    if (this.applicationId != null) {
+      this.subscriptions.add(this.claimService.updateClaim(this.applicationId, this.application)
+        .subscribe(data => {
+          if (data != null) {
+            this.notifyService.showSuccess('success', 'Успешно обновлено');
+          }
+        }, err => {
+          this.ngxLoader.stopBackground();
+          this.notifyService.showWarning('warning', err);
+        }));
+    } else {
+      this.subscriptions.add(this.claimService.saveClaim(this.application)
+        .subscribe(data => {
+          if (data != null) {
+            this.saved = true;
+            this.util.dnHref('claims')
+            this.notifyService.showSuccess('success', 'Успешно сохранено');
+          }
+        }, err => {
+          this.ngxLoader.stopBackground();
+          this.notifyService.showWarning('warning', err);
+        }));
+    }
+    this.ngxLoader.stopBackground();
   }
 
   cancel() {
