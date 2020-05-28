@@ -272,14 +272,6 @@
           </button>
         </div>
         <div class="modal-body">
-          <!--<div class="col-sm" *ngIf="!resident">-->
-            <!--<label class="col-sm col-form-label">Код<span class="text-danger">&nbsp;*</span></label>-->
-            <!--<input type="text" class="col-sm form-control" name="Username"-->
-                   <!--[(ngModel)]="formData.code">-->
-            <!--<div *ngIf="!formData.code" class="text-danger">-->
-              <!--<div *ngIf="!formData.code" translate>claim.requiredField</div>-->
-            <!--</div>-->
-          <!--</div>-->
           <div class="col-sm" *ngIf="!resident">
             <label class="col-sm col-form-label">nameEn<span class="text-danger">&nbsp;*</span></label>
             <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formData.multiLang.nameEn">
@@ -296,17 +288,6 @@
             <label class="col-sm col-form-label">nameKz<span class="text-danger">&nbsp;*</span></label>
             <input type="text" class="col-sm form-control" name="nameKz" [(ngModel)]="formData.multiLang.nameKz">
           </div>
-
-          <!--ЖК начало-->
-          <!--<div class="col-sm" *ngIf="resident">-->
-          <!--<label class="col-sm col-form-label">Страна<span class="text-danger">&nbsp;*</span></label>-->
-          <!--<ng-select-->
-          <!--bindValue="value"-->
-          <!--bindLabel="label"-->
-          <!--[items]="countries"-->
-          <!--[(ngModel)]="formRes.countryId">-->
-          <!--</ng-select>-->
-          <!--</div>-->
           <div class="col-sm" *ngIf="resident">
 
               <label>Полный адрес
@@ -327,6 +308,7 @@
             <label class="col-sm col-form-label">Город<span class="text-danger">&nbsp;*</span></label>
             <ng-select
               required="true"
+              disabled="true"
               bindValue="value"
               bindLabel="label"
               [items]="cities"
@@ -339,6 +321,7 @@
           <div class="col-sm" *ngIf="resident">
             <label class="col-sm col-form-label">Район</label>
             <ng-select
+              disabled="true"
               bindValue="value"
               bindLabel="label"
               [items]="districts"
@@ -348,6 +331,7 @@
           <div class="col-sm" *ngIf="resident">
             <label class="col-sm col-form-label">Улица<span class="text-danger">&nbsp;*</span></label>
             <ng-select
+              disabled="true"
               required="true"
               bindValue="value"
               bindLabel="label"
@@ -360,7 +344,7 @@
           </div>
           <div class="col-sm" *ngIf="resident">
             <label class="col-sm col-form-label">Номер здания (дома)<span class="text-danger">&nbsp;*</span></label>
-            <input type="text"  maxlength="3"  min="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+            <input type="text"   disabled="true"
                    value=${var} class="col-sm form-control" name="houseNumber"   required="true"
                    [(ngModel)]="formRes.buildingDto.houseNumber">
             <div *ngIf="!formRes.buildingDto.houseNumber" class="text-danger">

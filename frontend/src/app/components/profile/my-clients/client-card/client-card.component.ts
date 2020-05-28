@@ -62,6 +62,8 @@ export class ClientCardComponent implements OnInit, OnDestroy {
           this.rgRoles = true;
         }
       }
+      this.rgRoles = true;
+
     }
   }
 
@@ -361,5 +363,16 @@ export class ClientCardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  clearPhone(obj){
+
+    const len = this.formClient.clientPhoneNumbersDtoList.length;
+    if (len > 0) {
+      for (let i = 0; i < len; i++) {
+        if(this.formClient.clientPhoneNumbersDtoList[i]==obj){
+          this.formClient.clientPhoneNumbersDtoList[i].phoneNumber="";
+        }
+      }}
   }
 }

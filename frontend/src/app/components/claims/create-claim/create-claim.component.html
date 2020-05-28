@@ -549,15 +549,23 @@
                               <label for="patronymic" translate>Город
                                 <span class="text-danger" *ngIf="!applicationForm.cityId">&nbsp;*</span>
                               </label>
-                              <ng-select
-                                [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
-                                [items]="city"
-                                [(ngModel)]="applicationForm.cityId"
-                                formControlName="cityId"
-                                [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles))"
-                                bindValue="value"
-                                placeholder="{{ 'claim.city' | translate }}">
-                              </ng-select>
+                              <div class="row">
+                                <div class="col-sm-10">
+                                  <ng-select
+                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                    [items]="city"
+                                    [(ngModel)]="applicationForm.cityId"
+                                    formControlName="cityId"
+                                    [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles))"
+                                    bindValue="value"
+                                    placeholder="{{ 'claim.city' | translate }}">
+                                  </ng-select>
+                                </div>
+                                <div class="col-sm-2">
+                                  <a (click)="openModal(template,'City');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
+                                </div>
+                              </div>
+
                               <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">
                                 <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>
                               </div>
@@ -568,18 +576,47 @@
                               <label for="patronymic" translate>claim.street
                                 <span class="text-danger" *ngIf="!applicationForm.streetId">&nbsp;*</span>
                               </label>
-                              <ng-select
-                                [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
-                                bindValue="value"
-                                [items]="streets"
-                                [(ngModel)]="applicationForm.streetId"
-                                formControlName="streetId"
-                                [readonly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
-                                placeholder="{{ 'claim.street' | translate }}">
-                              </ng-select>
+                              <div class="row">
+                                <div class="col-sm-10">
+                                  <ng-select
+                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                    bindValue="value"
+                                    [items]="streets"
+                                    [(ngModel)]="applicationForm.streetId"
+                                    formControlName="streetId"
+                                    [readonly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                    placeholder="{{ 'claim.street' | translate }}">
+                                  </ng-select>
+                                </div>
+                                <div class="col-sm-2">
+                                  <a (click)="openModal(template,'Street');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
+                                </div>
+                              </div>
+
                               <div *ngIf="f.streetId.touched && f.streetId.invalid" class="text-danger">
                                 <div *ngIf="f.streetId.errors.required" translate>claim.requiredField</div>
                               </div>
+                            </div>
+                            <div class="col-sm"
+                                 [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
+                                 *ngIf="isApartment() && isBuy()">
+                              <label for="patronymic" translate>claim.building</label>
+                              <div class="row">
+                                <div class="col-sm-10">
+                                  <ng-select
+                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                    [items]="residentialComplexes"
+                                    [(ngModel)]="applicationForm.residentialComplexId"
+                                    (ngModelChange)="setResidenceComplexType()"
+                                    formControlName="residentialComplexId"
+                                    placeholder="{{ 'claim.building' | translate }}">
+                                  </ng-select>
+                                </div>
+                                <div class="col-sm-2">
+                                  <a (click)="openModal(template,'residential-complexes');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
+                                </div>
+                              </div>
+
                             </div>
                           </div>
                           <div class="row">
@@ -976,15 +1013,24 @@
                                     <label class="control-labels" translate>claim.validator.districtId
                                       <span class="text-danger" *ngIf="!applicationForm.districtId">&nbsp;*</span>
                                     </label>
-                                    <ng-select
-                                      [items]="districts"
-                                      bindValue="value"
-                                      [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                    <div class="row">
+                                      <div class="col-sm-10">
+                                        <ng-select
+                                          [items]="districts"
+                                          bindValue="value"
+                                          [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                       util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
-                                      [(ngModel)]="applicationForm.districtId"
-                                      formControlName="districtId"
-                                      placeholder="{{ 'claim.validator.districtId' | translate }}">
-                                    </ng-select>
+                                          [(ngModel)]="applicationForm.districtId"
+                                          formControlName="districtId"
+                                          placeholder="{{ 'claim.validator.districtId' | translate }}">
+                                        </ng-select>
+                                      </div>
+                                      <div class="col-sm-2">
+                                        <a (click)="openModal(template,'District');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
+                                      </div>
+                                    </div>
+
+
                                     <div *ngIf="f.districtId.touched && f.districtId.invalid" class="text-danger">
                                       <div *ngIf="f.districtId.errors.required" translate>claim.requiredField</div>
                                     </div>
@@ -1208,16 +1254,25 @@
                                 <div class="row">
                                   <div class="col-sm">
                                     <label class="control-labels" translate>claim.parking</label>
-                                    <ng-select
-                                      [items]="parkingTypes"
-                                      [multiple]="true"
-                                      [(ngModel)]="applicationForm.parkingTypeIds"
-                                      [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                    <div class="row">
+                                      <div class="col-sm-10">
+                                        <ng-select
+                                          [items]="parkingTypes"
+                                          [multiple]="true"
+                                          [(ngModel)]="applicationForm.parkingTypeIds"
+                                          [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                       util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
-                                      bindValue="value"
-                                      formControlName="parkingTypeIds"
-                                      placeholder="{{ 'claim.parking' | translate }}">
-                                    </ng-select>
+                                          bindValue="value"
+                                          formControlName="parkingTypeIds"
+                                          placeholder="{{ 'claim.parking' | translate }}">
+                                        </ng-select>
+                                      </div>
+                                      <div class="col-sm-2">
+                                        <a (click)="openModal(template,'ParkingType');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
+                                      </div>
+                                    </div>
+
+
                                   </div>
                                   <div class="col-sm">
                                     <label class="control-labels" translate>claim.yard</label>
@@ -1504,7 +1559,6 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-sm">
-        <h5 *ngIf="data.applicationByRealPropertyDtoList?.length > 3">Установлено ограничение создания не более 3 заявок по одному объекту недвижимости. Данный объект находится в работе у следующих агентов</h5>
         <table class="table table-bordered table-sm">
           <thead class="text-center">
           <tr>
@@ -1528,6 +1582,241 @@
   </div>
   <div class="modal-footer">
     <button type="button" (click)="close()" class="btn btn-outline-secondary btn2">Отмена</button>
-    <button type="button" *ngIf="data.applicationByRealPropertyDtoList?.length < 4" (click)="onSuccess();close()" class="btn btn-outline-primary btn2">Ok</button>
+    <button type="button" (click)="onSuccess();close()" class="btn btn-outline-primary btn2">Ok</button>
+  </div>
+</ng-template>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Добавление новой записи в справочник</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="openModal2(template3)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="col-sm" *ngIf="!resident">
+      <label class="col-sm col-form-label">nameEn<span class="text-danger">&nbsp;*</span></label>
+      <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formData.multiLang.nameEn">
+    </div>
+    <div class="col-sm" *ngIf="!resident">
+      <label class="col-sm col-form-label">nameRu<span
+        class="text-danger">&nbsp;*</span></label>
+      <input type="text" class="col-sm form-control" name="nameRu" [(ngModel)]="formData.multiLang.nameRu">
+      <div *ngIf="!formData.multiLang.nameRu" class="text-danger">
+        <div *ngIf="!formData.multiLang.nameRu" translate>claim.requiredField</div>
+      </div>
+    </div>
+    <div class="col-sm" *ngIf="!resident">
+      <label class="col-sm col-form-label">nameKz<span class="text-danger">&nbsp;*</span></label>
+      <input type="text" class="col-sm form-control" name="nameKz" [(ngModel)]="formData.multiLang.nameKz">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+
+      <label>Полный адрес
+        <span class="text-danger">&nbsp;*</span>
+      </label>
+      <ng-select
+        [items]="kazPost2"
+        [(ngModel)]="postcode2"
+        (search)="getDataKzPost2($event)"
+        (ngModelChange)="checkPostData2();"
+        (autocomplete)="'true'"
+        (clear)="'true'"
+        placeholder="{{'Полный адрес' | translate }}">
+      </ng-select>
+
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Город<span class="text-danger">&nbsp;*</span></label>
+      <ng-select
+        disabled="true"
+        required="true"
+        bindValue="value"
+        bindLabel="label"
+        [items]="city"
+        [(ngModel)]="formRes.buildingDto.cityId">
+      </ng-select>
+      <div *ngIf="!formRes.buildingDto.cityId" class="text-danger">
+        <div *ngIf="!formRes.buildingDto.cityId" translate>claim.requiredField</div>
+      </div>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Район</label>
+      <ng-select
+        disabled="true"
+        bindValue="value"
+        bindLabel="label"
+        [items]="districts"
+        [(ngModel)]="formRes.buildingDto.districtId">
+      </ng-select>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Улица<span class="text-danger">&nbsp;*</span></label>
+
+
+
+      <ng-select
+        disabled="true"
+        required="true"
+        bindValue="value"
+        bindLabel="label"
+        [items]="streets"
+        [(ngModel)]="formRes.buildingDto.streetId">
+      </ng-select>
+      <div *ngIf="!formRes.buildingDto.streetId" class="text-danger">
+        <div *ngIf="!formRes.buildingDto.streetId" translate>claim.requiredField</div>
+      </div>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Номер здания (дома)<span class="text-danger">&nbsp;*</span></label>
+      <input type="text" disabled="true"
+             value=${var} class="col-sm form-control" name="houseNumber"   required="true"
+             [(ngModel)]="formRes.buildingDto.houseNumber">
+      <div *ngIf="!formRes.buildingDto.houseNumber" class="text-danger">
+        <div *ngIf="!formRes.buildingDto.houseNumber" translate>claim.requiredField</div>
+      </div>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Номер дома (дробь/буква/строение)</label>
+      <input type="text" maxlength="3" class="col-sm form-control" name="houseNumberFraction"
+             [(ngModel)]="formRes.buildingDto.houseNumberFraction">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Название дома (ЖК) <span class="text-danger">&nbsp;*</span></label>
+      <input type="text" maxlength="50" class="col-sm form-control" name="houseName"
+             [(ngModel)]="formRes.houseName">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Год постройки</label>
+      <input type="text"  maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+             value=${var}  class="col-sm form-control" name="yearOfConstruction" mask="0000"
+             [(ngModel)]="formRes.yearOfConstruction">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Застройщик</label>
+      <ng-select
+        bindValue="value"
+        bindLabel="label"
+        [items]="propertyDevelopers"
+        [(ngModel)]="formRes.propertyDeveloperId">
+      </ng-select>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Этажность дома</label>
+      <input type="text"  maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+             value=${var}  class="col-sm form-control" name="numberOfFloors"
+             [(ngModel)]="formRes.numberOfFloors">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Количество подъездов</label>
+      <input type="text"  maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+             value=${var}  class="col-sm form-control" name="numberOfEntrances"
+             [(ngModel)]="formRes.numberOfEntrances">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Количество квартир</label>
+      <input type="text"  maxlength="5" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+             value=${var}  class="col-sm form-control" name="numberOfApartments"
+             [(ngModel)]="formRes.numberOfApartments">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Квартир на площадке</label>
+      <input type="text"  maxlength="5" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+             value=${var}  class="col-sm form-control" name="apartmentsOnTheSite"
+             [(ngModel)]="formRes.apartmentsOnTheSite">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Высота потолков</label>
+      <input type="number"  maxlength="4"  class="col-sm form-control" name="ceilingHeight"
+             [(ngModel)]="formRes.ceilingHeight">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Материал постройки</label>
+      <ng-select
+        bindValue="value"
+        bindLabel="label"
+        [items]="materials"
+        [(ngModel)]="formRes.materialOfConstructionId">
+      </ng-select>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Класс жилья</label>
+      <input type="text" maxlength="50" class="col-sm form-control" name="housingClass"
+             [(ngModel)]="formRes.housingClass">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Состояние</label>
+      <input type="text" maxlength="50" class="col-sm form-control" name="housingCondition"
+             [(ngModel)]="formRes.housingConditionId">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Тип лифта</label>
+      <ng-select
+        multiple="true"
+        bindValue="value"
+        bindLabel="label"
+        [items]="elevatorType"
+        [(ngModel)]="formRes.typeOfElevatorIdList">
+      </ng-select>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Консьерж</label>
+      <input type="checkbox" class="col-sm form-control" name="concierge" [(ngModel)]="formRes.concierge">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Колясочная</label>
+      <input type="checkbox" class="col-sm form-control" name="wheelchair" [(ngModel)]="formRes.wheelchair">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Парковка {{formRes.parkingTypeIds}}</label>
+      <ng-select
+        multiple="true"
+        bindValue="value"
+        bindLabel="label"
+        [items]="parkingTypes"
+        [(ngModel)]="formRes.parkingTypeIds">
+      </ng-select>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Двор</label>
+      <ng-select
+        bindValue="value"
+        bindLabel="label"
+        [items]="yardTypes"
+        [(ngModel)]="formRes.yardTypeId">
+      </ng-select>
+    </div>
+
+    <!--ЖК конец-->
+    <div class="col-sm" style="text-align: right">
+      <button type="button" class="btn btn-primary" (click)="submitModal()" style="margin: 10px">
+        Сохранить
+      </button>
+      <button type="button" class="btn btn-light" (click)="openModal2(template3)" style="margin: 10px">
+        Отмена
+      </button>
+
+    </div>
+
+  </div>
+</ng-template>
+
+<ng-template #template3>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Внимание</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Внесенные данные не сохранены, данные будут потеряны. Покинуть страницу?
+  </div>
+  <div class="col-sm" style="text-align: right">
+    <button type="button" class="btn btn-primary" (click)="closeModal()" style="margin: 10px">
+      Подтвердить
+    </button>
+    <button type="button" class="btn btn-light" (click)="modalRef2.hide()" style="margin: 10px">
+      Отмена
+    </button>
   </div>
 </ng-template>

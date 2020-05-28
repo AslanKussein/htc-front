@@ -124,7 +124,6 @@ export class DicControlComponent implements OnInit, OnDestroy {
         nameKz: '',
       },
       parentId: null,
-
     };
     this.formRes = {
       apartmentsOnTheSite: '',
@@ -371,7 +370,6 @@ export class DicControlComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    console.log(this.actions, this.dicName)
     if (this.actions == 'ADD') {
       if (this.dicName == 'residential-complexes') {
         console.log(this.formRes)
@@ -483,7 +481,6 @@ export class DicControlComponent implements OnInit, OnDestroy {
   closeModal() {
     this.modalRef2.hide();
     this.modalRef.hide();
-
     this.clearForm();
   }
 
@@ -528,10 +525,11 @@ export class DicControlComponent implements OnInit, OnDestroy {
             this.formRes.buildingDto.cityId = res.city.id;
             this.formRes.buildingDto.districtId = res.district.id;
             this.formRes.buildingDto.streetId = res.street.id;
+            this.formRes.buildingDto.houseNumber = res.houseNumber;
             this.ngxLoader.stop();
 
           }
-        }, 1000)
+        }, 300)
 
       }));
     }

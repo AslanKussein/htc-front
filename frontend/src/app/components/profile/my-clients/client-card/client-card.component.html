@@ -63,6 +63,7 @@
           </div>
         </div>
       </div>
+      <br/>
       <div class="row">
         <div class="col-sm">
           <table class="table table-bordered table-sm">
@@ -141,11 +142,11 @@
               </div>
               <div>
                 <label class="col-sm col-form-label">Фамилия<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.surname" [disabled]="true">
+                <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.surname" [disabled]="!rgRoles">
               </div>
               <div>
                 <label class="col-sm col-form-label">Отчество<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.patronymic" [disabled]="true">
+                <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.patronymic" [disabled]="!rgRoles">
               </div>
               <div>
                 <label class="col-sm col-form-label">ID клиента<span class="text-danger">&nbsp;*</span></label>
@@ -166,7 +167,7 @@
             <div class="col-sm">
               <div  >
                 <label class="col-sm col-form-label">Телефон<span class="text-danger">&nbsp;*</span></label>
-                  <div class="row" style="margin-left: 1px"> <input  type="text" class="col-sm form-control" name="nameEn" prefix="+" mask="0(000) 000 00 00"[disabled]="!rgRoles"
+                  <div class="row" style="margin-left: 1px"> <input  type="text" class="col-sm form-control" name="nameEn" prefix="+" mask="0(000) 000 00 00"  [disabled]="true"
                                            (input)="getDataByPhoneNumber()"
                                            [(ngModel)]="formClient.phoneNumber">
                     <a  style="margin-left: 10px" (click)="addPhoneNumber()"><i style="color:green"
@@ -177,13 +178,15 @@
                 </div>
               </div>
               <div *ngFor="let item of formClient.clientPhoneNumbersDtoList;let index = index">
+                <label class="col-sm col-form-label">Доп телефон<span class="text-danger">&nbsp;*</span></label>
+                <div class="row" style="margin-left: 1px"> <input type="text" class="col-sm form-control" [(ngModel)]="item.phoneNumber" prefix="+7" mask="(000) 000 00 00" [disabled]="!rgRoles">
+                  <a  style="margin-left: 10px" (click)="clearPhone(item)"><i style="color:red"
+                                                                              class="fa fa-times-circle fa-2x"></i></a></div>
 
-                <label class="col-sm col-form-label">Доп телефон</label>
-                <input type="text" class="col-sm form-control" [(ngModel)]="item.phoneNumber" prefix="+" mask="0(000) 000 00 00">
               </div>
               <div>
                 <label class="col-sm col-form-label">Почта<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.email"  [disabled]="true">
+                <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.email"  [disabled]="!rgRoles">
               </div>
               <div >
                 <label class="col-sm col-form-label">Пол</label>
