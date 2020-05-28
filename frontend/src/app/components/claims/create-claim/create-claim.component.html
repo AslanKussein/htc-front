@@ -1297,7 +1297,7 @@
                             </div>
                             <div class="row mb-4"
                                  [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_OBJECT_INFO', roles)">
-                              <div class="col-sm" *ngIf="isBuy()">
+                              <div class="col-sm" *ngIf="isHouse() && isBuy()">
                                 <label translate>Описание</label>
                                 <textarea rows="1" class="col-sm-12 control"
                                           [(ngModel)]="applicationForm.description" formControlName="description"
