@@ -8,7 +8,7 @@ import {UploaderService} from "../../../services/uploader.service";
 import {Dic} from "../../../models/dic";
 import {TranslateService} from "@ngx-translate/core";
 import {OwnerService} from "../../../services/owner.service";
-import {Observable, Subject, Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {ComponentCanDeactivate} from "../../../helpers/canDeactivate/componentCanDeactivate";
 import {ConfigService} from "../../../services/config.service";
 import {ModalComponent} from "./modal.window/modal.component";
@@ -31,6 +31,8 @@ import {ApplicationSellDataDto} from "../../../models/createClaim/applicationSel
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {NewDicService} from "../../../services/new.dic.service";
+import {DicService} from "../../../services/dic.service";
+import {Subject} from "rxjs/internal/Subject";
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +61,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   objectType: Dic[];
   city: Dic[];
   kazPost: any;
+  kazPost2: any;
   districts: Dic[];
   parkingTypes: Dic[];
   streets: Dic[];
@@ -90,6 +93,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   aboutMap: boolean = false;
   existsClient: boolean = false;
   edit: boolean = true;
+  firstStep: boolean = true;
+  postcode: any;
+  postcode2: any;
+  dicName:string;
+
   public parameters = {
     options: {
       provider: 'yandex#search'
@@ -97,6 +105,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   };
   apiParam: string;
   apiPage: number = 0;
+  modalRef2: BsModalRef;
+  resident: boolean;
 
   public placemarkOptions = {
     preset: "twirl#redIcon",
@@ -106,6 +116,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   subscriptions: Subscription = new Subscription();
   data: any;
   postCode: string;
+
+
   private subject: Subject<string> = new Subject();
 
   constructor(public util: Util,
@@ -122,6 +134,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
               private ngxLoader: NgxUiLoaderService,
               private roleManagerService: RoleManagerService,
               private userService: UserService,
+              private dicService: DicService,
               private modal: NgbModal,
               private newDicService: NewDicService,
               private kazPostService: KazPostService) {
@@ -130,8 +143,50 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.saved = true;
       this.applicationId = Number(this.actRoute.snapshot.params.id);
     }
-
   }
+
+
+  formRes = {
+    apartmentsOnTheSite: '',
+    buildingDto: {
+      cityId: null,
+      districtId: null,
+      houseNumber: null,
+      houseNumberFraction: '',
+      latitude: null,
+      longitude: null,
+      postcode: '',
+      streetId: null,
+    },
+    ceilingHeight: null,
+    concierge: false,
+    houseName: '',
+    housingClass: '',
+    housingConditionId: null,
+    materialOfConstructionId: null,
+    numberOfApartments: 0,
+    numberOfEntrances: 0,
+    numberOfFloors: 0,
+    playground: false,
+    propertyDeveloperId: null,
+    typeOfElevatorIdList: [],
+    parkingTypeIds: [],
+    wheelchair: false,
+    yardTypeId: null,
+    countryId: null,
+    yearOfConstruction: 0
+  };
+
+  formData = {
+    code: '',
+    multiLang: {
+      nameEn: '',
+      nameRu: '',
+      nameKz: '',
+    },
+    parentId: null,
+
+  };
 
   get f() {
     return this.applicationForm.controls;
@@ -324,10 +379,51 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.heatingSystems = res;
     })
     this.subscriptions.add(this.userService.getAgentsToAssign().subscribe(obj => {
-      console.log(obj.data)
       this.agentList = this.util.toSelectArrayRoles(obj.data, 'login');
     }));
   }
+
+  clearForm() {
+    this.formData = {
+      code: '',
+      multiLang: {
+        nameEn: '',
+        nameRu: '',
+        nameKz: '',
+      },
+      parentId: null,
+    };
+    this.formRes = {
+      apartmentsOnTheSite: '',
+      buildingDto: {
+        cityId: null,
+        districtId: null,
+        houseNumber: null,
+        houseNumberFraction: '',
+        latitude: null,
+        longitude: null,
+        postcode: '',
+        streetId: null,
+      },
+      ceilingHeight: null,
+      concierge: false,
+      houseName: '',
+      housingClass: '',
+      housingConditionId: null,
+      materialOfConstructionId: null,
+      numberOfApartments: 0,
+      numberOfEntrances: 0,
+      numberOfFloors: 0,
+      playground: false,
+      propertyDeveloperId: null,
+      typeOfElevatorIdList: [],
+      parkingTypeIds: [],
+      wheelchair: false,
+      yardTypeId: null,
+      countryId: null,
+      yearOfConstruction: 0
+    };
+    }
 
   loadDataById(id: number) {
     this.ngxLoader.startBackground();
@@ -525,22 +621,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.separateBathroom = data?.realPropertyDto?.separateBathroom;
       this.applicationForm.sewerageId = data?.realPropertyDto?.sewerageId;
       this.applicationForm.totalArea = data?.realPropertyDto?.totalArea;
-
-      if (!this.util.isNullOrEmpty(data?.realPropertyDto?.photoIdList)) {
-        for (const ph of data?.realPropertyDto.photoIdList) {
-          this.fillPicture(ph, 1);
-        }
-      }
-      if (!this.util.isNullOrEmpty(data?.realPropertyDto?.housingPlanImageIdList)) {
-        for (const ph of data?.realPropertyDto.housingPlanImageIdList) {
-          this.fillPicture(ph, 2);
-        }
-      }
-      if (!this.util.isNullOrEmpty(data?.realPropertyDto?.virtualTourImageIdList)) {
-        for (const ph of data?.realPropertyDto?.virtualTourImageIdList) {
-          this.fillPicture(ph, 3);
-        }
-      }
     }
     if (!this.util.isNullOrEmpty(data?.sellDataDto)) {
       this.applicationForm.description = data?.sellDataDto?.description;
@@ -1079,10 +1159,26 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     }, 300);
   }
 
+  getDataKzPost2(event) {
+    if (!this.util.isNullOrEmpty(event?.term)) {
+      if (this.util.length(event.term) > 3) {
+        this.apiParam = event.term;
+        this.searchDataPost2(this.apiParam, this.apiPage);
+      }
+    }
+  }
+
   searchDataPost(val: string, page: number) {
     this.subscriptions.add(this.kazPostService.getDataPost(val, page).subscribe(res => {
       this.kazPost = this.util.toSelectArrayPost(res.data)
       this.kazPost = [...this.kazPost, this.util.toSelectArrayPost(res.data)];
+    }))
+  }
+
+  searchDataPost2(val: string, page: number) {
+    this.subscriptions.add(this.kazPostService.getDataPost(val, page).subscribe(res => {
+      this.kazPost2 = this.util.toSelectArrayPost(res.data)
+      this.kazPost2 = [...this.kazPost2, this.util.toSelectArrayPost(res.data)];
     }))
   }
 
@@ -1197,5 +1293,117 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  openModal(template: TemplateRef<any>,dicName: string) {
+    this.dicName=dicName;
+    if(dicName=='residential-complexes'){
+      this.resident=true;
+    }else{
+      this.resident=false;
+    }
+    this.modalRef = this.modalService.show(template, {keyboard: false, backdrop: 'static'});
+  }
+
+  openModal2(template: TemplateRef<any>) {
+    this.modalRef2 = this.modalService.show(template);
+  }
+
+  closeModal() {
+    this.modalRef2.hide();
+    this.modalRef.hide();
+    this.clearForm();
+  }
+
+  submitModal() {
+    this.ngxLoader.start();
+    if (this.resident == true) {
+      if (this.util.isNullOrEmpty(this.formRes.buildingDto.cityId) || this.util.isNullOrEmpty(this.formRes.buildingDto.streetId) || this.util.isNullOrEmpty(this.formRes.buildingDto.houseNumber)) {
+        this.notifyService.showError('Пожалуйста, заполните все поля', "");
+        return;
+      }
+      this.subscriptions.add(this.dicService.saveResidentalComplex(this.formRes).subscribe(data => {
+          if (data != null) {
+            this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.modalRef.hide();
+            this.clearForm();
+          }
+        }, err => {
+          this.notifyService.showError('warning', err.message);
+          this.modalRef.hide();
+          this.clearForm();
+        }
+      ));
+
+    } else {
+      if (this.util.isNullOrEmpty(this.formData.multiLang.nameRu)) {
+        this.notifyService.showError('Пожалуйста, заполните все поля', "");
+        return;
+      }
+      let saveForm = {
+        dictionaryName: this.dicName,
+        nameEn: this.formData.multiLang.nameEn,
+        nameKz: this.formData.multiLang.nameKz,
+        nameRu: this.formData.multiLang.nameRu,
+        parentId: this.formData.parentId,
+        id:null
+      };
+
+      this.subscriptions.add(this.dicService.saveDicNew(saveForm).subscribe(data => {
+        if (data != null) {
+          saveForm.id=data;
+          this.notifyService.showSuccess('success', 'Успешно сохранено');
+          this.modalRef.hide();
+          this.clearForm();
+          this.util.addDicById(this.dicName, saveForm);
+          let interval;
+          let timeLeft: number = 1;
+          interval = setInterval(() => {
+            if (timeLeft > 0) {
+              timeLeft--;
+            } else {
+              this.loadDictionary();
+              this.ngxLoader.stop();
+              }
+          }, 1000)
+        }
+      }, err => {
+        this.notifyService.showError('warning', err.message);
+        this.modalRef.hide();
+        this.clearForm();
+      }));
+
+
+    }
+  }
+
+
+  checkPostData2() {
+    if (!this.util.isNullOrEmpty(this.postcode2?.fullAddress)) {
+      this.ngxLoader.start();
+
+      this.subscriptions.add(this.kazPostService.checkPostData(this.postcode2?.fullAddress).subscribe(res => {
+        this.formRes.buildingDto.postcode = this.postcode2?.value;
+        this.util.addDicById('Street', res.street);
+        this.util.addDicById('District', res.district);
+        this.util.addDicById('City', res.city);
+        let interval;
+        let timeLeft: number = 1;
+        interval = setInterval(() => {
+          if (timeLeft > 0) {
+            timeLeft--;
+          } else {
+            this.loadDictionary();
+            this.formRes.buildingDto.cityId = res.city.id;
+            this.formRes.buildingDto.districtId = res.district.id;
+            this.formRes.buildingDto.streetId = res.street.id;
+            this.formRes.buildingDto.houseNumber = res.houseNumber;
+            this.ngxLoader.stop();
+
+          }
+        }, 300)
+
+      }));
+    }
   }
 }
