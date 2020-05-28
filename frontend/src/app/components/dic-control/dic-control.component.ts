@@ -50,6 +50,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
   apiPage: number = 0;
   postCode: string;
   postcode: any;
+  timer: any;
 
   constructor(private util: Util,
               private modalService: BsModalService,
@@ -489,13 +490,14 @@ export class DicControlComponent implements OnInit, OnDestroy {
   }
 
   getDataKzPost(event) {
-    if (!this.util.isNullOrEmpty(event?.term)) {
-      if (this.util.length(event.term) > 3) {
-        this.apiParam = event.term;
-        this.searchDataPost(this.apiParam, this.apiPage);
-
+    clearTimeout(this.timer);
+    let me = this;
+    this.timer = setTimeout(function () {
+      if (!me.util.isNullOrEmpty(event)) {
+        me.apiParam = event.term;
+        me.searchDataPost(me.apiParam, me.apiPage);
       }
-    }
+    }, 300);
   }
 
   searchDataPost(val: string, page: number) {
@@ -503,6 +505,24 @@ export class DicControlComponent implements OnInit, OnDestroy {
       this.kazPost = this.util.toSelectArrayPost(res.data)
       this.kazPost = [...this.kazPost, this.util.toSelectArrayPost(res.data)];
     }))
+  }
+
+
+  customSearchFn(term: string, item) {
+    let result = false;
+    term = term.toLowerCase();
+    if (item != null && item.label != null) {
+      result = item.label.toLowerCase().indexOf(term) > -1 || item.fullAddress.addressRus.toLowerCase() === term;
+      if (!result) {
+        let search = term.split(",")[1];
+        if (search != null) {
+          result = item.label.toLowerCase().includes(search.substr(0, search.length - 1));
+        } else {
+          return true;
+        }
+      }
+    }
+    return result;
   }
 
   checkPostData() {
