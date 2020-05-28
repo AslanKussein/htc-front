@@ -23,6 +23,15 @@ export class KazPostService {
     );
   }
 
+  /**
+   * findUserByLogin
+   */
+  getDataFromDb(code: string): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/api/kaz-post/` + code, {}).pipe(
+      tap(),
+      catchError(KazPostService.handleError)
+    );
+  }
 
   checkPostData(data: any): Observable<any> {
     return this.http.post<any>(`${this.configService.apiDataManagerUrl}/api/kaz-post`, data);

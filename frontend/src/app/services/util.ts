@@ -225,7 +225,7 @@ export class Util {
   }
 
   nvl(val: any, val2: any) {
-    return this.isNullOrEmpty(val2) ? val : val2;
+    return this.isNullOrEmpty(val) ? val : val2;
   }
 
   length(data: any) {

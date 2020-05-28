@@ -117,9 +117,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   data: any;
   postCode: string;
 
-
-  private subject: Subject<string> = new Subject();
-
   constructor(public util: Util,
               private notifyService: NotificationService,
               private formBuilder: FormBuilder,
@@ -292,6 +289,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       yearOfConstructionTo: [null, Validators.nullValidator],
       apartmentsOnTheSiteFrom: [null, Validators.nullValidator],
       apartmentsOnTheSiteTo: [null, Validators.nullValidator],
+      postValue: [null, Validators.nullValidator],
       unification: [null, this.applicationId ? Validators.nullValidator : Validators.required],
     });
     this.cdRef.detectChanges();
@@ -592,6 +590,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.longitude = data?.realPropertyDto?.buildingDto?.longitude;
         this.postCode = data?.realPropertyDto?.buildingDto?.postcode;
         this.applicationForm.streetId = data?.realPropertyDto?.buildingDto?.streetId;
+        this.applicationForm.residentialComplexId = data?.realPropertyDto?.buildingDto?.residentialComplexId;
       }
       this.fillCadastralNumber(data?.realPropertyDto?.cadastralNumber);
       this.applicationForm.floor = data?.realPropertyDto?.floor;
@@ -609,6 +608,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.applicationForm.parkingTypeIds = data?.realPropertyDto?.generalCharacteristicsDto?.parkingTypeIds;
         this.applicationForm.propertyDeveloperId = data?.realPropertyDto?.generalCharacteristicsDto?.propertyDeveloperId;
         this.applicationForm.typeOfElevatorList = data?.realPropertyDto?.generalCharacteristicsDto?.typeOfElevatorList;
+        this.applicationForm.yearOfConstruction = data?.realPropertyDto?.generalCharacteristicsDto?.yearOfConstruction;
       }
       this.applicationForm.heatingSystemId = data?.realPropertyDto?.heatingSystemId;
       this.applicationForm.kitchenArea = data?.realPropertyDto?.kitchenArea;
@@ -636,14 +636,29 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.probabilityOfBidding = this.util.toString(data?.sellDataDto?.probabilityOfBidding);
       this.applicationForm.theSizeOfTrades = data?.sellDataDto?.theSizeOfTrades;
     }
+    this.loadDataFromPostApi();
+    this.applicationForm.unification = 'address';
+    if (!this.util.isNullOrEmpty(this.applicationForm.residentialComplexId)) {
+      this.applicationForm.unification = 'residence';
+    }
+  }
+
+
+  loadDataFromPostApi() {
+    this.subscriptions.add(
+      this.kazPostService.getDataFromDb(this.postCode).subscribe(res=> {
+        this.applicationForm.postcode = res.addressRus;
+        }
+      )
+    )
   }
 
   fillCadastralNumber(data: string) {
     let splited = data.split(':');
-    this.applicationForm.cadastralNumber = splited[0];
-    this.applicationForm.cadastralNumber1 = splited[1];
-    this.applicationForm.cadastralNumber2 = splited[2];
-    this.applicationForm.cadastralNumber3 = splited[3];
+    this.applicationForm.cadastralNumber = this.util.nvl(splited[0], '');
+    this.applicationForm.cadastralNumber1 = this.util.nvl(splited[1], null);
+    this.applicationForm.cadastralNumber2 = this.util.nvl(splited[2], null);
+    this.applicationForm.cadastralNumber3 = this.util.nvl(splited[3], null);
   }
 
   showPhotoFull(url: any) {
@@ -1085,7 +1100,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   loadMap() {
     if (!this.util.isNullOrEmpty(this.applicationForm.streetId)) {
-      let str = this.util.getDictionaryValueById(this.streets, this.applicationForm.streetId).label + ' ' + this.applicationForm.houseNumber;
+      let str = this.util.getDictionaryValueById(this.streets, this.applicationForm.streetId)?.label + ' ' + this.applicationForm.houseNumber;
       if (!this.util.isNullOrEmpty(this.applicationForm.houseNumberFraction)) {
         str = str + '/' + this.applicationForm.houseNumberFraction;
       }
@@ -1276,6 +1291,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     if (!this.isBuy()) {
       return;
     }
+    if (!this.edit) {
+      return;
+    }
     let objNumber = this.util.nvl(this.applicationForm.houseNumber, this.applicationForm.apartmentNumber);
     if (!this.util.isNullOrEmpty(objNumber) && !this.util.isNullOrEmpty(this.postCode)) {
       this.subscriptions.add(
@@ -1296,7 +1314,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   openModal(template: TemplateRef<any>,dicName: string) {
     this.dicName=dicName;
-    if(dicName=='residential-complexes'){
+    if (dicName=='residential-complexes'){
       this.resident=true;
     }else{
       this.resident=false;

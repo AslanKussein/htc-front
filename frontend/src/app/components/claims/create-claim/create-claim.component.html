@@ -436,11 +436,7 @@
                       <div class="row">
                         <fieldset class="scheduler-border col-sm">
                           <legend class="scheduler-border" translate>Унификация объекта</legend>
-                          <div class="row" *ngIf="!edit">
-                            <div class="col-sm">
-                              <input type="text" value="asd" class="form-control">
-                            </div>
-                          </div>
+
                           <div class="row">
                             <div class="col-sm">
                               <div class="row">
@@ -499,7 +495,6 @@
                                 <input type="text" min="0" class="form-control"
                                        [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
                                        placeholder="{{'claim.numberHouse' | translate}}"
-                                       mask="separator.2" thousandSeparator=" "
                                        [(ngModel)]="applicationForm.houseNumber" maxlength="10"
                                        (ngModelChange)="getMap()"
 
