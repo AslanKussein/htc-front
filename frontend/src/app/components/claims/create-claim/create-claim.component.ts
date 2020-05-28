@@ -686,11 +686,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   fillCadastralNumber(data: string) {
-    let splited = data.split(':');
-    this.applicationForm.cadastralNumber = this.util.nvl(splited[0], null);
-    this.applicationForm.cadastralNumber1 = this.util.nvl(splited[1], null);
-    this.applicationForm.cadastralNumber2 = this.util.nvl(splited[2], null);
-    this.applicationForm.cadastralNumber3 = this.util.nvl(splited[3], null);
+    if (!this.util.isNullOrEmpty(data)) {
+      let splited = data?.split(':');
+      this.applicationForm.cadastralNumber = this.util.nvl(splited[0], null);
+      this.applicationForm.cadastralNumber1 = this.util.nvl(splited[1], null);
+      this.applicationForm.cadastralNumber2 = this.util.nvl(splited[2], null);
+      this.applicationForm.cadastralNumber3 = this.util.nvl(splited[3], null);
+    }
   }
 
   showPhotoFull(url: any) {
