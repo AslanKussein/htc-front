@@ -20,6 +20,8 @@ export class RealPropertyDto {
     public livingArea?: number,//Жилая площадь
     public metadataId?: number,//метадата
     public metadataStatusId?: number,//статус метадаты
+    public edited?: boolean,
+    public filesEdited?: boolean,
     public numberOfBedrooms?: number,//Количество спален
     public numberOfRooms?: number,//"Количество комнат
     public separateBathroom?: boolean,//Санузел раздельный

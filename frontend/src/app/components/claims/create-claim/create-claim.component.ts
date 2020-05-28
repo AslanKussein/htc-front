@@ -93,7 +93,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   aboutMap: boolean = false;
   existsClient: boolean = false;
   edit: boolean = true;
-  firstStep: boolean = true;
+  filesEdited: boolean = false;
   postcode: any;
   postcode2: any;
   dicName:string;
@@ -107,6 +107,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   apiPage: number = 0;
   modalRef2: BsModalRef;
   resident: boolean;
+  timer: any;
 
   public placemarkOptions = {
     preset: "twirl#redIcon",
@@ -621,6 +622,21 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.separateBathroom = data?.realPropertyDto?.separateBathroom;
       this.applicationForm.sewerageId = data?.realPropertyDto?.sewerageId;
       this.applicationForm.totalArea = data?.realPropertyDto?.totalArea;
+      if (!this.util.isNullOrEmpty(data?.realPropertyDto?.photoIdList)) {
+        for (const ph of data?.realPropertyDto.photoIdList) {
+          this.fillPicture(ph, 1);
+        }
+      }
+      if (!this.util.isNullOrEmpty(data?.realPropertyDto?.housingPlanImageIdList)) {
+        for (const ph of data?.realPropertyDto.housingPlanImageIdList) {
+          this.fillPicture(ph, 2);
+        }
+      }
+      if (!this.util.isNullOrEmpty(data?.realPropertyDto?.virtualTourImageIdList)) {
+        for (const ph of data?.realPropertyDto?.virtualTourImageIdList) {
+          this.fillPicture(ph, 3);
+        }
+      }
     }
     if (!this.util.isNullOrEmpty(data?.sellDataDto)) {
       this.applicationForm.description = data?.sellDataDto?.description;
@@ -655,7 +671,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   fillCadastralNumber(data: string) {
     let splited = data.split(':');
-    this.applicationForm.cadastralNumber = this.util.nvl(splited[0], '');
+    this.applicationForm.cadastralNumber = this.util.nvl(splited[0], null);
     this.applicationForm.cadastralNumber1 = this.util.nvl(splited[1], null);
     this.applicationForm.cadastralNumber2 = this.util.nvl(splited[2], null);
     this.applicationForm.cadastralNumber3 = this.util.nvl(splited[3], null);
@@ -856,6 +872,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.livingArea,
       null,//todo метадата
       null,//todo статус метадаты
+      this.edit,
+      this.filesEdited,
       this.applicationForm.numberOfBedrooms,
       this.applicationForm.numberOfRooms,
       this.applicationForm.separateBathroom,
@@ -1062,6 +1080,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.subscriptions.add(this.uploader.uploadData(this.selectedFile)
       .subscribe(data => {
         if (data != null) {
+          this.filesEdited = true;
           this.fillPicture(data, id);
         }
       }));
@@ -1160,8 +1179,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.apiPage = this.apiPage + 40;
     this.searchDataPost(this.apiParam, this.apiPage);
   }
-
-  timer: any;
 
   getDataKzPost(event) {
     clearTimeout(this.timer);
