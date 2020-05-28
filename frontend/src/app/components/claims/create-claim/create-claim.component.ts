@@ -395,7 +395,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     };
     this.formRes = {
       apartmentsOnTheSite: '',
-      "buildingDto": {
+      buildingDto: {
         cityId: null,
         districtId: null,
         houseNumber: null,
@@ -1397,10 +1397,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
             this.formRes.buildingDto.cityId = res.city.id;
             this.formRes.buildingDto.districtId = res.district.id;
             this.formRes.buildingDto.streetId = res.street.id;
+            this.formRes.buildingDto.houseNumber = res.houseNumber;
             this.ngxLoader.stop();
 
           }
-        }, 1000)
+        }, 300)
 
       }));
     }
