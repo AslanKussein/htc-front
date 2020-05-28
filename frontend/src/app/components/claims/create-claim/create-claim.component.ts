@@ -932,8 +932,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   createClientIfNotPresent() {
-    if (!this.existsClient && !this.applicationId) {
-      this.createClient()
+    if (!this.applicationId) {
+      if (this.util.isNullOrEmpty(this.applicationForm.phoneNumber)) return;
+      this.subscriptions.add(this.ownerService.searchByPhone(this.applicationForm.phoneNumber)
+        .subscribe(res => {
+        }, () => this.createClient()));
+
     }
     this.application.clientLogin = this.applicationForm.phoneNumber;
   }
