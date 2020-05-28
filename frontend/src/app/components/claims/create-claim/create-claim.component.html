@@ -462,6 +462,7 @@
                                 [items]="kazPost"
                                 [searchFn]="customSearchFn"
                                 (search)="getDataKzPost($event)"
+                                [(ngModel)]="applicationForm.postcode"
                                 (ngModelChange)="checkPostData();"
                                 (clear)="'true'"
                                 formControlName="postcode"
