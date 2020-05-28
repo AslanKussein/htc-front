@@ -314,7 +314,7 @@
                           <input type="text" id="phoneNumber" class="form-control"
                                  [(ngModel)]="applicationForm.phoneNumber" name="phoneNumber"
                                  [formControl]="applicationForm.controls['phoneNumber']"
-                                 prefix="+7" mask=' (000) 000-0000' [showMaskTyped]="true" (ngModelChange)="editClient($event)"
+                                 prefix="+7" mask=' (000) 000-0000' [showMaskTyped]="true" (ngModelChange)="editClient()"
                                  placeHolderCharacter="0"
                                  [readOnly]="util.hasShowClientGroup('UPDATE_CLIENT_DATA', roles)"/>
 <!--                          (change)="searchByPhone(applicationForm.phoneNumber)"-->
@@ -1297,7 +1297,7 @@
                             </div>
                             <div class="row mb-4"
                                  [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_OBJECT_INFO', roles)">
-                              <div class="col-sm" *ngIf="isApartment() && isBuy()">
+                              <div class="col-sm" *ngIf="isBuy()">
                                 <label translate>Описание</label>
                                 <textarea rows="1" class="col-sm-12 control"
                                           [(ngModel)]="applicationForm.description" formControlName="description"
