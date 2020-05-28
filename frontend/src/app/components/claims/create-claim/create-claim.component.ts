@@ -518,6 +518,22 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.separateBathroom = data?.realPropertyDto?.separateBathroom;
       this.applicationForm.sewerageId = data?.realPropertyDto?.sewerageId;
       this.applicationForm.totalArea = data?.realPropertyDto?.totalArea;
+
+      if (!this.util.isNullOrEmpty(data?.realPropertyDto?.photoIdList)) {
+        for (const ph of data?.realPropertyDto.photoIdList) {
+          this.fillPicture(ph, 1);
+        }
+      }
+      if (!this.util.isNullOrEmpty(data?.realPropertyDto?.housingPlanImageIdList)) {
+        for (const ph of data?.realPropertyDto.housingPlanImageIdList) {
+          this.fillPicture(ph, 2);
+        }
+      }
+      if (!this.util.isNullOrEmpty(data?.realPropertyDto?.virtualTourImageIdList)) {
+        for (const ph of data?.realPropertyDto?.virtualTourImageIdList) {
+          this.fillPicture(ph, 3);
+        }
+      }
     }
     if (!this.util.isNullOrEmpty(data?.sellDataDto)) {
       this.applicationForm.description = data?.sellDataDto?.description;
@@ -532,21 +548,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       }, 1000);
       this.applicationForm.probabilityOfBidding = this.util.toString(data?.sellDataDto?.probabilityOfBidding);
       this.applicationForm.theSizeOfTrades = data?.sellDataDto?.theSizeOfTrades;
-      if (!this.util.isNullOrEmpty(data?.sellDataDto?.photoIdList)) {
-        for (const ph of data?.sellDataDto.photoIdList) {
-          this.fillPicture(ph, 1);
-        }
-      }
-      if (!this.util.isNullOrEmpty(data?.sellDataDto?.housingPlanImageIdList)) {
-        for (const ph of data?.sellDataDto.housingPlanImageIdList) {
-          this.fillPicture(ph, 2);
-        }
-      }
-      if (!this.util.isNullOrEmpty(data?.sellDataDto?.virtualTourImageIdList)) {
-        for (const ph of data?.sellDataDto?.virtualTourImageIdList) {
-          this.fillPicture(ph, 3);
-        }
-      }
     }
   }
 
@@ -726,6 +727,18 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   fillRealPropertyDto() {
+    let photoList = [];
+    this.photoList.forEach(photo => {
+      photoList.push(photo.guid);
+    })
+    let photoPlanList = [];
+    this.photoPlanList.forEach(photo => {
+      photoPlanList.push(photo.guid);
+    })
+    let photo3DList = [];
+    this.photo3DList.forEach(photo => {
+      photo3DList.push(photo.guid);
+    })
     return this.application.realPropertyDto = new RealPropertyDto(
       this.applicationForm.apartmentNumber,
       this.applicationForm.atelier,
@@ -745,38 +758,26 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.numberOfRooms,
       this.applicationForm.separateBathroom,
       this.applicationForm.sewerageId,
-      this.applicationForm.totalArea
+      this.applicationForm.totalArea,
+      photoPlanList,
+      photoList,
+      photo3DList
     )
   }
 
   fillSellDataDto() {
-    let photoList = [];
-    this.photoList.forEach(photo => {
-      photoList.push(photo.guid);
-    })
-    let photoPlanList = [];
-    this.photoPlanList.forEach(photo => {
-      photoPlanList.push(photo.guid);
-    })
-    let photo3DList = [];
-    this.photo3DList.forEach(photo => {
-      photo3DList.push(photo.guid);
-    })
     return this.application.sellDataDto = new ApplicationSellDataDto(
       this.applicationForm.description, // описание
       this.applicationForm.encumbrance,
       this.applicationForm.exchange,
-      photoPlanList,
       null,
       this.applicationForm.mortgage,
       this.applicationForm.note,
       this.applicationForm.objectPrice,
-      photoList,
       this.applicationForm.possibleReasonForBiddingIdList,
       this.applicationForm.probabilityOfBidding,
       this.applicationForm.sharedOwnershipProperty,
       this.applicationForm.theSizeOfTrades,
-      photo3DList
     )
   }
 
