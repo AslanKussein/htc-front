@@ -32,6 +32,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {NewDicService} from "../../../services/new.dic.service";
 import {DicService} from "../../../services/dic.service";
+import {Subject} from "rxjs/internal/Subject";
 
 @Injectable({
   providedIn: 'root'
@@ -115,6 +116,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   subscriptions: Subscription = new Subscription();
   data: any;
   postCode: string;
+
+
   private subject: Subject<string> = new Subject();
 
   constructor(public util: Util,
