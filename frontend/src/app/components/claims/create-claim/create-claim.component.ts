@@ -675,11 +675,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     }
   }
 
-
   loadDataFromPostApi() {
     this.subscriptions.add(
       this.kazPostService.getDataFromDb(this.postCode).subscribe(res=> {
-        this.applicationForm.postcode = res.addressRus;
+        this.applicationForm.postcode = res?.addressRus;
         }
       )
     )
@@ -1288,7 +1287,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     let result = false;
     term = term.toLowerCase();
     if (item != null && item.label != null) {
-      result = item.label.toLowerCase().indexOf(term) > -1 || item.fullAddress.addressRus.toLowerCase() === term;
+      result = item.label.toLowerCase().indexOf(term) > -1 || item.fullAddress?.addressRus.toLowerCase() === term;
       if (!result) {
         let search = term.split(",")[1];
         if (search != null) {
