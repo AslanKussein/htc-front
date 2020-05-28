@@ -83,9 +83,7 @@
                                [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
                                          util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
                                          util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles)">
-                            <label translate>claim.operation
-                              <span class="text-danger" *ngIf="!applicationForm.operationTypeId">&nbsp;*</span>
-                            </label>
+                            <label translate>claim.operation<span class="text-danger">&nbsp;*</span></label>
                             <ng-select
                               [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles) && this.applicationId"
                               [items]="operationType"
@@ -94,7 +92,7 @@
                               formControlName="operationTypeId"
                               placeholder="{{ 'patterns.chooseElement' | translate }}">
                             </ng-select>
-                            <div *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid" class="text-danger">
+                            <div *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid || !f.operationTypeId.valid" class="text-danger">
                               <div *ngIf="f.operationTypeId.errors.required" translate>claim.requiredField</div>
                             </div>
                           </div>
@@ -102,9 +100,7 @@
                                [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
                                          util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
                                          util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles)">
-                            <label translate>claim.objectType
-                              <span class="text-danger" *ngIf="!applicationForm.objectTypeId">&nbsp;*</span>
-                            </label>
+                            <label translate>claim.objectType<span class="text-danger">&nbsp;*</span></label>
                             <ng-select [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles)"
                                        [items]="objectType"
                                        [(ngModel)]="applicationForm.objectTypeId"
@@ -112,7 +108,7 @@
                                        formControlName="objectTypeId"
                                        placeholder="{{ 'claim.objectType' | translate }}">
                             </ng-select>
-                            <div *ngIf="f.objectTypeId.touched && f.objectTypeId.invalid" class="text-danger">
+                            <div *ngIf="f.objectTypeId.touched && f.objectTypeId.invalid || !f.operationTypeId.valid" class="text-danger">
                               <div *ngIf="f.objectTypeId.errors.required" translate>claim.requiredField</div>
                             </div>
                           </div>
@@ -448,7 +444,7 @@
                                          [(ngModel)]="applicationForm.unification" formControlName="unification">
                                   <label class="custom-control-label" for="address">По полному адресу</label>
                                 </div>
-                                <div class="col-sm float-left">
+                                <div class="col-sm float-left" *ngIf="this.isApartment()">
                                   <input type="radio" id="residence" value="residence"
                                          class="custom-control-input"
                                          [(ngModel)]="applicationForm.unification" formControlName="unification">

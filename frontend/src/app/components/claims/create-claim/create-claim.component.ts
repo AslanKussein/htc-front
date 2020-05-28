@@ -358,6 +358,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   setHouseOrApartmentsForMaterials() {
+    if (!this.applicationId) {
+      if (!this.isApartment()) {
+        this.applicationForm.unification = 'address';
+      } else {
+        this.applicationForm.unification = null;
+      }
+    }
     this.sortMaterials = [];
     if (this.isApartment()) {//кв
       this.sortMaterials = this.materials;
@@ -1132,7 +1139,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       result = item.label.toLowerCase().indexOf(term) > -1 || item.fullAddress.addressRus.toLowerCase() === term;
       if (!result) {
         let search = term.split(",")[1];
-        result = item.label.toLowerCase().includes(search.substr(0, search.length - 1));
+        if (search != null) {
+          result = item.label.toLowerCase().includes(search.substr(0, search.length - 1));
+        } else {
+          return true;
+        }
       }
     }
     return result;
