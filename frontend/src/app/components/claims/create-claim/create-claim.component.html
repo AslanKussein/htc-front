@@ -1612,6 +1612,7 @@
       <ng-select
         [items]="kazPost2"
         [(ngModel)]="postcode2"
+        [searchFn]="customSearchFn"
         (search)="getDataKzPost2($event)"
         (ngModelChange)="checkPostData2();"
         (autocomplete)="'true'"

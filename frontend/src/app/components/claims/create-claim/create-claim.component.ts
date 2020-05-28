@@ -1190,12 +1190,14 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   getDataKzPost2(event) {
-    if (!this.util.isNullOrEmpty(event?.term)) {
-      if (this.util.length(event.term) > 3) {
-        this.apiParam = event.term;
-        this.searchDataPost2(this.apiParam, this.apiPage);
+    clearTimeout(this.timer);
+    let me = this;
+    this.timer = setTimeout(function () {
+      if (!me.util.isNullOrEmpty(event)) {
+        me.apiParam = event.term;
+        me.searchDataPost2(me.apiParam, me.apiPage);
       }
-    }
+    }, 300);
   }
 
   searchDataPost(val: string, page: number) {

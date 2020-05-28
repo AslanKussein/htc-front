@@ -295,11 +295,12 @@
               </label>
               <ng-select
                 [items]="kazPost"
-                [(ngModel)]="postcode"
+                [searchFn]="customSearchFn"
                 (search)="getDataKzPost($event)"
+                [(ngModel)]="postcode"
                 (ngModelChange)="checkPostData();"
-                (autocomplete)="'true'"
                 (clear)="'true'"
+                formControlName="postcode"
                 placeholder="{{'Полный адрес' | translate }}">
               </ng-select>
 
