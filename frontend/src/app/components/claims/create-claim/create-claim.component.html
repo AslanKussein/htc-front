@@ -502,13 +502,13 @@
                                        [readOnly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
                                        formControlName="houseNumber"
                                 />
-                                <input type="text" class="form-control" maxlength="10" *ngIf="isHouse()"
-                                       [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_DATA', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"
-                                       placeholder="Дробь/буква/строение"
-                                       [(ngModel)]="applicationForm.houseNumberFraction"
-                                       (ngModelChange)="getMap();showModalChooseClaim();"
-                                       [readOnly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"
-                                       formControlName="houseNumberFraction"/>
+<!--                                <input type="text" class="form-control" maxlength="10" *ngIf="isHouse()"-->
+<!--                                       [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_DATA', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"-->
+<!--                                       placeholder="Дробь/буква/строение"-->
+<!--                                       [(ngModel)]="applicationForm.houseNumberFraction"-->
+<!--                                       (ngModelChange)="getMap();showModalChooseClaim();"-->
+<!--                                       [readOnly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"-->
+<!--                                       formControlName="houseNumberFraction"/>-->
                               </div>
                               <div *ngIf="f.houseNumber.touched && f.houseNumber.invalid" class="text-danger">
                                 <div *ngIf="f.houseNumber.errors.required" translate>claim.requiredField</div>
