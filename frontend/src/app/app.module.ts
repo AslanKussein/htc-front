@@ -61,6 +61,7 @@ import {PaginationModule} from "ngx-bootstrap/pagination";
 import {ModalModule} from "ngx-bootstrap/modal";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ruLocale} from "ngx-bootstrap/locale";
+import {AngularYandexMapsModule} from "angular8-yandex-maps";
 
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
@@ -108,38 +109,39 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AddEventComponent,
     ClaimEventsComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
-    HttpClientModule,
-    PaginationModule.forRoot(),
-    ModalModule.forRoot(),
-    BsDatepickerModule.forRoot(),
-    NgSelectModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    DragDropModule,
-    ToastrModule.forRoot(),
-    NgxMaskModule.forRoot(options),
-    MDBBootstrapModule.forRoot(),
-    // AngularYandexMapsModule.forRoot("658f67a2-fd77-42e9-b99e-2bd48c4ccad4"),
-    ChartsModule,
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory,
-    }),
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
-    NgbModule,
-    NgxIndexedDBModule.forRoot(dbConfig)
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        HttpClientModule,
+        PaginationModule.forRoot(),
+        ModalModule.forRoot(),
+        BsDatepickerModule.forRoot(),
+        NgSelectModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        DragDropModule,
+        ToastrModule.forRoot(),
+        NgxMaskModule.forRoot(options),
+        MDBBootstrapModule.forRoot(),
+        // AngularYandexMapsModule.forRoot("658f67a2-fd77-42e9-b99e-2bd48c4ccad4"),
+        ChartsModule,
+        CalendarModule.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory,
+        }),
+        NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+        NgbModule,
+        NgxIndexedDBModule.forRoot(dbConfig),
+        AngularYandexMapsModule
+    ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

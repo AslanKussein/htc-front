@@ -24,7 +24,10 @@ export class RealPropertyDto {
     public numberOfRooms?: number,//"Количество комнат
     public separateBathroom?: boolean,//Санузел раздельный
     public sewerageId?: number,//""Отопительная система"
-    public totalArea?: number//Общая площадь
+    public totalArea?: number,//Общая площадь
+    private housingPlanImageIdList?: any,//"ID фотографии"
+    private photoIdList?: any,//"ID фотографии"
+    public virtualTourImageIdList?: any//"ID фотографии"
   ) {
   }
 }

@@ -76,11 +76,10 @@ export class AppComponent implements OnDestroy {
       for (let i = 0; i < len; i++) {
         this.dbService.add('residentialComplexes',
           {
-            value: '' + data[i]['id'],
+            value: data[i]['id'],
             id: data[i]['id'],
             label: data[i]['houseName'],
             countryId: data[i]['countryId'],
-            cityId: data[i]['cityId'],
             houseName: data[i]['houseName'],
             propertyDeveloperId: data[i]['propertyDeveloperId'],
             numberOfEntrances: data[i]['numberOfEntrances'],
@@ -90,19 +89,26 @@ export class AppComponent implements OnDestroy {
             apartmentsOnTheSite: data[i]['apartmentsOnTheSite'],
             ceilingHeight: data[i]['ceilingHeight'],
             concierge: data[i]['concierge'],
-            districtId: data[i]['districtId'],
-            houseNumber: data[i]['houseNumber'],
-            houseNumberFraction: data[i]['houseNumberFraction'],
             materialOfConstructionId: data[i]['materialOfConstructionId'],
             numberOfFloors: data[i]['numberOfFloors'],
             parkingTypeIds: data[i]['parkingTypeIds'],
             playground: data[i]['playground'],
-            streetId: data[i]['streetId'],
             typeOfElevator: data[i]['typeOfElevatorIdList'],
             wheelchair: data[i]['wheelchair'],
             yardType: data[i]['yardTypeId'],
             yearOfConstruction: data[i]['yearOfConstruction'],
+            buildingDto: {
+              cityId: data[i].buildingDto.cityId,
+              districtId: data[i].buildingDto.districtId,
+              houseNumber: data[i].buildingDto.houseNumber,
+              houseNumberFraction: data[i].buildingDto.houseNumberFraction,
+              latitude: data[i].buildingDto.latitude,
+              longitude: data[i].buildingDto.longitude,
+              postcode: data[i].buildingDto.postcode,
+              streetId: data[i].buildingDto.streetId
+            }
           }
+
         ).then(
           () => {
             // Do something after the value was added
