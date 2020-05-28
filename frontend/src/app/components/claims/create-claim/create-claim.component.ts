@@ -506,14 +506,30 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.cdRef.detectChanges();
   }
 
-  searchByPhone(phoneNumber) {
-    if (phoneNumber != null && phoneNumber.length == 10) {
-      this.subscriptions.add(this.ownerService.searchByPhone(phoneNumber)
-        .subscribe(res => {
-          this.fillApplicationFormClientData(res);
-          this.existsClient = true;
-        }));
-    }
+  editClient() {
+    clearTimeout(this.timer)
+    let me = this;
+    this.timer = setTimeout(function () {
+      me.searchByPhone();
+    }, 800);
+  }
+
+  searchByPhone() {
+    if (this.util.isNullOrEmpty(this.applicationForm.phoneNumber)) return;
+    this.subscriptions.add(this.ownerService.searchByPhone(this.applicationForm.phoneNumber)
+      .subscribe(res => {
+        this.fillApplicationFormClientData(res);
+        this.existsClient = true;
+      }, () => this.clearApplicationFormClientData()));
+  }
+
+  clearApplicationFormClientData() {
+    this.applicationForm.clientId = null;
+    this.applicationForm.firstName = null;
+    this.applicationForm.surname = null;
+    this.applicationForm.patronymic = null;
+    this.applicationForm.email = null;
+    this.applicationForm.gender = null;
   }
 
   fillApplicationFormClientData(res: any) {

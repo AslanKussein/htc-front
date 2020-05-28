@@ -314,10 +314,10 @@
                           <input type="text" id="phoneNumber" class="form-control"
                                  [(ngModel)]="applicationForm.phoneNumber" name="phoneNumber"
                                  [formControl]="applicationForm.controls['phoneNumber']"
-                                 prefix="+7" mask=' (000) 000-0000' [showMaskTyped]="true"
-                                 placeHolderCharacter="0" (change)="searchByPhone(applicationForm.phoneNumber)"
+                                 prefix="+7" mask=' (000) 000-0000' [showMaskTyped]="true" (ngModelChange)="editClient($event)"
+                                 placeHolderCharacter="0"
                                  [readOnly]="util.hasShowClientGroup('UPDATE_CLIENT_DATA', roles)"/>
-
+<!--                          (change)="searchByPhone(applicationForm.phoneNumber)"-->
                           <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
                             <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>
                           </div>
