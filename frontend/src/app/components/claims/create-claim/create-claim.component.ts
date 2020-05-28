@@ -319,7 +319,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       }))
   }
 
-  loadAddressDic() {
+  loadDictionary() {
+    this.util.getAllDic('OperationType').then(res => {
+      this.operationType = res;
+    })
+    this.util.getAllDic('ObjectType').then(res => {
+      this.objectType = res;
+    })
     this.util.getAllDic('City').then(res => {
       this.city = res;
     })
@@ -329,17 +335,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.util.getAllDic('Street').then(res => {
       this.streets = res;
     })
-  }
-
-  loadDictionary() {
-    this.loadAddressDic();
-    this.util.getAllDic('OperationType').then(res => {
-      this.operationType = res;
-    })
-    this.util.getAllDic('ObjectType').then(res => {
-      this.objectType = res;
-    })
-
     this.util.getAllDic('ParkingType').then(res => {
       this.parkingTypes = res;
     })
@@ -1312,7 +1307,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.util.addDicById('City', res.city);
 
         setTimeout(() => {
-          this.loadAddressDic();
+          this.loadDictionary();
           this.applicationForm.cityId = res.city?.id;
           this.applicationForm.streetId = res.street?.id;
           this.applicationForm.districtId = res.district?.id;
@@ -1368,8 +1363,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.clearForm();
   }
 
-  submitModal() {
-    this.ngxLoader.start();
+   submitModal() {
+    this.ngxLoader.startBackground();
     if (this.resident == true) {
       if (this.util.isNullOrEmpty(this.formRes.buildingDto.cityId) || this.util.isNullOrEmpty(this.formRes.buildingDto.streetId) || this.util.isNullOrEmpty(this.formRes.buildingDto.houseNumber)) {
         this.notifyService.showError('Пожалуйста, заполните все поля', "");
@@ -1377,6 +1372,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       }
       this.subscriptions.add(this.dicService.saveResidentalComplex(this.formRes).subscribe(data => {
           if (data != null) {
+            this.loadDictionary();
             this.notifyService.showSuccess('success', 'Успешно сохранено');
             this.modalRef.hide();
             this.clearForm();
@@ -1416,7 +1412,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
               timeLeft--;
             } else {
               this.loadDictionary();
-              this.ngxLoader.stop();
+              this.ngxLoader.stopBackground();
               }
           }, 1000)
         }
@@ -1433,7 +1429,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   checkPostData2() {
     if (!this.util.isNullOrEmpty(this.postcode2?.fullAddress)) {
-      this.ngxLoader.start();
+      this.ngxLoader.startBackground();
 
       this.subscriptions.add(this.kazPostService.checkPostData(this.postcode2?.fullAddress).subscribe(res => {
         this.formRes.buildingDto.postcode = this.postcode2?.value;
@@ -1451,7 +1447,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
             this.formRes.buildingDto.districtId = res.district.id;
             this.formRes.buildingDto.streetId = res.street.id;
             this.formRes.buildingDto.houseNumber = res.houseNumber;
-            this.ngxLoader.stop();
+            this.ngxLoader.stopBackground();
 
           }
         }, 300)
