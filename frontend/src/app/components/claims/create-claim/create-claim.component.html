@@ -486,7 +486,7 @@
                               </ng-select>
                             </div>
                             <div class="col-sm"
-                                 *ngIf="isBuy() && isHouse()">
+                                 *ngIf="isBuy()">
                               <label for="patronymic" translate>claim.numberHouse
                                 <span class="text-danger" *ngIf="!applicationForm.houseNumber">&nbsp;*</span>
                               </label>
@@ -503,7 +503,7 @@
                                        [readOnly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
                                        formControlName="houseNumber"
                                 />
-                                <input type="text" class="form-control" maxlength="10"
+                                <input type="text" class="form-control" maxlength="10" *ngIf="isHouse()"
                                        [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_DATA', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"
                                        placeholder="Дробь/буква/строение"
                                        [(ngModel)]="applicationForm.houseNumberFraction"

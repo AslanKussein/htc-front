@@ -1265,6 +1265,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
           this.applicationForm.cityId = res.city?.id;
           this.applicationForm.streetId = res.street?.id;
           this.applicationForm.districtId = res.district?.id;
+          this.applicationForm.houseNumber = res.houseNumber;
           this.ngxLoader.stopBackground()
         }, 1000);
         this.newDicService
