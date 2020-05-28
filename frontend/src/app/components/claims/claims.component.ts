@@ -87,6 +87,9 @@ export class ClaimsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.claimService.getClaims(searchFilter).subscribe(res => {
       if (res != null && res.data != null) {
         this.claimData = res.data.data.data;
+        this.claimData.forEach(data =>
+          this.searchByPhone(data)
+        )
         this.totalItems = res.data.total;
         this.currentPage = res.data.pageNumber + 1;
         if (res.data.data.empty) {
@@ -107,12 +110,11 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   }
 
   searchByPhone(claim: any) {
-    if (!this.util.isNullOrEmpty(claim.phoneNumber)) {
-      this.subscriptions.add(this.ownerService.searchByPhone(claim.phoneNumber)
+    if (!this.util.isNullOrEmpty(claim.phone)) {
+      this.subscriptions.add(this.ownerService.searchByPhone(claim.phone)
         .subscribe(res => {
-          claim['fullName'] = res?.firstName + ' ' + res?.surname + ' ' + res?.patronymic
+          claim['fullName'] = res?.firstName.concat(' ', res?.surname, ' ' , res?.patronymic ? res?.patronymic : ' ').toUpperCase()
           claim['email'] = res?.email;
-          claim['phoneNumber'] = '+7' + res?.phoneNumber
           console.log(res)
         }));
     }

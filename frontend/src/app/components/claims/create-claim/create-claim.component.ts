@@ -803,11 +803,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     );
   }
 
-  createClientIfNotPresent(clientLogin: string) {
+  createClientIfNotPresent() {
     if (!this.existsClient && !this.applicationId) {
       this.createClient()
     }
-    this.application.clientLogin = clientLogin;
+    this.application.clientLogin = this.applicationForm.phoneNumber;
   }
 
   createClient() {
@@ -817,6 +817,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     dto.patronymic = this.applicationForm.patronymic;
     dto.email = this.applicationForm.email;
     dto.gender = this.applicationForm.gender;
+    dto.phoneNumber = this.applicationForm.phoneNumber;
     this.subscriptions.add(this.userService.createUserClient(dto).subscribe());
   }
 
@@ -838,9 +839,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       }
     }
 
-    this.fillApplication();
-    this.createClientIfNotPresent(this.applicationForm.phoneNumber);
-    console.log(this.application)
+    this.createClientIfNotPresent();
+
     let result = false;
     const controls = this.applicationForm.controls;
     for (const name in controls) {
@@ -857,30 +857,36 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       return;
     }
 
-    if (this.applicationId != null) {
-      this.subscriptions.add(this.claimService.updateClaim(this.applicationId, this.application)
-        .subscribe(data => {
-          if (data != null) {
-            this.notifyService.showSuccess('success', 'Успешно обновлено');
-          }
-        }, err => {
-          this.ngxLoader.stopBackground();
-          this.notifyService.showWarning('warning', err);
-        }));
-    } else {
-      this.subscriptions.add(this.claimService.saveClaim(this.application)
-        .subscribe(data => {
-          if (data != null) {
-            this.saved = true;
-            this.util.dnHref('claims')
-            this.notifyService.showSuccess('success', 'Успешно сохранено');
-          }
-        }, err => {
-          this.ngxLoader.stopBackground();
-          this.notifyService.showWarning('warning', err);
-        }));
-    }
-    this.ngxLoader.stopBackground();
+    setTimeout(() => {
+      this.fillApplication();
+
+      console.log(this.application)
+
+      if (this.applicationId != null) {
+        this.subscriptions.add(this.claimService.updateClaim(this.applicationId, this.application)
+          .subscribe(data => {
+            if (data != null) {
+              this.notifyService.showSuccess('success', 'Успешно обновлено');
+            }
+          }, err => {
+            this.ngxLoader.stopBackground();
+            this.notifyService.showWarning('warning', err);
+          }));
+      } else {
+        this.subscriptions.add(this.claimService.saveClaim(this.application)
+          .subscribe(data => {
+            if (data != null) {
+              this.saved = true;
+              this.util.dnHref('claims')
+              this.notifyService.showSuccess('success', 'Успешно сохранено');
+            }
+          }, err => {
+            this.ngxLoader.stopBackground();
+            this.notifyService.showWarning('warning', err);
+          }));
+      }
+      this.ngxLoader.stopBackground();
+    }, 1000);
   }
 
   cancel() {
