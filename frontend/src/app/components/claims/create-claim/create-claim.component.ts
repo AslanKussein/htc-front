@@ -1172,7 +1172,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
           this.applicationForm.houseNumber = res.houseNumber;
           this.ngxLoader.stopBackground()
         }, 1000);
-        this.newDicService
       }, () => this.ngxLoader.stopBackground()));
     }
   }
