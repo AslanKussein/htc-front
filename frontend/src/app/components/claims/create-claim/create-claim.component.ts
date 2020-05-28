@@ -591,7 +591,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.longitude = data?.realPropertyDto?.buildingDto?.longitude;
         this.postCode = data?.realPropertyDto?.buildingDto?.postcode;
         this.applicationForm.streetId = data?.realPropertyDto?.buildingDto?.streetId;
-        this.applicationForm.residentialComplexId = data?.realPropertyDto?.buildingDto?.residentialComplexId;
+        this.applicationForm.residentialComplexId = this.util.getDictionaryValueById(this.residentialComplexes, data?.realPropertyDto?.buildingDto?.residentialComplexId);
       }
       this.fillCadastralNumber(data?.realPropertyDto?.cadastralNumber);
       this.applicationForm.floor = data?.realPropertyDto?.floor;

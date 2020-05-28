@@ -433,7 +433,7 @@
                   <div id="collapseOne" class="collapse show" aria-labelledby="aboutObjectOne"
                        data-parent="#accordionAboutObject">
                     <div class="card-body" [class.disabled]="!edit">
-                      <div class="row">
+                      <div class="row" *ngIf="isBuy()">
                         <fieldset class="scheduler-border col-sm">
                           <legend class="scheduler-border" translate>Унификация объекта</legend>
 
@@ -486,8 +486,7 @@
                                 placeholder="{{ 'claim.building' | translate }}">
                               </ng-select>
                             </div>
-                            <div class="col-sm"
-                                 *ngIf="isBuy()">
+                            <div class="col-sm">
                               <label for="patronymic" translate>claim.numberHouse
                                 <span class="text-danger" *ngIf="!applicationForm.houseNumber">&nbsp;*</span>
                               </label>
@@ -517,7 +516,7 @@
                             </div>
                             <div class="col-sm"
                                  [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)">
-                              <div *ngIf="isBuy() && isApartment()">
+                              <div *ngIf="isApartment()">
                                 <label translate>Номер квартиры</label>
                                 <div class="input-group">
                                   <input type="number" min="1" class="form-control"
