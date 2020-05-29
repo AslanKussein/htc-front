@@ -1394,6 +1394,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
                 timeLeft--;
               } else {
                 this.loadDictionary();
+                this.applicationForm.residentialComplexId=data.id;
                 this.ngxLoader.stopBackground();
               }
             }, 300)
