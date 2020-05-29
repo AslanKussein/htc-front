@@ -477,14 +477,21 @@
                                  [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
                                  *ngIf="isApartment() && isBuy() && this.applicationForm.unification == 'residence'">
                               <label for="patronymic" translate>claim.building</label>
-                              <ng-select
-                                [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
-                                [items]="residentialComplexes"
-                                [(ngModel)]="applicationForm.residentialComplexId"
-                                (ngModelChange)="setResidenceComplexType()"
-                                formControlName="residentialComplexId"
-                                placeholder="{{ 'claim.building' | translate }}">
-                              </ng-select>
+                              <div class="row">
+                                <div class="col-sm-10">
+                                  <ng-select
+                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                    [items]="residentialComplexes"
+                                    [(ngModel)]="applicationForm.residentialComplexId"
+                                    (ngModelChange)="setResidenceComplexType()"
+                                    formControlName="residentialComplexId"
+                                    placeholder="{{ 'claim.building' | translate }}">
+                                  </ng-select>
+                                </div>
+                                <div class="col-sm-2">
+                                  <a (click)="openModal(template,'residentialComplexes');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
+                                </div>
+                              </div>
                             </div>
                             <div class="col-sm">
                               <label for="patronymic" translate>claim.numberHouse
@@ -591,27 +598,7 @@
                                 <div *ngIf="f.streetId.errors.required" translate>claim.requiredField</div>
                               </div>
                             </div>
-                            <div class="col-sm"
-                                 [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
-                                 *ngIf="isApartment() && isBuy()">
-                              <label for="patronymic" translate>claim.building</label>
-                              <div class="row">
-                                <div class="col-sm-10">
-                                  <ng-select
-                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
-                                    [items]="residentialComplexes"
-                                    [(ngModel)]="applicationForm.residentialComplexId"
-                                    (ngModelChange)="setResidenceComplexType()"
-                                    formControlName="residentialComplexId"
-                                    placeholder="{{ 'claim.building' | translate }}">
-                                  </ng-select>
-                                </div>
-                                <div class="col-sm-2 left" >
-                                  <a (click)="openModal(template,'residentialComplexes');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
-                                </div>
-                              </div>
 
-                            </div>
                           </div>
                           <div class="row">
                             <div
