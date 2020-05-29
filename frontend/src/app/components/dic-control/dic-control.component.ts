@@ -51,6 +51,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
   postCode: string;
   postcode: any;
   timer: any;
+  postcodeDic:null;
 
   constructor(private util: Util,
               private modalService: BsModalService,
