@@ -375,7 +375,8 @@ export class DicControlComponent implements OnInit, OnDestroy {
     if (this.actions == 'ADD') {
       if (this.dicName == 'residential-complexes') {
         console.log(this.formRes)
-        if (this.util.isNullOrEmpty(this.formRes.buildingDto.cityId) || this.util.isNullOrEmpty(this.formRes.buildingDto.streetId) || this.util.isNullOrEmpty(this.formRes.buildingDto.houseNumber)) {
+        if (this.util.isNullOrEmpty(this.formRes.buildingDto.cityId) || this.util.isNullOrEmpty(this.formRes.buildingDto.streetId) || this.util.isNullOrEmpty(this.formRes.buildingDto.houseNumber)
+          || this.util.isNullOrEmpty(this.formRes.houseName)) {
           this.notifyService.showError('Пожалуйста, заполните все поля', "");
           return;
         }
