@@ -1345,7 +1345,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   openModal(template: TemplateRef<any>,dicName: string) {
     this.dicName=dicName;
-    if (dicName=='residential-complexes'){
+    if (dicName=='residentialComplexes'){
       this.resident=true;
     }else{
       this.resident=false;
@@ -1370,12 +1370,33 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.notifyService.showError('Пожалуйста, заполните все поля', "");
         return;
       }
+      let saveForm = {
+        dictionaryName: this.dicName,
+        nameEn: this.formRes.houseName,
+        nameKz: this.formRes.houseName,
+        nameRu: this.formRes.houseName,
+        parentId: null,
+        id:null
+      };
       this.subscriptions.add(this.dicService.saveResidentalComplex(this.formRes).subscribe(data => {
           if (data != null) {
+            console.log(data)
+            saveForm.id=data.id;
             this.loadDictionary();
             this.notifyService.showSuccess('success', 'Успешно сохранено');
             this.modalRef.hide();
             this.clearForm();
+            this.util.addDicById(this.dicName, saveForm);
+            let interval;
+            let timeLeft: number = 1;
+            interval = setInterval(() => {
+              if (timeLeft > 0) {
+                timeLeft--;
+              } else {
+                this.loadDictionary();
+                this.ngxLoader.stopBackground();
+              }
+            }, 300)
           }
         }, err => {
           this.notifyService.showError('warning', err.message);
@@ -1414,7 +1435,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
               this.loadDictionary();
               this.ngxLoader.stopBackground();
               }
-          }, 1000)
+          }, 300)
         }
       }, err => {
         this.notifyService.showError('warning', err.message);
