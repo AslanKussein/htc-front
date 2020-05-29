@@ -477,7 +477,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     if (this.util.isNullOrEmpty(this.applicationForm.residentialComplexId)) {
       return;
     }
-    this.applicationForm.streetId = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.streetId, null);//Улица
+    // this.applicationForm.streetId = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.streetId, null);//Улица
     this.applicationForm.houseNumber = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.houseNumber, null);//Номер дома
     this.applicationForm.houseNumberFraction = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.houseNumberFraction, null);//номер дробь
     this.applicationForm.districtId = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.districtId, null);//Район
@@ -496,8 +496,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.applicationForm.houseConditionId = this.util.nvl(this.applicationForm.residentialComplexId?.houseConditionId, null);//Состояния
     this.applicationForm.numberOfApartments = this.util.nvl(this.applicationForm.residentialComplexId?.numberOfApartments, null);//Кол-во кв
     this.applicationForm.ceilingHeight = this.util.nvl(this.applicationForm.residentialComplexId?.ceilingHeight, null);//Кол-во кв
-    this.applicationForm.cityId = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.cityId, null);//город
+    // this.applicationForm.cityId = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.cityId, null);//город
     this.postCode = this.applicationForm.residentialComplexId?.buildingDto?.postcode;
+    this.loadDataFromPostApi();
+
     this.cdRef.detectChanges();
   }
 

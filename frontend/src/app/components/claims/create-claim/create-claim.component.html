@@ -455,7 +455,7 @@
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-sm-6" *ngIf="this.applicationForm.unification == 'address'">
+                            <div class="col-sm-6" [class.disabled]="this.applicationForm.unification != 'address'">
                               <label for="patronymic">Полный адрес
                                 <span class="text-danger" *ngIf="!applicationForm.postcode">&nbsp;*</span>
                               </label>
@@ -469,13 +469,11 @@
                                 formControlName="postcode"
                                 placeholder="{{'Полный адрес' | translate }}">
                               </ng-select>
-                              <div *ngIf="f.postcode.touched && f.postcode.invalid || !f.unification.valid" class="text-danger">
-                                <div *ngIf="f.postcode.errors.required" translate>claim.requiredField</div>
-                              </div>
                             </div>
                             <div class="col-sm"
+                                 [class.disabled]="this.applicationForm.unification != 'residence'"
                                  [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
-                                 *ngIf="isApartment() && isBuy() && this.applicationForm.unification == 'residence'">
+                                 *ngIf="isApartment() && isBuy()">
                               <label for="patronymic" translate>claim.building</label>
                               <div class="row">
                                 <div class="col-sm-10">
@@ -535,7 +533,6 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-1"></div>
                           </div>
                         </fieldset>
                       </div>
@@ -546,58 +543,58 @@
                                util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles) &&
                                util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
-                            <div class="col-sm">
-                              <label for="patronymic" translate>Город
-                                <span class="text-danger" *ngIf="!applicationForm.cityId">&nbsp;*</span>
-                              </label>
-                              <div class="row">
-                                <div class="col-sm-10">
-                                  <ng-select
-                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
-                                    [items]="city"
-                                    [(ngModel)]="applicationForm.cityId"
-                                    formControlName="cityId"
-                                    [readonly]="true"
-                                    bindValue="value"
-                                    placeholder="{{ 'claim.city' | translate }}">
-                                  </ng-select>
-                                </div>
-                                <div class="col-sm-2">
-                                  <a (click)="openModal(template,'City');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
-                                </div>
-                              </div>
+<!--                            <div class="col-sm">-->
+<!--                              <label for="patronymic" translate>Город-->
+<!--                                <span class="text-danger" *ngIf="!applicationForm.cityId">&nbsp;*</span>-->
+<!--                              </label>-->
+<!--                              <div class="row">-->
+<!--                                <div class="col-sm-10">-->
+<!--                                  <ng-select-->
+<!--                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"-->
+<!--                                    [items]="city"-->
+<!--                                    [(ngModel)]="applicationForm.cityId"-->
+<!--                                    formControlName="cityId"-->
+<!--                                    [readonly]="true"-->
+<!--                                    bindValue="value"-->
+<!--                                    placeholder="{{ 'claim.city' | translate }}">-->
+<!--                                  </ng-select>-->
+<!--                                </div>-->
+<!--                                <div class="col-sm-2">-->
+<!--                                  <a (click)="openModal(template,'City');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>-->
+<!--                                </div>-->
+<!--                              </div>-->
 
-                              <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">
-                                <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>
-                              </div>
-                            </div>
-                            <div class="col-sm"
-                                 [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
-                                 *ngIf="isBuy()">
-                              <label for="patronymic" translate>claim.street
-                                <span class="text-danger" *ngIf="!applicationForm.streetId">&nbsp;*</span>
-                              </label>
-                              <div class="row">
-                                <div class="col-sm-10">
-                                  <ng-select
-                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
-                                    bindValue="value"
-                                    [items]="streets"
-                                    [(ngModel)]="applicationForm.streetId"
-                                    formControlName="streetId"
-                                    [readonly]="true"
-                                    placeholder="{{ 'claim.street' | translate }}">
-                                  </ng-select>
-                                </div>
-                                <div class="col-sm-2">
-                                  <a (click)="openModal(template,'Street');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
-                                </div>
-                              </div>
+<!--                              <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">-->
+<!--                                <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>-->
+<!--                              </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-sm"-->
+<!--                                 [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"-->
+<!--                                 *ngIf="isBuy()">-->
+<!--                              <label for="patronymic" translate>claim.street-->
+<!--                                <span class="text-danger" *ngIf="!applicationForm.streetId">&nbsp;*</span>-->
+<!--                              </label>-->
+<!--                              <div class="row">-->
+<!--                                <div class="col-sm-10">-->
+<!--                                  <ng-select-->
+<!--                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"-->
+<!--                                    bindValue="value"-->
+<!--                                    [items]="streets"-->
+<!--                                    [(ngModel)]="applicationForm.streetId"-->
+<!--                                    formControlName="streetId"-->
+<!--                                    [readonly]="true"-->
+<!--                                    placeholder="{{ 'claim.street' | translate }}">-->
+<!--                                  </ng-select>-->
+<!--                                </div>-->
+<!--                                <div class="col-sm-2">-->
+<!--                                  <a (click)="openModal(template,'Street');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>-->
+<!--                                </div>-->
+<!--                              </div>-->
 
-                              <div *ngIf="f.streetId.touched && f.streetId.invalid" class="text-danger">
-                                <div *ngIf="f.streetId.errors.required" translate>claim.requiredField</div>
-                              </div>
-                            </div>
+<!--                              <div *ngIf="f.streetId.touched && f.streetId.invalid" class="text-danger">-->
+<!--                                <div *ngIf="f.streetId.errors.required" translate>claim.requiredField</div>-->
+<!--                              </div>-->
+<!--                            </div>-->
 
                           </div>
                           <div class="row">
