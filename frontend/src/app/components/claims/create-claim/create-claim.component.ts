@@ -472,6 +472,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   setResidenceComplexType() {
+    console.log(this.applicationForm.residentialComplexId)
     if (this.applicationId && !this.edit) return;
     this.readonlyChooseJK = !this.util.isNullOrEmpty(this.applicationForm.residentialComplexId);
     if (this.util.isNullOrEmpty(this.applicationForm.residentialComplexId)) {
@@ -1366,7 +1367,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
    submitModal() {
     this.ngxLoader.startBackground();
     if (this.resident == true) {
-      if (this.util.isNullOrEmpty(this.formRes.buildingDto.cityId) || this.util.isNullOrEmpty(this.formRes.buildingDto.streetId) || this.util.isNullOrEmpty(this.formRes.buildingDto.houseNumber)) {
+      if (this.util.isNullOrEmpty(this.formRes.buildingDto.cityId) || this.util.isNullOrEmpty(this.formRes.buildingDto.streetId) || this.util.isNullOrEmpty(this.formRes.buildingDto.houseNumber)
+        || this.util.isNullOrEmpty(this.formRes.houseName)) {
         this.notifyService.showError('Пожалуйста, заполните все поля', "");
         return;
       }
@@ -1394,6 +1396,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
                 timeLeft--;
               } else {
                 this.loadDictionary();
+                this.applicationForm.residentialComplexId=data;
+                this.applicationForm.residentialComplexId.value=data.id;
+                this.applicationForm.residentialComplexId.label=data.houseName;
                 this.ngxLoader.stopBackground();
               }
             }, 300)
