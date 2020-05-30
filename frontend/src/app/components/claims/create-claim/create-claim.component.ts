@@ -1308,13 +1308,16 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.util.addDicById('Street', res.street);
         this.util.addDicById('District', res.district);
         this.util.addDicById('City', res.city);
-
+        this.subscriptions.add(this.newDicService.getResidentialComplexesByPostcode(this.postCode).subscribe(res =>
+          this.applicationForm.residentialComplexId = this.util.getDictionaryValueById(this.residentialComplexes, res.buildingDto.residentialComplexId)
+        ))
         setTimeout(() => {
           this.loadDictionary();
           this.applicationForm.cityId = res.city?.id;
           this.applicationForm.streetId = res.street?.id;
           this.applicationForm.districtId = res.district?.id;
           this.applicationForm.houseNumber = res.houseNumber;
+
           this.ngxLoader.stopBackground()
         }, 1000);
       }, () => this.ngxLoader.stopBackground()));
