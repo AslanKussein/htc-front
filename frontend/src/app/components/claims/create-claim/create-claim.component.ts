@@ -291,7 +291,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       apartmentsOnTheSiteFrom: [null, Validators.nullValidator],
       apartmentsOnTheSiteTo: [null, Validators.nullValidator],
       postValue: [null, Validators.nullValidator],
-      unification: [null, this.applicationId ? Validators.nullValidator : Validators.required],
+      unification: ['address', this.applicationId ? Validators.nullValidator : Validators.required],
     });
     this.cdRef.detectChanges();
     this.loadDictionary();
