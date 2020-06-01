@@ -55,8 +55,6 @@ import {CloseDealComponent} from "./components/board/close-deal/close-deal.compo
 import {AddEventComponent} from "./components/board/add-event/add-event.component";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {ClaimEventsComponent} from './components/claims/create-claim/claim-events/claim-events.component';
-import {NgxIndexedDBModule} from 'ngx-indexed-db';
-import {dbConfig} from "./helpers/indexedDb";
 import {PaginationModule} from "ngx-bootstrap/pagination";
 import {ModalModule} from "ngx-bootstrap/modal";
 import {defineLocale} from "ngx-bootstrap/chronos";
@@ -139,7 +137,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
         }),
         NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
         NgbModule,
-        NgxIndexedDBModule.forRoot(dbConfig),
         AngularYandexMapsModule
     ],
   providers: [

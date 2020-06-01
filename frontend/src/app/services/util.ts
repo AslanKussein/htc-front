@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {language} from "../../environments/language";
 import {Router} from "@angular/router";
-import {NgxIndexedDBService} from 'ngx-indexed-db';
 import {ConfigService} from "./config.service";
 import {isArray} from "rxjs/internal-compatibility";
 import {formatDate} from '@angular/common';
@@ -13,8 +12,7 @@ export class Util {
   _language = language;
 
   constructor(private router: Router,
-              private configService: ConfigService,
-              private dbService: NgxIndexedDBService) {
+              private configService: ConfigService) {
   }
 
   dnHref(href) {
@@ -230,29 +228,6 @@ export class Util {
 
   length(data: any) {
     return data?.length;
-  }
-
-  getAllDic(code: string) {
-    return this.dbService.getAll(code);
-  }
-
-  addDicById(code: string, val: any) {
-    console.log(val)
-    this.dbService.getByKey(code, val.id).then(
-      data => {
-        console.log(22)
-        if (this.isNullOrEmpty(data)) {
-          this.addDic(code, val)
-        }
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }
-
-  addDic(code: string, data: any) {
-    this.dbService.add(code, {value: data?.id, label: data?.nameRu}).then();
   }
 
   toSelectArrayPost(data) {
