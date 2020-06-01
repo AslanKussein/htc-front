@@ -207,19 +207,19 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   loadDictionary() {
 
     this.subscriptions.add(this.newDicService.getDictionary('ObjectType').subscribe(res => {
-      this.objectTypes = res;
+      this.objectTypes = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('District').subscribe(res => {
-      this.districts = res;
+      this.districts = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('MaterialOfConstruction').subscribe(res => {
-      this.homeTypes = res;
+      this.homeTypes = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.dicService.getDics('YES_NO').subscribe(res => {
-      this.dicDynamic = res;
+      this.dicDynamic = this.util.toSelectArrayOldDic(res);
     }));
     this.subscriptions.add(this.newDicService.getResidentialComplexes().subscribe(res => {
-      this.residentialComplexes = res;
+      this.residentialComplexes = this.util.toSelectArrayResidenceComplex(res);
     }));
   }
 

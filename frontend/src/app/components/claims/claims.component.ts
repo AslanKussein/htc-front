@@ -61,10 +61,11 @@ export class ClaimsComponent implements OnInit, OnDestroy {
     this.findClaims(1);
 
     this.subscriptions.add(this.newDicService.getDictionary('ApplicationStatus').subscribe(res => {
-      this.appStatuses = res;
+      this.appStatuses = this.util.toSelectArray(res);
+
     }));
     this.subscriptions.add(this.newDicService.getDictionary('OperationType').subscribe(res => {
-      this.operationType = res;
+      this.operationType = this.util.toSelectArray(res);
     }));
   }
 

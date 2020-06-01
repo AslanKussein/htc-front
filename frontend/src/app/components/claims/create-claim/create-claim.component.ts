@@ -325,14 +325,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   loadResidentialComplexes() {
     this.subscriptions.add(this.newDicService.getResidentialComplexes().subscribe(data => {
-      this.residentialComplexes = this.util.toSelectArray(data);
+      this.residentialComplexes = this.util.toSelectArrayResidenceComplex(data);
     }));
   }
 
   loadDictionary() {
     this.subscriptions.add(this.newDicService.getDictionary('OperationType').subscribe(data => {
       this.operationType = this.util.toSelectArray(data);
-      console.log(this.operationType)
     }));
     this.subscriptions.add(this.newDicService.getDictionary('ObjectType').subscribe(data => {
       this.objectType = this.util.toSelectArray(data);
@@ -360,7 +359,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.materials = this.util.toSelectArray(data);
     }));
     this.subscriptions.add(this.dicService.getDics('YES_NO').subscribe(data => {
-      this.dicDynamic = this.util.toSelectArray(data);
+      this.dicDynamic = this.util.toSelectArrayOldDic(data);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('TypeOfElevator').subscribe(data => {
       this.elevatorType = this.util.toSelectArray(data);

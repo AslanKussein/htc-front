@@ -44,7 +44,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.ngxLoader.start();
     this.subscriptions.add(this.newDicService.getDictionary('ApplicationStatus').subscribe(res => {
-      this.appStatuses = res;
+      this.appStatuses = this.util.toSelectArray(res);
       this.sortStatusesDic(this.activeTab);
     }));
 

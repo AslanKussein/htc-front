@@ -67,10 +67,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.cdRef.detectChanges()
 
     this.subscriptions.add(this.newDicService.getDictionary('ObjectType').subscribe(res => {
-      this.objectType = res;
+      this.objectType = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('OperationType').subscribe(res => {
-      this.operationType = res;
+      this.operationType = this.util.toSelectArray(res);
     }));
 
     this.subscriptions.add(this.userService.getAgents().subscribe(obj => {
