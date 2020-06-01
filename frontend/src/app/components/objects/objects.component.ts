@@ -9,6 +9,8 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {Period} from "../../models/common/period";
 import {NotificationService} from "../../services/notification.service";
 import {Subscription} from "rxjs";
+import {NewDicService} from "../../services/new.dic.service";
+import {DicService} from "../../services/dic.service";
 
 
 @Component({
@@ -34,6 +36,8 @@ export class ObjectsComponent implements OnInit, OnDestroy {
               private uploadService: UploaderService,
               private notifyService: NotificationService,
               private util: Util,
+              private newDicService: NewDicService,
+              private dicService: DicService,
               private uploaderService: UploaderService,
               private ngxLoader: NgxUiLoaderService) {
   }
@@ -201,21 +205,22 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   }
 
   loadDictionary() {
-    this.util.getAllDic('District').then(res => {
-      this.districts = res;
-    })
-    this.util.getAllDic('MaterialOfConstruction').then(res => {
-      this.homeTypes = res;
-    })
-    this.util.getAllDic('YES_NO').then(res => {
-      this.dicDynamic = res;
-    })
-    this.util.getAllDic('ObjectType').then(res => {
-      this.objectTypes = res;
-    })
-    this.util.getAllDic('residentialComplexes').then(res => {
-      this.residentialComplexes = res;
-    })
+
+    this.subscriptions.add(this.newDicService.getDictionary('ObjectType').subscribe(res => {
+      this.objectTypes = this.util.toSelectArray(res);
+    }));
+    this.subscriptions.add(this.newDicService.getDictionary('District').subscribe(res => {
+      this.districts = this.util.toSelectArray(res);
+    }));
+    this.subscriptions.add(this.newDicService.getDictionary('MaterialOfConstruction').subscribe(res => {
+      this.homeTypes = this.util.toSelectArray(res);
+    }));
+    this.subscriptions.add(this.dicService.getDics('YES_NO').subscribe(res => {
+      this.dicDynamic = this.util.toSelectArrayOldDic(res);
+    }));
+    this.subscriptions.add(this.newDicService.getResidentialComplexes().subscribe(res => {
+      this.residentialComplexes = this.util.toSelectArrayResidenceComplex(res);
+    }));
   }
 
   addObjectTypes(id) {

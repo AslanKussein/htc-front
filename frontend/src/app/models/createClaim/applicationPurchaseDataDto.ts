@@ -14,6 +14,7 @@ export class ApplicationPurchaseDataDto {
     public theSizeOfTrades?: number,//Размер торга
     public objectPricePeriod?: Period,//Цена объекта от и до(млн тг)
     public possibleReasonForBiddingIdList?: number,//ID возможной причины торга
+    public applicationFlagIdList?: number,//ID признак
   ) {
   }
 }

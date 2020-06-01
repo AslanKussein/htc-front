@@ -8,6 +8,7 @@ import {Board} from "../../models/board/board";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {UserService} from "../../services/user.service";
 import {Subscription} from "rxjs";
+import {NewDicService} from "../../services/new.dic.service";
 
 @Component({
   selector: 'app-board',
@@ -36,15 +37,16 @@ export class BoardComponent implements OnInit, OnDestroy {
               private util: Util,
               private notificationService: NotificationService,
               private ngxLoader: NgxUiLoaderService,
+              private newDicService: NewDicService,
               private userService: UserService) {
   }
 
   ngOnInit(): void {
     this.ngxLoader.start();
-    this.util.getAllDic('ApplicationStatus').then(res => {
-      this.appStatuses = res;
+    this.subscriptions.add(this.newDicService.getDictionary('ApplicationStatus').subscribe(res => {
+      this.appStatuses = this.util.toSelectArray(res);
       this.sortStatusesDic(this.activeTab);
-    })
+    }));
 
     this.subscriptions.add(this.userService.getAgents().subscribe(obj => {
       this.agentList = obj.data;

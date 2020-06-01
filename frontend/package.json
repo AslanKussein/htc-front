@@ -1,6 +1,6 @@
 {
   "name": "htc",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config  proxy.conf.json --host htc.dilau.kz --port 80",
@@ -40,7 +40,6 @@
     "ng2-charts": "^2.3.0",
     "ngx-bootstrap": "^5.5.0",
     "ngx-echarts": "^4.2.2",
-    "ngx-indexed-db": "^5.0.2",
     "ngx-mask": "^8.2.0",
     "ngx-pagination": "^5.0.0",
     "ngx-toastr": "^12.0.1",

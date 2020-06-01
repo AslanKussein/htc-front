@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {language} from "../../environments/language";
 import {Router} from "@angular/router";
-import {NgxIndexedDBService} from 'ngx-indexed-db';
 import {ConfigService} from "./config.service";
 import {isArray} from "rxjs/internal-compatibility";
 import {formatDate} from '@angular/common';
@@ -13,8 +12,7 @@ export class Util {
   _language = language;
 
   constructor(private router: Router,
-              private configService: ConfigService,
-              private dbService: NgxIndexedDBService) {
+              private configService: ConfigService) {
   }
 
   dnHref(href) {
@@ -31,6 +29,17 @@ export class Util {
   }
 
   toSelectArray(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
+    const list = [];
+    if (data) {
+      const len = data.length;
+      for (let i = 0; i < len; i++) {
+        list.push({value: data[i][idField], label: data[i].multiLang[labelField], code: data[i]['code']});
+      }
+    }
+    return list;
+  }
+
+  toSelectArrayOldDic(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
     const list = [];
     if (data) {
       const len = data.length;
@@ -136,6 +145,7 @@ export class Util {
           id: data[i]['id'],
           label: data[i]['houseName'],
           countryId: data[i]['countryId'],
+          cityId: data[i]['cityId'],
           houseName: data[i]['houseName'],
           propertyDeveloperId: data[i]['propertyDeveloperId'],
           numberOfEntrances: data[i]['numberOfEntrances'],
@@ -145,26 +155,31 @@ export class Util {
           apartmentsOnTheSite: data[i]['apartmentsOnTheSite'],
           ceilingHeight: data[i]['ceilingHeight'],
           concierge: data[i]['concierge'],
+          districtId: data[i]['districtId'],
+          houseNumber: data[i]['houseNumber'],
+          houseNumberFraction: data[i]['houseNumberFraction'],
           materialOfConstructionId: data[i]['materialOfConstructionId'],
           numberOfFloors: data[i]['numberOfFloors'],
           parkingTypeIds: data[i]['parkingTypeIds'],
           playground: data[i]['playground'],
+          streetId: data[i]['streetId'],
           typeOfElevator: data[i]['typeOfElevatorIdList'],
           wheelchair: data[i]['wheelchair'],
           yardType: data[i]['yardTypeId'],
           yearOfConstruction: data[i]['yearOfConstruction'],
-        });
-        let buildingDto = data[i]['buildingDto']
-        list.push({
-          cityId: buildingDto.cityId,
-          districtId: buildingDto.districtId,
-          houseNumber: buildingDto.houseNumber,
-          houseNumberFraction: buildingDto.houseNumberFraction,
-          streetId: buildingDto.streetId,
+          buildingDto: {
+            cityId: data[i].buildingDto.cityId,
+            districtId: data[i].buildingDto.districtId,
+            houseNumber: data[i].buildingDto.houseNumber,
+            houseNumberFraction: data[i].buildingDto.houseNumberFraction,
+            latitude: data[i].buildingDto.latitude,
+            longitude: data[i].buildingDto.longitude,
+            postcode: data[i].buildingDto.postcode,
+            streetId: data[i].buildingDto.streetId
+          }
         });
       }
     }
-    console.log(list)
     return list;
   }
 
@@ -225,34 +240,11 @@ export class Util {
   }
 
   nvl(val: any, val2: any) {
-    return this.isNullOrEmpty(val) ? val : val2;
+    return this.isNullOrEmpty(val) ? val2 : val;
   }
 
   length(data: any) {
     return data?.length;
-  }
-
-  getAllDic(code: string) {
-    return this.dbService.getAll(code);
-  }
-
-  addDicById(code: string, val: any) {
-    console.log(val)
-    this.dbService.getByKey(code, val.id).then(
-      data => {
-        console.log(22)
-        if (this.isNullOrEmpty(data)) {
-          this.addDic(code, val)
-        }
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }
-
-  addDic(code: string, data: any) {
-    this.dbService.add(code, {value: data?.id, label: data?.nameRu}).then();
   }
 
   toSelectArrayPost(data) {

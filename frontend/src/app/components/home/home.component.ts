@@ -12,6 +12,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {OwnerService} from "../../services/owner.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {Subscription} from "rxjs";
+import {NewDicService} from "../../services/new.dic.service";
 
 @Component({
   selector: 'app-home',
@@ -40,6 +41,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               private translate: TranslateService,
               private ownerService: OwnerService,
               private ngxLoader: NgxUiLoaderService,
+              private newDicService: NewDicService,
               private cdRef: ChangeDetectorRef) {
   }
 
@@ -63,12 +65,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     this.cdRef.detectChanges()
-    this.util.getAllDic('OperationType').then(res=>{
-      this.operationType = res;
-    })
-    this.util.getAllDic('ObjectType').then(res => {
-      this.objectType = res;
-    })
+
+    this.subscriptions.add(this.newDicService.getDictionary('ObjectType').subscribe(res => {
+      this.objectType = this.util.toSelectArray(res);
+    }));
+    this.subscriptions.add(this.newDicService.getDictionary('OperationType').subscribe(res => {
+      this.operationType = this.util.toSelectArray(res);
+    }));
+
     this.subscriptions.add(this.userService.getAgents().subscribe(obj => {
       this.agentList = this.util.toSelectArrayRoles(obj, 'login');
     }));

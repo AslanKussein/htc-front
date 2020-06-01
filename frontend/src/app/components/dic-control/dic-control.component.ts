@@ -180,30 +180,31 @@ export class DicControlComponent implements OnInit, OnDestroy {
   }
 
   loadDictionary() {
-    this.util.getAllDic('City').then(res => {
+    this.subscriptions.add(this.newDicService.getDictionary('City').subscribe(res => {
       this.cities = res;
-    });
-    this.util.getAllDic('District').then(data => {
-      this.districts = data;
-    });
-    this.util.getAllDic('Street').then(data => {
-      this.streets = data;
-    });
-    this.util.getAllDic('PropertyDeveloper').then(data => {
-      this.propertyDevelopers = data
-    });
-    this.util.getAllDic('MaterialOfConstruction').then(data => {
-      this.materialsOfConstruction = data
-    });
-    this.util.getAllDic('TypeOfElevator').then(data => {
-      this.typeOfElevator = data
-    });
-    this.util.getAllDic('ParkingType').then(data => {
-      this.parkingTypes = data
-    });
-    this.util.getAllDic('YardType').then(data => {
-      this.yardTypes = data
-    });
+    }));
+    this.subscriptions.add(this.newDicService.getDictionary('District').subscribe(res => {
+      this.districts = res;
+    }));
+    this.subscriptions.add(this.newDicService.getDictionary('Street').subscribe(res => {
+      this.streets = res;
+    }));
+    this.subscriptions.add(this.newDicService.getDictionary('PropertyDeveloper').subscribe(res => {
+      this.propertyDevelopers = res;
+    }));
+    this.subscriptions.add(this.newDicService.getDictionary('MaterialOfConstruction').subscribe(res => {
+      this.materialsOfConstruction = res;
+    }));
+    this.subscriptions.add(this.newDicService.getDictionary('TypeOfElevator').subscribe(res => {
+      this.typeOfElevator = res;
+    }));
+    this.subscriptions.add(this.newDicService.getDictionary('ParkingType').subscribe(res => {
+      this.parkingTypes = res;
+    }));
+    this.subscriptions.add(this.newDicService.getDictionary('YardType').subscribe(res => {
+      this.yardTypes = res;
+    }));
+
     this.ngxLoader.stop();
   }
 
@@ -534,9 +535,6 @@ export class DicControlComponent implements OnInit, OnDestroy {
 
       this.subscriptions.add(this.kazPostService.checkPostData(this.postcode?.fullAddress).subscribe(res => {
         this.formRes.buildingDto.postcode = this.postcode?.value;
-        this.util.addDicById('Street', res.street);
-        this.util.addDicById('District', res.district);
-        this.util.addDicById('City', res.city);
         let interval;
         let timeLeft: number = 1;
         interval = setInterval(() => {

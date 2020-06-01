@@ -7,6 +7,7 @@ import {EventsService} from "../../../../services/events.service";
 import {NotificationService} from "../../../../services/notification.service";
 import {EventsDTO} from "../../../../models/eventsDTO";
 import {Subscription} from "rxjs";
+import {NewDicService} from "../../../../services/new.dic.service";
 
 @Component({
   selector: 'app-claim-events',
@@ -33,6 +34,7 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
               private formBuilder: FormBuilder,
               private createClaimComponent: CreateClaimComponent,
               private eventsService: EventsService,
+              private newDicService: NewDicService,
               private notificationService: NotificationService) {
     this.applicationId = this.createClaimComponent?.applicationId;
   }
@@ -52,9 +54,9 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
   }
 
   sortStatus() {
-    this.util.getAllDic('EventType').then(res => {
+    this.subscriptions.add(this.newDicService.getDictionary('EventType').subscribe(res => {
       this.appStatusesSort = res;
-    })
+    }));
   }
 
   pageChanged(event: any): void {

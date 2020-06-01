@@ -87,6 +87,7 @@
                             <ng-select
                               [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles) && this.applicationId"
                               [items]="operationType"
+                              (ngModelChange)="setApplicationFlagSort()"
                               [readonly]="this.applicationId"
                               [(ngModel)]="applicationForm.operationTypeId"
                               formControlName="operationTypeId"
@@ -227,7 +228,7 @@
                               placeholder="{{ 'claim.probabilityBargaining' | translate }}">
                             </ng-select>
                           </div>
-                          <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 'true'">
+                          <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 1">
                             <label for="form1" translate>claim.bidAmount</label>
                             <input type="text" class="form-control" maxlength="20"
                                    oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
@@ -240,7 +241,7 @@
                                    formControlName="theSizeOfTrades" min="0"/>
                           </div>
                         </div>
-                        <div *ngIf="applicationForm.probabilityOfBidding == 'true'"
+                        <div *ngIf="applicationForm.probabilityOfBidding == 1"
                              [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
                              util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
                              util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles) &&
@@ -254,6 +255,7 @@
                                 bindValue="value"
                                 (click)="setPossibleReasonForBidding()"
                                 [items]="possibleReasonForBiddingSort"
+                                appendTo="body"
                                 [(ngModel)]="applicationForm.possibleReasonForBiddingIdList"
                                 formControlName="possibleReasonForBiddingIdList"
                                 placeholder="{{ 'claim.possibleBargaining' | translate }}">
@@ -270,8 +272,21 @@
                                       maxlength="1000"></textarea>
                           </div>
                         </div>
-                        <br/>
-                        <br/>
+                        <div class="row">
+                          <div class="col-sm">
+                            <label>Признак</label>
+                            <ng-select
+                              [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
+                              [multiple]="true"
+                              appendTo="body"
+                              bindValue="value"
+                              [items]="applicationFlagSort"
+                              [(ngModel)]="applicationForm.applicationFlagIdList"
+                              formControlName="possibleReasonForBiddingIdList"
+                              placeholder="{{ 'claim.possibleBargaining' | translate }}">
+                            </ng-select>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -455,7 +470,7 @@
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-sm-6" *ngIf="this.applicationForm.unification == 'address'">
+                            <div class="col-sm-6" [class.disabled]="this.applicationForm.unification != 'address'">
                               <label for="patronymic">Полный адрес
                                 <span class="text-danger" *ngIf="!applicationForm.postcode">&nbsp;*</span>
                               </label>
@@ -469,13 +484,11 @@
                                 formControlName="postcode"
                                 placeholder="{{'Полный адрес' | translate }}">
                               </ng-select>
-                              <div *ngIf="f.postcode.touched && f.postcode.invalid || !f.unification.valid" class="text-danger">
-                                <div *ngIf="f.postcode.errors.required" translate>claim.requiredField</div>
-                              </div>
                             </div>
                             <div class="col-sm"
+                                 [class.disabled]="this.applicationForm.unification != 'residence'"
                                  [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
-                                 *ngIf="isApartment() && isBuy() && this.applicationForm.unification == 'residence'">
+                                 *ngIf="isApartment() && isBuy()">
                               <label for="patronymic" translate>claim.building</label>
                               <div class="row">
                                 <div class="col-sm-10">
@@ -535,7 +548,6 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-1"></div>
                           </div>
                         </fieldset>
                       </div>
@@ -546,58 +558,58 @@
                                util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles) &&
                                util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
-                            <div class="col-sm">
-                              <label for="patronymic" translate>Город
-                                <span class="text-danger" *ngIf="!applicationForm.cityId">&nbsp;*</span>
-                              </label>
-                              <div class="row">
-                                <div class="col-sm-10">
-                                  <ng-select
-                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
-                                    [items]="city"
-                                    [(ngModel)]="applicationForm.cityId"
-                                    formControlName="cityId"
-                                    [readonly]="true"
-                                    bindValue="value"
-                                    placeholder="{{ 'claim.city' | translate }}">
-                                  </ng-select>
-                                </div>
-                                <div class="col-sm-2 float-left">
-                                  <a (click)="openModal(template,'City');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
-                                </div>
-                              </div>
+<!--                            <div class="col-sm">-->
+<!--                              <label for="patronymic" translate>Город-->
+<!--                                <span class="text-danger" *ngIf="!applicationForm.cityId">&nbsp;*</span>-->
+<!--                              </label>-->
+<!--                              <div class="row">-->
+<!--                                <div class="col-sm-10">-->
+<!--                                  <ng-select-->
+<!--                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"-->
+<!--                                    [items]="city"-->
+<!--                                    [(ngModel)]="applicationForm.cityId"-->
+<!--                                    formControlName="cityId"-->
+<!--                                    [readonly]="true"-->
+<!--                                    bindValue="value"-->
+<!--                                    placeholder="{{ 'claim.city' | translate }}">-->
+<!--                                  </ng-select>-->
+<!--                                </div>-->
+<!--                                <div class="col-sm-2">-->
+<!--                                  <a (click)="openModal(template,'City');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>-->
+<!--                                </div>-->
+<!--                              </div>-->
 
-                              <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">
-                                <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>
-                              </div>
-                            </div>
-                            <div class="col-sm"
-                                 [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
-                                 *ngIf="isBuy()">
-                              <label for="patronymic" translate>claim.street
-                                <span class="text-danger" *ngIf="!applicationForm.streetId">&nbsp;*</span>
-                              </label>
-                              <div class="row">
-                                <div class="col-sm-10">
-                                  <ng-select
-                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
-                                    bindValue="value"
-                                    [items]="streets"
-                                    [(ngModel)]="applicationForm.streetId"
-                                    formControlName="streetId"
-                                    [readonly]="true"
-                                    placeholder="{{ 'claim.street' | translate }}">
-                                  </ng-select>
-                                </div>
-                                <div class="col-sm-2 marginleft">
-                                  <a (click)="openModal(template,'Street');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
-                                </div>
-                              </div>
+<!--                              <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">-->
+<!--                                <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>-->
+<!--                              </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-sm"-->
+<!--                                 [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"-->
+<!--                                 *ngIf="isBuy()">-->
+<!--                              <label for="patronymic" translate>claim.street-->
+<!--                                <span class="text-danger" *ngIf="!applicationForm.streetId">&nbsp;*</span>-->
+<!--                              </label>-->
+<!--                              <div class="row">-->
+<!--                                <div class="col-sm-10">-->
+<!--                                  <ng-select-->
+<!--                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"-->
+<!--                                    bindValue="value"-->
+<!--                                    [items]="streets"-->
+<!--                                    [(ngModel)]="applicationForm.streetId"-->
+<!--                                    formControlName="streetId"-->
+<!--                                    [readonly]="true"-->
+<!--                                    placeholder="{{ 'claim.street' | translate }}">-->
+<!--                                  </ng-select>-->
+<!--                                </div>-->
+<!--                                <div class="col-sm-2">-->
+<!--                                  <a (click)="openModal(template,'Street');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>-->
+<!--                                </div>-->
+<!--                              </div>-->
 
-                              <div *ngIf="f.streetId.touched && f.streetId.invalid" class="text-danger">
-                                <div *ngIf="f.streetId.errors.required" translate>claim.requiredField</div>
-                              </div>
-                            </div>
+<!--                              <div *ngIf="f.streetId.touched && f.streetId.invalid" class="text-danger">-->
+<!--                                <div *ngIf="f.streetId.errors.required" translate>claim.requiredField</div>-->
+<!--                              </div>-->
+<!--                            </div>-->
 
                           </div>
                           <div class="row">
@@ -999,7 +1011,7 @@
                                         <ng-select
                                           [items]="districts"
                                           bindValue="value"
-                                          [readonly]="true"
+                                          [readonly]="isBuy()"
                                           [(ngModel)]="applicationForm.districtId"
                                           formControlName="districtId"
                                           placeholder="{{ 'claim.validator.districtId' | translate }}">
@@ -1239,6 +1251,7 @@
                                         <ng-select
                                           [items]="parkingTypes"
                                           [multiple]="true"
+                                          appendTo="body"
                                           [(ngModel)]="applicationForm.parkingTypeIds"
                                           [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                       util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
@@ -1259,6 +1272,7 @@
                                     <ng-select
                                       [items]="yardTypes"
                                       bindValue="value"
+                                      appendTo="body"
                                       [(ngModel)]="applicationForm.yardTypeId"
                                       [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                       util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
@@ -1271,6 +1285,7 @@
                                     <ng-select
                                       [items]="dicDynamic"
                                       bindValue="value"
+                                      appendTo="body"
                                       [(ngModel)]="applicationForm.playground"
                                       [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                       util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
@@ -1428,16 +1443,16 @@
                       <div class="row">
                         <label class="btn btn-info btn-sm" translate>claim.uploadPhoto
                           <i class="fa fa-upload"></i>
-                          <input type="file" hidden (change)="onFileChanged($event, 1)">
+                          <input type="file" multiple="" hidden (change)="onFileChange($event, 1)">
                         </label>
 
                         <label class="btn btn-info btn-sm" translate>claim.uploadPlan
                           <i class="fa fa-upload"></i>
-                          <input type="file" hidden (change)="onFileChanged($event, 2)">
+                          <input type="file" multiple="" hidden (change)="onFileChange($event, 2)">
                         </label>
                         <label class="btn btn-info btn-sm" translate>claim.upload3D
                           <i class="fa fa-upload"></i>
-                          <input type="file" hidden (change)="onFileChanged($event, 3)">
+                          <input type="file" multiple="" hidden (change)="onFileChange($event, 3)">
                         </label>
                       </div>
                     </div>
