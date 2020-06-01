@@ -332,6 +332,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   loadDictionary() {
     this.subscriptions.add(this.newDicService.getDictionary('OperationType').subscribe(data => {
       this.operationType = this.util.toSelectArray(data);
+      console.log(this.operationType)
     }));
     this.subscriptions.add(this.newDicService.getDictionary('ObjectType').subscribe(data => {
       this.objectType = this.util.toSelectArray(data);
