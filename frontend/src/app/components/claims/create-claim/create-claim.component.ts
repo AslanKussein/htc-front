@@ -216,7 +216,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       exchange: [null, Validators.nullValidator],
       sharedOwnershipProperty: [null, Validators.nullValidator],
       gender: [null, Validators.nullValidator],
-      cityId: [null, Validators.required],
+      cityId: [null, Validators.nullValidator],
       residentialComplexId: [null, Validators.nullValidator],
       streetId: [null, Validators.nullValidator],
       houseNumber: [null, Validators.nullValidator],
