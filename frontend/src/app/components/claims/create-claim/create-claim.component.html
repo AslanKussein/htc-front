@@ -270,6 +270,21 @@
                                       maxlength="1000"></textarea>
                           </div>
                         </div>
+                        <div class="row">
+                          <div class="col-sm">
+                            <label>Признак</label>
+                            <ng-select
+                              [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
+                              [multiple]="true"
+                              bindValue="value"
+                              (click)="setApplicationFlagSort()"
+                              [items]="applicationFlagSort"
+                              [(ngModel)]="applicationForm.applicationFlagIdList"
+                              formControlName="possibleReasonForBiddingIdList"
+                              placeholder="{{ 'claim.possibleBargaining' | translate }}">
+                            </ng-select>
+                          </div>
+                        </div>
                         <br/>
                         <br/>
                       </div>

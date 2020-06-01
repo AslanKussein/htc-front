@@ -68,6 +68,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   residentialComplexes: Dic[];
   propertyDevelopers: Dic[];
   heatingSystems: Dic[];
+  applicationFlag: Dic[];
+  applicationFlagSort: Dic[];
   agentList: Dic[];
   sewerageSystems: Dic[];
   houseCondition: Dic[];
@@ -291,6 +293,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       apartmentsOnTheSiteFrom: [null, Validators.nullValidator],
       apartmentsOnTheSiteTo: [null, Validators.nullValidator],
       postValue: [null, Validators.nullValidator],
+      applicationFlagIdList: [null, Validators.nullValidator],
       unification: ['address', this.applicationId ? Validators.nullValidator : Validators.required],
     });
     this.cdRef.detectChanges();
@@ -376,6 +379,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.subscriptions.add(this.newDicService.getDictionary('HeatingSystem').subscribe(data => {
       this.heatingSystems = this.util.toSelectArray(data);
     }));
+    this.subscriptions.add(this.newDicService.getDictionary('ApplicationFlag').subscribe(data => {
+      this.applicationFlag = this.util.toSelectArray(data);
+    }));
 
     this.subscriptions.add(this.userService.getAgentsToAssign().subscribe(obj => {
       this.agentList = this.util.toSelectArrayRoles(obj.data, 'login');
@@ -447,6 +453,21 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
           m['label'] = pos['label'];
           m['code'] = pos['code'];
           this.possibleReasonForBiddingSort.push(m)
+        }
+      }
+    }
+  }
+
+  setApplicationFlagSort() {
+    this.applicationFlagSort = [];
+    if (!this.util.isNullOrEmpty(this.applicationFlag)) {
+      for (const pos of this.applicationFlag) {
+        if (pos['operationCode'] == this.applicationForm?.operationTypeId?.code) {
+          let m = {};
+          m['value'] = pos['value'];
+          m['label'] = pos['label'];
+          m['code'] = pos['code'];
+          this.applicationFlagSort.push(m)
         }
       }
     }
@@ -559,6 +580,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.theSizeOfTrades = data?.purchaseDataDto?.theSizeOfTrades;
       this.applicationForm.objectPriceFrom = data?.purchaseDataDto?.objectPricePeriod?.from;
       this.applicationForm.objectPriceTo = data?.purchaseDataDto?.objectPricePeriod?.to;
+      this.applicationForm.applicationFlagIdList = data?.purchaseInfoDto?.applicationFlagIdList;
       setTimeout(() => {
         this.applicationForm.possibleReasonForBiddingIdList = this.util.nvl(data?.purchaseDataDto?.possibleReasonForBiddingIdList, null);
       }, 1000);
@@ -802,7 +824,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.probabilityOfBidding,
       this.applicationForm.theSizeOfTrades,
       new Period(this.applicationForm?.objectPriceFrom, this.applicationForm?.objectPriceTo),
-      this.applicationForm.possibleReasonForBiddingIdList
+      this.applicationForm.possibleReasonForBiddingIdList,
+      this.applicationForm.applicationFlagIdList
     )
   }
 
