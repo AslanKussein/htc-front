@@ -87,6 +87,7 @@
                             <ng-select
                               [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles) && this.applicationId"
                               [items]="operationType"
+                              (ngModelChange)="setApplicationFlagSort()"
                               [readonly]="this.applicationId"
                               [(ngModel)]="applicationForm.operationTypeId"
                               formControlName="operationTypeId"
@@ -227,7 +228,7 @@
                               placeholder="{{ 'claim.probabilityBargaining' | translate }}">
                             </ng-select>
                           </div>
-                          <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 'true'">
+                          <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 1">
                             <label for="form1" translate>claim.bidAmount</label>
                             <input type="text" class="form-control" maxlength="20"
                                    oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
@@ -240,7 +241,7 @@
                                    formControlName="theSizeOfTrades" min="0"/>
                           </div>
                         </div>
-                        <div *ngIf="applicationForm.probabilityOfBidding == 'true'"
+                        <div *ngIf="applicationForm.probabilityOfBidding == 1"
                              [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
                              util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
                              util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles) &&
@@ -254,6 +255,7 @@
                                 bindValue="value"
                                 (click)="setPossibleReasonForBidding()"
                                 [items]="possibleReasonForBiddingSort"
+                                appendTo="body"
                                 [(ngModel)]="applicationForm.possibleReasonForBiddingIdList"
                                 formControlName="possibleReasonForBiddingIdList"
                                 placeholder="{{ 'claim.possibleBargaining' | translate }}">
@@ -276,8 +278,8 @@
                             <ng-select
                               [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
                               [multiple]="true"
+                              appendTo="body"
                               bindValue="value"
-                              (click)="setApplicationFlagSort()"
                               [items]="applicationFlagSort"
                               [(ngModel)]="applicationForm.applicationFlagIdList"
                               formControlName="possibleReasonForBiddingIdList"
@@ -285,8 +287,6 @@
                             </ng-select>
                           </div>
                         </div>
-                        <br/>
-                        <br/>
                       </div>
                     </div>
                   </div>
@@ -1011,7 +1011,7 @@
                                         <ng-select
                                           [items]="districts"
                                           bindValue="value"
-                                          [readonly]="true"
+                                          [readonly]="isBuy()"
                                           [(ngModel)]="applicationForm.districtId"
                                           formControlName="districtId"
                                           placeholder="{{ 'claim.validator.districtId' | translate }}">
@@ -1251,6 +1251,7 @@
                                         <ng-select
                                           [items]="parkingTypes"
                                           [multiple]="true"
+                                          appendTo="body"
                                           [(ngModel)]="applicationForm.parkingTypeIds"
                                           [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                       util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
@@ -1271,6 +1272,7 @@
                                     <ng-select
                                       [items]="yardTypes"
                                       bindValue="value"
+                                      appendTo="body"
                                       [(ngModel)]="applicationForm.yardTypeId"
                                       [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                       util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
@@ -1283,6 +1285,7 @@
                                     <ng-select
                                       [items]="dicDynamic"
                                       bindValue="value"
+                                      appendTo="body"
                                       [(ngModel)]="applicationForm.playground"
                                       [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                       util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"

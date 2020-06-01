@@ -308,6 +308,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.ngxLoader.stopBackground();
     }
     window.scrollTo(0, 0);
+    this.applicationForm.unification = 'address';
   }
 
   getCheckOperationList() {
@@ -474,13 +475,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   setHouseOrApartmentsForMaterials() {
-    if (!this.applicationId) {
-      if (!this.isApartment()) {
-        this.applicationForm.unification = 'address';
-      } else {
-        this.applicationForm.unification = null;
-      }
-    }
     this.sortMaterials = [];
     if (this.isApartment()) {//кв
       this.sortMaterials = this.materials;
@@ -498,13 +492,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   setResidenceComplexType() {
-    console.log(this.applicationForm.residentialComplexId)
     if (this.applicationId && !this.edit) return;
     this.readonlyChooseJK = !this.util.isNullOrEmpty(this.applicationForm.residentialComplexId);
     if (this.util.isNullOrEmpty(this.applicationForm.residentialComplexId)) {
       return;
     }
-    // this.applicationForm.streetId = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.streetId, null);//Улица
     this.applicationForm.houseNumber = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.houseNumber, null);//Номер дома
     this.applicationForm.houseNumberFraction = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.houseNumberFraction, null);//номер дробь
     this.applicationForm.districtId = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.districtId, null);//Район
@@ -523,7 +515,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.applicationForm.houseConditionId = this.util.nvl(this.applicationForm.residentialComplexId?.houseConditionId, null);//Состояния
     this.applicationForm.numberOfApartments = this.util.nvl(this.applicationForm.residentialComplexId?.numberOfApartments, null);//Кол-во кв
     this.applicationForm.ceilingHeight = this.util.nvl(this.applicationForm.residentialComplexId?.ceilingHeight, null);//Кол-во кв
-    // this.applicationForm.cityId = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.cityId, null);//город
     this.postCode = this.applicationForm.residentialComplexId?.buildingDto?.postcode;
     this.loadDataFromPostApi();
 
@@ -791,11 +782,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     } else {
       this.setValidator('firstName', Validators.nullValidator);
       this.setValidator('surname', Validators.nullValidator);
-      this.setValidator('phoneNumber', Validators.nullValidator);
+      this.setValidator('phoneNumber', Validators.required);
     }
     if (this.applicationForm.unification == 'address') {
       this.setValidator('residentialComplexId', Validators.nullValidator);
-      this.setValidator('postcode', Validators.required);
+      this.setValidator('postcode', this.isBuy() ? Validators.required : Validators.nullValidator);
     } else if (this.applicationForm.unification == 'residence') {
       this.setValidator('postcode', Validators.nullValidator);
       this.setValidator('residentialComplexId', Validators.required);
@@ -1406,7 +1397,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       };
       this.subscriptions.add(this.dicService.saveResidentalComplex(this.formRes).subscribe(data => {
           if (data != null) {
-            console.log(data)
             saveForm.id=data.id;
             this.loadDictionary();
             this.notifyService.showSuccess('success', 'Успешно сохранено');
