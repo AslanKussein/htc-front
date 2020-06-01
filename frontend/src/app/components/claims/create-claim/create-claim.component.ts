@@ -768,15 +768,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.setValidator('livingArea', Validators.required);
         this.setValidator('numberOfBedrooms', Validators.required);
         if (this.util.isNullOrEmpty(this.applicationForm?.residentialComplexId)) {
-          this.setValidator('streetId', Validators.required);
           this.setValidator('apartmentNumber', Validators.required);
-          this.setValidator('districtId', Validators.required);
-          this.setValidator('cityId', Validators.required);
         } else {
-          this.setValidator('streetId', Validators.nullValidator);
           this.setValidator('apartmentNumber', Validators.nullValidator);
-          this.setValidator('districtId', Validators.nullValidator);
-          this.setValidator('cityId', Validators.nullValidator);
         }
       } else if (this.isSell()) { //купить
         this.setValidator('districtId', Validators.required);
@@ -785,7 +779,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     } else if (this.isHouse()) {//дом
       this.setValidator('districtId', Validators.required);
       if (this.isBuy()) {//продать
-        this.setValidator('streetId', Validators.required);
         this.setValidator('houseNumber', Validators.required);
         this.setValidator('landArea', Validators.required);
         this.setValidator('totalArea', Validators.required);
