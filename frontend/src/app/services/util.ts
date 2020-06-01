@@ -180,7 +180,6 @@ export class Util {
         });
       }
     }
-    console.log(list)
     return list;
   }
 

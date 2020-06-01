@@ -1102,15 +1102,20 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     }
   }
 
-  onFileChanged(event, id: number) {
-    this.selectedFile = event.target.files[0];
-    this.subscriptions.add(this.uploader.uploadData(this.selectedFile)
-      .subscribe(data => {
-        if (data != null) {
-          this.filesEdited = true;
-          this.fillPicture(data, id);
-        }
-      }));
+  onFileChange(event, id: number) {
+    if (event.target.files && event.target.files[0]) {
+      let filesAmount = event.target.files.length;
+      for (let i = 0; i < filesAmount; i++) {
+        this.selectedFile = event.target.files[i];
+        this.subscriptions.add(this.uploader.uploadData(this.selectedFile)
+          .subscribe(data => {
+            if (data != null) {
+              this.filesEdited = true;
+              this.fillPicture(data, id);
+            }
+          }));
+      }
+    }
   }
 
   fillPicture(guid: any, id: number) {
