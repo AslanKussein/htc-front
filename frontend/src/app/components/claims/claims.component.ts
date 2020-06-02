@@ -119,7 +119,6 @@ export class ClaimsComponent implements OnInit, OnDestroy {
         .subscribe(res => {
           claim['fullName'] = res?.firstName.concat(' ', res?.surname, ' ' , res?.patronymic ? res?.patronymic : ' ').toUpperCase()
           claim['email'] = res?.email;
-          console.log(res)
         }));
     }
   }

@@ -17,6 +17,7 @@ import {NewsComponent} from "./components/news/news.component";
 import {CloseDealComponent} from "./components/board/close-deal/close-deal.component";
 import {AddEventComponent} from "./components/board/add-event/add-event.component";
 import {ClientCardComponent} from "./components/profile/my-clients/client-card/client-card.component";
+import {ClaimViewComponent} from "./components/claims/create-claim/claim-view/claim-view.component";
 
 // определение дочерних маршрутов
 const itemRoutes: Routes = [
@@ -38,6 +39,7 @@ const routes: Routes = [
   {path: 'news', component: NewsComponent, canActivate: [AuthGuard]},
   {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
   {path: 'create-claim/:id', component: CreateClaimComponent, canActivate: [AuthGuard]},
+  {path: 'create-claim-view/:id', component: ClaimViewComponent, canActivate: [AuthGuard]},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate]},
   {path: 'client-card/:id', component: ClientCardComponent, canActivate: [AuthGuard]},
 ];

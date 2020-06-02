@@ -60,6 +60,7 @@ import {ModalModule} from "ngx-bootstrap/modal";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ruLocale} from "ngx-bootstrap/locale";
 import {AngularYandexMapsModule} from "angular8-yandex-maps";
+import { ClaimViewComponent } from './components/claims/create-claim/claim-view/claim-view.component';
 
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
@@ -106,6 +107,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     CloseDealComponent,
     AddEventComponent,
     ClaimEventsComponent,
+    ClaimViewComponent,
   ],
     imports: [
         BrowserModule,
