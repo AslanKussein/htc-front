@@ -22,7 +22,7 @@ export class MyClaimsComponent implements OnInit, OnDestroy {
   claimData = [];
   loading;
   totalItems = 0;
-  itemsPerPage = 5;
+  itemsPerPage = 10;
   currentPage = 1;
 
   ngOnInit(): void {

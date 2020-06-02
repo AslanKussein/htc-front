@@ -15,7 +15,7 @@ export class MyClientsComponent implements OnInit, OnDestroy {
   clientsData = [];
   text: string;
   totalItems = 0;
-  itemsPerPage = 20;
+  itemsPerPage = 10;
   currentPage = 1;
 
   constructor(private util: Util,
@@ -44,8 +44,8 @@ export class MyClientsComponent implements OnInit, OnDestroy {
     searchFilter['sortBy'] = 'id';
     // searchFilter['my'] = true;
     searchFilter['text'] = this.text;
-    searchFilter['pageNumber'] = pageNo - 1;
-    searchFilter['pageSize'] = this.itemsPerPage;
+    searchFilter['page'] = pageNo - 1;
+    searchFilter['size'] = this.itemsPerPage;
     this.subscriptions.add(this.clientsService.getClientList(searchFilter).subscribe(res => {
       console.log(res)
         this.clientsData = res.data.data.data;

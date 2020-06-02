@@ -10,6 +10,10 @@
       <br/>
       <div class="row">
         <div class="col-sm">
+          <div style="text-align: right">
+            <a *ngIf="save" (click)="removeByGuid(profile?.photoUuid)"><i style="color: red" class="fa fa-times fa-2x"></i></a>
+          </div>
+
           <img [src]="getSrcImg(profile?.photoUuid)" class="avatar img-circle img-thumbnail"
                alt="avatar">
           <a *ngIf="!save" (click)="editProfile()"><i style="color: blue" class="fa fa-edit fa-2x"></i></a>
@@ -66,7 +70,16 @@
               </div>
             </div>
           </div>
-          <div class="row">
+
+        </div>
+        <div class="col-sm-5">
+          <h5><i class="fa fa-arrow-up text-success" aria-hidden="true"></i>&nbsp;<span class="text-primary">Рейтинг риэлтора: 8,7 баллов</span>
+          </h5>
+          <br>
+          <p>Агентские договора: 8,7 баллов</p>
+          <p>Сумма задатков: 8,7 баллов</p>
+          <p>Сумма продаж: 8,7 баллов</p>
+          <div class="row" style="    margin-left: 10px;">
             <fieldset class="col-md-6">
               <legend>Транспорт</legend>
               <div class="panel panel-default">
@@ -77,14 +90,6 @@
               </div>
             </fieldset>
           </div>
-        </div>
-        <div class="col-sm-5">
-          <h5><i class="fa fa-arrow-up text-success" aria-hidden="true"></i>&nbsp;<span class="text-primary">Рейтинг риэлтора: 8,7 баллов</span>
-          </h5>
-          <br>
-          <p>Агентские договора: 8,7 баллов</p>
-          <p>Сумма задатков: 8,7 баллов</p>
-          <p>Сумма продаж: 8,7 баллов</p>
         </div>
       </div>
       <ul class="nav nav-tabs" id="myTab2" role="tablist">
