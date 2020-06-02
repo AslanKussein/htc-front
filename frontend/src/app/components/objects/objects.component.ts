@@ -168,7 +168,7 @@ export class ObjectsComponent implements OnInit, OnDestroy {
     if (!this.util.isNullOrEmpty(this.formData.my)) {
       searchFilter['my'] = this.formData.my;
     }
-    searchFilter['sortBy'] = 'application.objectPrice'
+    // searchFilter['sortBy'] = 'application.objectPrice'
 
     this.subscriptions.add(this.objectService.getObjects(searchFilter).subscribe(res => {
       this.objectsData = res.data.data.data;
