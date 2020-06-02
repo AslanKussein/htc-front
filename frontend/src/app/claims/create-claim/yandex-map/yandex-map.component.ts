@@ -34,7 +34,7 @@ export class YandexMapComponent implements OnInit {
   }
 
   onLoad(event) {
-    this.cord = event.event.get('coords')
+    this.cord = event.event.get('coords');
     console.log(event)
     // event.instance.geometry.setCoordinates(this.cord);
     this.ddd.geometry.setCoordinates(this.cord);

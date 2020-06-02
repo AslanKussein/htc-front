@@ -17,9 +17,9 @@ export class DicService {
     return this.http.get(`${this.configService.apiDataManagerUrl}/dictionaries/` + dicName, {})
       .pipe(
         tap(data => {
-        }),
+        } ,
         catchError(this.handleError)
-      );
+      ));
   }
 
   public getResidentialComplexes(): Observable<any> {
