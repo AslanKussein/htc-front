@@ -52,17 +52,65 @@
                  data-parent="#accordionExample">
               <div class="card-body">
                 <div class="row">
-                  <div class="col-sm"></div>
-                  <div class="col-sm"></div>
-                  <div class="col-sm"></div>
-                  <div class="col-sm"></div>
-                  <div class="col-sm"></div>
-                  <div class="col-sm"></div>
+                  <div class="col-sm">
+                    <label>Операция</label>
+                    <input type="text" class="form-control" readonly [value]="applicationId"/>
+                  </div>
+                  <div class="col-sm">
+                    <label>Тип объекта</label>
+                    <input type="text" class="form-control" readonly [value]="applicationId"/>
+                  </div>
+                  <div class="col-sm">
+                    <label>Цена объекта (тг)</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control"
+                             mask="separator" thousandSeparator=" " readonly/>
+                      <input type="text" class="form-control"
+                             mask="separator" thousandSeparator=" " readonly/>
+                    </div>
+                  </div>
+                  <div class="col-sm">
+                    <label>Ипотека</label>
+                    <div class="row">
+                      <div class="col-sm text-center">
+                        <input type="radio" name="true" value="true" class="custom-control-input"/>
+                        <label class="custom-control-label">Да</label>
+                      </div>
+                      <div class="col-sm float-left">
+                        <input type="radio" name="false" value="false" class="custom-control-input"/>
+                        <label class="custom-control-label">Нет</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm">
+                    <label>Признак</label>
+                  </div>
+                  <div class="col-sm">
+                    <label>Вероятность торга</label>
+                    <div class="row">
+                      <div class="col-sm text-center">
+                        <input type="radio" name="true" value="true" class="custom-control-input"/>
+                        <label class="custom-control-label">Да</label>
+                      </div>
+                      <div class="col-sm float-left">
+                        <input type="radio" name="false" value="false" class="custom-control-input"/>
+                        <label class="custom-control-label">Нет</label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="row">
-                  <div class="col-sm"></div>
-                  <div class="col-sm"></div>
-                  <div class="col-sm"></div>
+                  <div class="col-sm">
+                    <label>Причины торга</label>
+                  </div>
+                  <div class="col-sm">
+                    <label>Размер торга</label>
+                    <input type="text" class="form-control" readonly [value]="applicationId"/>
+                  </div>
+                  <div class="col-sm">
+                    <label>Комментарий</label>
+                    <textarea class="form-control"></textarea>
+                  </div>
                 </div>
               </div>
             </div>
@@ -76,13 +124,284 @@
             </div>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
               <div class="card-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
-                wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-                assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
-                farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-                labore sustainable.
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="row">
+                      <div class="col-sm">
+                        <label>Город</label>
+                        <input type="text" class="form-control" readonly [value]="applicationId"/>
+                      </div>
+                      <div class="col-sm">
+                        <label>Количество комнат</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <label>Этаж</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm">
+                        <label>Площадь</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <label>Жилая</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <label>Кухня</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <label>Балкон</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm">
+                        <label>Высота потолков</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <label>Количество спален</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                          <input type="text" class="form-control"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm">
+                        <div class="row">
+                          <div class="col-sm text-center">
+                            <input type="radio" name="true" value="true" class="custom-control-input"/>
+                            <label class="custom-control-label">Студия</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <div class="row">
+                          <div class="col-sm text-center">
+                            <input type="radio" name="true" value="true" class="custom-control-input"/>
+                            <label class="custom-control-label">Санузел раздельный</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="row">
+                      <fieldset class="scheduler-border col-sm">
+                        <legend class="scheduler-border">Характеристики дома</legend>
+                        <div class="row">
+                          <div class="col-sm">
+                            <label>Район</label>
+                            <input type="text" class="form-control" readonly [value]="applicationId"/>
+                          </div>
+                          <div class="col-sm">
+                            <label>Этажность</label>
+                            <input type="text" class="form-control" readonly [value]="applicationId"/>
+                          </div>
+                          <div class="col-sm">
+                            <label>Кв. на площадке</label>
+                            <input type="text" class="form-control" readonly [value]="applicationId"/>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm">
+                            <label>Материал</label>
+                            <input type="text" class="form-control" readonly [value]="applicationId"/>
+                          </div>
+                          <div class="col-sm">
+                            <label>Год постройки</label>
+                            <input type="text" class="form-control" readonly [value]="applicationId"/>
+                          </div>
+                          <div class="col-sm">
+                            <label>Лифт</label>
+                            <input type="text" class="form-control" readonly [value]="applicationId"/>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                    <div class="row">
+                      <fieldset class="scheduler-border col-sm">
+                        <legend class="scheduler-border">Подъезд</legend>
+                        <div class="row">
+                          <div class="col-sm">
+                            <div class="row">
+                              <div class="col-sm text-center">
+                                <input type="radio" name="true" value="true" class="custom-control-input"/>
+                                <label class="custom-control-label">Консьерж</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm">
+                            <div class="row">
+                              <div class="col-sm text-center">
+                                <input type="radio" name="true" value="true" class="custom-control-input"/>
+                                <label class="custom-control-label">Колясочная</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                    <div class="row">
+                      <fieldset class="scheduler-border col-sm">
+                        <legend class="scheduler-border">Территория</legend>
+                      </fieldset>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingThree">
+              <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                      data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Детали объекта
+              </button>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-6">
+<!--                    <div class="row">-->
+<!--                      <div class="row">-->
+<!--                        <div class="col-sm" *ngIf="photoList.length > 0">-->
+<!--                          <fieldset class="scheduler-border col-sm">-->
+<!--                            <legend class="scheduler-border " translate>Фото объекта<br/>-->
+<!--                              <span class="badge badge-danger ml-2">{{photoList.length}}</span>-->
+<!--                            </legend>-->
+<!--                            <div id="photoCarousel" class="carousel slide" data-ride="carousel"-->
+<!--                                 style="width: 302px;">-->
+
+<!--                              <div class="carousel-inner">-->
+<!--                                <div class="carousel-item" [class]="i==0 ? 'active': ''"-->
+<!--                                     *ngFor="let photo of photoList;let i = index">-->
+<!--                                  <div class="container">-->
+<!--                                    <img [src]="photo.image" alt="First Slide" class="photoList" width="302"-->
+<!--                                         height="320"-->
+<!--                                         (click)="showPhotoFull(photo.fullImage)">-->
+<!--                                    <button class="btn btn-sm btn-danger removeItemCarousel"-->
+<!--                                            *ngIf="edit && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"-->
+<!--                                            (click)="removeByGuid(photo, 1)"><i class="fa fa-trash fa-2x"-->
+<!--                                                                                aria-hidden="true"></i></button>-->
+<!--                                  </div>-->
+<!--                                </div>-->
+<!--                              </div>-->
+<!--                              <a class="carousel-control-prev" href="#photoCarousel" data-slide="prev">-->
+<!--                                <span class="carousel-control-prev-icon bg-dark"></span>-->
+<!--                              </a>-->
+<!--                              <a class="carousel-control-next" href="#photoCarousel" data-slide="next">-->
+<!--                                <span class="carousel-control-next-icon bg-dark"></span>-->
+<!--                              </a>-->
+<!--                            </div>-->
+<!--                          </fieldset>-->
+<!--                        </div>-->
+<!--                        <div class="col-sm" *ngIf="photoPlanList.length > 0">-->
+<!--                          <fieldset class="scheduler-border col-sm">-->
+<!--                            <legend class="scheduler-border" translate>Планы<br/>-->
+<!--                              <span class="badge badge-danger ml-2">{{photoPlanList.length}}</span>-->
+<!--                            </legend>-->
+<!--                            <div id="photoPlanList" class="carousel slide" data-ride="carousel"-->
+<!--                                 style="width: 302px;">-->
+<!--                              <div class="carousel-inner">-->
+<!--                                <div class="carousel-item" [class]="i==0 ? 'active': ''"-->
+<!--                                     *ngFor="let plan of photoPlanList;let i = index">-->
+<!--                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="302"-->
+<!--                                       height="320"-->
+<!--                                       (click)="showPhotoFull(plan.fullImage)">-->
+
+<!--                                  <button class="btn btn-sm btn-danger removeItemCarousel"-->
+<!--                                          *ngIf="edit && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"-->
+<!--                                          (click)="removeByGuid(plan, 2)"><i class="fa fa-trash fa-2x"-->
+<!--                                                                             aria-hidden="true"></i></button>-->
+<!--                                </div>-->
+<!--                              </div>-->
+<!--                              <a class="carousel-control-prev" href="#photoPlanList" data-slide="prev">-->
+<!--                                <span class="carousel-control-prev-icon bg-dark"></span>-->
+<!--                              </a>-->
+<!--                              <a class="carousel-control-next" href="#photoPlanList" data-slide="next">-->
+<!--                                <span class="carousel-control-next-icon bg-dark"></span>-->
+<!--                              </a>-->
+<!--                            </div>-->
+<!--                          </fieldset>-->
+<!--                        </div>-->
+
+<!--                        <div class="col-sm" *ngIf="photo3DList.length > 0">-->
+<!--                          <fieldset class="scheduler-border col-sm">-->
+<!--                            <legend class="scheduler-border" translate>3D тур<br/>-->
+<!--                              <span class="badge badge-danger ml-2">{{photo3DList.length}}</span>-->
+<!--                            </legend>-->
+<!--                            <div id="photo3DList" class="carousel slide" data-ride="carousel"-->
+<!--                                 style="width: 302px;">-->
+<!--                              <div class="carousel-inner">-->
+<!--                                <div class="carousel-item" [class]="i==0 ? 'active': ''"-->
+<!--                                     *ngFor="let plan of photo3DList;let i = index">-->
+<!--                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="302"-->
+<!--                                       height="320"-->
+<!--                                       (click)="showPhotoFull(plan.fullImage)">-->
+
+<!--                                  <button class="btn btn-sm btn-danger removeItemCarousel"-->
+<!--                                          *ngIf="edit && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"-->
+<!--                                          (click)="removeByGuid(plan, 3)"><i class="fa fa-trash fa-2x"-->
+<!--                                                                             aria-hidden="true"></i></button>-->
+<!--                                </div>-->
+<!--                              </div>-->
+<!--                              <a class="carousel-control-prev" href="#photo3DList" data-slide="prev">-->
+<!--                                <span class="carousel-control-prev-icon bg-dark"></span>-->
+<!--                              </a>-->
+<!--                              <a class="carousel-control-next" href="#photo3DList" data-slide="next">-->
+<!--                                <span class="carousel-control-next-icon bg-dark"></span>-->
+<!--                              </a>-->
+<!--                            </div>-->
+<!--                          </fieldset>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+                  </div>
+                  <div class="col-sm-6"></div>
+                </div>
               </div>
             </div>
           </div>

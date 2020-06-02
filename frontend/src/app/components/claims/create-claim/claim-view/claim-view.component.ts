@@ -13,6 +13,7 @@ export class ClaimViewComponent implements OnInit {
     this.applicationId = Number(this.actRoute.snapshot.params.id);
   }
 
+
   ngOnInit(): void {
   }
 
