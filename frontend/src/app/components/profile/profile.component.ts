@@ -98,6 +98,13 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate, OnDestr
     return 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png';
   }
 
+  removeByGuid(photoUuid) {
+    this.subscriptions.add(this.uploader.removePhotoById(photoUuid).subscribe(data => {
+      this.profile.photoUuid=null;
+      this.saveProfile();
+    }));
+  }
+
   canDeactivate(): boolean | Observable<boolean> {
     if (this.save) {
       let result = confirm("Внесенные данные не сохранены, данные будут потеряны. Покинуть страницу?");
