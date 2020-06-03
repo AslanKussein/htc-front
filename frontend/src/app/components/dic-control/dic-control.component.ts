@@ -181,28 +181,28 @@ export class DicControlComponent implements OnInit, OnDestroy {
 
   loadDictionary() {
     this.subscriptions.add(this.newDicService.getDictionary('City').subscribe(res => {
-      this.cities = res;
+      this.cities = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('District').subscribe(res => {
-      this.districts = res;
+      this.districts = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('Street').subscribe(res => {
-      this.streets = res;
+      this.streets = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('PropertyDeveloper').subscribe(res => {
-      this.propertyDevelopers = res;
+      this.propertyDevelopers = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('MaterialOfConstruction').subscribe(res => {
-      this.materialsOfConstruction = res;
+      this.materialsOfConstruction = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('TypeOfElevator').subscribe(res => {
-      this.typeOfElevator = res;
+      this.typeOfElevator = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('ParkingType').subscribe(res => {
-      this.parkingTypes = res;
+      this.parkingTypes = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('YardType').subscribe(res => {
-      this.yardTypes = res;
+      this.yardTypes = this.util.toSelectArray(res);
     }));
 
     this.ngxLoader.stop();
@@ -301,6 +301,8 @@ export class DicControlComponent implements OnInit, OnDestroy {
   }
 
 
+
+
   editDic() {
     this.actions = 'EDIT';
     if (this.clickColumnDic == null) {
@@ -312,6 +314,13 @@ export class DicControlComponent implements OnInit, OnDestroy {
         this.subscriptions.add(this.newDicService.getResidentialComplexesByPostcode(this.clickColumnDic.buildingDto?.postcode).subscribe(data => {
             if (data != null) {
               this.formRes = data;
+              this.subscriptions.add(
+                this.kazPostService.getDataFromDb(this.clickColumnDic.buildingDto?.postcode).subscribe(res=> {
+                    this.postcode = res?.addressRus;
+                  }
+                )
+              )
+
             }
           }, err => {
             this.notifyService.showError('warning', err);
