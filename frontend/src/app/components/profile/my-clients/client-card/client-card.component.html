@@ -28,7 +28,7 @@
               <div class="col-sm-10">
                 <div class="input-group">
                   <input type="text" class="form-control" placeholder="Телефон" id="inputEmail3MD" [disabled]="true"
-                         [(ngModel)]="formClient.phoneNumber" prefix="+" mask="0(000) 000 00 00">
+                         [(ngModel)]="formClient.phoneNumber"  prefix="+7" mask="(000) 000 00 00" [showMaskTyped]="true" >
                   <div class="input-group-append">
                     <span class="input-group-text"><i aria-hidden="true" class="fa fa-whatsapp text-success"></i></span>
                     <span class="input-group-text"><i aria-hidden="true" class="fa fa-telegram text-primary"></i></span>
@@ -54,6 +54,19 @@
               <div class="col-sm-10">
                 <div *ngFor="let obj of clientFiles">
                   <p *ngIf="!obj.isDeleted">{{obj.filename}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-5" >
+            <br>
+            <br>
+            <div class="form-group row" *ngFor="let obj of formClient.clientPhoneNumbersDtoList">
+              <label for="inputEmail3MD" class="col-sm-3 col-form-label">Доп телефон</label>
+              <div class="col-sm-8">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Телефон" id="addPhone" [disabled]="true"
+                         [(ngModel)]="obj.phoneNumber" prefix="+7" mask="(000) 000 00 00" [showMaskTyped]="true" >
                 </div>
               </div>
             </div>
@@ -84,7 +97,8 @@
             </thead>
             <tbody style="cursor: pointer">
             <tr *ngFor="let claim of claimData;let i = index">
-              <td>{{claim.id}}
+              <td>
+                <a [routerLink]="['/create-claim/', claim?.id]">{{claim.id}}</a>
               </td>
               <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
               <td>{{claim.fullname}}</td>
@@ -173,7 +187,7 @@
               </div>
               <div *ngFor="let item of formClient.clientPhoneNumbersDtoList;let index = index">
                 <label class="col-sm col-form-label">Доп телефон<span class="text-danger">&nbsp;*</span></label>
-                <div class="row" style="margin-left: 1px"> <input type="text" class="col-sm form-control" [(ngModel)]="item.phoneNumber" prefix="+7" mask="(000) 000 00 00" [disabled]="!rgRoles">
+                <div class="row" style="margin-left: 1px"> <input type="text" class="col-sm form-control" [(ngModel)]="item.phoneNumber" prefix="+7" mask="(000) 000 00 00" [showMaskTyped]="true" [disabled]="!rgRoles">
                   <a  style="margin-left: 10px" (click)="clearPhone(item)"><i style="color:red"
                                                                               class="fa fa-times-circle fa-2x"></i></a></div>
 

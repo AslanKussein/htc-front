@@ -23,11 +23,11 @@ export class ClientsService {
     if (!this.util.isNullOrEmpty(obj.offset)) {
       params = params.append('offset', obj.offset);
     }
-    if (!this.util.isNullOrEmpty(obj.pageNumber)) {
-      params = params.append('pageNumber', obj.pageNumber);
+    if (!this.util.isNullOrEmpty(obj.page)) {
+      params = params.append('page', obj.page);
     }
-    if (!this.util.isNullOrEmpty(obj.pageSize)) {
-      params = params.append('pageSize', obj.pageSize);
+    if (!this.util.isNullOrEmpty(obj.size)) {
+      params = params.append('size', obj.size);
     }
     if (!this.util.isNullOrEmpty(obj.paged)) {
       params = params.append('paged', obj.paged);
