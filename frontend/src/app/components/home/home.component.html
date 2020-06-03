@@ -1,0 +1,183 @@
+<div class="card-body card-bg" ngxUiLoaderBlurred >
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm">
+          <div class="row">
+            <div class="col-sm">
+              <div class="form-group row">
+                <label for="surName" class="col-sm-4 col-form-label" translate>Агентсике договора</label>
+                <div class="col-sm">
+                  <input type="text" class="form-control" readonly [value]="2500000"/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="surName" class="col-sm-4 col-form-label" translate>Сумма задатков</label>
+                <div class="col-sm">
+                  <input type="text" class="form-control" readonly [value]="1000"/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="surName" class="col-sm-4 col-form-label" translate>Сумма продаж</label>
+                <div class="col-sm">
+                  <input type="text" class="form-control" readonly [value]="70000"/>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="row">
+            <app-charts></app-charts>
+          </div>
+        </div>
+        <div class="col-sm" [formGroup]="applicationLightForm">
+          <div class="form-group row">
+            <label for="surName" class="col-sm-3 float-left" translate>surname
+              <span class="text-danger" *ngIf="!applicationLightForm.value.surName">&nbsp;*</span>
+            </label>
+            <div class="col-sm">
+              <input type="text" class="form-control" id="surName"
+                     formControlName="surName" [(ngModel)]="applicationLightForm.surName"/>
+              <div *ngIf="f.surName.touched && f.surName.invalid" class="text-danger">
+                <div *ngIf="f.surName.errors.required" translate>claim.requiredField</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="name" class="col-sm-3 col-form-label" translate>name
+              <span class="text-danger" *ngIf="!applicationLightForm.value.name">&nbsp;*</span>
+            </label>
+            <div class="col-sm">
+              <input type="text" class="form-control" id="name"
+                     formControlName="name" [(ngModel)]="applicationLightForm.name"/>
+              <div *ngIf="f.name.touched && f.name.invalid" class="text-danger">
+                <div *ngIf="f.name.errors.required" translate>claim.requiredField</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="patronymic" class="col-sm-3 col-form-label" translate>patronymic</label>
+            <div class="col-sm">
+              <input type="text" class="form-control" id="patronymic"
+                     formControlName="patronymic" [(ngModel)]="applicationLightForm.patronymic">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="phoneNumber" class="col-sm-3 col-form-label" translate>claim.contacts
+              <span class="text-danger" *ngIf="!applicationLightForm.value.phoneNumber">&nbsp;*</span>
+            </label>
+            <div class="col-sm">
+              <input type="text" id="phoneNumber" class="form-control"
+                     name="phoneNumber"
+                     [formControl]="applicationLightForm.controls['phoneNumber']"
+                     prefix="+7" mask=' (000) 000-0000' [showMaskTyped]="true"
+                     placeHolderCharacter="0" (change)="searchByPhone()"/>
+              <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
+                <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="form7" class="col-sm-3 col-form-label" translate>claim.comments</label>
+            <div class="col-sm">
+              <textarea id="form7" class="md-textarea form-control" rows="4" formControlName="note"></textarea>
+            </div>
+          </div>
+          <div class="form-group row" *ngIf="hasRGRole()">
+            <label for="form7" class="col-sm-3 col-form-label" translate>Выберите агента
+              <span class="text-danger" *ngIf="!applicationLightForm.value.agentList">&nbsp;*</span>
+            </label>
+            <div class="col-sm">
+              <ng-select
+                [items]="agentList"
+                formControlName="agentLogin"
+                bindValue="value"
+                placeholder="{{ 'patterns.chooseElement' | translate }}">
+              </ng-select>
+              <div *ngIf="f.agentLogin.touched && f.agentLogin.invalid" class="text-danger">
+                <div *ngIf="f.agentLogin.errors.required" translate>claim.requiredField</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="form7" class="col-sm-3 col-form-label" translate>claim.operation
+              <span class="text-danger" *ngIf="!applicationLightForm.value.operationType">&nbsp;*</span>
+            </label>
+            <div class="col-sm">
+              <ng-select
+                [items]="operationType"
+                formControlName="operationTypeId"
+                placeholder="{{ 'patterns.chooseElement' | translate }}">
+              </ng-select>
+              <div *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid" class="text-danger">
+                <div *ngIf="f.operationTypeId.errors.required" translate>claim.requiredField</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="form7" class="col-sm-3 col-form-label" translate>claim.objectType
+              <span class="text-danger" *ngIf="!applicationLightForm.value.objectType">&nbsp;*</span>
+            </label>
+            <div class="col-sm">
+              <ng-select
+                [items]="objectType"
+                formControlName="objectTypeId"
+                placeholder="{{ 'patterns.chooseElement' | translate }}">
+              </ng-select>
+              <div *ngIf="f.objectTypeId.touched && f.objectTypeId.invalid" class="text-danger">
+                <div *ngIf="f.objectTypeId.errors.required" translate>claim.requiredField</div>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-link float-left" (click)="clear()" translate>clear</button>
+          <button class="btn btn-success float-right" [disabled]="!this.applicationLightForm.valid" (click)="onSave()" translate>patterns.save</button>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-sm">
+          <app-calendar></app-calendar>
+        </div>
+        <div class="col-sm">
+          <table class="table table-bordered table-sm">
+            <thead class="text-center">
+            <tr>
+              <th>ID заявки</th>
+              <th>Операция</th>
+              <th translate>claim.objectType</th>
+              <th translate>claim.crDateFrom</th>
+              <th translate>fio</th>
+              <th translate>phone</th>
+            </tr>
+            </thead>
+            <tbody style="cursor: pointer">
+            <tr *ngFor="let claim of claimLightData;let i = index">
+              <td>
+                <a [routerLink]="['/create-claim/', claim?.id]">{{claim.id}}</a>
+              </td>
+              <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
+              <td>{{getDicNameByLanguage(claim, 'objectType')}}</td>
+              <td>{{formatDate(claim)}}</td>
+              <td>{{claim.fullname}}</td>
+              <td><span>{{claim.phone | mask: '+0 (000) 000-0000'}}</span></td>
+            </tr>
+            </tbody>
+          </table>
+
+          <pagination [(ngModel)]="currentPage"
+                      [totalItems]="totalItems"
+                      [itemsPerPage]="itemsPerPage"
+                      [maxSize]="10"
+                      [rotate]="true"
+                      [boundaryLinks]="true"
+                      previousText="&lsaquo;"
+                      nextText="&rsaquo;"
+                      firstText="&laquo;"
+                      lastText="&raquo;"
+                      (pageChanged)="pageChanged($event)">
+          </pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

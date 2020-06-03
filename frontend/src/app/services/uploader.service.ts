@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs/index';
-import {catchError, tap} from 'rxjs/internal/operators';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs/index';
+import {tap} from 'rxjs/internal/operators';
 import {map} from 'rxjs/operators';
 
 @Injectable({
@@ -17,20 +17,33 @@ export class UploaderService {
     const uploadData = new FormData();
     uploadData.append('file', selectedFile, selectedFile.name);
 
-    return this.http.post<any>(`${this.configService.apiFileManagerUrl}/upload`, uploadData)
+    return this.http.post<any>(`${this.configService.apiFileManagerUrl}/api/upload`, uploadData)
       .pipe(
-        tap(data => {
-        }),
-        catchError(this.handleError)
+        tap(),
+      );
+  }
+
+  public getHeadersById(guid): Observable<any> {
+    console.log(guid)
+    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/api/download/` + guid, {
+      observe: 'response'
+    })
+      .pipe(
+        tap(),
       );
   }
 
   public getPhotoById(guid): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/download/` + guid, {})
+    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/api/download/` + guid, {})
       .pipe(
-        tap(data => {
-        }),
-        catchError(this.handleError)
+        tap(),
+      );
+  }
+
+  public getFileInfoUsingGET(guid): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/api/info/` + guid, {})
+      .pipe(
+        tap(),
       );
   }
 
@@ -40,42 +53,23 @@ export class UploaderService {
    * временно
    */
   public getPhotoByIdPreview(guid: string): Observable<string> {
-    return this.http.get<string>(`${this.configService.apiFileManagerUrl}/download/${guid}/preview`).pipe(
+    return this.http.get<string>(`${this.configService.apiFileManagerUrl}/api/download/${guid}/preview`).pipe(
       map((res) => res)
     )
 
   }
 
   public removePhotoById(guid): Observable<any> {
-    return this.http.delete<any>(`${this.configService.apiFileManagerUrl}/delete/` + guid, {})
+    return this.http.delete<any>(`${this.configService.apiFileManagerUrl}/api/delete/` + guid, {})
       .pipe(
-        tap(data => {
-        }),
-        catchError(this.handleError)
+        tap(),
       );
   }
 
-  public getResumePhoto(getPhotoById): Observable<any> {
-    // let params = new HttpParams();
-    // params = params.append('photoId', String(getPhotoById));
-
-    return this.http.get<any>(`${this.configService.apiFileManagerUrl}//download/` + getPhotoById, {})
+  public getResumePhoto(guid): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiFileManagerUrl}//download/` + guid, {})
       .pipe(
-        tap(data => {
-        }),
-        catchError(this.handleError)
+        tap(),
       );
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    if (error instanceof ErrorEvent) {
-      console.error('An error occurred:', error.message);
-    } else {
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.message}`);
-    }
-    return throwError(
-      error);
   }
 }

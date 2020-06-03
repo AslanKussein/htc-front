@@ -1,34 +1,30 @@
-import {BigDecimalPeriod} from "../common/bigDecimalPeriod";
-
+import {Period} from "../common/period";
 
 /**
- * Модель параметров по операции Покупка
+ * Общая информация об объекте покупки
  */
 export class PurchaseInfoDto {
-  public objectPricePeriod: BigDecimalPeriod;//Цена объекта от и до(млн тг)
-  public numberOfFloorsPeriod: BigDecimalPeriod;//Этажность дома от и до
-  public floorPeriod: BigDecimalPeriod;//Этаж от и до
-  public numberOfRoomsPeriod: BigDecimalPeriod;//Количество комнат от и до
-  public totalAreaPeriod: BigDecimalPeriod;//Общая площадь от и до
-  public livingAreaPeriod: BigDecimalPeriod;//Жилая площадь от и до
-  public kitchenAreaPeriod: BigDecimalPeriod;//Площадь кухни от и до
-  public balconyAreaPeriod: BigDecimalPeriod;//Площадь балкона от и до
-  public ceilingHeightPeriod: BigDecimalPeriod;//Высота потолков от и до
-  public numberOfBedroomsPeriod: BigDecimalPeriod;//Количество спален от и до
-  public landAreaPeriod: BigDecimalPeriod;//Площадь участка от и до
-
-
-  constructor(objectPricePeriod: BigDecimalPeriod, numberOfFloorsPeriod: BigDecimalPeriod, floorPeriod: BigDecimalPeriod, numberOfRoomsPeriod: BigDecimalPeriod, totalAreaPeriod: BigDecimalPeriod, livingAreaPeriod: BigDecimalPeriod, kitchenAreaPeriod: BigDecimalPeriod, balconyAreaPeriod: BigDecimalPeriod, ceilingHeightPeriod: BigDecimalPeriod, numberOfBedroomsPeriod: BigDecimalPeriod, landAreaPeriod: BigDecimalPeriod) {
-    this.objectPricePeriod = objectPricePeriod;
-    this.numberOfFloorsPeriod = numberOfFloorsPeriod;
-    this.floorPeriod = floorPeriod;
-    this.numberOfRoomsPeriod = numberOfRoomsPeriod;
-    this.totalAreaPeriod = totalAreaPeriod;
-    this.livingAreaPeriod = livingAreaPeriod;
-    this.kitchenAreaPeriod = kitchenAreaPeriod;
-    this.balconyAreaPeriod = balconyAreaPeriod;
-    this.ceilingHeightPeriod = ceilingHeightPeriod;
-    this.numberOfBedroomsPeriod = numberOfBedroomsPeriod;
-    this.landAreaPeriod = landAreaPeriod;
+  constructor(
+    private apartmentsOnTheSitePeriod?: Period,//кв на площадке от и до
+    private balconyAreaPeriod?: Period,//Площадь балкона от и до
+    private ceilingHeightPeriod?: Period,//Высота потолков от и до
+    private concierge?: boolean,//Консьерж,
+    private floorPeriod?: Period,//Этаж от и до
+    private id?: number,//ID
+    private kitchenAreaPeriod?: Period,//Площадь кухни от и до
+    private landAreaPeriod?: Period,//Площадь участка от и до
+    private livingAreaPeriod?: Period,//Жилая площадь от и до
+    private materialOfConstructionId?: number,//Материал постройки
+    private numberOfBedroomsPeriod?: Period,//Количество спален от и до
+    private numberOfFloorsPeriod?: Period,//Этажность дома от и до
+    private numberOfRoomsPeriod?: Period,//Количество комнат от и до
+    private parkingTypeIds?: any,//ID вида паркинга
+    private playground?: boolean,//Детская площадка
+    private totalAreaPeriod?: Period,//Общая площадь от и до
+    private typeOfElevatorList?: any,//Тип лифта
+    private wheelchair?: boolean,//Колясочная
+    private yardTypeId?: any,//Двор(закрытый/открытый)
+    private yearOfConstructionPeriod?: Period,//год постройки
+  ) {
   }
 }

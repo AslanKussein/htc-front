@@ -1,0 +1,33 @@
+.font-up-bold .breadcrumb-item + .breadcrumb-item::before {
+  content: none;
+}
+
+.font-up-bold .breadcrumb-item a span::after {
+  content: "/";
+  margin-left: 1rem;
+  color: #868e96;
+}
+
+.blockItem {
+  width: 150px;
+  height: 100%;
+  display: block;
+}
+
+.boardTitle {
+  max-height: 100px;
+  min-height: 70px;
+}
+
+.card-bg {
+  background-color: #f0f7fc;
+}
+
+.dropItem{
+  min-height: 500px!important;
+}
+
+.addRight{
+  border-right: 1px solid #7f7f7f;
+}
+

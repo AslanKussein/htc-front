@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, tap} from "rxjs/operators";
-import {NotificationService} from "./notification.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,18 +19,20 @@ export class BoardService {
       .pipe(
         tap(data => {
         }),
-        catchError(this.handleError)
+        catchError(BoardService.handleError)
       );
   }
 
-  private handleError(error: HttpErrorResponse) {
-    if (error instanceof ErrorEvent) {
-      console.error('An error occurred:', error.message);
-    } else {
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.message}`);
-    }
+  changeStatus(data: any) {
+    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/api/applications/changeStatus`, data)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(BoardService.handleError)
+      );
+  }
+
+  private static handleError(error: HttpErrorResponse) {
     return throwError(
       error);
   }

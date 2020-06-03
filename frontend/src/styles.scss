@@ -4,31 +4,35 @@
 
 /* You can add global styles to this file, and also import other style files */
 body {
-  font-family: 'Cuprum', sans-serif!important;
+  height: 100%;
+  font-family: 'Cuprum', sans-serif !important;
 }
-
+.wrapper {
+  height:auto !important;
+  min-height:100%;
+}
 .navbar {
   font-weight: bolder;
   font-size: 18px;
 }
 
 .btn-circle.btn-xl {
-  width: 70px!important;
-  height: 70px!important;;
-  padding: 10px 16px!important;;
-  border-radius: 35px!important;;
-  font-size: 24px!important;;
-  line-height: 1.33!important;;
+  width: 70px !important;
+  height: 70px !important;;
+  padding: 10px 16px !important;;
+  border-radius: 35px !important;;
+  font-size: 24px !important;;
+  line-height: 1.33 !important;;
 }
 
 .btn-circle {
-  width: 30px!important;;
-  height: 30px!important;;
-  padding: 6px 0px!important;;
-  border-radius: 15px!important;;
-  text-align: center!important;;
-  font-size: 12px!important;;
-  line-height: 1.42857!important;
+  width: 30px !important;;
+  height: 30px !important;;
+  padding: 6px 0px !important;;
+  border-radius: 15px !important;;
+  text-align: center !important;;
+  font-size: 12px !important;;
+  line-height: 1.42857 !important;
 }
 
 .required {
@@ -42,12 +46,7 @@ body {
   }
 }
 
-.createClaimBtn {
-  z-index: 99999999999999999999999;
-  float: right;
-}
-
-.form-control{
+.form-control {
   height: calc(1.5em + 0.75rem + 0px) !important;
 }
 
@@ -56,15 +55,39 @@ body {
 
 /** The Spacing **/
 .btn-breadcrumb .btn {
-  padding:6px 12px 6px 24px!important;;
+  padding: 6px 12px 6px 24px !important;;
 }
+
 .btn-breadcrumb .btn:first-child {
-  padding:6px 6px 6px 10px!important;;
+  padding: 6px 6px 6px 10px !important;;
 }
+
 .btn-breadcrumb .btn:last-child {
-  padding:6px 18px 6px 24px!important;;
+  padding: 6px 18px 6px 24px !important;;
 }
 
 app-charts {
   width: 100%;
+}
+
+.btn2 {
+  width: 200px!important;
+  margin: 5px;
+}
+
+.disabledDev {
+  pointer-events: none !important;
+  opacity: 0.6 !important;
+}
+.disabled {
+  pointer-events: none !important;
+  opacity: 0.6 !important;
+}
+
+.accordion-header {
+  height: 50px;
+}
+
+.card-body.accordionAboutObject{
+  //min-height: 790px!important;
 }

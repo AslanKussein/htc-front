@@ -1,0 +1,248 @@
+<div class="card-body card-bg">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="btn-group btn-breadcrumb">
+          <a href="#" class="btn btn-primary"><i class="fa fa-home"></i></a>
+          <a href="#/profile" class="btn btn-primary">Личный кабинет</a>
+          <a href="#" class="btn btn-primary active">Карточка клиента</a>
+
+        </div>
+      </div>
+      <br/>
+      <div>
+        <div>
+          <h3>ID - {{formClient?.id}}</h3>
+        </div>
+        <div class="row" style="border: solid 1px black; padding: 5px; ">
+          <div class="col-sm-5">
+            <div class="row">
+              <h2 class="font-weight-bolder text-uppercase">&nbsp;&nbsp; &nbsp;{{formClient?.firstName}}
+                {{formClient?.surname}} {{formClient?.patronymic}}</h2>
+              <h2>&nbsp;&nbsp; &nbsp;{{gender}}</h2>
+            </div>
+
+
+            <div class="form-group row">
+              <label for="inputEmail3MD" class="col-sm-2 col-form-label">Телефон</label>
+              <div class="col-sm-10">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Телефон" id="inputEmail3MD" [disabled]="true"
+                         [(ngModel)]="formClient.phoneNumber" prefix="+" mask="0(000) 000 00 00">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i aria-hidden="true" class="fa fa-whatsapp text-success"></i></span>
+                    <span class="input-group-text"><i aria-hidden="true" class="fa fa-telegram text-primary"></i></span>
+                    <span class="input-group-text"><i aria-hidden="true" class="fa fa-skype text-info"></i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="mail" class="col-sm-2 col-form-label">e-mail:</label>
+              <div class="col-sm-10">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="e-mail" id="mail" [disabled]="true"
+                         [(ngModel)]="formClient.email">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i aria-hidden="true" class="fa fa-google-plus text-info"></i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="mail" class="col-sm-2 col-form-label"><i class="fa fa-paperclip fa-2x"></i></label>
+              <div class="col-sm-10">
+                <div *ngFor="let obj of clientFiles">
+                  <p *ngIf="!obj.isDeleted">{{obj.filename}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm" style="text-align: right">
+            <a (click)="openModal(template)"><i style="color: blue" class="fa fa-edit fa-2x"></i></a>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-sm">
+          <table class="table table-bordered table-sm">
+            <thead class="text-center">
+            <tr>
+              <th>ID заявки</th>
+              <th>Операция</th>
+              <th translate>claim.crDateFrom</th>
+              <th translate>fio</th>
+              <th translate>phone</th>
+              <th translate>e-mail</th>
+              <th translate>Район</th>
+              <th translate>Количество комнат</th>
+              <th translate>Цена</th>
+              <th translate>Вид расчета</th>
+              <th translate>Прошадь</th>
+              <th translate>Этаж</th>
+              <th translate>Статус</th>
+              <th translate>Комментарий</th>
+            </tr>
+            </thead>
+            <tbody style="cursor: pointer">
+            <tr *ngFor="let claim of claimData;let i = index">
+              <td>{{claim.id}}
+              </td>
+              <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
+              <td>{{formatDate(claim)}}</td>
+              <td>{{claim.fullname}}</td>
+              <td><span>{{claim.phone | mask: '+0 (000) 000-0000'}}</span></td>
+              <td>{{claim.email}}</td>
+              <td>{{getDicNameByLanguage(claim, 'district')}}</td>
+              <td>{{claim.numberOfRooms}}</td>
+              <td>{{claim.price}}</td>
+              <td></td>
+              <td>{{claim.totalArea}}</td>
+              <td>{{claim.floor}}</td>
+              <td>{{getDicNameByLanguage(claim, 'status')}}</td>
+              <td>{{claim.comment}}</td>
+            </tr>
+            </tbody>
+          </table>
+
+
+          <pagination [(ngModel)]="currentPage"
+                      [totalItems]="totalItems"
+                      [itemsPerPage]="itemsPerPage"
+                      [maxSize]="10"
+                      [rotate]="true"
+                      [boundaryLinks]="true"
+                      previousText="&lsaquo;"
+                      nextText="&rsaquo;"
+                      firstText="&laquo;"
+                      lastText="&raquo;"
+                      (pageChanged)="pageChanged($event)">
+          </pagination>
+        </div>
+      </div>
+
+
+      <ng-template #template class="modal-lg">
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">Редактировать</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="openModal2(template3)">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="col-sm row">
+            <div class="col-sm">
+              <div>
+                <label class="col-sm col-form-label">Имя<span class="text-danger">&nbsp;*</span></label>
+                <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.firstName" [disabled]="!rgRoles">
+                <div *ngIf="!formClient.firstName" class="text-danger">
+                  <div *ngIf="!formClient.firstName" translate>claim.requiredField</div>
+                </div>
+              </div>
+              <div>
+                <label class="col-sm col-form-label">Фамилия<span class="text-danger">&nbsp;*</span></label>
+                <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.surname" [disabled]="!rgRoles">
+              </div>
+              <div>
+                <label class="col-sm col-form-label">Отчество<span class="text-danger">&nbsp;*</span></label>
+                <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.patronymic" [disabled]="!rgRoles">
+              </div>
+              <div>
+                <label class="col-sm col-form-label">ID клиента<span class="text-danger">&nbsp;*</span></label>
+                <input type="text" class="col-sm form-control" name="nameEn" disabled [(ngModel)]="formClient.id" [disabled]="true">
+              </div>
+              <div>
+                <label class="col-sm col-form-label">Файл<span class="text-danger">&nbsp;*</span></label>
+                <i class="fa fa-paperclip"></i>
+                <input type="file" (change)="onFileChanged($event)">
+                <div *ngFor="let obj of clientFiles">
+                  <p *ngIf="!obj.isDeleted">{{obj.filename}} <a (click)="removeFileById(obj.guid)"> <i class="fa fa-times-circle fa-2x"></i></a> </p>
+                </div>
+
+
+
+              </div>
+            </div>
+            <div class="col-sm">
+              <div  >
+                <label class="col-sm col-form-label">Телефон<span class="text-danger">&nbsp;*</span></label>
+                  <div class="row" style="margin-left: 1px"> <input  type="text" class="col-sm form-control" name="nameEn" prefix="+" mask="0(000) 000 00 00"  [disabled]="true"
+                                           (input)="getDataByPhoneNumber()"
+                                           [(ngModel)]="formClient.phoneNumber">
+                    <a  style="margin-left: 10px" (click)="addPhoneNumber()"><i style="color:green"
+                                                                                class="fa fa-plus-circle fa-2x"></i></a></div>
+
+                <div *ngIf="!formClient.phoneNumber" class="text-danger">
+                  <div *ngIf="!formClient.phoneNumber" translate>claim.requiredField</div>
+                </div>
+              </div>
+              <div *ngFor="let item of formClient.clientPhoneNumbersDtoList;let index = index">
+                <label class="col-sm col-form-label">Доп телефон<span class="text-danger">&nbsp;*</span></label>
+                <div class="row" style="margin-left: 1px"> <input type="text" class="col-sm form-control" [(ngModel)]="item.phoneNumber" prefix="+7" mask="(000) 000 00 00" [disabled]="!rgRoles">
+                  <a  style="margin-left: 10px" (click)="clearPhone(item)"><i style="color:red"
+                                                                              class="fa fa-times-circle fa-2x"></i></a></div>
+
+              </div>
+              <div>
+                <label class="col-sm col-form-label">Почта<span class="text-danger">&nbsp;*</span></label>
+                <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.email"  [disabled]="!rgRoles">
+              </div>
+              <div >
+                <label class="col-sm col-form-label">Пол</label>
+
+                <div class="custom-control custom-checkbox" [disabled]="!rgRoles">
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" id="defaultInline1" value="MALE" [disabled]="!rgRoles"
+                           name="inlineDefaultRadiosExample" [(ngModel)]="formClient.gender">
+                    <label class="custom-control-label" for="defaultInline1">муж.</label>
+                  </div>
+
+                  <!-- Default inline 2-->
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" id="defaultInline2" value="FEMALE" [disabled]="!rgRoles"
+                           name="inlineDefaultRadiosExample" [(ngModel)]="formClient.gender">
+                    <label class="custom-control-label" for="defaultInline2">жен.</label>
+                  </div>
+
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-sm" style="text-align: right">
+            <button type="button" (click)="submit()" class="btn btn-primary" style="margin: 10px">
+              Сохранить
+            </button>
+            <button type="button" class="btn btn-light" (click)="openModal2(template3)" style="margin: 10px">
+              Отмена
+            </button>
+ </div>
+        </div>
+      </ng-template>
+
+
+      <ng-template #template3>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">Внимание</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Внесенные данные не сохранены, данные будут потеряны. Покинуть страницу?
+        </div>
+        <div class="col-sm" style="text-align: right">
+          <button type="button" class="btn btn-primary" (click)="closeModal()" style="margin: 10px">
+            Подтвердить
+          </button>
+          <button type="button" class="btn btn-light" (click)="modalRef2.hide()" style="margin: 10px">
+            Отмена
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

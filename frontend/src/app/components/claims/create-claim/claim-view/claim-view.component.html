@@ -1,0 +1,93 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm">
+        <fieldset class="scheduler-border col-sm">
+          <legend class="scheduler-border">ID</legend>
+          <div class="row">
+            <div class="col-sm">
+              <div class="input-group ">
+                <input type="text" class="form-control" [value]="applicationId"
+                       aria-describedby="basic-addon2" readonly>
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-sm btn-outline-primary">Редактировать</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-sm">
+        <fieldset class="scheduler-border col-sm">
+          <legend class="scheduler-border">ID агента</legend>
+          <div class="row">
+            <div class="col-sm">
+              <input type="text" class="form-control" readonly [value]="applicationId"/>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-sm">
+        <fieldset class="scheduler-border col-sm">
+          <legend class="scheduler-border">ID клиента</legend>
+          <div class="row">
+            <div class="col-sm">
+              <input type="text" class="form-control" readonly [value]="applicationId"/>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+        <div class="accordion" id="accordionExample">
+          <div class="card  bordered">
+            <div class="card-header" id="headingOne">
+              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                      aria-expanded="true" aria-controls="collapseOne">
+                О сделке
+              </button>
+            </div>
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                 data-parent="#accordionExample">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm"></div>
+                  <div class="col-sm"></div>
+                  <div class="col-sm"></div>
+                  <div class="col-sm"></div>
+                  <div class="col-sm"></div>
+                  <div class="col-sm"></div>
+                </div>
+                <div class="row">
+                  <div class="col-sm"></div>
+                  <div class="col-sm"></div>
+                  <div class="col-sm"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card  bordered">
+            <div class="card-header" id="headingTwo">
+              <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                      data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Об объекте
+              </button>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+              <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
+                wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
+                eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
+                assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
+                nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
+                farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
+                labore sustainable.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

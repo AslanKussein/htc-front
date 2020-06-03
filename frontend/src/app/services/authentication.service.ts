@@ -1,21 +1,35 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Injectable, OnDestroy} from '@angular/core';
+import {HttpClient, HttpHeaders, HttpParams, HttpRequest} from '@angular/common/http';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
+import {first, map, tap} from 'rxjs/operators';
 import {User} from "../models/users";
 import {ConfigService} from "./config.service";
 import {Util} from "./util";
 import {UserService} from "./user.service";
+import {NotificationService} from "./notification.service";
+import {ActivatedRoute} from "@angular/router";
+import {BsModalService} from "ngx-bootstrap/modal";
 
 @Injectable({providedIn: 'root'})
-export class AuthenticationService {
+export class AuthenticationService implements OnDestroy {
 
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
+  private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
+  private readonly JWT_TOKEN = 'JWT_TOKEN';
+  private readonly CLIENT_ID = 'htc';
+  subscriptions: Subscription = new Subscription();
+
+  options = {
+    headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+  }
 
   constructor(private http: HttpClient,
               private configService: ConfigService,
-              private util: Util) {
+              private util: Util,
+              private activatedRoute: ActivatedRoute,
+              private userService: UserService,
+              private notifyService: NotificationService) {
     this.currentUserSubject = new BehaviorSubject<User>(this.util.getCurrentUser());
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -24,27 +38,42 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
-  login(loginForm: any) {
+  login(loginForm: any, id: number) {
+    this.subscriptions.add(this.loginIDP(loginForm?.value)
+      .pipe(first())
+      .subscribe(
+        param_ => {
+          this.userService.findUserByLogin().subscribe(data => {
+            if (data != null) {
+              param_.name = data.name
+              param_.surname = data.surname
+              param_.login = data.login
+              param_.roles = data.roles
+              param_.group = data.group
+              param_.id = data.id
+              localStorage.setItem('currentUser', JSON.stringify(param_));
+            }
+          });
+          if (id == 1) {
+            this.util.dnHref('/')
+          }
+        },
+        () => {
+          this.notifyService.showError('Ошибка', 'Не корректные данные для входа')
+        }));
+  }
 
-    let options = {
-      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
-    };
+  loginIDP(loginForm: any) {
 
     const body_ = new HttpParams()
       .set('username', loginForm.username)
       .set('password', loginForm.password)
       .set('grant_type', 'password')
-      .set('client_id', 'htc');
+      .set('client_id', this.CLIENT_ID);
 
-    return this.http.post<any>(`${this.configService.authUrl}`, body_.toString(), options).pipe(map(user => {
+    return this.http.post<any>(`${this.configService.authUrl}`, body_.toString(), this.options).pipe(map(user => {
       if (user && user.access_token) {
-        if (loginForm.rememberMe) {
-          localStorage.setItem('username', loginForm.username);
-          localStorage.setItem('password', loginForm.password);
-        } else {
-          localStorage.removeItem('username');
-          localStorage.removeItem('password');
-        }
+        this.storeTokens(user);
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
       }
@@ -53,9 +82,50 @@ export class AuthenticationService {
     }));
   }
 
-  logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
+  refreshToken() {
+    const body_ = new HttpParams()
+      .set('refresh_token', this.getRefreshToken())
+      .set('grant_type', 'refresh_token')
+      .set('client_id', this.CLIENT_ID);
+    return this.http.post<any>(`${this.configService.authUrl}`, body_.toString(), this.options)
+      .pipe(tap((tokens: User) => {
+        this.storeTokens(tokens);
+      }));
   }
+
+  logout() {
+    localStorage.clear()
+    this.currentUserSubject.next(null);
+    if (!['login'].includes(this.activatedRoute.snapshot['_routerState'].url.split(";")[0].replace('/', ''))) {
+      this.util.dnHref(['/login']);
+    }
+    localStorage.setItem('action', 'logout');
+  }
+
+  getJwtToken() {
+    return localStorage.getItem(this.JWT_TOKEN);
+  }
+
+  addToken(request: HttpRequest<any>, token: string) {
+    return request.clone({
+      setHeaders: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+  }
+
+  public storeTokens(tokens: User) {
+    localStorage.setItem(this.JWT_TOKEN, tokens.access_token);
+    localStorage.setItem(this.REFRESH_TOKEN, tokens.refresh_token);
+  }
+
+  private getRefreshToken() {
+    return localStorage.getItem(this.REFRESH_TOKEN);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
+
+
 }

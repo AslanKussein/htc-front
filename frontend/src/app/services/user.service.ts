@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, tap} from "rxjs/operators";
-import {NotificationService} from "./notification.service";
+import {ClientDto} from "../models/createClaim/clientDto";
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +18,9 @@ export class UserService {
    * findUserByLogin
    */
   findUserByLogin(): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/users/info`, {}).pipe(
-      tap(data => {
-      }),
-      catchError(this.handleError)
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/users/info`, {}).pipe(
+      tap(),
+      catchError(UserService.handleError)
     );
   }
 
@@ -29,18 +28,27 @@ export class UserService {
    * getAgents
    */
   getAgents(): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/agents`, {}).pipe(
-      tap(data => {
-      }),
-      catchError(this.handleError)
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/agents`, {}).pipe(
+      tap(),
+      catchError(UserService.handleError)
     );
   }
 
-  private handleError(error: HttpErrorResponse) {
-    if (error instanceof ErrorEvent) {
-      console.error('An error occurred:', error.message);
-    } else {
-    }
+  getAgentsToAssign(): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiViewManagerUrl}/agents/getAgentsToAssign`, {}).pipe(
+      tap(),
+      catchError(UserService.handleError)
+    );
+  }
+
+  createUserClient(dto: ClientDto) {
+    return this.http.post<any>(`${this.configService.apiUserManagerUrl}/api/profile-client`, dto).pipe(
+      tap(),
+      catchError(UserService.handleError)
+    );
+  }
+
+  private static handleError(error: HttpErrorResponse) {
     return throwError(
       error);
   }

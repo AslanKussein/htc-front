@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {catchError, tap} from "rxjs/operators";
-import {NotificationService} from "./notification.service";
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -23,44 +22,34 @@ export class ClaimService {
   }
 
   getClaimById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/applications/` + id, {});
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/api/applications/` + id, {});
   }
 
   public saveClaim(obj): Observable<any> {
-    return this.http.post(`${this.configService.apiDataManagerUrl}/applications`, obj)
-      // return this.http.post(`/ehr/api/resume/put/resume` , obj)
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/applications`, obj)
       .pipe(
-        tap(data => {
-          console.log(data)
-        }),
+        tap()
       );
   }
 
   public updateClaim(id: number, obj: any): Observable<any> {
-    return this.http.put(`${this.configService.apiDataManagerUrl}/applications/` + id, obj)
-      // return this.http.post(`/ehr/api/resume/put/resume` , obj)
+    return this.http.put(`${this.configService.apiDataManagerUrl}/api/applications/` + id, obj)
       .pipe(
-        tap(data => {
-          console.log(data)
-        }),
+        tap()
       );
   }
 
   public saveLightApplication(obj: any): Observable<any> {
-    return this.http.post(`${this.configService.apiDataManagerUrl}/applications/saveLightApplication`, obj)
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/applications/saveLightApplication`, obj)
       .pipe(
-        tap(data => {
-          console.log(data)
-        }),
+        tap()
       );
   }
 
-  private handleError(error: HttpErrorResponse) {
-    if (error instanceof ErrorEvent) {
-      console.error('An error occurred:', error.message);
-    } else {
-    }
-    return throwError(
-      error);
+  public getApartmentByNumberAndPostcode(apartmentNumber: number, postCode: string): Observable<any> {
+    return this.http.get(`${this.configService.apiDataManagerUrl}/api/applications/getApartmentByNumberAndPostcode/` + apartmentNumber + `/` + postCode, {})
+      .pipe(
+        tap()
+      );
   }
 }

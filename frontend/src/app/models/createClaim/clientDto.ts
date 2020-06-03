@@ -11,6 +11,9 @@ export class ClientDto implements BaseEntity {
   public phoneNumber?: string;//Номер телефона
   public email?: string;//"Адрес электронной почты"
   public gender?: 'MALE' | 'FEMALE' | 'UNKNOWN';//Пол клиента
+  public birthDate?: any;//день рождения
+  public isActive?: boolean;
+  public location?: number;//город
 
   constructor()
   constructor(id: number)

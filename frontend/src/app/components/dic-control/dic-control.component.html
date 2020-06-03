@@ -1,0 +1,500 @@
+<div class="card-body card-bg" ngxUiLoaderBlurred>
+  <div class="card">
+    <div class="card-body">
+      <!--<div class="container">-->
+      <div class="row">
+        <div class="col-sm-2">
+          <div style="border: solid 1px black; padding: 5px">
+            <h3>Все справочники </h3>
+          </div>
+          <div  style="border: solid 1px black; padding: 5px">
+            <a (click)="loadDictionaryForEdit('residential-complexes'); resident=true"><h5>ЖК</h5></a>
+            <p *ngFor="let dic of dictionaryes">
+              <a (click)="loadDictionaryForEdit(dic.code); resident=false"><h5>{{dic.multiLang.nameRu}}</h5></a>
+            </p>
+          </div>
+        </div>
+
+
+        <div class="col-sm-10">
+          <div style="border: solid 1px black; padding: 5px; ">
+            <a *ngIf="adminRoles" (click)="openModal(template);editDic()"><i style="color: blue" class="fa fa-edit fa-2x"></i></a>
+            <a *ngIf="adminRoles" style="margin-left: 10px" (click)="openModal(template);addDic()"><i style="color:green"
+                                                                                                      class="fa fa-plus-circle fa-2x"></i></a>
+            <a *ngIf="adminRoles" (click)="openModal(template2);deleteDic()" style="margin-left: 10px"><i style="color:red"
+                                                                                                          class="fa fa-times-circle fa-2x"></i></a>
+          </div>
+
+          <div style="border: solid 1px black; padding: 5px;
+     overflow: auto;">
+            <table *ngIf="resident" class="table table-bordered text-center">
+              <thead class="text-center">
+              <tr>
+                <th>Id</th>
+                <th>Город</th>
+                <th>Район</th>
+                <th>Улица</th>
+                <th>Номер здания (дома)</th>
+                <th>Номер дома (дробь/буква/строение)</th>
+                <th>Название дома (ЖК)</th>
+                <th>Год постройки</th>
+                <th>Застройщик</th>
+                <th>Этажность дома</th>
+                <th>Количество подъездов</th>
+                <th>Количество квартир</th>
+                <th>Квартир на площадке</th>
+                <th>Высота потолков</th>
+                <th>Материал постройки</th>
+                <th>Класс жилья</th>
+                <th>Состояние</th>
+                <th>Тип лифта</th>
+                <th>Консьерж</th>
+                <th>Колясочная</th>
+                <th>Парковка</th>
+                <th>Двор</th>
+                <th>Детская площадка</th>
+              </tr>
+              </thead>
+              <tbody style="cursor: pointer">
+              <tr *ngFor="let dic of residentialComplexes;let i = index" (click)="clickTr(dic)"
+                  [ngClass]="{'rowBlue': (dic==clickColumnDic)}">
+                <td>{{dic.id}}</td>
+                <td>
+                  <ng-select
+                    [disabled]="true"
+                    bindValue="value"
+                    bindLabel="label"
+                    [items]="cities"
+                    [(ngModel)]="dic.buildingDto.cityId">
+                  </ng-select>
+                </td>
+                <td>
+                  <ng-select
+                    [disabled]="true"
+
+                    bindValue="value"
+                    bindLabel="label"
+                    [items]="districts"
+                    [(ngModel)]="dic.buildingDto.districtId">
+                  </ng-select>
+                </td>
+                <td>
+                  <ng-select
+                    [disabled]="true"
+
+                    bindValue="value"
+                    bindLabel="label"
+                    [items]="streets"
+                    [(ngModel)]="dic.buildingDto.streetId">
+                  </ng-select>
+                </td>
+                <td>
+                  {{dic.buildingDto.houseNumber}}
+                </td>
+                <td>
+                  {{dic.buildingDto.houseNumberFraction}}
+                </td>
+                <td>
+                  {{dic.houseName}}
+                </td>
+                <td>
+                  {{dic.yearOfConstruction}}
+                </td>
+                <td>
+                  <ng-select
+                    [disabled]="true"
+
+                    bindValue="value"
+                    bindLabel="label"
+                    [items]="propertyDevelopers"
+                    [(ngModel)]="dic.propertyDeveloperId">
+                  </ng-select>
+                </td>
+                <td>
+                  {{dic.numberOfFloors}}
+                </td>
+                <td>
+                  {{dic.numberOfEntrances}}
+                </td>
+                <td>
+                  {{dic.numberOfApartments}}
+                </td>
+                <td>
+                  {{dic.apartmentsOnTheSite}}
+                </td>
+                <td>
+                  {{dic.ceilingHeight}}
+                </td>
+                <td>
+                  <ng-select
+                    [disabled]="true"
+
+                    bindValue="value"
+                    bindLabel="label"
+                    [items]="materialsOfConstruction"
+                    [(ngModel)]="dic.materialOfConstructionId">
+                  </ng-select>
+                </td>
+                <td>
+                  {{dic.housingClass}}
+                </td>
+                <td>
+                  {{dic.housingConditionId}}
+                </td>
+                <td>
+                  <ng-select
+                    [disabled]="true"
+
+                    [multiple]="true"
+                    bindValue="value"
+                    bindLabel="label"
+                    [items]="typeOfElevator"
+                    [(ngModel)]="dic.typeOfElevator">
+                  </ng-select>
+                </td>
+                <td>
+                  {{dic.concierge}}
+                </td>
+                <td>
+                  {{dic.wheelchair}}
+                </td>
+                <td>
+                  <ng-select
+                    [disabled]="true"
+                    [multiple]="true"
+                    bindValue="value"
+                    bindLabel="label"
+                    [items]="parkingTypes"
+                    [(ngModel)]="dic.parkingTypeIds">
+                  </ng-select>
+                </td>
+                <td>
+                  <ng-select
+                    [disabled]="true"
+
+                    bindValue="value"
+                    bindLabel="label"
+                    [items]="yardTypes"
+                    [(ngModel)]="dic.yardType">
+                  </ng-select>
+                </td>
+                <td>
+                  {{dic.playground}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <pagination [(ngModel)]="currentPage"
+                        *ngIf="resident"
+                        [totalItems]="totalItems"
+                        [itemsPerPage]="itemsPerPage"
+                        [maxSize]="10"
+                        [rotate]="true"
+                        [boundaryLinks]="true"
+                        previousText="&lsaquo;"
+                        nextText="&rsaquo;"
+                        firstText="&laquo;"
+                        lastText="&raquo;"
+                        (pageChanged)="pageChanged($event)">
+            </pagination>
+
+            <!--{{clickColumnDic.nameEn}}-->
+            <table *ngIf="!resident" class="table table-bordered text-center table-sm">
+              <thead class="text-center">
+              <tr>
+                <!--<th>Код</th>-->
+                <th>nameEn</th>
+                <th>nameKz</th>
+                <th>nameRu</th>
+              </tr>
+              </thead>
+              <tbody style="cursor: pointer">
+              <tr *ngFor="let dic of dictionary;let i = index" (click)="clickTr(dic)"
+                  [ngClass]="{'rowBlue': (dic==clickColumnDic)}"
+              >
+                <!--<td>{{dic.code}}</td>-->
+                <td>{{dic.multiLang.nameEn}}</td>
+                <td>{{dic.multiLang.nameKz}}</td>
+                <td>{{dic.multiLang.nameRu}}</td>
+              </tr>
+              </tbody>
+            </table>
+            <pagination [(ngModel)]="currentPage"
+                        *ngIf="!resident"
+                        [totalItems]="totalItems"
+                        [itemsPerPage]="itemsPerPage"
+                        [maxSize]="10"
+                        [rotate]="true"
+                        [boundaryLinks]="true"
+                        previousText="&lsaquo;"
+                        nextText="&rsaquo;"
+                        firstText="&laquo;"
+                        lastText="&raquo;"
+                        (pageChanged)="pageChanged($event)">
+            </pagination>
+          </div>
+        </div>
+
+
+      </div>
+
+      <ng-template #template2>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">Подтверждение действия</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide();clearForm();">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="text-align: center">
+          <div class="col-sm" style="text-align: center">
+            <h4 class="modal-title pull-left">Действительно удалить запись реестра?</h4>
+          </div>
+
+          <div class="col-sm" style="text-align: right">
+            <button type="button" class="btn btn-primary" (click)="deleteById()" style="margin: 10px">
+              Подтвердить
+            </button>
+            <button type="button" class="btn btn-light" (click)="modalRef.hide();clearForm()" style="margin: 10px">
+              Отмена
+            </button>
+
+
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #template>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left" *ngIf="actions=='ADD'">Добавление новой записи в справочник</h4>
+          <h4 class="modal-title pull-left" *ngIf="actions=='EDIT'">Редактирование записи справочника</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="openModal2(template3)">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="col-sm" *ngIf="!resident">
+            <label class="col-sm col-form-label">nameEn<span class="text-danger">&nbsp;*</span></label>
+            <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formData.multiLang.nameEn">
+          </div>
+          <div class="col-sm" *ngIf="!resident">
+            <label class="col-sm col-form-label">nameRu<span
+              class="text-danger">&nbsp;*</span></label>
+            <input type="text" class="col-sm form-control" name="nameRu" [(ngModel)]="formData.multiLang.nameRu">
+            <div *ngIf="!formData.multiLang.nameRu" class="text-danger">
+              <div *ngIf="!formData.multiLang.nameRu" translate>claim.requiredField</div>
+            </div>
+          </div>
+          <div class="col-sm" *ngIf="!resident">
+            <label class="col-sm col-form-label">nameKz<span class="text-danger">&nbsp;*</span></label>
+            <input type="text" class="col-sm form-control" name="nameKz" [(ngModel)]="formData.multiLang.nameKz">
+          </div>
+          <div class="col-sm" *ngIf="resident">
+
+              <label>Полный адрес
+                <span class="text-danger">&nbsp;*</span>
+              </label>
+              <ng-select
+                [items]="kazPost"
+                [searchFn]="customSearchFn"
+                (search)="getDataKzPost($event)"
+                [(ngModel)]="postcode"
+                (ngModelChange)="checkPostData();"
+                (clear)="'true'"
+                placeholder="{{'Полный адрес' | translate }}">
+              </ng-select>
+
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Город<span class="text-danger">&nbsp;*</span></label>
+            <ng-select
+              required="true"
+              disabled="true"
+              bindValue="value"
+              bindLabel="label"
+              [items]="cities"
+              [(ngModel)]="formRes.buildingDto.cityId">
+            </ng-select>
+            <div *ngIf="!formRes.buildingDto.cityId" class="text-danger">
+              <div *ngIf="!formRes.buildingDto.cityId" translate>claim.requiredField</div>
+            </div>
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Район</label>
+            <ng-select
+              disabled="true"
+              bindValue="value"
+              bindLabel="label"
+              [items]="districts"
+              [(ngModel)]="formRes.buildingDto.districtId">
+            </ng-select>
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Улица<span class="text-danger">&nbsp;*</span></label>
+            <ng-select
+              disabled="true"
+              required="true"
+              bindValue="value"
+              bindLabel="label"
+              [items]="streets"
+              [(ngModel)]="formRes.buildingDto.streetId">
+            </ng-select>
+            <div *ngIf="!formRes.buildingDto.streetId" class="text-danger">
+              <div *ngIf="!formRes.buildingDto.streetId" translate>claim.requiredField</div>
+            </div>
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Номер здания (дома)<span class="text-danger">&nbsp;*</span></label>
+            <input type="text"   disabled="true"
+                   value=${var} class="col-sm form-control" name="houseNumber"   required="true"
+                   [(ngModel)]="formRes.buildingDto.houseNumber">
+            <div *ngIf="!formRes.buildingDto.houseNumber" class="text-danger">
+              <div *ngIf="!formRes.buildingDto.houseNumber" translate>claim.requiredField</div>
+            </div>
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Номер дома (дробь/буква/строение)</label>
+            <input type="text" maxlength="3" class="col-sm form-control" name="houseNumberFraction"
+                   [(ngModel)]="formRes.buildingDto.houseNumberFraction">
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Название дома (ЖК) <span class="text-danger">&nbsp;*</span></label>
+            <input type="text" maxlength="50" class="col-sm form-control" name="houseName"
+                   [(ngModel)]="formRes.houseName">
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Год постройки</label>
+            <input type="text"  maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                   value=${var}  class="col-sm form-control" name="yearOfConstruction" mask="0000"
+                   [(ngModel)]="formRes.yearOfConstruction">
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Застройщик</label>
+            <ng-select
+              bindValue="value"
+              bindLabel="label"
+              [items]="propertyDevelopers"
+              [(ngModel)]="formRes.propertyDeveloperId">
+            </ng-select>
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Этажность дома</label>
+            <input type="text"  maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                   value=${var}  class="col-sm form-control" name="numberOfFloors"
+                   [(ngModel)]="formRes.numberOfFloors">
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Количество подъездов</label>
+            <input type="text"  maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                   value=${var}  class="col-sm form-control" name="numberOfEntrances"
+                   [(ngModel)]="formRes.numberOfEntrances">
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Количество квартир</label>
+            <input type="text"  maxlength="5" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                   value=${var}  class="col-sm form-control" name="numberOfApartments"
+                   [(ngModel)]="formRes.numberOfApartments">
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Квартир на площадке</label>
+            <input type="text"  maxlength="5" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                   value=${var}  class="col-sm form-control" name="apartmentsOnTheSite"
+                   [(ngModel)]="formRes.apartmentsOnTheSite">
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Высота потолков</label>
+            <input type="number"  maxlength="4"  class="col-sm form-control" name="ceilingHeight"
+                   [(ngModel)]="formRes.ceilingHeight">
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Материал постройки</label>
+            <ng-select
+              bindValue="value"
+              bindLabel="label"
+              [items]="materialsOfConstruction"
+              [(ngModel)]="formRes.materialOfConstructionId">
+            </ng-select>
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Класс жилья</label>
+            <input type="text" maxlength="50" class="col-sm form-control" name="housingClass"
+                   [(ngModel)]="formRes.housingClass">
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Состояние</label>
+            <input type="text" maxlength="50" class="col-sm form-control" name="housingCondition"
+                   [(ngModel)]="formRes.housingConditionId">
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Тип лифта</label>
+            <ng-select
+              multiple="true"
+              bindValue="value"
+              bindLabel="label"
+              [items]="typeOfElevator"
+              [(ngModel)]="formRes.typeOfElevatorIdList">
+            </ng-select>
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Консьерж</label>
+            <input type="checkbox" class="col-sm form-control" name="concierge" [(ngModel)]="formRes.concierge">
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Колясочная</label>
+            <input type="checkbox" class="col-sm form-control" name="wheelchair" [(ngModel)]="formRes.wheelchair">
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Парковка {{formRes.parkingTypeIds}}</label>
+            <ng-select
+              multiple="true"
+              bindValue="value"
+              bindLabel="label"
+              [items]="parkingTypes"
+              [(ngModel)]="formRes.parkingTypeIds">
+            </ng-select>
+          </div>
+          <div class="col-sm" *ngIf="resident">
+            <label class="col-sm col-form-label">Двор</label>
+            <ng-select
+              bindValue="value"
+              bindLabel="label"
+              [items]="yardTypes"
+              [(ngModel)]="formRes.yardTypeId">
+            </ng-select>
+          </div>
+
+          <!--ЖК конец-->
+          <div class="col-sm" style="text-align: right">
+            <button type="button" class="btn btn-primary" (click)="submit()" style="margin: 10px">
+              Сохранить
+            </button>
+            <button type="button" class="btn btn-light" (click)="openModal2(template3)" style="margin: 10px">
+              Отмена
+            </button>
+
+          </div>
+
+        </div>
+      </ng-template>
+
+      <ng-template #template3>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">Внимание</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Внесенные данные не сохранены, данные будут потеряны. Покинуть страницу?
+        </div>
+        <div class="col-sm" style="text-align: right">
+          <button type="button" class="btn btn-primary" (click)="closeModal()" style="margin: 10px">
+            Подтвердить
+          </button>
+          <button type="button" class="btn btn-light" (click)="modalRef2.hide()" style="margin: 10px">
+            Отмена
+          </button>
+           </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

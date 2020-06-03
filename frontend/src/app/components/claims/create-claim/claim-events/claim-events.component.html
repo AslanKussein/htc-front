@@ -1,0 +1,134 @@
+<div class="card">
+  <div class="card-body">
+    <div [formGroup]="eventsForm">
+      <div class="row">
+        <div class="col-sm-3">
+          <label>Добавить событие</label>
+          <ng-select
+            [items]="appStatusesSort"
+            formControlName="eventTypeId"
+            bindValue="value"
+            placeholder="{{ 'patterns.chooseElement' | translate }}">
+          </ng-select>
+        </div>
+        <div class="col-sm-2" style="margin: -7px;">
+          <i aria-hidden="true" *ngIf="eventsForm.value.eventTypeId == 1" class="fa fa-eye fa-2x">Показ</i>
+          <i aria-hidden="true" *ngIf="eventsForm.value.eventTypeId == 2" class="fa fa-phone fa-2x">Звонок</i>
+          <i aria-hidden="true" *ngIf="eventsForm.value.eventTypeId == 3" class="fa fa-handshake-o fa-2x">Встреча</i>
+        </div>
+        <div class="col-sm">
+          <label for="form7">Описание события</label>
+          <textarea class="form-control" formControlName="description" rows="1"></textarea>
+        </div>
+        <div class="col-sm" *ngIf="eventsForm.value.eventTypeId == 1">
+          <label for="form7">ID заявки - {{this.applicationId}}</label>
+          <textarea id="form7" class="form-control" rows="1" readonly></textarea>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-sm-3">
+          <label for="fillFromAndTo" translate>Дата и Время:</label>
+          <input type="text" id="fillFromAndTo" formControlName="eventDate" class="form-control" bsDatepicker
+                 #ru="bsDatepicker"/>
+        </div>
+        <div class="col-sm-2" style="margin: -7px;">
+          <ngb-timepicker formControlName="time"></ngb-timepicker>
+        </div>
+        <div class="col-sm">
+          <label for="form7">Комментарий</label>
+          <textarea class="form-control" formControlName="comment" rows="1"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <button type="button" class="btn btn-btn btn2 btn-secondary">Закрыть</button>
+      <button type="button" class="btn btn-btn btn2 btn-success" [disabled]="!this.eventsForm.valid" (click)="save()">
+        Сохранить
+      </button>
+    </div>
+
+    <div>
+
+      <div *ngFor="let events of eventsData; let i = index">
+        <div class="event-block">
+          <br/>
+          <div class="row">
+            <div class="col-sm-2">
+              <label>Добавить событие</label>
+              <ng-select
+                readonly="true"
+                [items]="appStatusesSort"
+                [(ngModel)]="events.eventType.id"
+                bindValue="value"
+                placeholder="{{ 'patterns.chooseElement' | translate }}">
+              </ng-select>
+            </div>
+            <div class="col-sm-2" style="margin: -7px;">
+              <i aria-hidden="true" *ngIf="events.eventType?.id == 1" class="fa fa-eye fa-2x">Показ</i>
+              <i aria-hidden="true" *ngIf="events.eventType?.id == 2" class="fa fa-phone fa-2x">Звонок</i>
+              <i aria-hidden="true" *ngIf="events.eventType?.id == 3" class="fa fa-handshake-o fa-2x">Встреча</i>
+            </div>
+            <div class="col-sm" [class.disabledDev]="events.disabledDev">
+              <label for="form7">Описание события</label>
+              <textarea class="form-control" [value]="events.description" rows="1"></textarea>
+            </div>
+            <div class="col-sm" *ngIf="events?.eventType?.id == 1" [class.disabledDev]="events.disabledDev">
+              <label for="form7">ID заявки - {{this.applicationId}}</label>
+              <textarea class="form-control" rows="1" readonly></textarea>
+            </div>
+            <div class="col-sm-1">
+              <div class="row">
+                <button type="button" (click)="deleteEvent(events?.eventId)" class="btn btn-danger">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+              </div>
+              <br/>
+              <div class="row">
+                <button type="button" (click)="editEvent(events)" class="btn btn-light">
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row" [class.disabledDev]="events.disabledDev">
+            <div class="col-sm-2">
+              <label translate>Дата и Время:</label>
+              <input type="text" [(ngModel)]="events.eventDate" class="form-control"
+                     bsDatepicker #ru="bsDatepicker"/>
+            </div>
+            <div class="col-sm-2" style="margin: -7px;">
+              <ngb-timepicker [(ngModel)]="events.time"></ngb-timepicker>
+            </div>
+            <div class="col-sm">
+              <label for="form7">Комментарий</label>
+              <textarea class="form-control" [value]="events.comment" rows="1"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="!events.disabledDev">
+          <button type="button" class="btn btn-btn btn2 btn-secondary" (click)="this.changeDisableDev(events, true)">Отмена</button>
+          <button type="button" class="btn btn-btn btn2 btn-success" (click)="update(events)">
+            Сохранить
+          </button>
+        </div>
+      </div>
+
+      <pagination [(ngModel)]="currentPage"
+                  [totalItems]="totalItems"
+                  [itemsPerPage]="itemsPerPage"
+                  [maxSize]="10"
+                  [rotate]="true"
+                  [boundaryLinks]="true"
+                  previousText="&lsaquo;"
+                  nextText="&rsaquo;"
+                  firstText="&laquo;"
+                  lastText="&raquo;"
+                  (pageChanged)="pageChanged($event)">
+      </pagination>
+    </div>
+    <br/>
+    <br/>
+  </div>
+
+</div>

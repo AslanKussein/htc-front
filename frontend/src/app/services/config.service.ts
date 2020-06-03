@@ -10,6 +10,7 @@ export class ConfigService {
   apiViewManagerUrl = 'https://vm-htc.dilau.kz';
   apiUserManagerUrl = 'https://um-htc.dilau.kz';
   apiRoleManagerUrl = 'https://rm-htc.dilau.kz';
+  apiKazPostUrl = 'https://api.post.kz';
 
   constructor() {
   }

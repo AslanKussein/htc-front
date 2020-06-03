@@ -23,7 +23,8 @@
     "noDataFount": "Данные не найдены",
     "from2": "от",
     "to2": "до",
-    "save": "Сохранить"
+    "save": "Сохранить",
+    "cancel": "Отмена"
   },
   "news": {
     "title": "Новости"
@@ -47,7 +48,8 @@
       "kitchenArea": "Кухня",
       "ceilingHeight": "Высота потолков",
       "numberOfBedrooms": "Количество спален",
-      "operationTypeId": "Операция"
+      "operationTypeId": "Операция",
+      "contractNumber": "Номер договора"
     },
     "title": "Заявки",
     "step": "Шаг",

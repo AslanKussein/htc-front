@@ -13,6 +13,7 @@
 **/tmp
 **/.web_bundle_build
 **/target
+**/package-lock.json
 **/dest
 .gradle
 .idea

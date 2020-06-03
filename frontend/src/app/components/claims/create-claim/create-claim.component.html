@@ -1,0 +1,1818 @@
+<div class="card">
+  <div class="card-body " ngxUiLoaderBlurred>
+    <div class="row">
+      <div class="col-sm">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="fillClaims-tab" data-toggle="tab" href="#fillClaims" role="tab"
+               aria-controls="fillClaims"
+               aria-selected="true" translate> claim.title</a>
+          </li>
+          <li class="nav-item" *ngIf="this.applicationId">
+            <a class="nav-link" id="contractOU-tab" data-toggle="tab" href="#contractOU" role="tab"
+               aria-controls="contractOU"
+               aria-selected="false" translate>claim.contractOU</a>
+          </li>
+          <li class="nav-item" *ngIf="this.applicationId">
+            <a class="nav-link" id="impressions-tab" data-toggle="tab" href="#impressions" role="tab"
+               aria-controls="impressions"
+               aria-selected="false" translate>claim.impressions</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" [formGroup]="applicationForm" id="fillClaims"
+           role="tabpanel" aria-labelledby="fillClaims-tab">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm">
+              <div class="accordion" id="accordionaboutDeal">
+                <div class="card z-depth-0 bordered">
+                  <div class="card-header accordion-header" id="aboutDeal">
+                    <div class="font-weight-bold" data-toggle="collapse"
+                         data-target="#collapseaboutDeal"
+                         aria-expanded="true" aria-controls="collapseaboutDeal" translate>
+                      claim.aboutDeal
+                      <span class="float-right show-accordion" *ngIf="headerDeal"
+                            data-toggle="collapse"
+                            data-target="#collapseaboutDeal"
+                            aria-expanded="true" aria-controls="collapseaboutDeal"
+                            (click)="showHideHeader(1)">
+                      <i class="fa fa-angle-down fa-2x" aria-hidden="true"></i>
+                    </span>
+                      <span class="float-right hide-accordion" *ngIf="!headerDeal"
+                            data-toggle="collapse"
+                            data-target="#collapseaboutDeal"
+                            aria-expanded="true" aria-controls="collapseaboutDeal"
+                            (click)="showHideHeader(2)">
+                      <i class="fa fa-angle-up fa-2x" aria-hidden="true"></i>
+                    </span>
+                    </div>
+                  </div>
+                  <div id="collapseaboutDeal" class="collapse show" aria-labelledby="headingOne"
+                       data-parent="#accordionaboutDeal">
+                    <div class="card-body accordionAboutObject">
+                      <div class="row">
+                        <div class="col-sm" *ngIf="this.applicationId">
+                          <label>ID</label>
+                          <div class="input-group mb-3">
+                            <input type="text" class="form-control" readonly [value]="this.applicationId"/>
+                            <div class="input-group-append" *ngIf="!edit">
+                              <a class="input-group-text btn-primary text-white" (click)="onEdit()"><i
+                                aria-hidden="true" class="fa fa-edit">Редактировать</i></a>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-sm" *ngIf="hasRGRole()">
+                          <label>Выберите агента</label>
+                          <ng-select
+                            [items]="agentList"
+                            [(ngModel)]="applicationForm.agent"
+                            formControlName="agent"
+                            bindValue="value"
+                            placeholder="{{ 'patterns.chooseElement' | translate }}">
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div [class.disabled]="!edit">
+                        <div class="row">
+                          <div class="col-sm"
+                               [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
+                                         util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
+                                         util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles)">
+                            <label translate>claim.operation<span class="text-danger">&nbsp;*</span></label>
+                            <ng-select
+                              [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles) && this.applicationId"
+                              [items]="operationType"
+                              (ngModelChange)="setApplicationFlagSort()"
+                              [readonly]="this.applicationId"
+                              [(ngModel)]="applicationForm.operationTypeId"
+                              formControlName="operationTypeId"
+                              placeholder="{{ 'patterns.chooseElement' | translate }}">
+                            </ng-select>
+                            <div *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid || !f.operationTypeId.valid" class="text-danger">
+                              <div *ngIf="f.operationTypeId.errors.required" translate>claim.requiredField</div>
+                            </div>
+                          </div>
+                          <div class="col-sm"
+                               [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
+                                         util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
+                                         util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles)">
+                            <label translate>claim.objectType<span class="text-danger">&nbsp;*</span></label>
+                            <ng-select [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles)"
+                                       [items]="objectType"
+                                       [(ngModel)]="applicationForm.objectTypeId"
+                                       (ngModelChange)="setHouseOrApartmentsForMaterials()"
+                                       formControlName="objectTypeId"
+                                       placeholder="{{ 'claim.objectType' | translate }}">
+                            </ng-select>
+                            <div *ngIf="f.objectTypeId.touched && f.objectTypeId.invalid || !f.operationTypeId.valid" class="text-danger">
+                              <div *ngIf="f.objectTypeId.errors.required" translate>claim.requiredField</div>
+                            </div>
+                          </div>
+                          <div class="col-sm-5"
+                               [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
+                               util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
+                               util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles) &&
+                               util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles)">
+                            <label translate>claim.objectPriceInLim
+                              <span class="text-danger"
+                                    *ngIf="(isBuy() && !applicationForm.objectPrice)">&nbsp;*</span>
+                            </label>
+                            <div class="input-group" *ngIf="isSell()">
+                              <input type="text" min="0" max="20" class="form-control"
+                                     [readOnly]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles)"
+                                     placeholder="{{'patterns.from' | translate}}" maxlength="20"
+                                     mask="separator" thousandSeparator=" "
+                                     oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                     (keypress)="util.keyPress($event)"
+                                     [(ngModel)]="applicationForm.objectPriceFrom" formControlName="objectPriceFrom"/>
+                              <input type="text" min="0" max="20" class="form-control"
+                                     mask="separator" thousandSeparator=" "
+                                     [readOnly]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles)"
+                                     placeholder="{{'patterns.to' | translate}}" maxlength="20"
+                                     oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                     (keypress)="util.keyPress($event)"
+                                     [(ngModel)]="applicationForm.objectPriceTo" formControlName="objectPriceTo"/>
+                            </div>
+                            <input type="text" id="form1" class="form-control" maxlength="20"
+                                   [readOnly]="util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
+                                   oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                   (keypress)="util.keyPress($event)"
+                                   *ngIf="!isSell()"
+                                   mask="separator" suffix=" ₸" thousandSeparator=" "
+                                   placeholder="{{'claim.objectPriceInLim' | translate}}"
+                                   [(ngModel)]="applicationForm.objectPrice" formControlName="objectPrice" min="0">
+                            <div
+                              *ngIf="isBuy() && f.objectPrice.touched && f.objectPrice.invalid"
+                              class="text-danger">
+                              <div *ngIf="f.objectPrice.errors.required" translate>claim.requiredField</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm"
+                               [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
+                               util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
+                               util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles) &&
+                               util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles)">
+                            <label translate>claim.ipoteka</label>
+                            <ng-select
+                              [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
+                              [items]="dicDynamic"
+                              bindValue="value"
+                              [(ngModel)]="applicationForm.mortgage"
+                              formControlName="mortgage"
+                              placeholder="{{'claim.ipoteka' | translate}}">
+                            </ng-select>
+                          </div>
+                          <div class="col-sm" *ngIf="isBuy()">
+                            <div
+                              [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)">
+                              <label translate>claim.encumbrance</label>
+                              <ng-select
+                                [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
+                                [items]="dicDynamic"
+                                bindValue="value"
+                                [(ngModel)]="applicationForm.encumbrance"
+                                formControlName="encumbrance"
+                                placeholder="{{ 'claim.encumbrance' | translate }}">
+                              </ng-select>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)">
+                          <div class="row" *ngIf="isBuy()">
+                            <div class="col-sm">
+                              <label translate>claim.barter</label>
+                              <ng-select
+                                [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
+                                [items]="dicDynamic"
+                                bindValue="value"
+                                [(ngModel)]="applicationForm.exchange"
+                                formControlName="encumbrance"
+                                placeholder="{{ 'claim.barter' | translate }}">
+                              </ng-select>
+                            </div>
+                            <div class="col-sm">
+                              <label translate>claim.commonOwnership</label>
+                              <ng-select
+                                [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
+                                [items]="dicDynamic"
+                                bindValue="value"
+                                [(ngModel)]="applicationForm.sharedOwnershipProperty"
+                                formControlName="sharedOwnershipProperty"
+                                placeholder="{{ 'claim.commonOwnership' | translate }}">
+                              </ng-select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row" [class.disabled]="!edit"
+                             [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
+                             util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
+                             util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles) &&
+                             util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles)">
+                          <div class="col-sm">
+                            <label translate>claim.probabilityBargaining</label>
+                            <ng-select
+                              [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles) &&
+                              util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
+                              [items]="dicDynamic"
+                              [(ngModel)]="applicationForm.probabilityOfBidding"
+                              bindValue="value"
+                              formControlName="probabilityOfBidding"
+                              placeholder="{{ 'claim.probabilityBargaining' | translate }}">
+                            </ng-select>
+                          </div>
+                          <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 1">
+                            <label for="form1" translate>claim.bidAmount</label>
+                            <input type="text" class="form-control" maxlength="20"
+                                   oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                   [(ngModel)]="applicationForm.theSizeOfTrades"
+                                   mask="separator.2" thousandSeparator=" "
+                                   (keypress)="util.keyPress($event)"
+                                   placeholder="{{'claim.bidAmount' | translate}}"
+                                   [readOnly]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles) &&
+                                   util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
+                                   formControlName="theSizeOfTrades" min="0"/>
+                          </div>
+                        </div>
+                        <div *ngIf="applicationForm.probabilityOfBidding == 1"
+                             [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
+                             util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
+                             util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles) &&
+                             util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles)">
+                          <div class="row">
+                            <div class="col-sm">
+                              <label translate>claim.possibleBargaining</label>
+                              <ng-select
+                                [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
+                                [multiple]="true"
+                                bindValue="value"
+                                (click)="setPossibleReasonForBidding()"
+                                [items]="possibleReasonForBiddingSort"
+                                appendTo="body"
+                                [(ngModel)]="applicationForm.possibleReasonForBiddingIdList"
+                                formControlName="possibleReasonForBiddingIdList"
+                                placeholder="{{ 'claim.possibleBargaining' | translate }}">
+                              </ng-select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row"
+                             [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)">
+                          <div class="col-sm">
+                            <label translate>claim.comments</label>
+                            <textarea rows="1" class="col-sm-12 control"
+                                      [(ngModel)]="applicationForm.note" formControlName="note"
+                                      maxlength="1000"></textarea>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm">
+                            <label>Признак</label>
+                            <ng-select
+                              [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
+                              [multiple]="true"
+                              appendTo="body"
+                              bindValue="value"
+                              [items]="applicationFlagSort"
+                              [(ngModel)]="applicationForm.applicationFlagIdList"
+                              formControlName="possibleReasonForBiddingIdList"
+                              placeholder="{{ 'claim.possibleBargaining' | translate }}">
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm">
+              <div class="accordion" id="accordionaboutOwnerOne">
+                <div class="card z-depth-0 bordered">
+                  <div class="card-header accordion-header" id="headingOne">
+                    <div class="font-weight-bold" data-toggle="collapse"
+                         data-target="#aboutOwnerOne"
+                         aria-expanded="true" aria-controls="aboutOwnerOne" translate>
+                      claim.aboutOwner
+                      <span class="float-right show-accordion" *ngIf="clientDeal"
+                            data-toggle="collapse"
+                            data-target="#aboutOwnerOne"
+                            aria-expanded="true" aria-controls="aboutOwnerOne"
+                            (click)="showHideHeader(3)">
+                      <i class="fa fa-angle-down fa-2x" aria-hidden="true"></i>
+                    </span>
+                      <span class="float-right hide-accordion" *ngIf="!clientDeal"
+                            data-toggle="collapse"
+                            data-target="#aboutOwnerOne"
+                            aria-expanded="true" aria-controls="aboutOwnerOne"
+                            (click)="showHideHeader(4)">
+                      <i class="fa fa-angle-up fa-2x" aria-hidden="true"></i>
+                    </span>
+                    </div>
+                  </div>
+                  <div id="aboutOwnerOne" class="collapse show" aria-labelledby="headingOne"
+                       data-parent="#accordionaboutOwnerOne" [class.disabledDev]="this.applicationId">
+                    <div class="card-body accordionAboutObject contact-accordion">
+                      <div class="row">
+                        <div class="col-sm"
+                             [hidden]="util.hasShowClientGroup('VIEW_CLIENT_DATA', roles) && util.hasShowClientGroup('UPDATE_CLIENT_DATA', roles)">
+                          <label for="phoneNumber" translate>claim.contacts
+                            <span class="text-danger" *ngIf="!applicationForm.phoneNumber">&nbsp;*</span>
+                          </label>
+                          <input type="text" id="phoneNumber" class="form-control"
+                                 [(ngModel)]="applicationForm.phoneNumber" name="phoneNumber"
+                                 [formControl]="applicationForm.controls['phoneNumber']"
+                                 prefix="+7" mask=' (000) 000-0000' [showMaskTyped]="true" (ngModelChange)="editClient()"
+                                 placeHolderCharacter="0"
+                                 [readOnly]="util.hasShowClientGroup('UPDATE_CLIENT_DATA', roles)"/>
+<!--                          (change)="searchByPhone(applicationForm.phoneNumber)"-->
+                          <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
+                            <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row"
+                           [hidden]="util.hasShowClientGroup('VIEW_CLIENT_INFO', roles) && util.hasShowClientGroup('UPDATE_CLIENT_INFO', roles)">
+                        <div class="col-sm">
+                          <label for="name" translate>name
+                            <span class="text-danger" *ngIf="!applicationForm.firstName">&nbsp;*</span>
+                          </label>
+                          <input type="text" class="form-control" id="name"
+                                 [(ngModel)]="applicationForm.firstName"
+                                 placeholder="{{'name' | translate}}"
+                                 formControlName="firstName" maxlength="255"
+                                 [readOnly]="util.hasShowClientGroup('UPDATE_CLIENT_INFO', roles)"/>
+                          <div *ngIf="f.firstName.touched && f.firstName.invalid" class="text-danger">
+                            <div *ngIf="f.firstName.errors.required" translate>claim.requiredField</div>
+                          </div>
+                        </div>
+                        <div class="col-sm"
+                             [hidden]="util.hasShowClientGroup('VIEW_CLIENT_DATA', roles) && util.hasShowClientGroup('UPDATE_CLIENT_DATA', roles)">
+                          <label for="surname" translate>surname
+                            <span class="text-danger" *ngIf="!applicationForm.surname">&nbsp;*</span>
+                          </label>
+                          <input type="text" class="form-control" id="surname" formControlName="surname"
+                                 [(ngModel)]="applicationForm.surname" maxlength="255"
+                                 placeholder="{{'surname' | translate}}"
+                                 [readOnly]="util.hasShowClientGroup('UPDATE_CLIENT_DATA', roles)"/>
+                          <div *ngIf="f.surname.touched && f.surname.invalid" class="text-danger">
+                            <div *ngIf="f.surname.errors.required" translate>claim.requiredField</div>
+                          </div>
+                        </div>
+                        <div class="col-sm"
+                             [hidden]="util.hasShowClientGroup('VIEW_CLIENT_DATA', roles) && util.hasShowClientGroup('UPDATE_CLIENT_DATA', roles)">
+                          <label for="patronymic" translate>patronymic</label>
+                          <input type="text" class="form-control" id="patronymic" formControlName="patronymic"
+                                 placeholder="{{'patronymic' | translate}}"
+                                 [readOnly]="util.hasShowClientGroup('UPDATE_CLIENT_DATA', roles)"
+                                 [(ngModel)]="applicationForm.patronymic" maxlength="255"/>
+                        </div>
+                      </div>
+                      <div class="row"
+                           [hidden]="util.hasShowClientGroup('VIEW_CLIENT_DATA', roles) && util.hasShowClientGroup('UPDATE_CLIENT_DATA', roles)">
+                        <div class="col-sm">
+                          <label for="clientId" translate>claim.clientID</label>
+                          <input type="text" id="clientId" class="form-control"
+                                 [(ngModel)]="applicationForm.clientId"
+                                 formControlName="clientId" [readOnly]="true"
+                                 placeholder="{{'claim.clientID' | translate}}"/>
+                        </div>
+                        <div class="col-sm"
+                             [hidden]="util.hasShowClientGroup('VIEW_CLIENT_DATA', roles) && util.hasShowClientGroup('UPDATE_CLIENT_DATA', roles)">
+                          <label for="email" translate>claim.email</label>
+                          <input type="text" id="email" class="form-control" [(ngModel)]="applicationForm.email"
+                                 placeholder="{{'claim.email' | translate}}"
+                                 [readOnly]="util.hasShowClientGroup('UPDATE_CLIENT_DATA', roles)"
+                                 formControlName="email"/>
+                        </div>
+                      </div>
+                      <div class="row"
+                           [hidden]="util.hasShowClientGroup('UPDATE_CLIENT_INFO', roles) && util.hasShowClientGroup('VIEW_CLIENT_INFO', roles)">
+                        <div class="col-sm" [class.disabledDiv]="util.hasShowClientGroup('UPDATE_CLIENT_INFO', roles)">
+                          <label translate>gender</label>
+                          <div class="row">
+                            <div class="col-sm text-center">
+                              <input type="radio" id="men" name="gender" value="MALE" class="custom-control-input"
+                                     [(ngModel)]="applicationForm.gender" formControlName="gender">
+                              <label class="custom-control-label" for="men" translate>men</label>
+                            </div>
+                            <div class="col-sm float-left">
+                              <input type="radio" id="women" name="gender" value="FEMALE"
+                                     class="custom-control-input"
+                                     [(ngModel)]="applicationForm.gender" formControlName="gender">
+                              <label class="custom-control-label" for="women" translate>women</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/>
+          <div class="row" *ngIf="applicationForm.operationTypeId">
+            <div class="col-sm">
+              <div class="accordion" id="accordionAboutObject">
+                <div class="card z-depth-0 bordered">
+                  <div class="card-header accordion-header" id="aboutObjectOne">
+                    <div class="font-weight-bold" data-toggle="collapse"
+                         data-target="#collapseOne"
+                         aria-expanded="true" aria-controls="collapseOne" translate>
+                      claim.aboutObject
+                      <span class="float-right show-accordion" *ngIf="aboutObject"
+                            data-toggle="collapse"
+                            data-target="#collapseOne"
+                            aria-expanded="true" aria-controls="collapseOne"
+                            (click)="showHideHeader(5)">
+                      <i class="fa fa-angle-down fa-2x" aria-hidden="true"></i>
+                    </span>
+                      <span class="float-right hide-accordion" *ngIf="!aboutObject"
+                            data-toggle="collapse"
+                            data-target="#collapseOne"
+                            aria-expanded="true" aria-controls="collapseOne"
+                            (click)="showHideHeader(6)">
+                      <i class="fa fa-angle-up fa-2x" aria-hidden="true"></i>
+                    </span>
+                    </div>
+                  </div>
+
+                  <div id="collapseOne" class="collapse show" aria-labelledby="aboutObjectOne"
+                       data-parent="#accordionAboutObject">
+                    <div class="card-body" [class.disabled]="!edit">
+                      <div class="row" *ngIf="isBuy()">
+                        <fieldset class="scheduler-border col-sm">
+                          <legend class="scheduler-border" translate>Унификация объекта</legend>
+
+                          <div class="row">
+                            <div class="col-sm">
+                              <div class="row">
+                                <div class="col-sm text-center">
+                                  <input type="radio" id="address" value="address" class="custom-control-input"
+                                         [(ngModel)]="applicationForm.unification" formControlName="unification">
+                                  <label class="custom-control-label" for="address">По полному адресу</label>
+                                </div>
+                                <div class="col-sm float-left" *ngIf="this.isApartment()">
+                                  <input type="radio" id="residence" value="residence"
+                                         class="custom-control-input"
+                                         [(ngModel)]="applicationForm.unification" formControlName="unification">
+                                  <label class="custom-control-label" for="residence">ЖК</label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-6" [class.disabled]="this.applicationForm.unification != 'address'">
+                              <label for="patronymic">Полный адрес
+                                <span class="text-danger" *ngIf="!applicationForm.postcode">&nbsp;*</span>
+                              </label>
+                              <ng-select
+                                [items]="kazPost"
+                                [searchFn]="customSearchFn"
+                                (search)="getDataKzPost($event)"
+                                [(ngModel)]="applicationForm.postcode"
+                                (ngModelChange)="checkPostData();"
+                                (clear)="'true'"
+                                formControlName="postcode"
+                                placeholder="{{'Полный адрес' | translate }}">
+                              </ng-select>
+                            </div>
+                            <div class="col-sm"
+                                 [class.disabled]="this.applicationForm.unification != 'residence'"
+                                 [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
+                                 *ngIf="isApartment() && isBuy()">
+                              <label for="patronymic" translate>claim.building</label>
+                              <div class="row">
+                                <div class="col-sm-10">
+                                  <ng-select
+                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                    [items]="residentialComplexes"
+                                    [(ngModel)]="applicationForm.residentialComplexId"
+                                    (ngModelChange)="setResidenceComplexType()"
+                                    formControlName="residentialComplexId"
+                                    placeholder="{{ 'claim.building' | translate }}">
+                                  </ng-select>
+                                </div>
+                                <div class="col-sm-2 marginleft">
+                                  <a (click)="openModal(template,'residentialComplexes');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-sm">
+                              <label for="patronymic" translate>claim.numberHouse
+                                <span class="text-danger" *ngIf="!applicationForm.houseNumber">&nbsp;*</span>
+                              </label>
+                              <div class="input-group">
+                                <input type="text" min="0" class="form-control"
+                                       [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                       placeholder="{{'claim.numberHouse' | translate}}"
+                                       [(ngModel)]="applicationForm.houseNumber" maxlength="10"
+                                       (ngModelChange)="getMap()"
+
+                                       oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                       (keypress)="util.keyPress($event)"
+                                       [readOnly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                       formControlName="houseNumber"
+                                />
+<!--                                <input type="text" class="form-control" maxlength="10" *ngIf="isHouse()"-->
+<!--                                       [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_DATA', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"-->
+<!--                                       placeholder="Дробь/буква/строение"-->
+<!--                                       [(ngModel)]="applicationForm.houseNumberFraction"-->
+<!--                                       (ngModelChange)="getMap();showModalChooseClaim();"-->
+<!--                                       [readOnly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"-->
+<!--                                       formControlName="houseNumberFraction"/>-->
+                              </div>
+                              <div *ngIf="f.houseNumber.touched && f.houseNumber.invalid" class="text-danger">
+                                <div *ngIf="f.houseNumber.errors.required" translate>claim.requiredField</div>
+                              </div>
+                            </div>
+                            <div class="col-sm"
+                                 [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)">
+                              <div *ngIf="isApartment()">
+                                <label translate>Номер квартиры</label>
+                                <div class="input-group">
+                                  <input type="number" min="1" class="form-control"
+                                         placeholder="Номер квартиры" maxlength="20"
+                                         oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                         [(ngModel)]="applicationForm.apartmentNumber"
+                                         (input)="showModalChooseClaim()"
+                                         formControlName="apartmentNumber"/>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="row"
+                               [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
+                               util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles) &&
+                               util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                               util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                            <div class="col-sm" *ngIf="isSell()">
+                              <label for="patronymic" translate>Город
+                                <span class="text-danger" *ngIf="!applicationForm.cityId">&nbsp;*</span>
+                              </label>
+                              <div class="row">
+                                <div class="col-sm-10">
+                                  <ng-select
+                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                    [items]="city"
+                                    [(ngModel)]="applicationForm.cityId"
+                                    formControlName="cityId"
+                                    [readonly]="true"
+                                    bindValue="value"
+                                    placeholder="{{ 'claim.city' | translate }}">
+                                  </ng-select>
+                                </div>
+                                <div class="col-sm-2">
+                                  <a (click)="openModal(template,'City');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
+                                </div>
+                              </div>
+
+                              <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">
+                                <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>
+                              </div>
+                            </div>
+                            <div class="col-sm"
+                                 [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
+                                 *ngIf="isSell()">
+                              <label for="patronymic" translate>claim.street
+                                <span class="text-danger" *ngIf="!applicationForm.streetId">&nbsp;*</span>
+                              </label>
+                              <div class="row">
+                                <div class="col-sm-10">
+                                  <ng-select
+                                    [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                    bindValue="value"
+                                    [items]="streets"
+                                    [(ngModel)]="applicationForm.streetId"
+                                    formControlName="streetId"
+                                    [readonly]="true"
+                                    placeholder="{{ 'claim.street' | translate }}">
+                                  </ng-select>
+                                </div>
+                                <div class="col-sm-2">
+                                  <a (click)="openModal(template,'Street');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
+                                </div>
+                              </div>
+
+                              <div *ngIf="f.streetId.touched && f.streetId.invalid" class="text-danger">
+                                <div *ngIf="f.streetId.errors.required" translate>claim.requiredField</div>
+                              </div>
+                            </div>
+
+                          </div>
+                          <div class="row">
+                            <div
+                              [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
+                              util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles) &&
+                              util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                              util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                              <div class="col-sm" *ngIf="isSell()">
+                                <label translate>claim.roomCount </label>
+                                <div class="input-group"
+                                     [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                                  <input type="number" min="0" class="form-control" maxlength="10"
+                                         oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                         placeholder="{{'patterns.from2' | translate}}"
+                                         (keypress)="util.keyPress($event)"
+                                         [(ngModel)]="applicationForm.numberOfRoomsFrom"
+                                         formControlName="numberOfRoomsFrom"/>
+                                  <input type="number" min="0" class="form-control" maxlength="10"
+                                         oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                         placeholder="{{'patterns.to2' | translate}}"
+                                         [(ngModel)]="applicationForm.numberOfRoomsTo"
+                                         (keypress)="util.keyPress($event)"
+                                         formControlName="numberOfRoomsTo"/>
+                                </div>
+                              </div>
+                              <div class="col-sm"
+                                   *ngIf="!isSell()">
+                                <label for="patronymic" translate>claim.roomCount
+                                  <span class="text-danger" *ngIf="!applicationForm.numberOfRooms">&nbsp;*</span>
+                                </label>
+                                <input type="number" min="1" class="form-control"
+                                       placeholder="{{ 'claim.roomCount' | translate }}" maxlength="2"
+                                       oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                       [(ngModel)]="applicationForm.numberOfRooms"
+                                       (keypress)="util.keyPress($event)"
+                                       formControlName="numberOfRooms"/>
+                                <div *ngIf="f.numberOfRooms.touched && f.numberOfRooms.invalid" class="text-danger">
+                                  <div *ngIf="f.numberOfRooms.errors.required" translate>claim.requiredField</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_DATA', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)">
+                            <div class="row" *ngIf="isBuy()">
+                              <div class="col-sm">
+                                <label for="cadastralNumber">Кадастровый номер</label>
+                                <div class="input-group">
+                                  <input type="text" id="cadastralNumber" class="form-control"
+                                         placeholder="00:000:000"
+                                         [(ngModel)]="applicationForm.cadastralNumber" mask="00:000:000"
+                                         formControlName="cadastralNumber"
+                                         (keypress)="util.keyPress($event)"
+                                         [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
+                                  <input type="text" class="form-control"
+                                         [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber1 == null)}"
+                                         [(ngModel)]="applicationForm.cadastralNumber1" maxlength="12"
+                                         formControlName="cadastralNumber1"
+                                         placeholder=":000000000000"
+                                         (keypress)="util.keyPress($event)"
+                                         [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
+                                  <input type="text" class="form-control"
+                                         [(ngModel)]="applicationForm.cadastralNumber2" maxlength="12"
+                                         [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber2 == null)}"
+                                         formControlName="cadastralNumber2"
+                                         placeholder=":000000000000"
+                                         (keypress)="util.keyPress($event)"
+                                         [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
+                                  <input type="text" class="form-control"
+                                         [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber3 == null)}"
+                                         [(ngModel)]="applicationForm.cadastralNumber3" maxlength="12"
+                                         formControlName="cadastralNumber3"
+                                         placeholder=":000000000000"
+                                         (keypress)="util.keyPress($event)"
+                                         [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
+                                </div>
+                                <div *ngIf="f.cadastralNumber.touched && f.cadastralNumber.invalid" class="text-danger">
+                                  <div *ngIf="applicationForm.cadastralNumber != null">Длина поле кадастровый номер не
+                                    верно
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div
+                              [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
+                              util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles) &&
+                              util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                              util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                              <div class="col-sm" *ngIf="isApartment()">
+                                <label>Этаж</label>
+                                <div class="input-group" *ngIf="isSell()"
+                                     [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                                  <input type="text" min="0" class="form-control" maxlength="10"
+                                         oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                         placeholder="{{'patterns.from2' | translate}}"
+                                         mask="separator.2" thousandSeparator=" "
+                                         (keypress)="util.keyPress($event)"
+                                         [(ngModel)]="applicationForm.floorFrom" formControlName="floorFrom"/>
+                                  <input type="text" min="0" class="form-control"
+                                         placeholder="{{'patterns.to2' | translate}}" maxlength="10"
+                                         oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                         mask="separator.2" thousandSeparator=" "
+                                         (keypress)="util.keyPress($event)"
+                                         [(ngModel)]="applicationForm.floorTo" formControlName="floorTo"/>
+                                </div>
+                                <div *ngIf="!isSell()">
+                                  <input type="text" min="0" class="form-control"
+                                         placeholder="Этаж" maxlength="10"
+                                         [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                         oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                         [(ngModel)]="applicationForm.floor"
+                                         (keypress)="util.keyPress($event)"
+                                         mask="separator.2" thousandSeparator=" "
+                                         formControlName="floor"/>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-sm" *ngIf="isHouse()">
+                              <label for="patronymic" translate>claim.validator.landArea
+                                <span class="text-danger" *ngIf="!applicationForm.landArea">&nbsp;*</span>
+                              </label>
+                              <div class="input-group" *ngIf="isSell()">
+                                <input type="text" min="0" class="form-control" maxlength="10"
+                                       oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                       placeholder="{{'patterns.from2' | translate}}"
+                                       mask="separator.2" thousandSeparator=" "
+                                       [(ngModel)]="applicationForm.landAreaFrom" formControlName="landAreaFrom"/>
+                                <input type="text" min="0" class="form-control" maxlength="10"
+                                       oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                       placeholder="{{'patterns.to2' | translate}}"
+                                       mask="separator.2" thousandSeparator=" "
+                                       [(ngModel)]="applicationForm.landAreaTo" formControlName="landAreaTo"/>
+                              </div>
+
+                              <div *ngIf="!isSell()">
+                                <input type="text" min="0" class="form-control"
+                                       placeholder="'Площадь участка (соток)'"
+                                       mask="separator.2" thousandSeparator=" "
+                                       [(ngModel)]="applicationForm.landArea" maxlength="10"
+                                       oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                       formControlName="landArea"/>
+                                <div *ngIf="f.landArea.touched && f.landArea.invalid" class="text-danger">
+                                  <div *ngIf="f.landArea.errors.required" translate>claim.requiredField</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <fieldset class="scheduler-border col-sm">
+                              <legend class="scheduler-border" translate>claim.quadrature</legend>
+                              <div
+                                [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
+                                util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles) &&
+                                util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                                <div class="row">
+                                  <div class="col-sm" *ngIf="isSell()">
+                                    <label translate>claim.square</label>
+                                    <div class="input-group"
+                                         [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                                      <input type="text" min="0" class="form-control" maxlength="10"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             placeholder="{{'patterns.from2' | translate}}"
+                                             mask="separator.2" thousandSeparator=" "
+                                             [(ngModel)]="applicationForm.totalAreaFrom"
+                                             formControlName="totalAreaFrom"/>
+                                      <input type="text" min="0" class="form-control" maxlength="10"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             placeholder="{{'patterns.to2' | translate}}"
+                                             mask="separator.2" thousandSeparator=" "
+                                             [(ngModel)]="applicationForm.totalAreaTo" formControlName="totalAreaTo"/>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm" *ngIf="!isSell()">
+                                    <label for="square" translate>claim.square <span class="text-danger"
+                                                                                     *ngIf="!applicationForm.totalArea">&nbsp;*</span></label>
+                                    <input type="text" id="square" class="form-control"
+                                           mask="separator.2" thousandSeparator=" "
+                                           [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                           [(ngModel)]="applicationForm.totalArea" maxlength="10"
+                                           placeholder="{{'claim.square' | translate}}"
+                                           oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                           formControlName="totalArea" min="0"/>
+                                    <div *ngIf="f.totalArea.touched && f.totalArea.invalid" class="text-danger">
+                                      <div *ngIf="f.totalArea.errors.required" translate>claim.requiredField</div>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-sm" *ngIf="isSell()">
+                                    <label translate>claim.live</label>
+                                    <div class="input-group"
+                                         [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                                      <input type="text" min="0" class="form-control" maxlength="10"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             placeholder="{{'patterns.from2' | translate}}"
+                                             mask="separator.2" thousandSeparator=" "
+                                             [(ngModel)]="applicationForm.livingAreaFrom"
+                                             formControlName="livingAreaFrom"/>
+                                      <input type="text" min="0" class="form-control" maxlength="10"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             placeholder="{{'patterns.to2' | translate}}"
+                                             mask="separator.2" thousandSeparator=" "
+                                             [(ngModel)]="applicationForm.livingAreaTo" formControlName="livingAreaTo"/>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm" *ngIf="!isSell()">
+                                    <label for="livingArea" translate>claim.live
+                                      <span class="text-danger" *ngIf="!applicationForm.livingArea">&nbsp;*</span>
+                                    </label>
+                                    <input type="text" id="livingArea" class="form-control"
+                                           mask="separator.2" thousandSeparator=" "
+                                           [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                           [(ngModel)]="applicationForm.livingArea" maxlength="10"
+                                           oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                           placeholder="{{'claim.live' | translate}}"
+                                           formControlName="livingArea" min="0"/>
+                                    <div *ngIf="f.livingArea.touched && f.livingArea.invalid" class="text-danger">
+                                      <div *ngIf="f.livingArea.errors.required" translate>claim.requiredField</div>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm" *ngIf="isSell()">
+                                    <label translate>claim.kitchen</label>
+                                    <div class="input-group"
+                                         [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                                      <input type="text" min="0" class="form-control" maxlength="10"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             placeholder="{{'patterns.from2' | translate}}"
+                                             [(ngModel)]="applicationForm.kitchenAreaFrom"
+                                             mask="separator.2" thousandSeparator=" "
+                                             formControlName="kitchenAreaFrom"/>
+                                      <input type="text" min="0" class="form-control" maxlength="10"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             placeholder="{{'patterns.to2' | translate}}"
+                                             mask="separator.2" thousandSeparator=" "
+                                             [(ngModel)]="applicationForm.kitchenAreaTo"
+                                             formControlName="kitchenAreaTo"/>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm" *ngIf="!isSell()">
+                                    <label for="kitchenArea" translate>claim.kitchen</label>
+                                    <input type="text" id="kitchenArea" class="form-control"
+                                           mask="separator.2" thousandSeparator=" "
+                                           [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                           [(ngModel)]="applicationForm.kitchenArea" maxlength="10"
+                                           placeholder="{{'claim.kitchen' | translate}}"
+                                           oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                           formControlName="kitchenArea" min="0"/>
+                                  </div>
+                                  <div class="col-sm"
+                                       *ngIf="isSell() && isApartment()">
+                                    <label translate>claim.balcony</label>
+                                    <div class="input-group"
+                                         [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                                      <input type="text" min="0" class="form-control" maxlength="10"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             placeholder="{{'patterns.from2' | translate}}"
+                                             mask="separator.2" thousandSeparator=" "
+                                             [(ngModel)]="applicationForm.balconyAreaFrom"
+                                             formControlName="balconyAreaFrom"/>
+                                      <input type="text" min="0" class="form-control" maxlength="10"
+                                             mask="separator.2" thousandSeparator=" "
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             placeholder="{{'patterns.to2' | translate}}"
+                                             [(ngModel)]="applicationForm.balconyAreaTo"
+                                             formControlName="balconyAreaTo"/>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm"
+                                       *ngIf="!isSell() && isApartment()">
+                                    <label for="balconyArea" translate>claim.balcony </label>
+                                    <input type="text" id="balconyArea" class="form-control"
+                                           [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                           [(ngModel)]="applicationForm.balconyArea" maxlength="10"
+                                           mask="separator.2" thousandSeparator=" "
+                                           placeholder="{{'claim.balcony' | translate}}"
+                                           oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                           formControlName="balconyArea" min="0"/>
+                                  </div>
+                                  <div class="col-sm"
+                                       *ngIf="isSell() && isApartment()">
+                                    <label translate>claim.heightWall</label>
+                                    <div class="input-group"
+                                         [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                                      <input type="text" min="0" class="form-control" maxlength="10"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             placeholder="{{'patterns.from2' | translate}}"
+                                             mask="separator.2" thousandSeparator=" "
+                                             [(ngModel)]="applicationForm.ceilingHeightFrom"
+                                             formControlName="ceilingHeightFrom"/>
+                                      <input type="text" min="0" class="form-control" maxlength="10"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             placeholder="{{'patterns.to2' | translate}}"
+                                             mask="separator.2" thousandSeparator=" "
+                                             [(ngModel)]="applicationForm.ceilingHeightTo"
+                                             formControlName="ceilingHeightTo"/>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm"
+                                       *ngIf="!isSell() && isApartment()">
+                                    <label for="ceilingHeight" translate>claim.heightWall</label>
+                                    <input type="text" id="ceilingHeight" class="form-control"
+                                           [(ngModel)]="applicationForm.ceilingHeight" maxlength="10"
+                                           mask="separator.2" thousandSeparator=" "
+                                           placeholder="{{'claim.heightWall' | translate}}"
+                                           [readonly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                           oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                           formControlName="ceilingHeight" min="0"/>
+                                  </div>
+                                </div>
+
+                                <div class="row" *ngIf="isApartment()">
+                                  <div class="col-sm" *ngIf="isSell()">
+                                    <label translate>claim.badRoomCount</label>
+                                    <div class="input-group"
+                                         [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                                      <input type="number" min="0" class="form-control" maxlength="10"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             placeholder="{{'patterns.from2' | translate}}"
+                                             (keypress)="util.keyPress($event)"
+                                             [(ngModel)]="applicationForm.numberOfBedroomsFrom"
+                                             formControlName="numberOfBedroomsFrom"/>
+                                      <input type="number" min="0" class="form-control" maxlength="10"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             placeholder="{{'patterns.to2' | translate}}"
+                                             (keypress)="util.keyPress($event)"
+                                             [(ngModel)]="applicationForm.numberOfBedroomsTo"
+                                             formControlName="numberOfBedroomsTo"/>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm" *ngIf="!isSell()">
+                                    <label for="numberOfBedrooms" translate>claim.badRoomCount
+                                      <span class="text-danger" *ngIf="!applicationForm.numberOfBedrooms">&nbsp;*</span>
+                                    </label>
+                                    <input type="number" id="numberOfBedrooms" class="form-control"
+                                           [(ngModel)]="applicationForm.numberOfBedrooms" maxlength="10"
+                                           oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                           [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                           placeholder="{{'claim.badRoomCount' | translate}}"
+                                           (keypress)="util.keyPress($event)"
+                                           formControlName="numberOfBedrooms" min="1" pattern="\d*"/>
+                                    <div *ngIf="f.numberOfBedrooms.touched && f.numberOfBedrooms.invalid"
+                                         class="text-danger">
+                                      <div *ngIf="f.numberOfBedrooms.errors.required" translate>claim.requiredField
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm">
+                                    <div class="col-sm">
+                                      <label class="control-labels" translate>claim.studio</label>
+                                      <div class="row">
+                                        <div class="col-sm">
+                                          <input type="checkbox" class="form-control"
+                                                 [(ngModel)]="applicationForm.atelier"
+                                                 formControlName="atelier"
+                                                 [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                                 util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)"/>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm">
+                                    <div class="col-sm">
+                                      <label class="control-labels" translate>claim.separateBathroom</label>
+                                      <div class="row">
+                                        <div class="col-sm">
+                                          <input type="checkbox" class="form-control"
+                                                 [(ngModel)]="applicationForm.separateBathroom"
+                                                 [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                                 util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)"
+                                                 formControlName="separateBathroom"/>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </fieldset>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="row">
+                            <fieldset class="scheduler-border col-sm-12">
+                              <legend class="scheduler-border" translate>claim.characterHouse</legend>
+                              <div
+                                [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
+                                util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles) &&
+                                util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                                <div class="row">
+                                  <div class="col-sm">
+                                    <label class="control-labels" translate>claim.validator.districtId
+                                      <span class="text-danger" *ngIf="!applicationForm.districtId">&nbsp;*</span>
+                                    </label>
+                                    <div class="row">
+                                      <div class="col-sm-10">
+                                        <ng-select
+                                          [items]="districts"
+                                          bindValue="value"
+                                          [readonly]="isBuy()"
+                                          [(ngModel)]="applicationForm.districtId"
+                                          formControlName="districtId"
+                                          placeholder="{{ 'claim.validator.districtId' | translate }}">
+                                        </ng-select>
+                                      </div>
+                                      <div class="col-sm-2 marginleft">
+                                        <a (click)="openModal(template,'District');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
+                                      </div>
+                                    </div>
+
+
+                                    <div *ngIf="f.districtId.touched && f.districtId.invalid" class="text-danger">
+                                      <div *ngIf="f.districtId.errors.required" translate>claim.requiredField</div>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm">
+                                    <label for="numberOfFloors" translate>claim.flatHouse</label>
+                                    <div class="input-group" *ngIf="isSell()"
+                                         [class.disabled]="util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                                      <input type="number" min="0" class="form-control"
+                                             placeholder="{{'patterns.from2' | translate}}"
+                                             [(ngModel)]="applicationForm.numberOfFloorsFrom"
+                                             (keypress)="util.keyPress($event)"
+                                             formControlName="numberOfFloorsFrom"/>
+                                      <input type="number" min="0" class="form-control"
+                                             placeholder="{{'patterns.to2' | translate}}"
+                                             [(ngModel)]="applicationForm.numberOfFloorsTo"
+                                             (keypress)="util.keyPress($event)"
+                                             formControlName="numberOfFloorsTo"/>
+                                    </div>
+                                    <div *ngIf="!isSell()">
+                                      <input type="number" id="numberOfFloors" class="form-control"
+                                             [(ngModel)]="applicationForm.numberOfFloors"
+                                             placeholder="{{'claim.flatHouse' | translate}}"
+                                             [readonly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                             formControlName="numberOfFloors" min="0" maxlength="10"
+                                             (keypress)="util.keyPress($event)"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
+                                      <div *ngIf="f.numberOfFloors.touched && f.numberOfFloors.invalid"
+                                           class="text-danger">
+                                        <div *ngIf="f.numberOfFloors.errors.required" translate>claim.requiredField
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm" *ngIf="isApartment()">
+                                    <label for="apartmentsOnTheSite" translate>claim.appInFlat</label>
+                                    <input type="number" id="apartmentsOnTheSite" class="form-control" *ngIf="isBuy()"
+                                           [(ngModel)]="applicationForm.apartmentsOnTheSite"
+                                           placeholder="{{'claim.appInFlat' | translate}}"
+                                           (keypress)="util.keyPress($event)"
+                                           formControlName="apartmentsOnTheSite" min="1" maxlength="10"
+                                           [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                           util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
+                                           oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
+                                    <div class="input-group" *ngIf="isSell()">
+                                      <input type="text" class="form-control"
+                                             placeholder="{{'patterns.from' | translate}}"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             (keypress)="util.keyPress($event)"
+                                             [(ngModel)]="applicationForm.apartmentsOnTheSiteFrom"
+                                             formControlName="apartmentsOnTheSiteFrom"/>
+                                      <input type="text" class="form-control" maxlength="10"
+                                             placeholder="{{'patterns.to' | translate}}"
+                                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                             (keypress)="util.keyPress($event)"
+                                             [(ngModel)]="applicationForm.apartmentsOnTheSiteTo"
+                                             formControlName="apartmentsOnTheSiteTo"/>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row"
+                                   [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                   util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)">
+                                <div class="col-sm"
+                                     *ngIf="isApartment() && isBuy()">
+                                  <label class="control-labels">Застройщик</label>
+                                  <ng-select
+                                    [readonly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                    [items]="propertyDevelopers"
+                                    [(ngModel)]="applicationForm.propertyDeveloperId"
+                                    formControlName="propertyDeveloperId"
+                                    bindValue="value"
+                                    placeholder="Застройщик">
+                                  </ng-select>
+                                </div>
+                                <div class="col-sm"
+                                     *ngIf="isApartment() && isBuy()">
+                                  <label class="control-labels" for="housingClass">Класс жилья</label>
+                                  <input type="text" id="housingClass" class="form-control" maxlength="20"
+                                         [(ngModel)]="applicationForm.housingClass"
+                                         placeholder="{{'Класс жилья' | translate}}"
+                                         [readonly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                         formControlName="housingClass"/>
+                                </div>
+                                <div class="col-sm" *ngIf="isBuy() ">
+                                  <label class="control-labels">Состояние</label>
+                                  <ng-select
+                                    [items]="houseCondition"
+                                    [(ngModel)]="applicationForm.houseConditionId"
+                                    formControlName="houseConditionId"
+                                    bindValue="value"
+                                    placeholder="Состояние">
+                                  </ng-select>
+                                </div>
+                                <div class="col-sm" *ngIf="isHouse()">
+                                  <label class="control-labels">Канализация</label>
+                                  <ng-select
+                                    [items]="sewerageSystems"
+                                    [(ngModel)]="applicationForm.sewerageId"
+                                    formControlName="heatingSystemId"
+                                    bindValue="value"
+                                    placeholder="Канализация">
+                                  </ng-select>
+                                </div>
+                                <div class="col-sm" *ngIf="isHouse()">
+                                  <label class="control-labels">Отопление</label>
+                                  <ng-select
+                                    [items]="heatingSystems"
+                                    [(ngModel)]="applicationForm.heatingSystemId"
+                                    formControlName="sewerageId"
+                                    bindValue="value"
+                                    placeholder="Отопление">
+                                  </ng-select>
+                                </div>
+                                <div class="col-sm"
+                                     *ngIf="isApartment() && isBuy()">
+                                  <label class="control-labels">Кол-во кв</label>
+                                  <input type="number" id="numberOfApartments" class="form-control"
+                                         [(ngModel)]="applicationForm.numberOfApartments"
+                                         placeholder="Кол-во кв"
+                                         (keypress)="util.keyPress($event)"
+                                         [readonly]="readonlyChooseJK && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                         formControlName="numberOfApartments" min="1" maxlength="10"
+                                         oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
+                                </div>
+                              </div>
+                              <div class="row"
+                                   [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
+                                   util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles) &&
+                                   util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                   util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                                <div class="col-sm">
+                                  <label class="control-labels" translate>claim.material</label>
+                                  <ng-select
+                                    [items]="sortMaterials"
+                                    [(ngModel)]="applicationForm.materialOfConstructionId"
+                                    formControlName="materialOfConstructionId"
+                                    [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                    util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
+                                    bindValue="value"
+                                    placeholder="{{ 'claim.material' | translate }}">
+                                  </ng-select>
+                                </div>
+                                <div class="col-sm">
+                                  <label for="yearOfConstruction" translate>claim.buildYear</label>
+                                  <input type="text" *ngIf="isBuy()" id="yearOfConstruction" class="form-control"
+                                         [(ngModel)]="applicationForm.yearOfConstruction"
+                                         mask="0000" placeholder="{{'claim.buildYear' | translate}}"
+                                         [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                         util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
+                                         formControlName="yearOfConstruction"/>
+                                  <div class="input-group" *ngIf="isSell()">
+                                    <input type="text" class="form-control"
+                                           placeholder="{{'patterns.from' | translate}}"
+                                           mask="0000"
+                                           [(ngModel)]="applicationForm.yearOfConstructionFrom"
+                                           formControlName="yearOfConstructionFrom"/>
+                                    <input type="text" class="form-control"
+                                           placeholder="{{'patterns.to' | translate}}"
+                                           mask="0000"
+                                           [(ngModel)]="applicationForm.yearOfConstructionTo"
+                                           formControlName="yearOfConstructionTo"/>
+                                  </div>
+                                </div>
+                                <div class="col-sm" *ngIf="isApartment()">
+                                  <label class="control-labels" translate>claim.lift</label>
+                                  <ng-select
+                                    [items]="elevatorType"
+                                    [(ngModel)]="applicationForm.typeOfElevatorList"
+                                    [multiple]="true"
+                                    [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                    util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
+                                    formControlName="typeOfElevatorList"
+                                    bindValue="value"
+                                    placeholder="{{ 'claim.lift' | translate }}">
+                                  </ng-select>
+                                </div>
+                              </div>
+                            </fieldset>
+                          </div>
+                          <div
+                            [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
+                            util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles) &&
+                            util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                            util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
+                            <div class="row" *ngIf="isApartment()">
+                              <fieldset class="scheduler-border col-sm-11">
+                                <legend class="scheduler-border" translate>claim.porch</legend>
+                                <div class="row">
+                                  <div class="col-sm">
+                                    <label class="control-labels" translate>claim.concierge</label>
+                                    <ng-select
+                                      [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                      util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
+                                      [items]="dicDynamic"
+                                      [(ngModel)]="applicationForm.concierge"
+                                      bindValue="value"
+                                      formControlName="concierge"
+                                      placeholder="{{ 'claim.concierge' | translate }}">
+                                    </ng-select>
+                                  </div>
+                                  <div class="col-sm">
+                                    <label class="control-labels" translate>claim.stroller</label>
+                                    <ng-select
+                                      [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                      util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
+                                      [items]="dicDynamic"
+                                      bindValue="value"
+                                      [(ngModel)]="applicationForm.wheelchair"
+                                      formControlName="wheelchair"
+                                      placeholder="{{ 'claim.stroller' | translate }}">
+                                    </ng-select>
+                                  </div>
+                                </div>
+                              </fieldset>
+                            </div>
+                            <div class="row" *ngIf="isApartment()">
+                              <fieldset class="scheduler-border col-sm-11">
+                                <legend class="scheduler-border" translate>claim.territory</legend>
+                                <div class="row">
+                                  <div class="col-sm">
+                                    <label class="control-labels" translate>claim.parking</label>
+                                    <div class="row">
+                                      <div class="col-sm-10">
+                                        <ng-select
+                                          [items]="parkingTypes"
+                                          [multiple]="true"
+                                          appendTo="body"
+                                          [(ngModel)]="applicationForm.parkingTypeIds"
+                                          [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                      util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
+                                          bindValue="value"
+                                          formControlName="parkingTypeIds"
+                                          placeholder="{{ 'claim.parking' | translate }}">
+                                        </ng-select>
+                                      </div>
+                                      <div class="col-sm-2 marginleft">
+                                        <a (click)="openModal(template,'ParkingType');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
+                                      </div>
+                                    </div>
+
+
+                                  </div>
+                                  <div class="col-sm">
+                                    <label class="control-labels" translate>claim.yard</label>
+                                    <ng-select
+                                      [items]="yardTypes"
+                                      bindValue="value"
+                                      appendTo="body"
+                                      [(ngModel)]="applicationForm.yardTypeId"
+                                      [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                      util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
+                                      formControlName="yardTypeId"
+                                      placeholder="{{ 'claim.yard' | translate }}">
+                                    </ng-select>
+                                  </div>
+                                  <div class="col-sm">
+                                    <label class="control-labels" translate>claim.childYard</label>
+                                    <ng-select
+                                      [items]="dicDynamic"
+                                      bindValue="value"
+                                      appendTo="body"
+                                      [(ngModel)]="applicationForm.playground"
+                                      [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
+                                      util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
+                                      formControlName="playground"
+                                      placeholder="{{ 'claim.childYard' | translate }}">
+                                    </ng-select>
+                                  </div>
+                                </div>
+                              </fieldset>
+                            </div>
+                            <div class="row mb-4"
+                                 [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_OBJECT_INFO', roles)">
+                              <div class="col-sm" *ngIf="isBuy()">
+                                <label translate>Описание</label>
+                                <textarea rows="1" class="col-sm-12 control"
+                                          [(ngModel)]="applicationForm.description" formControlName="description"
+                                          maxlength="1000"></textarea>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <br/>
+          <div class="row" *ngIf="isBuy()">
+            <div class="col-sm">
+              <div class="accordion" id="accordionPhoto">
+                <div class="card z-depth-0 bordered">
+                  <div class="card-header accordion-header" id="headingPhoto">
+                    <div class="font-weight-bold" data-toggle="collapse"
+                         data-target="#collapsePhoto"
+                         aria-expanded="true" aria-controls="collapsePhoto" translate>
+                      claim.photo
+                      <span class="float-right show-accordion" *ngIf="aboutPhoto"
+                            data-toggle="collapse"
+                            data-target="#collapsePhoto"
+                            aria-expanded="true" aria-controls="collapsePhoto"
+                            (click)="showHideHeader(7)">
+                      <i class="fa fa-angle-down fa-2x" aria-hidden="true"></i>
+                    </span>
+                      <span class="float-right hide-accordion" *ngIf="!aboutPhoto"
+                            data-toggle="collapse"
+                            data-target="#collapsePhoto"
+                            aria-expanded="true" aria-controls="collapsePhoto"
+                            (click)="showHideHeader(8)">
+                      <i class="fa fa-angle-up fa-2x" aria-hidden="true"></i>
+                    </span>
+                    </div>
+                  </div>
+                  <div id="collapsePhoto" class="collapse show" aria-labelledby="headingPhoto"
+                       data-parent="#accordionPhoto">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="row">
+                          <div class="col-sm" *ngIf="photoList.length > 0">
+                            <fieldset class="scheduler-border col-sm">
+                              <legend class="scheduler-border " translate>Фото объекта<br/>
+                                <span class="badge badge-danger ml-2">{{photoList.length}}</span>
+                              </legend>
+                              <div id="photoCarousel" class="carousel slide" data-ride="carousel"
+                                   style="width: 302px;">
+
+                                <div class="carousel-inner">
+                                  <div class="carousel-item" [class]="i==0 ? 'active': ''"
+                                       *ngFor="let photo of photoList;let i = index">
+                                    <div class="container">
+                                      <img [src]="photo.image" alt="First Slide" class="photoList" width="302"
+                                           height="320"
+                                           (click)="showPhotoFull(photo.fullImage)">
+                                      <button class="btn btn-sm btn-danger removeItemCarousel"
+                                              *ngIf="edit && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                              (click)="removeByGuid(photo, 1)"><i class="fa fa-trash fa-2x"
+                                                                                  aria-hidden="true"></i></button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#photoCarousel" data-slide="prev">
+                                  <span class="carousel-control-prev-icon bg-dark"></span>
+                                </a>
+                                <a class="carousel-control-next" href="#photoCarousel" data-slide="next">
+                                  <span class="carousel-control-next-icon bg-dark"></span>
+                                </a>
+                              </div>
+                            </fieldset>
+                          </div>
+                          <div class="col-sm" *ngIf="photoPlanList.length > 0">
+                            <fieldset class="scheduler-border col-sm">
+                              <legend class="scheduler-border" translate>Планы<br/>
+                                <span class="badge badge-danger ml-2">{{photoPlanList.length}}</span>
+                              </legend>
+                              <div id="photoPlanList" class="carousel slide" data-ride="carousel"
+                                   style="width: 302px;">
+                                <div class="carousel-inner">
+                                  <div class="carousel-item" [class]="i==0 ? 'active': ''"
+                                       *ngFor="let plan of photoPlanList;let i = index">
+                                    <img [src]="plan.image" alt="First Slide" class="photoList" width="302"
+                                         height="320"
+                                         (click)="showPhotoFull(plan.fullImage)">
+
+                                    <button class="btn btn-sm btn-danger removeItemCarousel"
+                                            *ngIf="edit && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                            (click)="removeByGuid(plan, 2)"><i class="fa fa-trash fa-2x"
+                                                                               aria-hidden="true"></i></button>
+                                  </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#photoPlanList" data-slide="prev">
+                                  <span class="carousel-control-prev-icon bg-dark"></span>
+                                </a>
+                                <a class="carousel-control-next" href="#photoPlanList" data-slide="next">
+                                  <span class="carousel-control-next-icon bg-dark"></span>
+                                </a>
+                              </div>
+                            </fieldset>
+                          </div>
+
+                          <div class="col-sm" *ngIf="photo3DList.length > 0">
+                            <fieldset class="scheduler-border col-sm">
+                              <legend class="scheduler-border" translate>3D тур<br/>
+                                <span class="badge badge-danger ml-2">{{photo3DList.length}}</span>
+                              </legend>
+                              <div id="photo3DList" class="carousel slide" data-ride="carousel"
+                                   style="width: 302px;">
+                                <div class="carousel-inner">
+                                  <div class="carousel-item" [class]="i==0 ? 'active': ''"
+                                       *ngFor="let plan of photo3DList;let i = index">
+                                    <img [src]="plan.image" alt="First Slide" class="photoList" width="302"
+                                         height="320"
+                                         (click)="showPhotoFull(plan.fullImage)">
+
+                                    <button class="btn btn-sm btn-danger removeItemCarousel"
+                                            *ngIf="edit && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
+                                            (click)="removeByGuid(plan, 3)"><i class="fa fa-trash fa-2x"
+                                                                               aria-hidden="true"></i></button>
+                                  </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#photo3DList" data-slide="prev">
+                                  <span class="carousel-control-prev-icon bg-dark"></span>
+                                </a>
+                                <a class="carousel-control-next" href="#photo3DList" data-slide="next">
+                                  <span class="carousel-control-next-icon bg-dark"></span>
+                                </a>
+                              </div>
+                            </fieldset>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-footer" *ngIf="edit">
+                      <div class="row">
+                        <label class="btn btn-info btn-sm" translate>claim.uploadPhoto
+                          <i class="fa fa-upload"></i>
+                          <input type="file" multiple="" hidden (change)="onFileChange($event, 1)">
+                        </label>
+
+                        <label class="btn btn-info btn-sm" translate>claim.uploadPlan
+                          <i class="fa fa-upload"></i>
+                          <input type="file" multiple="" hidden (change)="onFileChange($event, 2)">
+                        </label>
+                        <label class="btn btn-info btn-sm" translate>claim.upload3D
+                          <i class="fa fa-upload"></i>
+                          <input type="file" multiple="" hidden (change)="onFileChange($event, 3)">
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/>
+          <div class="row" *ngIf="isBuy()">
+            <div class="col-sm">
+              <div class="accordion" id="accordionMap">
+                <div class="card z-depth-0 bordered">
+                  <div class="card-header accordion-header" id="headingMap">
+                    <div class="font-weight-bold" data-toggle="collapse"
+                         data-target="#collapseMap"
+                         aria-expanded="true" aria-controls="collapseMap" translate>
+                      Местоположение
+                      <span class="float-right show-accordion" *ngIf="aboutPhoto"
+                            data-toggle="collapse"
+                            data-target="#collapseMap"
+                            aria-expanded="true" aria-controls="collapseMap"
+                            (click)="showHideHeader(9)">
+                      <i class="fa fa-angle-down fa-2x" aria-hidden="true"></i>
+                    </span>
+                      <span class="float-right hide-accordion" *ngIf="!aboutPhoto"
+                            data-toggle="collapse"
+                            data-target="#collapseMap"
+                            aria-expanded="true" aria-controls="collapseMap"
+                            (click)="showHideHeader(10)">
+                      <i class="fa fa-angle-up fa-2x" aria-hidden="true"></i>
+                    </span>
+                    </div>
+                  </div>
+                  <div id="collapseMap" class="collapse show" aria-labelledby="headingMap"
+                       data-parent="#accordionMap">
+                    <div class="card-body">
+                      <div class="map">
+                        <angular-yandex-map [center]="[51.12, 71.43]" (yaclick)="onLoad($event)" [zoom]="12">
+                          <angular-yandex-placemark
+                            [geometry]="cord"
+                            [options]="placemarkOptions"
+                            (drag)="onLoad2($event)"
+                            (load)="onLoad3($event)"
+                          ></angular-yandex-placemark>
+                          <angular-yandex-control
+                            [type]="'SearchControl'"
+                            [ngModelOptions]="{standalone: true}"
+                            name="fieldName" ngDefaultControl
+                            [parameters]="parameters"
+                            [ngModel]="applicationForm.houseNumber"
+                            (load)="onControlLoad($event)"
+
+                          ></angular-yandex-control>
+                        </angular-yandex-map>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm">
+              <button type="button" mdbBtn color="success" class="btn btn-info btn-sm btn2 float-right"
+                      mdbWavesEffect (click)="submit()" *ngIf="edit"
+                      [disabled]="!this.applicationForm?.operationTypeId && !this.applicationForm?.objectTypeId">
+                <span class="fa fa-save" translate> patterns.save</span>
+              </button>
+              <button type="button" class="btn btn-success btn2 float-right btn-sm" *ngIf="edit" translate>
+                claim.generateContract
+              </button>
+              <button type="button" (click)="cancel()" class="btn btn-default btn2 float-right btn-sm" translate>
+                patterns.cancel
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="tab-pane fade" id="contractOU" role="tabpanel" aria-labelledby="contractOU-tab">
+        2
+      </div>
+      <div class="tab-pane fade" id="impressions" role="tabpanel" aria-labelledby="impressions-tab">
+        <app-claim-events></app-claim-events>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #modalContent let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">Данный объект уже существует, вы согласны продолжить ?</h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm">
+        <table class="table table-bordered table-sm">
+          <thead class="text-center">
+          <tr>
+            <th>ID заявки</th>
+            <th>Дата создания</th>
+            <th>ФИО агента</th>
+            <th>Цена (тг)</th>
+          </tr>
+          </thead>
+          <tbody style="cursor: pointer">
+          <tr *ngFor="let rpD of data.applicationByRealPropertyDtoList;let i = index">
+            <td>{{rpD.id}}</td>
+            <td>{{util.formatDate(rpD?.creationDate)}}</td>
+            <td>{{rpD?.agent}}</td>
+            <td>{{util.numberFormat(rpD?.objectPrice)}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" (click)="close()" class="btn btn-outline-secondary btn2">Отмена</button>
+    <button type="button" (click)="onSuccess();close()" class="btn btn-outline-primary btn2">Ok</button>
+  </div>
+</ng-template>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Добавление новой записи в справочник</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="openModal2(template3)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="col-sm" *ngIf="!resident">
+      <label class="col-sm col-form-label">nameEn<span class="text-danger">&nbsp;*</span></label>
+      <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formData.multiLang.nameEn">
+    </div>
+    <div class="col-sm" *ngIf="!resident">
+      <label class="col-sm col-form-label">nameRu<span
+        class="text-danger">&nbsp;*</span></label>
+      <input type="text" class="col-sm form-control" name="nameRu" [(ngModel)]="formData.multiLang.nameRu">
+      <div *ngIf="!formData.multiLang.nameRu" class="text-danger">
+        <div *ngIf="!formData.multiLang.nameRu" translate>claim.requiredField</div>
+      </div>
+    </div>
+    <div class="col-sm" *ngIf="!resident">
+      <label class="col-sm col-form-label">nameKz<span class="text-danger">&nbsp;*</span></label>
+      <input type="text" class="col-sm form-control" name="nameKz" [(ngModel)]="formData.multiLang.nameKz">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+
+      <label>Полный адрес
+        <span class="text-danger">&nbsp;*</span>
+      </label>
+      <ng-select
+        [items]="kazPost2"
+        [(ngModel)]="postcode2"
+        [searchFn]="customSearchFn"
+        (search)="getDataKzPost2($event)"
+        (ngModelChange)="checkPostData2();"
+        (autocomplete)="'true'"
+        (clear)="'true'"
+        placeholder="{{'Полный адрес' | translate }}">
+      </ng-select>
+
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Город<span class="text-danger">&nbsp;*</span></label>
+      <ng-select
+        disabled="true"
+        required="true"
+        bindValue="value"
+        bindLabel="label"
+        [items]="city"
+        [(ngModel)]="formRes.buildingDto.cityId">
+      </ng-select>
+      <div *ngIf="!formRes.buildingDto.cityId" class="text-danger">
+        <div *ngIf="!formRes.buildingDto.cityId" translate>claim.requiredField</div>
+      </div>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Район</label>
+      <ng-select
+        disabled="true"
+        bindValue="value"
+        bindLabel="label"
+        [items]="districts"
+        [(ngModel)]="formRes.buildingDto.districtId">
+      </ng-select>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Улица<span class="text-danger">&nbsp;*</span></label>
+
+
+
+      <ng-select
+        disabled="true"
+        required="true"
+        bindValue="value"
+        bindLabel="label"
+        [items]="streets"
+        [(ngModel)]="formRes.buildingDto.streetId">
+      </ng-select>
+      <div *ngIf="!formRes.buildingDto.streetId" class="text-danger">
+        <div *ngIf="!formRes.buildingDto.streetId" translate>claim.requiredField</div>
+      </div>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Номер здания (дома)<span class="text-danger">&nbsp;*</span></label>
+      <input type="text" disabled="true"
+             value=${var} class="col-sm form-control" name="houseNumber"   required="true"
+             [(ngModel)]="formRes.buildingDto.houseNumber">
+      <div *ngIf="!formRes.buildingDto.houseNumber" class="text-danger">
+        <div *ngIf="!formRes.buildingDto.houseNumber" translate>claim.requiredField</div>
+      </div>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Номер дома (дробь/буква/строение)</label>
+      <input type="text" maxlength="3" class="col-sm form-control" name="houseNumberFraction"
+             [(ngModel)]="formRes.buildingDto.houseNumberFraction">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Название дома (ЖК) <span class="text-danger">&nbsp;*</span></label>
+      <input type="text" maxlength="50" class="col-sm form-control" name="houseName"
+             [(ngModel)]="formRes.houseName">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Год постройки</label>
+      <input type="text"  maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+             value=${var}  class="col-sm form-control" name="yearOfConstruction" mask="0000"
+             [(ngModel)]="formRes.yearOfConstruction">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Застройщик</label>
+      <ng-select
+        bindValue="value"
+        bindLabel="label"
+        [items]="propertyDevelopers"
+        [(ngModel)]="formRes.propertyDeveloperId">
+      </ng-select>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Этажность дома</label>
+      <input type="text"  maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+             value=${var}  class="col-sm form-control" name="numberOfFloors"
+             [(ngModel)]="formRes.numberOfFloors">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Количество подъездов</label>
+      <input type="text"  maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+             value=${var}  class="col-sm form-control" name="numberOfEntrances"
+             [(ngModel)]="formRes.numberOfEntrances">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Количество квартир</label>
+      <input type="text"  maxlength="5" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+             value=${var}  class="col-sm form-control" name="numberOfApartments"
+             [(ngModel)]="formRes.numberOfApartments">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Квартир на площадке</label>
+      <input type="text"  maxlength="5" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+             value=${var}  class="col-sm form-control" name="apartmentsOnTheSite"
+             [(ngModel)]="formRes.apartmentsOnTheSite">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Высота потолков</label>
+      <input type="number"  maxlength="4"  class="col-sm form-control" name="ceilingHeight"
+             [(ngModel)]="formRes.ceilingHeight">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Материал постройки</label>
+      <ng-select
+        bindValue="value"
+        bindLabel="label"
+        [items]="materials"
+        [(ngModel)]="formRes.materialOfConstructionId">
+      </ng-select>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Класс жилья</label>
+      <input type="text" maxlength="50" class="col-sm form-control" name="housingClass"
+             [(ngModel)]="formRes.housingClass">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Состояние</label>
+      <input type="text" maxlength="50" class="col-sm form-control" name="housingCondition"
+             [(ngModel)]="formRes.housingConditionId">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Тип лифта</label>
+      <ng-select
+        multiple="true"
+        bindValue="value"
+        bindLabel="label"
+        [items]="elevatorType"
+        [(ngModel)]="formRes.typeOfElevatorIdList">
+      </ng-select>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Консьерж</label>
+      <input type="checkbox" class="col-sm form-control" name="concierge" [(ngModel)]="formRes.concierge">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Колясочная</label>
+      <input type="checkbox" class="col-sm form-control" name="wheelchair" [(ngModel)]="formRes.wheelchair">
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Парковка {{formRes.parkingTypeIds}}</label>
+      <ng-select
+        multiple="true"
+        bindValue="value"
+        bindLabel="label"
+        [items]="parkingTypes"
+        [(ngModel)]="formRes.parkingTypeIds">
+      </ng-select>
+    </div>
+    <div class="col-sm" *ngIf="resident">
+      <label class="col-sm col-form-label">Двор</label>
+      <ng-select
+        bindValue="value"
+        bindLabel="label"
+        [items]="yardTypes"
+        [(ngModel)]="formRes.yardTypeId">
+      </ng-select>
+    </div>
+
+    <!--ЖК конец-->
+    <div class="col-sm" style="text-align: right">
+      <button type="button" class="btn btn-primary" (click)="submitModal()" style="margin: 10px">
+        Сохранить
+      </button>
+      <button type="button" class="btn btn-light" (click)="openModal2(template3)" style="margin: 10px">
+        Отмена
+      </button>
+
+    </div>
+
+  </div>
+</ng-template>
+
+<ng-template #template3>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Внимание</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Внесенные данные не сохранены, данные будут потеряны. Покинуть страницу?
+  </div>
+  <div class="col-sm" style="text-align: right">
+    <button type="button" class="btn btn-primary" (click)="closeModal()" style="margin: 10px">
+      Подтвердить
+    </button>
+    <button type="button" class="btn btn-light" (click)="modalRef2.hide()" style="margin: 10px">
+      Отмена
+    </button>
+  </div>
+</ng-template>

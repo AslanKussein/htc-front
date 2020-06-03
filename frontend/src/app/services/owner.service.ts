@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, tap} from "rxjs/operators";
 
@@ -13,25 +13,21 @@ export class OwnerService {
               private http: HttpClient) {
   }
 
-  searchByPhone(number: string): Observable<any> {
-    let params = new HttpParams();
-
-    params = params.append('phoneNumber', String(number));
-
-    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/clients/search/by-phone-number`, {params: params})
+  searchByPhone(login: string): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/profile-client/` + login)
       .pipe(
         tap(data => {
         }),
-        catchError(this.handleError)
+        catchError(OwnerService.handleError)
       );
   }
 
   searchByClientId(clientId: number): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/clients/` + clientId, {});
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/api/clients/` + clientId, {});
   }
 
 
-  private handleError(error: HttpErrorResponse) {
+  private static handleError(error: HttpErrorResponse) {
     return throwError(
       error);
   }

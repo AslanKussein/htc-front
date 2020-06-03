@@ -1,0 +1,190 @@
+<div class="card-body card-bg" ngxUiLoaderBlurred>
+  <div class="card">
+    <div class="card-body">
+      <h4 class="mb-4" translate>claim.searchClaim</h4>
+      <div [formGroup]="applicationSearchForm">
+        <div class="row">
+          <div class="col-sm">
+            <label translate>claim.claimType</label>
+            <ng-select
+              [items]="operationType"
+              bindValue="value"
+              formControlName="operationTypeId"
+              placeholder="{{ 'claim.claimType' | translate }}">
+            </ng-select>
+          </div>
+          <div class="col-sm">
+            <label translate>claim.claimStatus</label>
+            <ng-select
+              [items]="appStatuses"
+              [multiple]="true"
+              bindValue="value"
+              formControlName="applicationStatusList"
+              placeholder="{{ 'claim.claimStatus' | translate }}">
+            </ng-select>
+          </div>
+          <div class="col-sm">
+            <label translate>claim.crDateFromR.from</label>
+            <input placeholder="{{'claim.crDateFromR.from' | translate}}" type="text" id="crDateFrom" class="form-control"
+                   bsDatepicker #ru="bsDatepicker" formControlName="crDateFrom">
+          </div>
+          <div class="col-sm">
+            <label translate>claim.crDateFromR.to</label>
+            <input type="text" id="crDateTo" class="form-control" bsDatepicker #ru="bsDatepicker"
+                   formControlName="crDateTo">
+          </div>
+          <div class="col-sm">
+            <label translate>claim.lastModifyDateR.from</label>
+            <input type="text" id="lastModifyDateFrom" class="form-control" formControlName="lastModifyDateFrom"
+                   bsDatepicker #ru="bsDatepicker">
+          </div>
+          <div class="col-sm">
+            <label translate>claim.lastModifyDateR.to</label>
+            <input type="text" id="lastModifyDateTo" class="form-control" formControlName="lastModifyDateTo"
+                   bsDatepicker #ru="bsDatepicker">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <label translate>claim.lastCommentDateR.from</label>
+            <input type="text" id="lastCommentDateFrom" class="form-control" formControlName="lastCommentDateFrom"
+                   bsDatepicker #ru="bsDatepicker">
+          </div>
+          <div class="col-sm-3">
+            <label translate>claim.lastCommentDateR.to</label>
+            <input type="text" id="lastCommentDateTo" class="form-control" formControlName="lastCommentDateTo"
+                   bsDatepicker #ru="bsDatepicker">
+          </div>
+          <!--        <div class="col-sm-2">-->
+          <!--          <div class="custom-control custom-checkbox myClaim">-->
+          <!--            <input type="checkbox" class="custom-control-input" id="defaultUnchecked" [(ngModel)]="formData.myClaim">-->
+          <!--            <label class="custom-control-label" for="defaultUnchecked">Мои заявки</label>-->
+          <!--          </div>-->
+          <!--        </div>-->
+          <div class="col-sm">
+            <label translate>claim.textSearch</label>
+            <input type="text" id="form1" class="form-control" formControlName="text">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm">
+          <button type="button" mdbBtn color="success" (click)="findClaims(1)"
+                  class="btn btn-sm btn-info float-right btn2"
+                  mdbWavesEffect>
+            <span class="fa fa-search" translate> search</span>
+          </button>
+          <button type="button" class="btn btn-sm btn-link float-right btn2" (click)="clearForm()"
+                  translate>
+            clear
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="open-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open"
+               aria-selected="true" translate>claim.opening
+              <span class="badge badge-info ml-2">{{totalItems}}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="open-sell-tab" data-toggle="tab" href="#open-sell" role="tab"
+               aria-controls="open-sell"
+               aria-selected="false" translate>claim.openingSell
+              <span class="badge badge-info ml-2">0</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="open-buy-tab" data-toggle="tab" href="#open-buy" role="tab"
+               aria-controls="open-buy"
+               aria-selected="false" translate>claim.openingBuy
+              <span class="badge badge-info ml-2">0</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="closed-tab" data-toggle="tab" href="#closed" role="tab" aria-controls="closed"
+               aria-selected="false" translate>claim.closed
+              <span class="badge badge-info ml-2">0</span>
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="open" role="tabpanel" aria-labelledby="open-tab">
+          </div>
+          <div class="tab-pane fade" id="open-sell" role="tabpanel" aria-labelledby="open-sell-tab">
+
+          </div>
+          <div class="tab-pane fade" id="open-buy" role="tabpanel" aria-labelledby="open-buy-tab">
+          </div>
+
+          <div class="tab-pane fade" id="closed" role="tabpanel" aria-labelledby="closed-tab">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm">
+          <table class="table table-bordered table-sm">
+            <thead class="text-center">
+            <tr>
+              <th>ID заявки</th>
+              <th>Операция</th>
+              <th translate>claim.crDateFrom</th>
+              <th translate>fio</th>
+              <th translate>phone</th>
+              <th translate>e-mail</th>
+              <th translate>Район</th>
+              <th translate>Количество комнат</th>
+              <th translate>Цена</th>
+              <th translate>Вид расчета</th>
+              <th translate>Прошадь</th>
+              <th translate>Этаж</th>
+              <th translate>Статус</th>
+              <th translate>Комментарий</th>
+            </tr>
+            </thead>
+            <tbody style="cursor: pointer">
+            <tr *ngFor="let claim of claimData;let i = index">
+              <td>
+                <a [routerLink]="['/create-claim-view/', claim?.id]">{{claim.id}}</a>
+              </td>
+              <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
+              <td>{{formatDate(claim)}}</td>
+              <td>{{claim.fullName}}</td>
+              <td><span *ngIf="claim.phone">+7 {{claim.phone | mask: '(000) 000-0000'}}</span></td>
+              <td>{{claim.email}}</td>
+              <td>{{getDicNameByLanguage(claim, 'district')}}</td>
+              <td>{{claim.numberOfRooms}}</td>
+              <td>{{claim.price}}</td>
+              <td></td>
+              <td>{{claim.totalArea}}</td>
+              <td>{{claim.floor}}</td>
+              <td>{{getDicNameByLanguage(claim, 'status')}}</td>
+              <td>{{claim.comment}}</td>
+            </tr>
+            </tbody>
+          </table>
+
+          <h3 class="text-center" *ngIf="empty">Нет данных для отображения</h3>
+
+          <pagination [(ngModel)]="currentPage"
+                      [totalItems]="totalItems"
+                      [itemsPerPage]="itemsPerPage"
+                      [maxSize]="10"
+                      [rotate]="true"
+                      [boundaryLinks]="true"
+                      previousText="&lsaquo;"
+                      nextText="&rsaquo;"
+                      firstText="&laquo;"
+                      lastText="&raquo;"
+                      (pageChanged)="pageChanged($event)">
+          </pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
