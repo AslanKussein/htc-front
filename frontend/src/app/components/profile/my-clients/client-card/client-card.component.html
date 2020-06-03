@@ -71,7 +71,6 @@
             <tr>
               <th>ID заявки</th>
               <th>Операция</th>
-              <th translate>claim.crDateFrom</th>
               <th translate>fio</th>
               <th translate>phone</th>
               <th translate>e-mail</th>
@@ -79,10 +78,8 @@
               <th translate>Количество комнат</th>
               <th translate>Цена</th>
               <th translate>Вид расчета</th>
-              <th translate>Прошадь</th>
-              <th translate>Этаж</th>
+              <th translate>Площадь</th>
               <th translate>Статус</th>
-              <th translate>Комментарий</th>
             </tr>
             </thead>
             <tbody style="cursor: pointer">
@@ -90,7 +87,6 @@
               <td>{{claim.id}}
               </td>
               <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
-              <td>{{formatDate(claim)}}</td>
               <td>{{claim.fullname}}</td>
               <td><span>{{claim.phone | mask: '+0 (000) 000-0000'}}</span></td>
               <td>{{claim.email}}</td>
@@ -99,9 +95,7 @@
               <td>{{claim.price}}</td>
               <td></td>
               <td>{{claim.totalArea}}</td>
-              <td>{{claim.floor}}</td>
               <td>{{getDicNameByLanguage(claim, 'status')}}</td>
-              <td>{{claim.comment}}</td>
             </tr>
             </tbody>
           </table>
