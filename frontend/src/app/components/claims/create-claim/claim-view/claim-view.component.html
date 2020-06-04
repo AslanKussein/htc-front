@@ -10,7 +10,9 @@
                 <input type="text" class="form-control" [value]="applicationId"
                        aria-describedby="basic-addon2" readonly>
                 <div class="input-group-append">
-                  <button type="button" class="btn btn-sm btn-outline-primary">Редактировать</button>
+                  <button type="button" class="btn btn-sm btn-outline-primary" (click)="getApplicationById()">
+                    Редактировать
+                  </button>
                 </div>
               </div>
             </div>
@@ -22,7 +24,7 @@
           <legend class="scheduler-border">ID агента</legend>
           <div class="row">
             <div class="col-sm">
-              <input type="text" class="form-control" readonly [value]="applicationId"/>
+              <input type="text" class="form-control text-uppercase" readonly [value]="claimViewDto.agent"/>
             </div>
           </div>
         </fieldset>
@@ -32,7 +34,7 @@
           <legend class="scheduler-border">ID клиента</legend>
           <div class="row">
             <div class="col-sm">
-              <input type="text" class="form-control" readonly [value]="applicationId"/>
+              <input type="text" class="form-control text-uppercase" readonly [value]="clientFullName"/>
             </div>
           </div>
         </fieldset>
@@ -54,11 +56,13 @@
                 <div class="row">
                   <div class="col-sm">
                     <label>Операция</label>
-                    <input type="text" class="form-control" readonly [value]="applicationId"/>
+                    <input type="text" class="form-control" readonly
+                           [value]="getDicNameByLanguage(claimViewDto, 'operationType')"/>
                   </div>
                   <div class="col-sm">
                     <label>Тип объекта</label>
-                    <input type="text" class="form-control" readonly [value]="applicationId"/>
+                    <input type="text" class="form-control" readonly
+                           [value]="getDicNameByLanguage(claimViewDto, 'objectType')"/>
                   </div>
                   <div class="col-sm">
                     <label>Цена объекта (тг)</label>
@@ -73,11 +77,13 @@
                     <label>Ипотека</label>
                     <div class="row">
                       <div class="col-sm text-center">
-                        <input type="radio" name="true" value="true" class="custom-control-input"/>
+                        <input type="radio" [value]="true" class="custom-control-input"
+                               [(ngModel)]="claimViewDto.mortgage"/>
                         <label class="custom-control-label">Да</label>
                       </div>
                       <div class="col-sm float-left">
-                        <input type="radio" name="false" value="false" class="custom-control-input"/>
+                        <input type="radio" [value]="false" class="custom-control-input"
+                               [(ngModel)]="claimViewDto.mortgage"/>
                         <label class="custom-control-label">Нет</label>
                       </div>
                     </div>
@@ -87,13 +93,16 @@
                   </div>
                   <div class="col-sm">
                     <label>Вероятность торга</label>
+                    {{claimViewDto.probabilityOfBidding}}
                     <div class="row">
                       <div class="col-sm text-center">
-                        <input type="radio" name="true" value="true" class="custom-control-input"/>
+                        <input type="radio" [value]="true" name="probabilityOfBidding"
+                               [(ngModel)]="claimViewDto.probabilityOfBidding" class="custom-control-input"/>
                         <label class="custom-control-label">Да</label>
                       </div>
                       <div class="col-sm float-left">
-                        <input type="radio" name="false" value="false" class="custom-control-input"/>
+                        <input type="radio" [(ngModel)]="claimViewDto.probabilityOfBidding" name="probabilityOfBidding"
+                               [value]="false" class="custom-control-input"/>
                         <label class="custom-control-label">Нет</label>
                       </div>
                     </div>
@@ -109,7 +118,7 @@
                   </div>
                   <div class="col-sm">
                     <label>Комментарий</label>
-                    <textarea class="form-control"></textarea>
+                    <textarea class="col-sm-12 control" rows="1" [value]="claimViewDto.comment" readonly></textarea>
                   </div>
                 </div>
               </div>
@@ -305,100 +314,100 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-sm-6">
-<!--                    <div class="row">-->
-<!--                      <div class="row">-->
-<!--                        <div class="col-sm" *ngIf="photoList.length > 0">-->
-<!--                          <fieldset class="scheduler-border col-sm">-->
-<!--                            <legend class="scheduler-border " translate>Фото объекта<br/>-->
-<!--                              <span class="badge badge-danger ml-2">{{photoList.length}}</span>-->
-<!--                            </legend>-->
-<!--                            <div id="photoCarousel" class="carousel slide" data-ride="carousel"-->
-<!--                                 style="width: 302px;">-->
+                    <!--                    <div class="row">-->
+                    <!--                      <div class="row">-->
+                    <!--                        <div class="col-sm" *ngIf="photoList.length > 0">-->
+                    <!--                          <fieldset class="scheduler-border col-sm">-->
+                    <!--                            <legend class="scheduler-border " translate>Фото объекта<br/>-->
+                    <!--                              <span class="badge badge-danger ml-2">{{photoList.length}}</span>-->
+                    <!--                            </legend>-->
+                    <!--                            <div id="photoCarousel" class="carousel slide" data-ride="carousel"-->
+                    <!--                                 style="width: 302px;">-->
 
-<!--                              <div class="carousel-inner">-->
-<!--                                <div class="carousel-item" [class]="i==0 ? 'active': ''"-->
-<!--                                     *ngFor="let photo of photoList;let i = index">-->
-<!--                                  <div class="container">-->
-<!--                                    <img [src]="photo.image" alt="First Slide" class="photoList" width="302"-->
-<!--                                         height="320"-->
-<!--                                         (click)="showPhotoFull(photo.fullImage)">-->
-<!--                                    <button class="btn btn-sm btn-danger removeItemCarousel"-->
-<!--                                            *ngIf="edit && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"-->
-<!--                                            (click)="removeByGuid(photo, 1)"><i class="fa fa-trash fa-2x"-->
-<!--                                                                                aria-hidden="true"></i></button>-->
-<!--                                  </div>-->
-<!--                                </div>-->
-<!--                              </div>-->
-<!--                              <a class="carousel-control-prev" href="#photoCarousel" data-slide="prev">-->
-<!--                                <span class="carousel-control-prev-icon bg-dark"></span>-->
-<!--                              </a>-->
-<!--                              <a class="carousel-control-next" href="#photoCarousel" data-slide="next">-->
-<!--                                <span class="carousel-control-next-icon bg-dark"></span>-->
-<!--                              </a>-->
-<!--                            </div>-->
-<!--                          </fieldset>-->
-<!--                        </div>-->
-<!--                        <div class="col-sm" *ngIf="photoPlanList.length > 0">-->
-<!--                          <fieldset class="scheduler-border col-sm">-->
-<!--                            <legend class="scheduler-border" translate>Планы<br/>-->
-<!--                              <span class="badge badge-danger ml-2">{{photoPlanList.length}}</span>-->
-<!--                            </legend>-->
-<!--                            <div id="photoPlanList" class="carousel slide" data-ride="carousel"-->
-<!--                                 style="width: 302px;">-->
-<!--                              <div class="carousel-inner">-->
-<!--                                <div class="carousel-item" [class]="i==0 ? 'active': ''"-->
-<!--                                     *ngFor="let plan of photoPlanList;let i = index">-->
-<!--                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="302"-->
-<!--                                       height="320"-->
-<!--                                       (click)="showPhotoFull(plan.fullImage)">-->
+                    <!--                              <div class="carousel-inner">-->
+                    <!--                                <div class="carousel-item" [class]="i==0 ? 'active': ''"-->
+                    <!--                                     *ngFor="let photo of photoList;let i = index">-->
+                    <!--                                  <div class="container">-->
+                    <!--                                    <img [src]="photo.image" alt="First Slide" class="photoList" width="302"-->
+                    <!--                                         height="320"-->
+                    <!--                                         (click)="showPhotoFull(photo.fullImage)">-->
+                    <!--                                    <button class="btn btn-sm btn-danger removeItemCarousel"-->
+                    <!--                                            *ngIf="edit && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"-->
+                    <!--                                            (click)="removeByGuid(photo, 1)"><i class="fa fa-trash fa-2x"-->
+                    <!--                                                                                aria-hidden="true"></i></button>-->
+                    <!--                                  </div>-->
+                    <!--                                </div>-->
+                    <!--                              </div>-->
+                    <!--                              <a class="carousel-control-prev" href="#photoCarousel" data-slide="prev">-->
+                    <!--                                <span class="carousel-control-prev-icon bg-dark"></span>-->
+                    <!--                              </a>-->
+                    <!--                              <a class="carousel-control-next" href="#photoCarousel" data-slide="next">-->
+                    <!--                                <span class="carousel-control-next-icon bg-dark"></span>-->
+                    <!--                              </a>-->
+                    <!--                            </div>-->
+                    <!--                          </fieldset>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="col-sm" *ngIf="photoPlanList.length > 0">-->
+                    <!--                          <fieldset class="scheduler-border col-sm">-->
+                    <!--                            <legend class="scheduler-border" translate>Планы<br/>-->
+                    <!--                              <span class="badge badge-danger ml-2">{{photoPlanList.length}}</span>-->
+                    <!--                            </legend>-->
+                    <!--                            <div id="photoPlanList" class="carousel slide" data-ride="carousel"-->
+                    <!--                                 style="width: 302px;">-->
+                    <!--                              <div class="carousel-inner">-->
+                    <!--                                <div class="carousel-item" [class]="i==0 ? 'active': ''"-->
+                    <!--                                     *ngFor="let plan of photoPlanList;let i = index">-->
+                    <!--                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="302"-->
+                    <!--                                       height="320"-->
+                    <!--                                       (click)="showPhotoFull(plan.fullImage)">-->
 
-<!--                                  <button class="btn btn-sm btn-danger removeItemCarousel"-->
-<!--                                          *ngIf="edit && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"-->
-<!--                                          (click)="removeByGuid(plan, 2)"><i class="fa fa-trash fa-2x"-->
-<!--                                                                             aria-hidden="true"></i></button>-->
-<!--                                </div>-->
-<!--                              </div>-->
-<!--                              <a class="carousel-control-prev" href="#photoPlanList" data-slide="prev">-->
-<!--                                <span class="carousel-control-prev-icon bg-dark"></span>-->
-<!--                              </a>-->
-<!--                              <a class="carousel-control-next" href="#photoPlanList" data-slide="next">-->
-<!--                                <span class="carousel-control-next-icon bg-dark"></span>-->
-<!--                              </a>-->
-<!--                            </div>-->
-<!--                          </fieldset>-->
-<!--                        </div>-->
+                    <!--                                  <button class="btn btn-sm btn-danger removeItemCarousel"-->
+                    <!--                                          *ngIf="edit && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"-->
+                    <!--                                          (click)="removeByGuid(plan, 2)"><i class="fa fa-trash fa-2x"-->
+                    <!--                                                                             aria-hidden="true"></i></button>-->
+                    <!--                                </div>-->
+                    <!--                              </div>-->
+                    <!--                              <a class="carousel-control-prev" href="#photoPlanList" data-slide="prev">-->
+                    <!--                                <span class="carousel-control-prev-icon bg-dark"></span>-->
+                    <!--                              </a>-->
+                    <!--                              <a class="carousel-control-next" href="#photoPlanList" data-slide="next">-->
+                    <!--                                <span class="carousel-control-next-icon bg-dark"></span>-->
+                    <!--                              </a>-->
+                    <!--                            </div>-->
+                    <!--                          </fieldset>-->
+                    <!--                        </div>-->
 
-<!--                        <div class="col-sm" *ngIf="photo3DList.length > 0">-->
-<!--                          <fieldset class="scheduler-border col-sm">-->
-<!--                            <legend class="scheduler-border" translate>3D тур<br/>-->
-<!--                              <span class="badge badge-danger ml-2">{{photo3DList.length}}</span>-->
-<!--                            </legend>-->
-<!--                            <div id="photo3DList" class="carousel slide" data-ride="carousel"-->
-<!--                                 style="width: 302px;">-->
-<!--                              <div class="carousel-inner">-->
-<!--                                <div class="carousel-item" [class]="i==0 ? 'active': ''"-->
-<!--                                     *ngFor="let plan of photo3DList;let i = index">-->
-<!--                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="302"-->
-<!--                                       height="320"-->
-<!--                                       (click)="showPhotoFull(plan.fullImage)">-->
+                    <!--                        <div class="col-sm" *ngIf="photo3DList.length > 0">-->
+                    <!--                          <fieldset class="scheduler-border col-sm">-->
+                    <!--                            <legend class="scheduler-border" translate>3D тур<br/>-->
+                    <!--                              <span class="badge badge-danger ml-2">{{photo3DList.length}}</span>-->
+                    <!--                            </legend>-->
+                    <!--                            <div id="photo3DList" class="carousel slide" data-ride="carousel"-->
+                    <!--                                 style="width: 302px;">-->
+                    <!--                              <div class="carousel-inner">-->
+                    <!--                                <div class="carousel-item" [class]="i==0 ? 'active': ''"-->
+                    <!--                                     *ngFor="let plan of photo3DList;let i = index">-->
+                    <!--                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="302"-->
+                    <!--                                       height="320"-->
+                    <!--                                       (click)="showPhotoFull(plan.fullImage)">-->
 
-<!--                                  <button class="btn btn-sm btn-danger removeItemCarousel"-->
-<!--                                          *ngIf="edit && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"-->
-<!--                                          (click)="removeByGuid(plan, 3)"><i class="fa fa-trash fa-2x"-->
-<!--                                                                             aria-hidden="true"></i></button>-->
-<!--                                </div>-->
-<!--                              </div>-->
-<!--                              <a class="carousel-control-prev" href="#photo3DList" data-slide="prev">-->
-<!--                                <span class="carousel-control-prev-icon bg-dark"></span>-->
-<!--                              </a>-->
-<!--                              <a class="carousel-control-next" href="#photo3DList" data-slide="next">-->
-<!--                                <span class="carousel-control-next-icon bg-dark"></span>-->
-<!--                              </a>-->
-<!--                            </div>-->
-<!--                          </fieldset>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </div>-->
+                    <!--                                  <button class="btn btn-sm btn-danger removeItemCarousel"-->
+                    <!--                                          *ngIf="edit && !util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"-->
+                    <!--                                          (click)="removeByGuid(plan, 3)"><i class="fa fa-trash fa-2x"-->
+                    <!--                                                                             aria-hidden="true"></i></button>-->
+                    <!--                                </div>-->
+                    <!--                              </div>-->
+                    <!--                              <a class="carousel-control-prev" href="#photo3DList" data-slide="prev">-->
+                    <!--                                <span class="carousel-control-prev-icon bg-dark"></span>-->
+                    <!--                              </a>-->
+                    <!--                              <a class="carousel-control-next" href="#photo3DList" data-slide="next">-->
+                    <!--                                <span class="carousel-control-next-icon bg-dark"></span>-->
+                    <!--                              </a>-->
+                    <!--                            </div>-->
+                    <!--                          </fieldset>-->
+                    <!--                        </div>-->
+                    <!--                      </div>-->
+                    <!--                    </div>-->
                   </div>
                   <div class="col-sm-6"></div>
                 </div>
