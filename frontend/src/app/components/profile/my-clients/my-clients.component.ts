@@ -42,10 +42,10 @@ export class MyClientsComponent implements OnInit, OnDestroy {
     let searchFilter = {};
     searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
-    // searchFilter['my'] = true;
+    searchFilter['my'] = true;
     searchFilter['text'] = this.text;
-    searchFilter['page'] = pageNo - 1;
-    searchFilter['size'] = this.itemsPerPage;
+    searchFilter['pageNumber'] = pageNo - 1;
+    searchFilter['pageSize'] = this.itemsPerPage;
     this.subscriptions.add(this.clientsService.getClientList(searchFilter).subscribe(res => {
       console.log(res)
         this.clientsData = res.data.data.data;
