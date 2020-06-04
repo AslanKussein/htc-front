@@ -37,6 +37,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
   rgRoles: boolean;
   clientFiles: any [];
   size: 0;
+  formClientCopy: any;
 
 
   constructor(private claimService: ClaimService,
@@ -175,6 +176,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
 
   openModal(template: TemplateRef<any>) {
     this.ngxLoader.start();
+    this.formClientCopy =  {...this.formClient};
     this.modalRef = this.modalService.show(
       template,
       Object.assign({}, {class: 'gray modal-lg'}, {keyboard: false, backdrop: 'static'})
@@ -228,13 +230,48 @@ export class ClientCardComponent implements OnInit, OnDestroy {
     }
   }
 
+
+   isEquivalent(a, b) {
+    // Create arrays of property names
+    var aProps = Object.getOwnPropertyNames(a);
+    var bProps = Object.getOwnPropertyNames(b);
+
+    // If number of properties is different,
+    // objects are not equivalent
+    if (aProps.length != bProps.length) {
+      return false;
+    }
+
+    for (var i = 0; i < aProps.length; i++) {
+      var propName = aProps[i];
+
+      // If values of same property are not equal,
+      // objects are not equivalent
+      if (a[propName] !== b[propName]) {
+        return false;
+      }
+    }
+
+    // If we made it this far, objects
+    // are considered equivalent
+    return true;
+  }
+
+
   openModal2(template: TemplateRef<any>) {
+    console.log(this.formClientCopy);
+    console.log(this.formClient);
+    if(this.isEquivalent(this.formClientCopy,this.formClient)){
+      this.modalRef.hide();
+      return;
+    }
     this.modalRef2 = this.modalService.show(template);
   }
 
   closeModal() {
     this.modalRef2.hide();
     this.modalRef.hide();
+    this.getClientById(this.clientId);
   }
 
   addPhoneNumber() {

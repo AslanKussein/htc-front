@@ -4,20 +4,212 @@
       <br/>
       <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" id="pills-home-tab" (click)="addObjectTypes(1)" data-toggle="pill" href="#pills-home" role="tab"
+          <a class="nav-link active" id="pills-contact-tab" data-toggle="pill" (click)="addObjectTypes(null)"  href="#pills-contact" role="tab"
+             aria-controls="pills-contact" aria-selected="false">Все</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " id="pills-home-tab" (click)="addObjectTypes(1)" data-toggle="pill" href="#pills-home" role="tab"
              aria-controls="pills-home" aria-selected="true">Квартиры</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" id="pills-profile-tab" data-toggle="pill" (click)="addObjectTypes(2)"  href="#pills-profile" role="tab"
              aria-controls="pills-profile" aria-selected="false">Дом</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" id="pills-contact-tab" data-toggle="pill" (click)="addObjectTypes(null)"  href="#pills-contact" role="tab"
-             aria-controls="pills-contact" aria-selected="false">Все</a>
+        <li class="nav-item" class="disabled">
+          <a class="nav-link" id="pills-profile-tab-new" data-toggle="pill" (click)="addObjectTypes(3)"  href="#pills-profile" role="tab"
+             aria-controls="pills-profile" aria-selected="false">Новостройки</a>
         </li>
+        <li class="nav-item"  class="disabled">
+          <a class="nav-link" id="pills-profile-tab-commerc" data-toggle="pill" (click)="addObjectTypes(4)"  href="#pills-profile" role="tab"
+             aria-controls="pills-profile" aria-selected="false">Коммерческое помещение</a>
+        </li>
+
       </ul>
 
       <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+
+          <!--<div class="container">-->
+          <div class="col-sm-12 row">
+            <div class="col-sm-4">
+              <form>
+                <div class="form-group row">
+                  <label class="col-sm col-form-label text-right">Комнаты</label>
+                  <div class="col-sm">
+                    <div class="custom-control custom-checkbox">
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline12" value="1"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline12">1</label>
+                      </div>
+
+                      <!-- Default inline 2-->
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline22" value="2"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline22">2</label>
+                      </div>
+
+                      <!-- Default inline 3-->
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline42" value="3"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline42">3</label>
+                      </div>
+
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline52" value="4"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline52">4</label>
+                      </div>
+
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="defaultInline62" value="5"
+                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
+                        <label class="custom-control-label" for="defaultInline62">5</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm col-form-label text-right">Район</label>
+                  <div class="col-sm">
+                    <ng-select name="districtsId"
+                               [items]="districts" bindValue="value"
+                               [searchable]="false"
+                               [(ngModel)]="formData.districtsId">
+                    </ng-select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm col-form-label text-right">Материал постройки</label>
+                  <div class="col-sm">
+                    <ng-select name="typeHome"
+                               [items]="homeTypes" bindValue="value"
+                               [searchable]="false"
+                               [(ngModel)]="formData.typeHome">
+                    </ng-select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm col-form-label text-right">Жилой комплекс</label>
+                  <div class="col-sm">
+                    <ng-select name="residentialComplexes"
+                               [items]="residentialComplexes" bindValue="value"
+                               [searchable]="false"
+                               [(ngModel)]="formData.residentialComplexes">
+                    </ng-select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm col-form-label text-right">Номер квартиы</label>
+                  <div class="col-sm">
+                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="form-control"
+                           [(ngModel)]="formData.numKvart" [ngModelOptions]="{standalone: true}">
+                  </div>
+                </div>
+              </form>
+
+
+            </div>
+
+            <div class="col-sm-3">
+              <form>
+                <div class="form-group row">
+                  <label class="col-sm col-form-label text-right">Цена</label>
+                  <div class="col-sm row">
+                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.priceFrom"
+                           [ngModelOptions]="{standalone: true}">
+                    -
+                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.priceTo"
+                           [ngModelOptions]="{standalone: true}">
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm col-form-label text-right">Этаж</label>
+                  <div class="col-sm row">
+                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorFrom"
+                           [ngModelOptions]="{standalone: true}">
+                    -
+                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorTo"
+                           [ngModelOptions]="{standalone: true}">
+
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm col-form-label text-right">Этажей в доме</label>
+                  <div class="col-sm row">
+                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorsFrom"
+                           [ngModelOptions]="{standalone: true}">
+                    -
+                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorsTo"
+                           [ngModelOptions]="{standalone: true}">
+
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm col-form-label text-right">В залоге</label>
+                  <div class="col-sm">
+                    <ng-select name="zalog"
+                               [items]="dicDynamic" bindValue="value"
+
+                               [searchable]="false"
+                               [(ngModel)]="formData.zalog">
+                    </ng-select>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+
+            <div class="col-sm-3">
+              <form>
+                <div class="form-group row">
+                  <label class="col-sm col-form-label text-right">Общая площадь</label>
+                  <div class="col-sm row">
+                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.totalAreaFrom"
+                           [ngModelOptions]="{standalone: true}">
+                    -
+                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.totalAreaTo"
+                           [ngModelOptions]="{standalone: true}">
+
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm col-form-label text-right">Жилая площадь</label>
+                  <div class="col-sm row">
+                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.livingSpaceFrom"
+                           [ngModelOptions]="{standalone: true}">
+                    -
+                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.livingSpaceTo"
+                           [ngModelOptions]="{standalone: true}">
+
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm col-form-label text-right">Площадь кухни</label>
+                  <div class="col-sm row">
+                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.kitchenAreaFrom"
+                           [ngModelOptions]="{standalone: true}">
+                    -
+                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.kitchenAreaTo"
+                           [ngModelOptions]="{standalone: true}">
+
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
 
         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
           <!--<div class="container">-->
@@ -76,7 +268,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Тип дома</label>
+                  <label class="col-sm col-form-label text-right">Материал постройки</label>
                   <div class="col-sm">
                     <ng-select
                       [items]="homeTypes"
@@ -102,7 +294,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Номер квартиы</label>
+                  <label class="col-sm col-form-label text-right">Номер квартиры</label>
                   <div class="col-sm">
                     <input type="text" mask="separator" class="form-control"
                            [(ngModel)]="formData.numKvart" [ngModelOptions]="{standalone: true}">
@@ -265,7 +457,7 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Тип дома</label>
+                  <label class="col-sm col-form-label text-right">Материал постройки</label>
                   <div class="col-sm">
                     <ng-select name="typeHome"
                                [items]="homeTypes" bindValue="value"
@@ -274,22 +466,6 @@
                     </ng-select>
                   </div>
                 </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Расстояние от центра города</label>
-                  <div class="col-sm">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="form-control" [(ngModel)]="formData.distance"
-                           [ngModelOptions]="{standalone: true}">
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Гараж</label>
-                  <div class="col-sm">
-                    <input type="checkbox" class="form-control" style="margin-left: -42%" [(ngModel)]="formData.garage"
-                           [ngModelOptions]="{standalone: true}">
-                  </div>
-                </div>
               </form>
             </div>
 
@@ -318,13 +494,7 @@
                   </div>
                 </div>
 
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Чердак</label>
-                  <div class="col-sm">
-                    <input type="checkbox" class="form-control" style="margin-left: -42%" [(ngModel)]="formData.attic"
-                           [ngModelOptions]="{standalone: true}">
-                  </div>
-                </div>
+
 
                 <div class="form-group row">
                   <label class="col-sm col-form-label text-right">В залоге</label>
@@ -381,189 +551,7 @@
           </div>
         </div>
 
-        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
 
-          <!--<div class="container">-->
-          <div class="col-sm-12 row">
-            <div class="col-sm-4">
-              <form>
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Комнаты</label>
-                  <div class="col-sm">
-                    <div class="custom-control custom-checkbox">
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline12" value="1"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline12">1</label>
-                      </div>
-
-                      <!-- Default inline 2-->
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline22" value="2"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline22">2</label>
-                      </div>
-
-                      <!-- Default inline 3-->
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline42" value="3"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline42">3</label>
-                      </div>
-
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline52" value="4"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline52">4</label>
-                      </div>
-
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline62" value="5"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline62">5</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Район</label>
-                  <div class="col-sm">
-                    <ng-select name="districtsId"
-                               [items]="districts" bindValue="value"
-                               [searchable]="false"
-                               [(ngModel)]="formData.districtsId">
-                    </ng-select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Тип дома</label>
-                  <div class="col-sm">
-                    <ng-select name="typeHome"
-                               [items]="homeTypes" bindValue="value"
-                               [searchable]="false"
-                               [(ngModel)]="formData.typeHome">
-                    </ng-select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Жилой комплекс</label>
-                  <div class="col-sm">
-                    <ng-select name="residentialComplexes"
-                               [items]="residentialComplexes" bindValue="value"
-                               [searchable]="false"
-                               [(ngModel)]="formData.residentialComplexes">
-                    </ng-select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Номер квартиы</label>
-                  <div class="col-sm">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="form-control"
-                           [(ngModel)]="formData.numKvart" [ngModelOptions]="{standalone: true}">
-                  </div>
-                </div>
-              </form>
-
-
-            </div>
-
-            <div class="col-sm-3">
-              <form>
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Цена</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.priceFrom"
-                           [ngModelOptions]="{standalone: true}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.priceTo"
-                           [ngModelOptions]="{standalone: true}">
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Этаж</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorFrom"
-                           [ngModelOptions]="{standalone: true}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorTo"
-                           [ngModelOptions]="{standalone: true}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Этажей в доме</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorsFrom"
-                           [ngModelOptions]="{standalone: true}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorsTo"
-                           [ngModelOptions]="{standalone: true}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">В залоге</label>
-                  <div class="col-sm">
-                    <ng-select name="zalog"
-                               [items]="dicDynamic" bindValue="value"
-
-                               [searchable]="false"
-                               [(ngModel)]="formData.zalog">
-                    </ng-select>
-                  </div>
-                </div>
-              </form>
-
-            </div>
-
-            <div class="col-sm-3">
-              <form>
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Общая площадь</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.totalAreaFrom"
-                           [ngModelOptions]="{standalone: true}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.totalAreaTo"
-                           [ngModelOptions]="{standalone: true}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Жилая площадь</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.livingSpaceFrom"
-                           [ngModelOptions]="{standalone: true}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.livingSpaceTo"
-                           [ngModelOptions]="{standalone: true}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Площадь кухни</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.kitchenAreaFrom"
-                           [ngModelOptions]="{standalone: true}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.kitchenAreaTo"
-                           [ngModelOptions]="{standalone: true}">
-
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
 
         <div class="row">
           <div class="form-group col-sm">
@@ -609,7 +597,7 @@
               <th translate>Фото</th>
               <th translate>Адрес</th>
               <th translate>Цена</th>
-              <th translate>Комнатность</th>
+              <th translate>Количество комнат</th>
               <th translate>Фото</th>
               <th translate>Обременение</th>
               <th translate>Аналитика цен</th>
@@ -621,12 +609,12 @@
               <td>{{object.realPropertyId}}</td>
               <td><img *ngIf="getImgUrl(object)" [src]="getImgUrl(object)" alt="First Slide" class="photoList" height="100px"></td>
               <td>{{object.address.nameRu}}</td>
-              <td>{{object.price}}</td>
+              <td>{{object.objectPrice}}</td>
               <td>{{object.numberOfRooms}}</td>
               <td>
                 {{getCountFoto(object.photos)}}
               </td>
-              <td>{{object.encumbrance}}</td>
+              <td>{{object.encumbrance?.nameRu}}</td>
               <td>{{object.priceAnalytics}}</td>
               <td>{{object.contactsOfAgent}}</td>
             </tr>

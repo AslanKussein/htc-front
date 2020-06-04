@@ -24,7 +24,7 @@ export class MyObjectsComponent implements OnInit, OnDestroy {
 
   objectsData
   totalItems = 0;
-  itemsPerPage = 20;
+  itemsPerPage = 10;
   currentPage = 1;
 
   pageChanged(event: any): void {
@@ -58,6 +58,15 @@ export class MyObjectsComponent implements OnInit, OnDestroy {
     }
     return null;
   }
+
+  getName(obj){
+    if(obj){
+      return 'Да'
+    }else{
+      return 'Нет'
+    }
+  }
+
 
   getCountFoto(obj: any) {
     let s;

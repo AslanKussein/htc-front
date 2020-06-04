@@ -22,6 +22,7 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate, OnDestr
   currentUser: User;
   profile: ProfileDto;
   save: boolean;
+  photoUuidDel:string;
   loading: boolean;
   agentRoles: boolean;
   rgRoles: boolean;
@@ -69,6 +70,11 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate, OnDestr
 
   saveProfile() {
     this.save = false;
+    if(this.profile.photoUuid==null){
+      if(!this.util.isNullOrEmpty(this.photoUuidDel)){
+        this.removeByGuid(this.photoUuidDel);
+      }
+      }
     this.subscriptions.add(this.profileService.updateProfile(this.profile).subscribe(res => {
         this.profile = res;
         this.notifyService.showSuccess('Данные сохранены', "");
@@ -96,6 +102,16 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate, OnDestr
       return this.util.generatorPreviewUrl(this.profile.photoUuid)
     }
     return 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png';
+  }
+
+  delImage(photoUuid){
+    this.profile.photoUuid=null;
+    this.photoUuidDel=photoUuid;
+  }
+
+  removeByGuid(photoUuid) {
+    this.subscriptions.add(this.uploader.removePhotoById(photoUuid).subscribe(data => {
+    }));
   }
 
   canDeactivate(): boolean | Observable<boolean> {

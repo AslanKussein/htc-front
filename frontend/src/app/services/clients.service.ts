@@ -19,32 +19,7 @@ export class ClientsService {
    * @param search
    */
   getClientList(obj: any): Observable<any> {
-    let params = new HttpParams();
-    if (!this.util.isNullOrEmpty(obj.offset)) {
-      params = params.append('offset', obj.offset);
-    }
-    if (!this.util.isNullOrEmpty(obj.pageNumber)) {
-      params = params.append('pageNumber', obj.pageNumber);
-    }
-    if (!this.util.isNullOrEmpty(obj.pageSize)) {
-      params = params.append('pageSize', obj.pageSize);
-    }
-    if (!this.util.isNullOrEmpty(obj.paged)) {
-      params = params.append('paged', obj.paged);
-    }
-    if (!this.util.isNullOrEmpty(obj.sort)&&!this.util.isNullOrEmpty(obj.sort.sorted)) {
-      params = params.append('sort.sorted', obj.sort.sorted);
-    }
-    if (!this.util.isNullOrEmpty(obj.sort)&&!this.util.isNullOrEmpty(obj.sort.unsorted)) {
-      params = params.append('sort.unsorted', obj.sort.unsorted);
-    }
-    if (!this.util.isNullOrEmpty(obj.text)) {
-      params = params.append('text', obj.text);
-    }
-    if (!this.util.isNullOrEmpty(obj.unpaged)) {
-      params = params.append('unpaged', obj.unpaged);
-    }
-    return this.http.get<any>(`${this.configService.apiViewManagerUrl}/register/getClientList`, {params});
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getClientList`, obj);
   }
 
   getClientById(id: string): Observable<any> {

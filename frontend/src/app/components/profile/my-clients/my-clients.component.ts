@@ -15,7 +15,7 @@ export class MyClientsComponent implements OnInit, OnDestroy {
   clientsData = [];
   text: string;
   totalItems = 0;
-  itemsPerPage = 20;
+  itemsPerPage = 10;
   currentPage = 1;
 
   constructor(private util: Util,
@@ -42,7 +42,7 @@ export class MyClientsComponent implements OnInit, OnDestroy {
     let searchFilter = {};
     searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
-    // searchFilter['my'] = true;
+    searchFilter['my'] = true;
     searchFilter['text'] = this.text;
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = this.itemsPerPage;
