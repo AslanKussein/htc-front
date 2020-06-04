@@ -1741,9 +1741,14 @@
              [(ngModel)]="formRes.housingClass">
     </div>
     <div class="col-sm" *ngIf="resident">
-      <label class="col-sm col-form-label">Состояние</label>
-      <input type="text" maxlength="50" class="col-sm form-control" name="housingCondition"
-             [(ngModel)]="formRes.housingConditionId">
+      <label class="col-sm col-form-label">Состояние недвижимости</label>
+
+      <ng-select
+        bindValue="value"
+        bindLabel="label"
+        [items]="houseCondition"
+        [(ngModel)]="formRes.housingConditionId">
+      </ng-select>
     </div>
     <div class="col-sm" *ngIf="resident">
       <label class="col-sm col-form-label">Тип лифта</label>
