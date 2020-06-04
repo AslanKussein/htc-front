@@ -33,6 +33,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
   typeOfElevator: Dic[];
   parkingTypes: Dic[];
   yardTypes: Dic[];
+  houseConditions: Dic[];
   resident: boolean;
   editOrDelete: boolean;
   actions: string;
@@ -204,6 +205,9 @@ export class DicControlComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.newDicService.getDictionary('YardType').subscribe(res => {
       this.yardTypes = this.util.toSelectArray(res);
     }));
+    this.subscriptions.add(this.newDicService.getDictionary('HouseCondition').subscribe(res => {
+      this.houseConditions = this.util.toSelectArray(res);
+    }));
 
     this.ngxLoader.stop();
   }
@@ -215,7 +219,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
       pageableDto: {
         direction: "ASC",
         // pageNumber: pageNo - 1,
-        pageSize: 16,
+        pageSize: 100,
         sortBy: "id"
       }
     };
