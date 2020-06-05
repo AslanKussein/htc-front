@@ -11,6 +11,10 @@ export class ClaimViewDto {
   public applicationFlagIdList: any;
   public probabilityOfBidding: boolean;
   public mortgage: boolean;
+  public isSell: boolean;
+  public encumbrance: boolean;
+  public sharedOwnershipProperty: boolean;
+  public exchange: boolean;
   public possibleReasonForBiddingIdList: any;
   public theSizeOfTrades: number;
   public comment: string;

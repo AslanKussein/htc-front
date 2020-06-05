@@ -61,6 +61,17 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  setLoop(data: any, column: string) {
+    let txt = '';
+    if (!this.util.isNullOrEmpty(data[column])) {
+      let x = this.util.getDicNameByLanguage();
+      for (const ownerServiceElement of data[column]) {
+        txt += ownerServiceElement?.[x] + (txt.length == 0 ? ' ' : ', ')
+      }
+      return txt;
+    }
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
