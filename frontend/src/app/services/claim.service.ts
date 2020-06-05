@@ -55,8 +55,7 @@ export class ClaimService {
 
 
   public getApplicationViewById(id: number): Observable<any> {
-    return this.http.get(`http://localhost:8080/api/application-view/` + id, {})
-    // return this.http.get(`${this.configService.apiDataManagerUrl}/api/application-view/` + id, {})
+    return this.http.get(`${this.configService.apiDataManagerUrl}/api/application-view/` + id, {})
       .pipe(
         tap()
       );
