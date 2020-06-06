@@ -1157,11 +1157,17 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   loadMap() {
-    if (!this.util.isNullOrEmpty(this.applicationForm.streetId)) {
-      let str = this.util.getDictionaryValueById(this.streets, this.applicationForm.streetId)?.label + ' ' + this.applicationForm.houseNumber;
-      if (!this.util.isNullOrEmpty(this.applicationForm.houseNumberFraction)) {
-        str = str + '/' + this.applicationForm.houseNumberFraction;
+    console.log(this.postCode)
+    console.log(this.applicationForm.postcode)
+    if (!this.util.isNullOrEmpty(this.applicationForm.postcode)) {
+      let str='';
+      if(!this.util.isNullOrEmpty(this.applicationForm.postcode.label)){
+         str=this.applicationForm.postcode?.label;
+      }else {
+        str=this.applicationForm.postcode;
       }
+
+
       this.modelMap.instance.search(str).then(data => {
         this.ddd.geometry.setCoordinates([data.responseMetaData.SearchResponse.Point.coordinates[1], data.responseMetaData.SearchResponse.Point.coordinates[0]])
         this.applicationForm.latitude = data.responseMetaData.SearchResponse.Point.coordinates[1];
@@ -1334,7 +1340,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
           this.applicationForm.residentialComplexId = this.util.getDictionaryValueById(this.residentialComplexes, res.buildingDto.residentialComplexId)
         ))
         setTimeout(() => {
-
+          // this.loadMap()
           this.applicationForm.cityId = res.city?.id;
           this.applicationForm.streetId = res.street?.id;
           this.applicationForm.districtId = res.district?.id;
