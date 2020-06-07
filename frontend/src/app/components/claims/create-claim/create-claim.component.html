@@ -819,9 +819,7 @@
                                     </div>
                                   </div>
                                   <div class="col-sm" *ngIf="!isSell()">
-                                    <label for="livingArea" translate>claim.live
-                                      <span class="text-danger" *ngIf="!applicationForm.livingArea">&nbsp;*</span>
-                                    </label>
+                                    <label for="livingArea" translate>claim.live</label>
                                     <input type="text" id="livingArea" class="form-control"
                                            mask="separator.2" thousandSeparator=" "
                                            [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)"
@@ -829,9 +827,6 @@
                                            oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                            placeholder="{{'claim.live' | translate}}"
                                            formControlName="livingArea" min="0"/>
-                                    <div *ngIf="f.livingArea.touched && f.livingArea.invalid" class="text-danger">
-                                      <div *ngIf="f.livingArea.errors.required" translate>claim.requiredField</div>
-                                    </div>
                                   </div>
                                   <div class="col-sm" *ngIf="isSell()">
                                     <label translate>claim.kitchen</label>
