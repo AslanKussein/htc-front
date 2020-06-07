@@ -755,7 +755,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.setValidator('objectPrice', Validators.required);
         this.setValidator('numberOfRooms', Validators.required);
         this.setValidator('totalArea', Validators.required);
-        this.setValidator('livingArea', Validators.required);
         this.setValidator('numberOfBedrooms', Validators.required);
         if (this.util.isNullOrEmpty(this.applicationForm?.residentialComplexId)) {
           this.setValidator('apartmentNumber', Validators.required);
@@ -772,7 +771,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.setValidator('houseNumber', Validators.required);
         this.setValidator('landArea', Validators.required);
         this.setValidator('totalArea', Validators.required);
-        this.setValidator('livingArea', Validators.required);
       }
     }
     if (!this.util.isNullOrEmpty(this.applicationForm.phoneNumber)) {
