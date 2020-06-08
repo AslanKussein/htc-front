@@ -13,7 +13,7 @@ export class ObjectService {
   }
 
   getObjects(search: any): Observable<any> {
-    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getRealPropertyList`, search);
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/open-api/realProperty/getRealPropertyList`, search);
   }
 
 }

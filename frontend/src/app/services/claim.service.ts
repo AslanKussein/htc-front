@@ -14,11 +14,11 @@ export class ClaimService {
   }
 
   getClaims(search: any): Observable<any> {
-    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getApplicationList`, search);
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/api/register/getApplicationList`, search);
   }
 
   getShortApplicationList(search: any): Observable<any> {
-    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getShortApplicationList`, search);
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/api/register/getShortApplicationList`, search);
   }
 
   getClaimById(id: number): Observable<any> {
