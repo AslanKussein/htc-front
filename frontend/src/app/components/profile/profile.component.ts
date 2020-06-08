@@ -91,7 +91,7 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate, OnDestr
     this.loading = true;
     this.subscriptions.add(this.uploader.uploadData(this.selectedFile)
       .subscribe(data => {
-        if (data != null) {
+        if (data && data.uuid) {
           this.profile.photoUuid = data.uuid;
         }
       }));

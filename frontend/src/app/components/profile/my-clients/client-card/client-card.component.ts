@@ -322,7 +322,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
     this.selectedFile = event.target.files[0];
     this.subscriptions.add(this.uploader.uploadData(this.selectedFile)
       .subscribe(data => {
-        if (data != null) {
+        if (data && data.uuid) {
           if (this.formClient.clientFileDtoList == null) {
             this.formClient.clientFileDtoList = []
           }
