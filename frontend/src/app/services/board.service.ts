@@ -15,7 +15,7 @@ export class BoardService {
 
   getBoard(search: any): Observable<any> {
 
-    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getKanban`, search)
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/api/register/getKanban`, search)
       .pipe(
         tap(data => {
         }),

@@ -35,7 +35,7 @@ export class UserService {
   }
 
   getAgentsToAssign(): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiViewManagerUrl}/agents/getAgentsToAssign`, {}).pipe(
+    return this.http.get<any>(`${this.configService.apiViewManagerUrl}/api/agents/getAgentsToAssign`, {}).pipe(
       tap(),
       catchError(UserService.handleError)
     );
