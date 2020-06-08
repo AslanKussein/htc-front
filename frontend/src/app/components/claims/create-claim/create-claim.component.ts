@@ -119,6 +119,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   subscriptions: Subscription = new Subscription();
   data: any;
   postCode: string;
+  isUpload = false;
+  percent: number;
 
   constructor(public util: Util,
               private notifyService: NotificationService,
@@ -1108,15 +1110,20 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   onFileChange(event, id: number) {
+    this.isUpload = true;
     if (event.target.files && event.target.files[0]) {
       let filesAmount = event.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
         this.selectedFile = event.target.files[i];
         this.subscriptions.add(this.uploader.uploadData(this.selectedFile)
           .subscribe(data => {
-            if (data != null) {
+            if (data && data.message) {
+              this.percent = data.message;
+            }
+            if (data && data.uuid) {
               this.filesEdited = true;
               this.fillPicture(data, id);
+              this.isUpload = false;
             }
           }));
       }
