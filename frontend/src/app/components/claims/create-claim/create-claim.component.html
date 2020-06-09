@@ -501,6 +501,9 @@
                                     placeholder="{{ 'claim.building' | translate }}">
                                   </ng-select>
                                 </div>
+                                <div class="col-sm-2 marginleft">
+                                  <a (click)="openModal(template,'residentialComplexes');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
+                                </div>
                               </div>
                             </div>
                             <div class="col-sm">
@@ -571,9 +574,6 @@
                                     placeholder="{{ 'claim.city' | translate }}">
                                   </ng-select>
                                 </div>
-                                <div class="col-sm-2">
-                                  <a (click)="openModal(template,'City');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
-                                </div>
                               </div>
 
                               <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">
@@ -597,9 +597,6 @@
                                     [readonly]="true"
                                     placeholder="{{ 'claim.street' | translate }}">
                                   </ng-select>
-                                </div>
-                                <div class="col-sm-2">
-                                  <a (click)="openModal(template,'Street');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
                                 </div>
                               </div>
 
@@ -1009,11 +1006,7 @@
                                           placeholder="{{ 'claim.validator.districtId' | translate }}">
                                         </ng-select>
                                       </div>
-                                      <div class="col-sm-2 marginleft">
-                                        <a (click)="openModal(template,'District');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
-                                      </div>
                                     </div>
-
 
                                     <div *ngIf="f.districtId.touched && f.districtId.invalid" class="text-danger">
                                       <div *ngIf="f.districtId.errors.required" translate>claim.requiredField</div>
@@ -1251,9 +1244,6 @@
                                           formControlName="parkingTypeIds"
                                           placeholder="{{ 'claim.parking' | translate }}">
                                         </ng-select>
-                                      </div>
-                                      <div class="col-sm-2 marginleft">
-                                        <a (click)="openModal(template,'ParkingType');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
                                       </div>
                                     </div>
 
