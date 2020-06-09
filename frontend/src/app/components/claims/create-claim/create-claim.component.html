@@ -163,7 +163,7 @@
                             <ng-select
                               [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
                               [items]="dicDynamic"
-                              bindValue="value"
+                              bindValue="code"
                               [(ngModel)]="applicationForm.mortgage"
                               formControlName="mortgage"
                               placeholder="{{'claim.ipoteka' | translate}}">
@@ -176,7 +176,7 @@
                               <ng-select
                                 [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
                                 [items]="dicDynamic"
-                                bindValue="value"
+                                bindValue="code"
                                 [(ngModel)]="applicationForm.encumbrance"
                                 formControlName="encumbrance"
                                 placeholder="{{ 'claim.encumbrance' | translate }}">
@@ -192,9 +192,9 @@
                               <ng-select
                                 [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
                                 [items]="dicDynamic"
-                                bindValue="value"
+                                bindValue="code"
                                 [(ngModel)]="applicationForm.exchange"
-                                formControlName="encumbrance"
+                                formControlName="exchange"
                                 placeholder="{{ 'claim.barter' | translate }}">
                               </ng-select>
                             </div>
@@ -203,7 +203,7 @@
                               <ng-select
                                 [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
                                 [items]="dicDynamic"
-                                bindValue="value"
+                                bindValue="code"
                                 [(ngModel)]="applicationForm.sharedOwnershipProperty"
                                 formControlName="sharedOwnershipProperty"
                                 placeholder="{{ 'claim.commonOwnership' | translate }}">
@@ -223,7 +223,7 @@
                               util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
                               [items]="dicDynamic"
                               [(ngModel)]="applicationForm.probabilityOfBidding"
-                              bindValue="value"
+                              bindValue="code"
                               formControlName="probabilityOfBidding"
                               placeholder="{{ 'claim.probabilityBargaining' | translate }}">
                             </ng-select>
@@ -1141,9 +1141,9 @@
                                    util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                    util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles)">
                                 <div class="col-sm">
-                                  <label class="control-labels" translate>claim.material</label>
+                                  <label class="control-labels">Материал постройки</label>
                                   <ng-select
-                                    [items]="sortMaterials"
+                                    [items]="materials"
                                     [(ngModel)]="applicationForm.materialOfConstructionId"
                                     formControlName="materialOfConstructionId"
                                     [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
@@ -1205,7 +1205,7 @@
                                       util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
                                       [items]="dicDynamic"
                                       [(ngModel)]="applicationForm.concierge"
-                                      bindValue="value"
+                                      bindValue="code"
                                       formControlName="concierge"
                                       placeholder="{{ 'claim.concierge' | translate }}">
                                     </ng-select>
@@ -1216,7 +1216,7 @@
                                       [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
                                       util.hasShowRealPropertyGroup('UPDATE_PURCHASE_OBJECT_INFO', roles))"
                                       [items]="dicDynamic"
-                                      bindValue="value"
+                                      bindValue="code"
                                       [(ngModel)]="applicationForm.wheelchair"
                                       formControlName="wheelchair"
                                       placeholder="{{ 'claim.stroller' | translate }}">
@@ -1266,7 +1266,7 @@
                                     <label class="control-labels" translate>claim.childYard</label>
                                     <ng-select
                                       [items]="dicDynamic"
-                                      bindValue="value"
+                                      bindValue="code"
                                       appendTo="body"
                                       [(ngModel)]="applicationForm.playground"
                                       [readonly]="readonlyChooseJK && !(util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) &&
@@ -1754,6 +1754,7 @@
         [(ngModel)]="formRes.typeOfElevatorIdList">
       </ng-select>
     </div>
+    {{formRes.concierge}}
     <div class="col-sm" *ngIf="resident">
       <label class="col-sm col-form-label">Консьерж</label>
       <input type="checkbox" class="col-sm form-control" name="concierge" [(ngModel)]="formRes.concierge">
