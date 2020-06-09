@@ -305,6 +305,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     if (this.applicationId != null) {
       setTimeout(() => {
         this.loadDataById(this.applicationId);
+
       }, 1000);
     } else {
       this.ngxLoader.stopBackground();
@@ -442,7 +443,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.fillApplicationForm(data);
         this.cdRef.detectChanges();
         this.ngxLoader.stopBackground();
-        console.log('applicationForm', this.applicationForm);
+        this.setApplicationFlagSort();
       }
     }));
   }
@@ -466,7 +467,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.applicationFlagSort = [];
     if (!this.util.isNullOrEmpty(this.applicationFlag)) {
       for (const pos of this.applicationFlag) {
-        if (pos["code"] == this.applicationForm?.value.operationTypeId?.code) {
+        if (pos["code"] == this.applicationForm?.operationTypeId?.code) {
           let m = {};
           m["value"] = pos["value"];
           m["label"] = pos["label"];
@@ -574,7 +575,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.theSizeOfTrades = data?.purchaseDataDto?.theSizeOfTrades;
       this.applicationForm.objectPriceFrom = data?.purchaseDataDto?.objectPricePeriod?.from;
       this.applicationForm.objectPriceTo = data?.purchaseDataDto?.objectPricePeriod?.to;
-      this.applicationForm.applicationFlagIdList = data?.purchaseInfoDto?.applicationFlagIdList;
+      this.applicationForm.applicationFlagIdList = data?.purchaseDataDto?.applicationFlagIdList;
       setTimeout(() => {
         this.applicationForm.possibleReasonForBiddingIdList = this.util.nvl(data?.purchaseDataDto?.possibleReasonForBiddingIdList, null);
       }, 1000);
@@ -602,7 +603,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.numberOfFloorsTo = data?.purchaseInfoDto?.numberOfFloorsPeriod?.to;
       this.applicationForm.numberOfRoomsFrom = data?.purchaseInfoDto?.numberOfRoomsPeriod?.from;
       this.applicationForm.numberOfRoomsTo = data?.purchaseInfoDto?.numberOfRoomsPeriod?.to;
-      this.applicationForm.parkingTypeIds = data?.purchaseInfoDto?.numberOfRoomsPeriod?.parkingTypeIds;
+      this.applicationForm.parkingTypeIds = data?.purchaseInfoDto?.parkingTypeIds;
       this.applicationForm.playground = this.util.toString(data?.purchaseInfoDto?.playground);
       this.applicationForm.totalAreaFrom = data?.purchaseInfoDto?.totalAreaPeriod?.from;
       this.applicationForm.totalAreaTo = data?.purchaseInfoDto?.totalAreaPeriod?.to;
@@ -896,7 +897,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.atelier,
       this.applicationForm.balconyArea,
       this.fillBuildingDto(),
-      this.applicationForm.cadastralNumber + ':' + this.applicationForm.cadastralNumber1 + ':' + this.applicationForm.cadastralNumber2 + ':' + this.applicationForm.cadastralNumber3,
+      this.setCadastralNumber(),
       this.applicationForm.floor,
       this.fillGeneralCharacteristicsDto(),
       this.applicationForm.heatingSystemId,
@@ -917,6 +918,14 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       photoList,
       photo3DList
     )
+    console.log('cadastral', this.setCadastralNumber());
+  }
+
+  setCadastralNumber() {
+    return this.applicationForm.cadastralNumber || '' + ':' +
+           this.applicationForm.cadastralNumber1 || '' + ':' +
+           this.applicationForm.cadastralNumber2 || '' + ':' +
+           this.applicationForm.cadastralNumber3 || '';
   }
 
   fillSellDataDto() {
@@ -1340,22 +1349,24 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   checkPostData() {
     if (!this.util.isNullOrEmpty(this.applicationForm.postcode?.fullAddress)) {
       this.ngxLoader.startBackground()
-      this.subscriptions.add(this.kazPostService.checkPostData(this.applicationForm.postcode?.fullAddress).subscribe(res => {
-        this.postCode = this.applicationForm.postcode?.value;
-        this.loadDictionary();
-        this.subscriptions.add(this.newDicService.getResidentialComplexesByPostcode(this.postCode).subscribe(res =>
-          this.applicationForm.residentialComplexId = this.util.getDictionaryValueById(this.residentialComplexes, res.buildingDto.residentialComplexId)
-        ))
-        setTimeout(() => {
-          // this.loadMap()
-          this.applicationForm.cityId = res.city?.id;
-          this.applicationForm.streetId = res.street?.id;
-          this.applicationForm.districtId = res.district?.id;
-          this.applicationForm.houseNumber = res.houseNumber;
+      this.subscriptions.add(this.kazPostService.checkPostData(this.applicationForm.postcode?.fullAddress)
+        .subscribe(res => {
+          this.postCode = this.applicationForm.postcode?.value;
+          this.loadDictionary();
+          this.subscriptions.add(this.newDicService.getResidentialComplexesByPostcode(this.postCode)
+            .subscribe(result =>
+              this.applicationForm.residentialComplexId = this.util.getDictionaryValueById(this.residentialComplexes, result.buildingDto.residentialComplexId)
+            ));
+          setTimeout(() => {
+            // this.loadMap()
+            this.applicationForm.cityId = res.city?.id;
+            this.applicationForm.streetId = res.street?.id;
+            this.applicationForm.districtId = res.district?.id;
+            this.applicationForm.houseNumber = res.houseNumber;
 
-          this.ngxLoader.stopBackground()
-        }, 1000);
-      }, () => this.ngxLoader.stopBackground()));
+            this.ngxLoader.stopBackground()
+          }, 1000);
+        }, () => this.ngxLoader.stopBackground()));
     }
   }
 
