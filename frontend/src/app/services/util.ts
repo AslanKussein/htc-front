@@ -96,6 +96,21 @@ export class Util {
     return list;
   }
 
+  toSelectArrayFlag(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
+    const list = [];
+    if (data) {
+      const len = data.length;
+      for (let i = 0; i < len; i++) {
+        list.push({
+          value: data[i][idField],
+          label: data[i].multiLang[labelField],
+          code: data[i].operationType['code'],
+        });
+      }
+    }
+    return list;
+  }
+
   getDicName() {
     let fieldName;
     fieldName = 'name';

@@ -383,7 +383,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.heatingSystems = this.util.toSelectArray(data);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('ApplicationFlag').subscribe(data => {
-      this.applicationFlag = this.util.toSelectArray(data);
+      this.applicationFlag = this.util.toSelectArrayFlag(data);
     }));
 
     this.subscriptions.add(this.userService.getAgentsToAssign().subscribe(obj => {
@@ -442,6 +442,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.fillApplicationForm(data);
         this.cdRef.detectChanges();
         this.ngxLoader.stopBackground();
+        console.log('applicationForm', this.applicationForm);
       }
     }));
   }
@@ -465,12 +466,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.applicationFlagSort = [];
     if (!this.util.isNullOrEmpty(this.applicationFlag)) {
       for (const pos of this.applicationFlag) {
-        if (pos['operationCode'] == this.applicationForm?.operationTypeId?.code) {
+        if (pos["code"] == this.applicationForm?.value.operationTypeId?.code) {
           let m = {};
-          m['value'] = pos['value'];
-          m['label'] = pos['label'];
-          m['code'] = pos['code'];
-          this.applicationFlagSort.push(m)
+          m["value"] = pos["value"];
+          m["label"] = pos["label"];
+          m["code"] = pos["code"];
+          this.applicationFlagSort.push(m);
         }
       }
     }
@@ -478,9 +479,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   setHouseOrApartmentsForMaterials() {
     this.sortMaterials = [];
-    if (this.isApartment()) {//кв
+    if (this.isApartment()) { // кв
       this.sortMaterials = this.materials;
-    } else if (this.isHouse()) {//дом
+    } else if (this.isHouse()) { // дом
       for (const materials of this.materials) {
         if (materials['code'] == 'house') {
           let m = {};
@@ -519,7 +520,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.applicationForm.ceilingHeight = this.util.nvl(this.applicationForm.residentialComplexId?.ceilingHeight, null);//Кол-во кв
     this.postCode = this.applicationForm.residentialComplexId?.buildingDto?.postcode;
     this.loadDataFromPostApi();
-
+    console.log('residentialComplexId', this.applicationForm.residentialComplexId);
     this.cdRef.detectChanges();
   }
 
@@ -685,6 +686,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       }, 1000);
       this.applicationForm.probabilityOfBidding = this.util.toString(data?.sellDataDto?.probabilityOfBidding);
       this.applicationForm.theSizeOfTrades = data?.sellDataDto?.theSizeOfTrades;
+      this.applicationForm.applicationFlagIdList = data?.purchaseInfoDto?.applicationFlagIdList;
     }
     this.loadDataFromPostApi();
     this.applicationForm.unification = 'address';
@@ -695,7 +697,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   loadDataFromPostApi() {
     this.subscriptions.add(
-      this.kazPostService.getDataFromDb(this.postCode).subscribe(res=> {
+      this.kazPostService.getDataFromDb(this.postCode).subscribe(res => {
         this.applicationForm.postcode = res?.addressRus;
         }
       )
@@ -1416,28 +1418,35 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         nameKz: this.formRes.houseName,
         nameRu: this.formRes.houseName,
         parentId: null,
-        id:null
+        id: null
       };
       this.subscriptions.add(this.dicService.saveResidentalComplex(this.formRes).subscribe(data => {
           if (data != null) {
-            saveForm.id=data.id;
+            saveForm.id = data.id;
             this.loadDictionary();
             this.notifyService.showSuccess('success', 'Успешно сохранено');
             this.modalRef.hide();
             this.clearForm();
-            let interval;
-            let timeLeft: number = 1;
-            interval = setInterval(() => {
-              if (timeLeft > 0) {
-                timeLeft--;
-              } else {
-                this.loadDictionary();
-                this.applicationForm.residentialComplexId=data;
-                this.applicationForm.residentialComplexId.value=data.id;
-                this.applicationForm.residentialComplexId.label=data.houseName;
-                this.ngxLoader.stopBackground();
-              }
+            setTimeout(() => {
+              this.loadDictionary();
+              this.applicationForm.residentialComplexId = data;
+              this.applicationForm.residentialComplexId.value = data.id;
+              this.applicationForm.residentialComplexId.label = data.houseName;
+              this.ngxLoader.stopBackground();
             }, 300)
+            // let interval;
+            // let timeLeft: number = 1;
+            // interval = setInterval(() => {
+            //   if (timeLeft > 0) {
+            //     timeLeft--;
+            //   } else {
+            //     this.loadDictionary();
+            //     this.applicationForm.residentialComplexId=data;
+            //     this.applicationForm.residentialComplexId.value=data.id;
+            //     this.applicationForm.residentialComplexId.label=data.houseName;
+            //     this.ngxLoader.stopBackground();
+            //   }
+            // }, 300)
           }
         }, err => {
           this.notifyService.showError('warning', err.message);
@@ -1462,20 +1471,24 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
       this.subscriptions.add(this.dicService.saveDicNew(saveForm).subscribe(data => {
         if (data != null) {
-          saveForm.id=data;
+          saveForm.id = data;
           this.notifyService.showSuccess('success', 'Успешно сохранено');
           this.modalRef.hide();
           this.clearForm();
-          let interval;
-          let timeLeft: number = 1;
-          interval = setInterval(() => {
-            if (timeLeft > 0) {
-              timeLeft--;
-            } else {
-              this.loadDictionary();
-              this.ngxLoader.stopBackground();
-              }
+          setTimeout(() => {
+            this.loadDictionary();
+            this.ngxLoader.stopBackground();
           }, 300)
+          // let interval;
+          // let timeLeft: number = 1;
+          // interval = setInterval(() => {
+          //   if (timeLeft > 0) {
+          //     timeLeft--;
+          //   } else {
+          //     this.loadDictionary();
+          //     this.ngxLoader.stopBackground();
+          //     }
+          // }, 300)
         }
       }, err => {
         this.notifyService.showError('warning', err.message);
@@ -1494,21 +1507,29 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
       this.subscriptions.add(this.kazPostService.checkPostData(this.postcode2?.fullAddress).subscribe(res => {
         this.formRes.buildingDto.postcode = this.postcode2?.value;
-        let interval;
-        let timeLeft: number = 1;
-        interval = setInterval(() => {
-          if (timeLeft > 0) {
-            timeLeft--;
-          } else {
-            this.loadDictionary();
-            this.formRes.buildingDto.cityId = res.city.id;
-            this.formRes.buildingDto.districtId = res.district.id;
-            this.formRes.buildingDto.streetId = res.street.id;
-            this.formRes.buildingDto.houseNumber = res.houseNumber;
-            this.ngxLoader.stopBackground();
-
-          }
-        }, 300)
+        setTimeout(() => {
+          this.loadDictionary();
+          this.formRes.buildingDto.cityId = res.city.id;
+          this.formRes.buildingDto.districtId = res.district.id;
+          this.formRes.buildingDto.streetId = res.street.id;
+          this.formRes.buildingDto.houseNumber = res.houseNumber;
+          this.ngxLoader.stopBackground();
+        }, 300);
+        // let interval;
+        // let timeLeft: number = 1;
+        // interval = setInterval(() => {
+        //   if (timeLeft > 0) {
+        //     timeLeft--;
+        //   } else {
+        //     this.loadDictionary();
+        //     this.formRes.buildingDto.cityId = res.city.id;
+        //     this.formRes.buildingDto.districtId = res.district.id;
+        //     this.formRes.buildingDto.streetId = res.street.id;
+        //     this.formRes.buildingDto.houseNumber = res.houseNumber;
+        //     this.ngxLoader.stopBackground();
+        //
+        //   }
+        // }, 300)
 
       }));
     }
