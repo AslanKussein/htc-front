@@ -501,9 +501,6 @@
                                     placeholder="{{ 'claim.building' | translate }}">
                                   </ng-select>
                                 </div>
-                                <div class="col-sm-2 marginleft">
-                                  <a (click)="openModal(template,'residentialComplexes');"><i style="color:green" class="fa fa-plus-circle fa-2x"></i></a>
-                                </div>
                               </div>
                             </div>
                             <div class="col-sm">
@@ -1529,7 +1526,8 @@
                       [disabled]="!this.applicationForm?.operationTypeId && !this.applicationForm?.objectTypeId">
                 <span class="fa fa-save" translate> patterns.save</span>
               </button>
-              <button type="button" class="btn btn-success btn2 float-right btn-sm" *ngIf="edit" translate>
+              <button type="button" class="btn btn-success btn2 float-right btn-sm" *ngIf="edit" translate
+                (click)="generateContract()">
                 claim.generateContract
               </button>
               <button type="button" (click)="cancel()" class="btn btn-default btn2 float-right btn-sm" translate>
