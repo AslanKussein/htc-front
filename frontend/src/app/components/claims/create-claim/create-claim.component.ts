@@ -1513,4 +1513,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       }));
     }
   }
+
+  generateContract() {
+    console.log('applicationId', this.applicationId);
+  }
 }

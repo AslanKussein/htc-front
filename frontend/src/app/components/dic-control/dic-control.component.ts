@@ -130,7 +130,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
     };
     this.formRes = {
       apartmentsOnTheSite: '',
-      "buildingDto": {
+      buildingDto: {
         cityId: null,
         districtId: null,
         houseNumber: null,
@@ -242,7 +242,6 @@ export class DicControlComponent implements OnInit, OnDestroy {
       }
     };
 
-    console.log(search)
     this.subscriptions.add(this.dicService.getDicsAllPageable(search).subscribe(res => {
       if (res != null && res.data != null) {
         this.dictionary = res.data.data;
@@ -568,4 +567,15 @@ export class DicControlComponent implements OnInit, OnDestroy {
     }
   }
 
+  showActions() {
+    let isShow = true;
+    if (this.dicName === 'District') {
+      isShow = false;
+    } else if (this.dicName === 'City') {
+      isShow = false;
+    } else if (this.dicName === 'Street') {
+      isShow = false;
+    }
+    return isShow;
+  }
 }
