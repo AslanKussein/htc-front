@@ -23,7 +23,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   subscriptions: Subscription = new Subscription();
 
   constructor(private claimService: ClaimService,
-              private util: Util,
+              public util: Util,
               private formBuilder: FormBuilder,
               private ownerService: OwnerService,
               private notification: NotificationService,

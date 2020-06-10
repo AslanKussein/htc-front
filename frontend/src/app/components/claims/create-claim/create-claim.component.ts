@@ -1032,19 +1032,17 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     } else {
       this.subscriptions.add(this.claimService.saveClaim(this.application)
         .subscribe(data => {
-          console.log('data', data);
           if (data != null) {
             this.saved = true;
             this.util.dnHref('claims')
             this.notifyService.showSuccess('success', 'Успешно сохранено');
           }
         }, err => {
-          console.log('err', err);
           this.ngxLoader.stopBackground();
-          if(err && err?.ru === 'На апартаменты с кодом казпочты Z05T8G0 и номером null создано максимальное количество заявок') {
+          if (err?.ru.includes('На апартаменты')) {
             this.modal.open(this.modalContent, {size: 'sm'});
           } else {
-            this.notifyService.showWarning('warning', err.ru);
+            this.notifyService.showWarning('warning', err?.ru);
           }
         }));
     }
