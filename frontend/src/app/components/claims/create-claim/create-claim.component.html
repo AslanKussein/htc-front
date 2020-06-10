@@ -537,7 +537,9 @@
                             <div class="col-sm"
                                  [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles)">
                               <div *ngIf="isApartment()">
-                                <label translate>Номер квартиры</label>
+                                <label translate>Номер квартиры
+                                  <span class="text-danger" *ngIf="!applicationForm.apartmentNumber">&nbsp;*</span>
+                                </label>
                                 <div class="input-group">
                                   <input type="number" min="1" class="form-control"
                                          placeholder="Номер квартиры" maxlength="20"
@@ -545,6 +547,9 @@
                                          [(ngModel)]="applicationForm.apartmentNumber"
                                          (change)="showModalChooseClaim()"
                                          formControlName="apartmentNumber"/>
+                                </div>
+                                <div *ngIf="f.apartmentNumber.touched && f.apartmentNumber.invalid" class="text-danger">
+                                  <div *ngIf="f.apartmentNumber.errors.required" translate>claim.requiredField</div>
                                 </div>
                               </div>
                             </div>
