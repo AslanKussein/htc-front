@@ -16,6 +16,7 @@ export class GeneralCharacteristicsDto {
     private playground?: boolean,//Детская площадка
     private propertyDeveloperId?: number,//"Застройщик "
     private typeOfElevatorList?: any,//Тип лифта
+    private yearOfConstruction?: any // Год постройки
   ) {
   }
 }

@@ -875,7 +875,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.parkingTypeIds,
       this.applicationForm.playground,
       this.applicationForm.propertyDeveloperId,
-      this.applicationForm.typeOfElevatorList
+      this.applicationForm.typeOfElevatorList,
+      this.applicationForm.yearOfConstruction
     )
   }
 
@@ -1045,6 +1046,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   cancel() {
+    console.log('CANCEL');
     if (this.edit) {
       this.saved = false;
       this.canDeactivate();
@@ -1081,6 +1083,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   canDeactivate(): boolean | Observable<boolean> {
+    console.log('WOWOW');
     if (!this.saved) {
       let result = confirm("Вы хотите покинуть страницу?");
       if (result) {
