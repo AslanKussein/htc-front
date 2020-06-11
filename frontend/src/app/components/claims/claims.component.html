@@ -159,7 +159,9 @@
               <td>{{getDicNameByLanguage(claim, 'district')}}</td>
               <td>{{claim.numberOfRooms}}</td>
               <td>{{claim.price}}</td>
-              <td>{{claim.paymentType[util.getDicNameByLanguage()]}}</td>
+              <td>
+                <span *ngIf="claim.paymentType">{{claim.paymentType[util.getDicNameByLanguage()]}}</span>
+              </td>
               <td>{{claim.totalArea}}</td>
               <td>{{claim.floor}}</td>
               <td>{{getDicNameByLanguage(claim, 'status')}}</td>
