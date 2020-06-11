@@ -228,7 +228,7 @@
                               placeholder="{{ 'claim.probabilityBargaining' | translate }}">
                             </ng-select>
                           </div>
-                          <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 1">
+                          <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 'true'">
                             <label for="form1" translate>claim.bidAmount</label>
                             <input type="text" class="form-control" maxlength="20"
                                    oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
@@ -241,7 +241,7 @@
                                    formControlName="theSizeOfTrades" min="0"/>
                           </div>
                         </div>
-                        <div *ngIf="applicationForm.probabilityOfBidding == 1"
+                        <div *ngIf="applicationForm.probabilityOfBidding == 'true'"
                              [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
                              util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
                              util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles) &&
