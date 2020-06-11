@@ -25,6 +25,8 @@ export class PurchaseInfoDto {
     private wheelchair?: boolean,//Колясочная
     private yardTypeId?: any,//Двор(закрытый/открытый)
     private yearOfConstructionPeriod?: Period,//год постройки
+    private atelier?: boolean, // Студия
+    private separateBathroom?: boolean // Санузел раздельный
   ) {
   }
 }

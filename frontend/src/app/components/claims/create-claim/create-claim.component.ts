@@ -612,10 +612,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.yardTypeId = data?.purchaseInfoDto?.yardTypeId;
       this.applicationForm.yearOfConstructionFrom = data?.purchaseInfoDto?.yearOfConstructionPeriod?.from;
       this.applicationForm.yearOfConstructionTo = data?.purchaseInfoDto?.yearOfConstructionPeriod?.to;
+      this.applicationForm.atelier = data?.purchaseInfoDto?.atelier;
+      this.applicationForm.separateBathroom = data?.purchaseInfoDto?.separateBathroom;
     }
     if (!this.util.isNullOrEmpty(data?.realPropertyDto)) {
       this.applicationForm.apartmentNumber = data?.realPropertyDto?.apartmentNumber;
-      this.applicationForm.atelier = this.util.toString(data?.realPropertyDto?.atelier);
+      this.applicationForm.atelier = data?.realPropertyDto?.atelier || data?.purchaseInfoDto?.atelier;
       this.applicationForm.apartmentNumber = data?.realPropertyDto?.apartmentNumber;
       this.applicationForm.balconyArea = data?.realPropertyDto?.balconyArea;
       if (!this.util.isNullOrEmpty(data?.realPropertyDto?.buildingDto)) {
@@ -655,7 +657,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.metadataStatusId = data?.realPropertyDto?.metadataStatusId;
       this.applicationForm.numberOfBedrooms = data?.realPropertyDto?.numberOfBedrooms;
       this.applicationForm.numberOfRooms = data?.realPropertyDto?.numberOfRooms;
-      this.applicationForm.separateBathroom = data?.realPropertyDto?.separateBathroom;
+      this.applicationForm.separateBathroom = data?.realPropertyDto?.separateBathroom || data?.purchaseInfoDto?.separateBathroom;
       this.applicationForm.sewerageId = data?.realPropertyDto?.sewerageId;
       this.applicationForm.totalArea = data?.realPropertyDto?.totalArea;
       if (!this.util.isNullOrEmpty(data?.realPropertyDto?.photoIdList)) {
@@ -687,7 +689,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       }, 1000);
       this.applicationForm.probabilityOfBidding = this.util.toString(data?.sellDataDto?.probabilityOfBidding);
       this.applicationForm.theSizeOfTrades = data?.sellDataDto?.theSizeOfTrades;
-      this.applicationForm.applicationFlagIdList = data?.purchaseInfoDto?.applicationFlagIdList;
+      this.applicationForm.applicationFlagIdList = data?.sellDataDto?.applicationFlagIdList;
     }
     this.loadDataFromPostApi();
     this.applicationForm.unification = 'address';
@@ -821,7 +823,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       new Period(this.applicationForm?.objectPriceFrom, this.applicationForm?.objectPriceTo),
       this.applicationForm.possibleReasonForBiddingIdList,
       this.applicationForm.applicationFlagIdList
-    )
+    );
   }
 
   fillPurchaseInfoDto() {
@@ -845,7 +847,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.typeOfElevatorList,
       this.applicationForm.wheelchair,
       this.applicationForm.yardTypeId,
-      new Period(this.applicationForm.yearOfConstructionFrom, this.applicationForm.yearOfConstructionTo)
+      new Period(this.applicationForm.yearOfConstructionFrom, this.applicationForm.yearOfConstructionTo),
+      this.applicationForm.atelier,
+      this.applicationForm.separateBathroom,
     )
   }
 
@@ -942,6 +946,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.probabilityOfBidding,
       this.applicationForm.sharedOwnershipProperty,
       this.applicationForm.theSizeOfTrades,
+      this.applicationForm.applicationFlagIdList
     )
   }
 
@@ -983,7 +988,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   submit() {
-    this.ngxLoader.startBackground();
+    // this.ngxLoader.startBackground();
     this.validate();
     this.application = new ApplicationDto();
     this.application.realPropertyDto = new RealPropertyDto();

@@ -55,7 +55,6 @@ export class Util {
     if (data) {
       const len = data.length;
       for (let i = 0; i < len; i++) {
-        console.log(data[i])
         list.push({value: data[i][idField], label: data[i].multiLang[labelField], code: data[i]['code']});
       }
     }
@@ -339,5 +338,14 @@ export class Util {
 
   numberFormat(val: any) {
     return val ? val.toLocaleString() : '';
+  }
+
+  isEmptyObject(obj: any): boolean {
+    for(const key in obj) {
+      if (obj[key]) {
+        return false;
+      }
+    }
+    return true;
   }
 }

@@ -662,7 +662,11 @@
               </td>
               <td>{{object.encumbrance?.nameRu}}</td>
               <td>{{object.priceAnalytics}}</td>
-              <td>{{object.contactsOfAgent}}</td>
+              <td>
+                <span *ngIf="object.contactsOfAgent">
+                  +7{{object.contactsOfAgent | mask: ' (000) 000-0000'}}
+                </span>
+              </td>
             </tr>
             </tbody>
           </table>
