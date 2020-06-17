@@ -481,6 +481,8 @@ export class DicControlComponent implements OnInit, OnDestroy {
 
 
   customSearchFn(term: string, item) {
+    console.log('TERM', term);
+    console.log('ITEM', item);
     let result = false;
     term = term.toLowerCase();
     if (item != null && item.label != null) {

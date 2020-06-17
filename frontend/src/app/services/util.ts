@@ -238,7 +238,7 @@ export class Util {
   }
 
   formatDate(date: any) {
-    return formatDate(date, 'dd.MM.yyyy HH:mm', 'en-US');
+    return formatDate(date, 'dd.MM.yyyy', 'en-US');
   }
 
   hasRGRole() {
