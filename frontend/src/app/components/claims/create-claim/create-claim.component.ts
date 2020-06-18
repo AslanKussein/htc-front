@@ -1059,7 +1059,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.saved = false;
       this.canDeactivate();
     }
-    this.util.dnHref('home')
+    this.util.dnHref('home');
   }
 
   showHideHeader(id: number) {
@@ -1556,9 +1556,5 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
       }));
     }
-  }
-
-  generateContract() {
-    console.log('applicationId', this.applicationId);
   }
 }
