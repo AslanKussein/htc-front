@@ -55,7 +55,7 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
 
   sortStatus() {
     this.subscriptions.add(this.newDicService.getDictionary('EventType').subscribe(res => {
-      this.appStatusesSort = res;
+      this.appStatusesSort = this.util.toSelectArray(res);
     }));
   }
 
