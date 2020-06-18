@@ -62,6 +62,8 @@ import {ruLocale} from "ngx-bootstrap/locale";
 import {AngularYandexMapsModule} from "angular8-yandex-maps";
 import { ClaimViewComponent } from './components/claims/create-claim/claim-view/claim-view.component';
 import { ContractOuComponent } from './components/claims/create-claim/contract-ou/contract-ou.component';
+import {PdfViewerModule} from "ng2-pdf-viewer";
+import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
 
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
@@ -141,7 +143,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
         }),
         NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
         NgbModule,
-        AngularYandexMapsModule
+        AngularYandexMapsModule,
+        PdfViewerModule,
+        NgxExtendedPdfViewerModule
     ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

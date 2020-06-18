@@ -1,4 +1,4 @@
-<div class="contract-form">
+<div class="contract-form" ngxUiLoaderBlurred>
   <form [formGroup]="contractForm">
     <div class="row">
       <div class="col-sm">
@@ -75,11 +75,18 @@
     </div>
   </form>
   <div>
-    <div class="actions">
+    <div class="actions mb-3">
       <button type="button" class="btn btn-primary" (click)="generateContract()">Сформировать договор</button>
       <button type="button" class="btn btn-light" (click)="skipStep()">Пропустить шаг</button>
-      <button type="button" class="btn btn-success" disabled>Распечатать</button>
+<!--      <button type="button" class="btn btn-success" disabled>Распечатать</button>-->
       <button type="button" class="btn btn-light" (click)="cancel()">Отменить</button>
     </div>
+    <ng-container *ngIf="sourcePdf">
+      <pdf-viewer
+        [src]="sourcePdf"
+        [render-text]="true"
+        style="display: block;border: 1px solid;height: 100vh;overflow: auto;width: 80%;"
+      ></pdf-viewer>
+    </ng-container>
   </div>
 </div>
