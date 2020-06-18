@@ -22,6 +22,8 @@ export class ContractOuComponent implements OnInit, OnDestroy {
   applicationId: number;
   objectTypeId: any;
   sourcePdf: any;
+  isShowPdf = false;
+  isDisabled = false;
   constructor(
     private util: Util,
     private formBuilder: FormBuilder,
@@ -37,14 +39,17 @@ export class ContractOuComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions.add(this.claimService.getClaimById(this.applicationId)
-      .subscribe(res => {
-        if (res && res.contractDto) {
-          this.fillContractForm(res.contractDto);
-        }
-        this.objectTypeId = res?.objectTypeId;
-      }
-    ));
+    if(this.applicationId) {
+      this.subscriptions.add(this.claimService.getClaimById(this.applicationId)
+        .subscribe(res => {
+            if (res && res.contractDto) {
+              this.fillContractForm(res.contractDto);
+              this.isDisabled = true;
+            }
+            this.objectTypeId = res?.objectTypeId;
+          }
+        ));
+    }
   }
   private _createForm(): void {
     this.contractForm = this.formBuilder.group({
@@ -106,6 +111,8 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.contractService.generateContract(this.contractFormDto)
       .subscribe(res => {
         if(res) {
+          this.isDisabled = true;
+          this.isShowPdf = true;
           const byteArray = new Uint8Array(atob(res).split('').map(char => char.charCodeAt(0)));
           const blob = new Blob([byteArray], {type: 'application/pdf'});
           this.sourcePdf =  window.URL.createObjectURL(blob);
@@ -117,7 +124,6 @@ export class ContractOuComponent implements OnInit, OnDestroy {
           this.ngxLoader.stopBackground();
         }
       }, err => {
-        console.log('err', err);
         this.ngxLoader.stopBackground();
       }));
   }
