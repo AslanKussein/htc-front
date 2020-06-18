@@ -62,6 +62,8 @@ import {ruLocale} from "ngx-bootstrap/locale";
 import {AngularYandexMapsModule} from "angular8-yandex-maps";
 import { ClaimViewComponent } from './components/claims/create-claim/claim-view/claim-view.component';
 import { ContractOuComponent } from './components/claims/create-claim/contract-ou/contract-ou.component';
+import {PdfViewerModule} from "ng2-pdf-viewer";
+import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
 
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
@@ -133,7 +135,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
         ToastrModule.forRoot(),
         NgxMaskModule.forRoot(options),
         MDBBootstrapModule.forRoot(),
-        AngularYandexMapsModule.forRoot('658f67a2-fd77-42e9-b99e-2bd48c4ccad4'),
+        // AngularYandexMapsModule.forRoot('658f67a2-fd77-42e9-b99e-2bd48c4ccad4'),
         ChartsModule,
         CalendarModule.forRoot({
             provide: DateAdapter,
@@ -141,7 +143,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
         }),
         NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
         NgbModule,
-        AngularYandexMapsModule
+        AngularYandexMapsModule,
+        PdfViewerModule,
+        NgxExtendedPdfViewerModule
     ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

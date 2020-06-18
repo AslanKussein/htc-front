@@ -8,6 +8,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {ContractService} from "../../../../services/contract.service";
 import {ClaimService} from "../../../../services/claim.service";
 import {ActivatedRoute} from "@angular/router";
+import {NgxUiLoaderService} from "ngx-ui-loader";
 
 @Component({
   selector: 'app-contract-ou',
@@ -20,6 +21,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
   contractForm: any;
   applicationId: number;
   objectTypeId: any;
+  sourcePdf: any;
   constructor(
     private util: Util,
     private formBuilder: FormBuilder,
@@ -27,7 +29,8 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private contractService: ContractService,
     private actRoute: ActivatedRoute,
-    private claimService: ClaimService
+    private claimService: ClaimService,
+    private ngxLoader: NgxUiLoaderService,
   ) {
     this.applicationId = Number(this.actRoute.snapshot.params.id);
     this._createForm();
@@ -97,23 +100,25 @@ export class ContractOuComponent implements OnInit, OnDestroy {
       }
     }
     if (!isValid) return;
-
+    this.ngxLoader.startBackground();
     this.fillContractDto();
 
     this.subscriptions.add(this.contractService.generateContract(this.contractFormDto)
       .subscribe(res => {
-        console.log('RES', res);
-        // let blob = new Blob([res], {type: "application/pdf"});
-        // let pdf =  URL.createObjectURL(blob);
-
-        // console.log('blob', blob);
-        // const file = new Blob([res], {type: 'application/pdf;base64'});
-        // const url = window.URL.createObjectURL(file);
-        // const link = window.document.createElement('a');
-        // link.href = url;
-        // link.setAttribute('download', 'report.pdf');
-        // window.document.body.appendChild(link);
-        // link.click();
+        if(res) {
+          const byteArray = new Uint8Array(atob(res).split('').map(char => char.charCodeAt(0)));
+          const blob = new Blob([byteArray], {type: 'application/pdf'});
+          this.sourcePdf =  window.URL.createObjectURL(blob);
+          const link = window.document.createElement('a');
+          link.href = this.sourcePdf;
+          link.setAttribute('download', 'contract.pdf');
+          window.document.body.appendChild(link);
+          link.click();
+          this.ngxLoader.stopBackground();
+        }
+      }, err => {
+        console.log('err', err);
+        this.ngxLoader.stopBackground();
       }));
   }
 
@@ -145,13 +150,14 @@ export class ContractOuComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    this.canDeactivate();
-    this.util.dnHref(localStorage.getItem('url'));
+    if(this.canDeactivate()) {
+      this.util.dnHref(localStorage.getItem('url'));
+    }
   }
 
-  canDeactivate(): void | Observable<boolean> {
+  canDeactivate(): boolean | Observable<boolean> {
     let result = confirm('Вы хотите покинуть страницу?');
-    console.log('result', result);
+    return result;
   }
 
   ngOnDestroy() {

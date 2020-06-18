@@ -15,7 +15,9 @@ export class ContractService {
   }
 
   generateContract(data: any): Observable<any> {
-    return this.http.post(`${this.configService.apiDataManagerUrl}/api/contracts/generateContract`, data)
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/contracts/generateContract`, data, {
+      responseType: 'text',
+    })
       .pipe(
         tap(),
         catchError(ContractService.handleError)

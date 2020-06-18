@@ -988,7 +988,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   submit() {
-    // this.ngxLoader.startBackground();
+    this.ngxLoader.startBackground();
     this.validate();
     this.application = new ApplicationDto();
     this.application.realPropertyDto = new RealPropertyDto();
