@@ -123,11 +123,11 @@ export class NewDicService {
   }
 
   public getResidentialComplexesPageable(search: any): Observable<any> {
-    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/api/residential-complexes/getAllPageable`, search);
+    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/open-api/residential-complexes/getAllPageable`, search);
   }
 
   public getResidentialComplexes(): Observable<any> {
-    return this.http.get(`${this.configService.apiDataManagerUrl}/api/residential-complexes`, {})
+    return this.http.get(`${this.configService.apiDataManagerUrl}/open-api/residential-complexes`, {})
       .pipe(
         tap(),
         catchError(NewDicService.handleError)
@@ -135,7 +135,7 @@ export class NewDicService {
   }
 
   public getResidentialComplexesById(id): Observable<any> {
-    return this.http.get(`${this.configService.apiDataManagerUrl}/api/residential-complexes/` + id, {})
+    return this.http.get(`${this.configService.apiDataManagerUrl}/open-api/residential-complexes/` + id, {})
       .pipe(
         tap(),
         catchError(NewDicService.handleError)
@@ -143,7 +143,7 @@ export class NewDicService {
   }
 
   public getResidentialComplexesByPostcode(postcode: string): Observable<any> {
-    return this.http.get(`${this.configService.apiDataManagerUrl}/api/residential-complexes/byPostcode/` + postcode, {})
+    return this.http.get(`${this.configService.apiDataManagerUrl}/open-api/residential-complexes/byPostcode/` + postcode, {})
       .pipe(
         tap(),
         catchError(NewDicService.handleError)
