@@ -42,7 +42,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     if(this.applicationId) {
       this.subscriptions.add(this.claimService.getClaimById(this.applicationId)
         .subscribe(res => {
-            if (res && res.contractDto) {
+            if (res && res.contractDto && res.contractDto?.applicationId) {
               this.fillContractForm(res.contractDto);
               this.isDisabled = true;
             }

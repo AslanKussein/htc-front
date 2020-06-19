@@ -50,7 +50,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
               private actRoute: ActivatedRoute,
               private util: Util) {
     this.subscriptions.add(this.authenticationService.currentUser.subscribe(x => this.currentUser = x));
-    this.clientId = this.actRoute.snapshot.params.id.slice(1, 11);
+    this.clientId = this.actRoute.snapshot.params.id;
 
     if (this.currentUser.roles != null) {
       this.agentRoles = false;

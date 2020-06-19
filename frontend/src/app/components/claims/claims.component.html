@@ -134,7 +134,7 @@
               <th>Операция</th>
               <th translate>claim.crDateFrom</th>
               <th translate>fio</th>
-              <th translate>phone</th>
+              <th width="120px" translate>phone</th>
               <th translate>e-mail</th>
               <th translate>Район</th>
               <th translate>Количество комнат</th>
@@ -154,7 +154,7 @@
               <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
               <td>{{formatDate(claim)}}</td>
               <td>{{claim.fullName}}</td>
-              <td><span *ngIf="claim.phone">+7 {{claim.phone | mask: '(000) 000-0000'}}</span></td>
+              <td width="120px"><span *ngIf="claim.phone">+7 {{claim.phone | mask: '(000) 000-0000'}}</span></td>
               <td>{{claim.email}}</td>
               <td>{{getDicNameByLanguage(claim, 'district')}}</td>
               <td>{{claim.numberOfRooms}}</td>

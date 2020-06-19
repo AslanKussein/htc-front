@@ -22,7 +22,7 @@
       <tr *ngFor="let client of clientsData;let i = index">
         <td><a [routerLink]="['/client-card/', client?.phoneNumber]">{{client.clientId}}</a></td>
         <td>{{client.fullname}}</td>
-        <td>{{client.phoneNumber}}</td>
+        <td>+7{{client.phoneNumber | mask: ' (000) 000-0000'}}</td>
         <td>{{client.target?.nameRu}}</td>
         <td>{{client.status?.nameRu}}</td>
       </tr>
