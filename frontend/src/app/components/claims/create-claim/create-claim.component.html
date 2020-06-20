@@ -584,7 +584,7 @@
                                 <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>
                               </div>
                             </div>
-<!--                            Пока убрал-->
+<!--                            Сказали пока убрать-->
 <!--                            <div class="col-sm"-->
 <!--                                 [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"-->
 <!--                                 *ngIf="isSell()">-->
@@ -647,48 +647,6 @@
                                        formControlName="numberOfRooms"/>
                                 <div *ngIf="f.numberOfRooms.touched && f.numberOfRooms.invalid" class="text-danger">
                                   <div *ngIf="f.numberOfRooms.errors.required" translate>claim.requiredField</div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_DATA', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)">
-                            <div class="row" *ngIf="isBuy()">
-                              <div class="col-sm">
-                                <label for="cadastralNumber">Кадастровый номер</label>
-                                <div class="input-group">
-                                  <input type="text" id="cadastralNumber" class="form-control"
-                                         placeholder="00:000:000"
-                                         [(ngModel)]="applicationForm.cadastralNumber" mask="00:000:000"
-                                         formControlName="cadastralNumber"
-                                         (keypress)="util.keyPress($event)"
-                                         [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
-                                  <input type="text" class="form-control"
-                                         [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber1 == null)}"
-                                         [(ngModel)]="applicationForm.cadastralNumber1" maxlength="12"
-                                         formControlName="cadastralNumber1"
-                                         placeholder=":000000000000"
-                                         (keypress)="util.keyPress($event)"
-                                         [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
-                                  <input type="text" class="form-control"
-                                         [(ngModel)]="applicationForm.cadastralNumber2" maxlength="12"
-                                         [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber2 == null)}"
-                                         formControlName="cadastralNumber2"
-                                         placeholder=":000000000000"
-                                         (keypress)="util.keyPress($event)"
-                                         [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
-                                  <input type="text" class="form-control"
-                                         [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber3 == null)}"
-                                         [(ngModel)]="applicationForm.cadastralNumber3" maxlength="12"
-                                         formControlName="cadastralNumber3"
-                                         placeholder=":000000000000"
-                                         (keypress)="util.keyPress($event)"
-                                         [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
-                                </div>
-                                <div *ngIf="f.cadastralNumber.touched && f.cadastralNumber.invalid" class="text-danger">
-                                  <div *ngIf="applicationForm.cadastralNumber != null">Длина поле кадастровый номер не
-                                    верно
-                                  </div>
                                 </div>
                               </div>
                             </div>
