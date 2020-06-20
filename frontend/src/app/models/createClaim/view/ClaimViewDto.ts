@@ -45,5 +45,15 @@ export class ClaimViewDto {
   public concierge: boolean;
   public wheelchair: boolean;
   public yardType: any;
+  public parkingTypes: any;
   public playground: boolean;
+  public city: any;
+  public street: any;
+  public fullAddress: string;
+  public residenceComplex: string;
+  public apartmentNumber: string;
+  public photoIdList: any;
+  public housingPlanImageIdList: any;
+  public virtualTourImageIdList: any;
+  public description: string;
 }
