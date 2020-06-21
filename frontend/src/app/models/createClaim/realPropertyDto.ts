@@ -10,7 +10,6 @@ export class RealPropertyDto {
     public atelier?: boolean,//Студия
     public balconyArea?: number,//Площадь балкона
     public buildingDto?: BuildingDto,//Модель здания/строения
-    public cadastralNumber?: string,//Кадастровый номер
     public floor?: number,//Этаж
     public generalCharacteristicsDto?: GeneralCharacteristicsDto,//Характеристики недвижимости
     public heatingSystemId?: number,//""Канализация"

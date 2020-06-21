@@ -248,10 +248,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       possibleReasonForBiddingIdList: [null, Validators.nullValidator],
       note: [null, Validators.nullValidator],
       description: [null, Validators.nullValidator],
-      cadastralNumber: [null, Validators.nullValidator],
-      cadastralNumber1: [null, Validators.nullValidator],
-      cadastralNumber2: [null, Validators.nullValidator],
-      cadastralNumber3: [null, Validators.nullValidator],
       propertyDeveloperId: [null, Validators.nullValidator],
       housingClass: [null, Validators.nullValidator],
       houseConditionId: [null, Validators.nullValidator],
@@ -631,7 +627,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.applicationForm.streetId = data?.realPropertyDto?.buildingDto?.streetId;
         this.applicationForm.residentialComplexId = this.util.getDictionaryValueById(this.residentialComplexes, data?.realPropertyDto?.buildingDto?.residentialComplexId);
       }
-      this.fillCadastralNumber(data?.realPropertyDto?.cadastralNumber);
       this.applicationForm.floor = data?.realPropertyDto?.floor;
       if (!this.util.isNullOrEmpty(data?.realPropertyDto?.generalCharacteristicsDto)) {
         this.applicationForm.apartmentsOnTheSite = data?.realPropertyDto?.generalCharacteristicsDto?.apartmentsOnTheSite;
@@ -693,7 +688,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     }
     this.loadDataFromPostApi();
     this.applicationForm.unification = 'address';
-    if (!this.util.isNullOrEmpty(this.applicationForm.residentialComplexId)) {
+    if (!this.util.isNullOrEmpty(this.applicationForm.residentialComplexId) && data?.realPropertyDto?.apartmentNumber) {
       this.applicationForm.unification = 'residence';
     }
   }
@@ -705,16 +700,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         }
       )
     )
-  }
-
-  fillCadastralNumber(data: string) {
-    if (!this.util.isNullOrEmpty(data)) {
-      let splited = data?.split(':');
-      this.applicationForm.cadastralNumber = this.util.nvl(splited[0], null);
-      this.applicationForm.cadastralNumber1 = this.util.nvl(splited[1], null);
-      this.applicationForm.cadastralNumber2 = this.util.nvl(splited[2], null);
-      this.applicationForm.cadastralNumber3 = this.util.nvl(splited[3], null);
-    }
   }
 
   showPhotoFull(url: any) {
@@ -903,7 +888,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.atelier,
       this.applicationForm.balconyArea,
       this.fillBuildingDto(),
-      this.setCadastralNumber(),
       this.applicationForm.floor,
       this.fillGeneralCharacteristicsDto(),
       this.applicationForm.heatingSystemId,
@@ -923,14 +907,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       photoPlanList,
       photoList,
       photo3DList
-    )
-  }
-
-  setCadastralNumber() {
-    return this.applicationForm.cadastralNumber || '' + ':' +
-           this.applicationForm.cadastralNumber1 || '' + ':' +
-           this.applicationForm.cadastralNumber2 || '' + ':' +
-           this.applicationForm.cadastralNumber3 || '';
+    );
   }
 
   fillSellDataDto() {
@@ -992,11 +969,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.validate();
     this.application = new ApplicationDto();
     this.application.realPropertyDto = new RealPropertyDto();
-    if (!this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber) && (this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber1) ||
-      this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber2) || this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber3))) {
-      this.notifyService.showError("Ошибка", "Длина поле кадастровый номер не верно");
-      this.ngxLoader.stopBackground();
-    }
 
     if (!this.util.isNullOrEmpty(this.applicationForm.parkingTypeIds)) {
       if (this.applicationForm.parkingTypeIds.indexOf("1") == 0) {
@@ -1028,26 +1000,26 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.subscriptions.add(this.claimService.updateClaim(this.applicationId, this.application)
         .subscribe(data => {
           if (data != null) {
-            this.notifyService.showSuccess('success', 'Успешно обновлено');
+            this.notifyService.showSuccess('', 'Успешно обновлено');
           }
         }, err => {
           this.ngxLoader.stopBackground();
-          this.notifyService.showWarning('warning', err);
+          this.notifyService.showWarning('', err?.ru);
         }));
     } else {
       this.subscriptions.add(this.claimService.saveClaim(this.application)
         .subscribe(data => {
           if (data != null) {
             this.saved = true;
-            this.util.dnHref('claims')
-            this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.util.dnHref('claims');
+            this.notifyService.showSuccess('', 'Успешно сохранено');
           }
         }, err => {
           this.ngxLoader.stopBackground();
           if (err?.ru.includes('На апартаменты')) {
             this.modal.open(this.modalContent, {size: 'sm'});
           } else {
-            this.notifyService.showWarning('warning', err?.ru);
+            this.notifyService.showWarning('', err?.ru);
           }
         }));
     }
@@ -1093,7 +1065,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   canDeactivate(): boolean | Observable<boolean> {
     if (!this.saved) {
       let result = confirm("Вы хотите покинуть страницу?");
-      if (result) {
+      if (result && !this.applicationId) {
         if (this.photoList.length > 0) {
           this.removePhoto(this.photoList);
         }
@@ -1181,13 +1153,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   loadMap() {
     if (!this.util.isNullOrEmpty(this.applicationForm.postcode)) {
-      let str='';
+      let str = '';
       if(!this.util.isNullOrEmpty(this.applicationForm.postcode.label)){
-         str=this.applicationForm.postcode?.label;
+         str = this.applicationForm.postcode?.label;
       }else {
-        str=this.applicationForm.postcode;
+        str = this.applicationForm.postcode;
       }
-
 
       this.modelMap.instance.search(str).then(data => {
         this.ddd.geometry.setCoordinates([data.responseMetaData.SearchResponse.Point.coordinates[1], data.responseMetaData.SearchResponse.Point.coordinates[0]])
@@ -1290,7 +1261,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.applicationForm.apartmentNumber = data?.apartmentNumber;
     this.applicationForm.atelier = data?.atelier;
     this.applicationForm.balconyArea = data?.balconyArea;
-    this.fillCadastralNumber(data?.cadastralNumber);
     this.applicationForm.floor = data?.floor;
     this.applicationForm.floor = data?.floor;
     this.applicationForm.heatingSystemId = data?.heatingSystemId;
@@ -1456,20 +1426,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
               this.applicationForm.residentialComplexId.value = data.id;
               this.applicationForm.residentialComplexId.label = data.houseName;
               this.ngxLoader.stopBackground();
-            }, 300)
-            // let interval;
-            // let timeLeft: number = 1;
-            // interval = setInterval(() => {
-            //   if (timeLeft > 0) {
-            //     timeLeft--;
-            //   } else {
-            //     this.loadDictionary();
-            //     this.applicationForm.residentialComplexId=data;
-            //     this.applicationForm.residentialComplexId.value=data.id;
-            //     this.applicationForm.residentialComplexId.label=data.houseName;
-            //     this.ngxLoader.stopBackground();
-            //   }
-            // }, 300)
+            }, 300);
           }
         }, err => {
           this.notifyService.showError('warning', err.message);
@@ -1501,17 +1458,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
           setTimeout(() => {
             this.loadDictionary();
             this.ngxLoader.stopBackground();
-          }, 300)
-          // let interval;
-          // let timeLeft: number = 1;
-          // interval = setInterval(() => {
-          //   if (timeLeft > 0) {
-          //     timeLeft--;
-          //   } else {
-          //     this.loadDictionary();
-          //     this.ngxLoader.stopBackground();
-          //     }
-          // }, 300)
+          }, 300);
         }
       }, err => {
         this.notifyService.showError('warning', err.message);
@@ -1538,22 +1485,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
           this.formRes.buildingDto.houseNumber = res.houseNumber;
           this.ngxLoader.stopBackground();
         }, 300);
-        // let interval;
-        // let timeLeft: number = 1;
-        // interval = setInterval(() => {
-        //   if (timeLeft > 0) {
-        //     timeLeft--;
-        //   } else {
-        //     this.loadDictionary();
-        //     this.formRes.buildingDto.cityId = res.city.id;
-        //     this.formRes.buildingDto.districtId = res.district.id;
-        //     this.formRes.buildingDto.streetId = res.street.id;
-        //     this.formRes.buildingDto.houseNumber = res.houseNumber;
-        //     this.ngxLoader.stopBackground();
-        //
-        //   }
-        // }, 300)
-
       }));
     }
   }
