@@ -95,6 +95,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   aboutMap: boolean = false;
   existsClient: boolean = false;
   edit: boolean = true;
+  view: boolean = true;
   filesEdited: boolean = false;
   postcode: any;
   postcode2: any;
@@ -141,7 +142,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
               private newDicService: NewDicService,
               private kazPostService: KazPostService) {
     if (this.util.isNumeric(this.actRoute.snapshot.params.id)) {
-      this.edit = false;
+      if (!this.view) {
+        this.edit = false;
+      }
       this.saved = true;
       this.applicationId = Number(this.actRoute.snapshot.params.id);
     }
@@ -315,7 +318,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       data => {
         let params = new HttpParams();
         for (const el of data.data) {
-          params = params.append('groupCodes', String(el.code))
+          if (el.code == 'APPLICATION_GROUP' || el.code == 'REAL_PROPERTY_GROUP' || el.code == 'CLIENT_GROUP') {
+            params = params.append('groupCodes', String(el.code))
+          }
         }
         this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
           this.roles = obj.data

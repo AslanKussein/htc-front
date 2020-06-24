@@ -7,6 +7,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {ClaimViewDto} from "../../../../models/createClaim/view/ClaimViewDto";
 import {OwnerService} from "../../../../services/owner.service";
 import {UploaderService} from "../../../../services/uploader.service";
+import {CreateClaimComponent} from "../create-claim.component";
 
 @Component({
   selector: 'app-claim-view',
@@ -27,6 +28,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
               private ngxLoader: NgxUiLoaderService,
               private ownerService: OwnerService,
               private uploader: UploaderService,
+              private createClaimComponent: CreateClaimComponent,
               private claimService: ClaimService) {
     this.applicationId = Number(this.actRoute.snapshot.params.id);
   }
@@ -67,6 +69,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   editApplication() {
     let result = confirm("Вы хотите редактировать заявку?");
     if (result) {
+      this.createClaimComponent.view = true;
       this.util.dnHref('create-claim/' + this.applicationId)
     }
   }

@@ -295,6 +295,7 @@ export class Util {
         }
       }
     }
+    return true;
   }
 
   hasShowApplicationGroup(operation: string, roles: any) {
@@ -305,6 +306,7 @@ export class Util {
         }
       }
     }
+    return true
   }
 
   toSelectArrayGroup(data, idField = 'id', surname = 'surname', name = 'name') {
@@ -330,6 +332,7 @@ export class Util {
         }
       }
     }
+    return true
   }
 
   keyPress(event: KeyboardEvent) {
