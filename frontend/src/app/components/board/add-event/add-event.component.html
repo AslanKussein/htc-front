@@ -4,7 +4,7 @@
       <div class="col-sm">
         <div class="row">
           <div class="col-sm">
-            <i aria-hidden="true" class="fa fa-eye fa-2x">Показ</i>
+            <i aria-hidden="true" class="fa fa-eye fa-2x">Встреча</i>
           </div>
         </div>
         <div class="row">
@@ -21,24 +21,20 @@
       <div class="col-sm">
         <div class="row">
           <div class="col-sm">
-            <label for="form7">Описание события</label>
-            <div class="md-form">
-              <textarea formControlName="description" class="md-textarea form-control" rows="1"></textarea>
-            </div>
+            <label >Описание события</label>
+              <textarea formControlName="description" class="col-sm-12 control" rows="1"></textarea>
           </div>
-          <div class="col-sm">
-            <label for="form7">ID заявки - {{boardSelect?.id}}</label>
-            <div class="md-form">
-              <textarea id="form7" class="md-textarea form-control" rows="1" readonly [value]="text"></textarea>
-            </div>
-          </div>
+<!--          <div class="col-sm">-->
+<!--            <label for="form7">ID заявки - {{boardSelect?.id}}</label>-->
+<!--            <div class="md-form">-->
+<!--              <textarea id="form7" class="md-textarea form-control" rows="1" readonly [value]="text"></textarea>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
         <div class="row">
           <div class="col-sm-12">
-            <div class="md-form">
-              <textarea formControlName="comment" class="md-textarea form-control" rows="1"></textarea>
-              <label for="form7">Комментарий</label>
-            </div>
+            <label >Комментарий</label>
+              <textarea formControlName="comment" class="col-sm-12 control" rows="1"></textarea>
           </div>
         </div>
       </div>

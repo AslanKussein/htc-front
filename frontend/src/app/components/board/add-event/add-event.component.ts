@@ -28,6 +28,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
               private formBuilder: FormBuilder,
               private notificationService: NotificationService) {
     this.boardSelect = this.board.boardSelect;
+    console.log(this.boardSelect)
     this.board.displayBoardContent = false;
     if (this.util.isNullOrEmpty(this.boardSelect)) {
       this.cancel()
