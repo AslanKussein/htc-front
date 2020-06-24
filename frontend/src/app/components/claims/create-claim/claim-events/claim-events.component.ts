@@ -85,9 +85,10 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
           obj['photoSet'] = argument.photoSet;
           obj['realPropertyId'] = argument.realPropertyId;
           obj['eventDate'] = this.util.formatDate(argument.eventDate);
-          obj['time'] = this.getTime(this.util.formatDate(argument.eventDate));
+          obj['time'] = this.getTime(argument.eventDate);
           obj['eventType'] = argument.eventType
           obj['disabledDev'] = true
+          obj['disabledDevComment'] = true
           this.eventsData.push(obj)
         }
         this.totalItems = res.data.total;
@@ -131,6 +132,7 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
   }
 
   getTime(date: any) {
+    console.log('date ', date)
     let time = {};
     time['hour'] = new Date(date).getHours();
     time['minute'] = new Date(date).getMinutes();
@@ -147,10 +149,15 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
 
   changeDisableDev(events: any, res: boolean) {
     events.disabledDev = res;
+    events.disabledDevComment = res;
   }
 
   editEvent(events: any) {
     this.changeDisableDev(events, false);
+  }
+
+  editEventComment(events: any) {
+    events.disabledDevComment = false;
   }
 
   ngOnDestroy() {
