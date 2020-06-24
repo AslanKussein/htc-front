@@ -236,10 +236,12 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.moveStatus(data);
       } else if (prevStatusId == 6 && currentStatusId == 10) { // 2.4. С "Показ *" на "Договор о задатке/авансе *"
         alert('БУДЕТ ССЫЛКА')
+      }else if (prevStatusId == 6 && currentStatusId == 7) { //NEW С "Показ *" на на "Закрытие сделки *" - обязательный статус
+        alert('БУДЕТ ССЫЛКА')
       } else if (prevStatusId == 10 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
         this.openInnerPage('board/close-deal/' + this.activeTab);
       }
-    } else if (this.activeTab == 2) {
+    } else if (this.activeTab == 2) {// воронка ПРОДАЖИ
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
         this.openInnerPage('board/add-event');
       } else if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
@@ -247,6 +249,10 @@ export class BoardComponent implements OnInit, OnDestroy {
       } else if (prevStatusId == 3 && (currentStatusId == 4 || currentStatusId == 5)) {// С "Договор на оказание услуг *" на "Фотосет", "Реклама"
         this.moveStatus(data);
       } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.4. С "Договор на оказание услуг *" на "Показ *"
+        this.moveStatus(data);
+      } else if ((prevStatusId == 4 || prevStatusId == 5) && currentStatusId == 6) {//  2.5. Фотосет" или "Реклама" на статус "Показ"
+        this.moveStatus(data);
+      } else if (prevStatusId == 5 && currentStatusId == 4) {// 2.4 NEW Заявка может переноситься со статуса "Фотосет" на статус "Реклама"
         this.moveStatus(data);
       } else if (prevStatusId == 6 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
         this.openInnerPage('board/close-deal/' + this.activeTab);
