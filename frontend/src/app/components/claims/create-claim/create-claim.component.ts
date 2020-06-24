@@ -150,7 +150,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     }
   }
 
-
   formRes = {
     apartmentsOnTheSite: '',
     buildingDto: {
@@ -304,7 +303,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     if (this.applicationId != null) {
       setTimeout(() => {
         this.loadDataById(this.applicationId);
-
       }, 1000);
     } else {
       this.ngxLoader.stopBackground();
@@ -500,6 +498,26 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     if (this.applicationId && !this.edit) return;
     this.readonlyChooseJK = !this.util.isNullOrEmpty(this.applicationForm.residentialComplexId);
     if (this.util.isNullOrEmpty(this.applicationForm.residentialComplexId)) {
+      this.applicationForm.houseNumber = null;//Номер дома
+      this.applicationForm.houseNumberFraction = null;//номер дробь
+      this.applicationForm.districtId = null;//Район
+      this.applicationForm.numberOfFloors = null;//Этажность дома
+      this.applicationForm.apartmentsOnTheSite = null;//Кв. на площадке
+      this.applicationForm.materialOfConstructionId = null;//Материал
+      this.applicationForm.yearOfConstruction = null;//Год постройки
+      this.applicationForm.typeOfElevatorList = null;//Лифт
+      this.applicationForm.concierge = null;//Консьерж
+      this.applicationForm.wheelchair = null;//Колясочная
+      this.applicationForm.parkingTypeIds = null;///Парковка
+      this.applicationForm.yardTypeId = null;//Двор
+      this.applicationForm.playground = null;//Детская площадка
+      this.applicationForm.propertyDeveloperId = null;//Затройщик
+      this.applicationForm.housingClass = null;//Класс жилья
+      this.applicationForm.houseConditionId = null;//Состояния
+      this.applicationForm.numberOfApartments = null;//Кол-во кв
+      this.applicationForm.ceilingHeight = null;//Кол-во кв
+      this.postCode = null;
+      this.applicationForm.postcode = null;
       return;
     }
     this.applicationForm.houseNumber = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.houseNumber, null);//Номер дома
