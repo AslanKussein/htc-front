@@ -8,6 +8,8 @@ import {ClaimViewDto} from "../../../../models/createClaim/view/ClaimViewDto";
 import {OwnerService} from "../../../../services/owner.service";
 import {UploaderService} from "../../../../services/uploader.service";
 import {CreateClaimComponent} from "../create-claim.component";
+import {HttpParams} from "@angular/common/http";
+import {RoleManagerService} from "../../../../services/roleManager.service";
 
 @Component({
   selector: 'app-claim-view',
@@ -22,11 +24,13 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   photoList: any[] = [];
   photoPlanList: any[] = [];
   photo3DList: any[] = [];
+  roles: any;
 
   constructor(private actRoute: ActivatedRoute,
-              private util: Util,
+              public util: Util,
               private ngxLoader: NgxUiLoaderService,
               private ownerService: OwnerService,
+              private roleManagerService: RoleManagerService,
               private uploader: UploaderService,
               private createClaimComponent: CreateClaimComponent,
               private claimService: ClaimService) {
@@ -35,6 +39,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getApplicationById();
+    this.getCheckOperationList();
   }
 
   getApplicationById() {
@@ -72,6 +77,16 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
       this.createClaimComponent.view = true;
       this.util.dnHref('create-claim/' + this.applicationId)
     }
+  }
+
+  getCheckOperationList() {
+    let params = new HttpParams();
+    params = params.append('groupCodes', String('APPLICATION_GROUP'))
+    params = params.append('groupCodes', String('REAL_PROPERTY_GROUP'))
+    params = params.append('groupCodes', String('CLIENT_GROUP'))
+    this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
+      this.roles = obj.data
+    });
   }
 
   fillPicture(guid: any, id: number) {

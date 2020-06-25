@@ -83,7 +83,7 @@
                                [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
                                          util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
                                          util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles)">
-                            <label translate>claim.operation<span class="text-danger">&nbsp;*</span></label>
+                            <label>Операция<span class="text-danger">&nbsp;*</span></label>
                             <ng-select
                               [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles) && this.applicationId"
                               [items]="operationType"
@@ -101,7 +101,7 @@
                                [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
                                          util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
                                          util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles)">
-                            <label translate>claim.objectType<span class="text-danger">&nbsp;*</span></label>
+                            <label>Тип объекта<span class="text-danger">&nbsp;*</span></label>
                             <ng-select [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles)"
                                        [items]="objectType"
                                        [(ngModel)]="applicationForm.objectTypeId"
@@ -118,7 +118,7 @@
                                util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
                                util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles) &&
                                util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles)">
-                            <label translate>claim.objectPriceInLim
+                            <label>Цена объекта (тг)
                               <span class="text-danger"
                                     *ngIf="(isBuy() && !applicationForm.objectPrice)">&nbsp;*</span>
                             </label>
@@ -159,7 +159,7 @@
                                util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
                                util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles) &&
                                util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles)">
-                            <label translate>claim.ipoteka</label>
+                            <label>Ипотека</label>
                             <ng-select
                               [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
                               [items]="dicDynamic"
@@ -172,7 +172,7 @@
                           <div class="col-sm" *ngIf="isBuy()">
                             <div
                               [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)">
-                              <label translate>claim.encumbrance</label>
+                              <label>Обременение</label>
                               <ng-select
                                 [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
                                 [items]="dicDynamic"
@@ -1241,7 +1241,7 @@
                               </fieldset>
                             </div>
                             <div class="row mb-4"
-                                 [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_OBJECT_INFO', roles)">
+                                 [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_OBJECT_INFO', roles)">
                               <div class="col-sm" *ngIf="isBuy()">
                                 <label translate>Описание</label>
                                 <textarea rows="1" class="col-sm-12 control"

@@ -312,18 +312,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   getCheckOperationList() {
-    this.subscriptions.add(this.roleManagerService.getOperations().subscribe(
-      data => {
-        let params = new HttpParams();
-        for (const el of data.data) {
-          if (el.code == 'APPLICATION_GROUP' || el.code == 'REAL_PROPERTY_GROUP' || el.code == 'CLIENT_GROUP') {
-            params = params.append('groupCodes', String(el.code))
-          }
-        }
-        this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
-          this.roles = obj.data
-        });
-      }))
+    let params = new HttpParams();
+    params = params.append('groupCodes', String('APPLICATION_GROUP'))
+    params = params.append('groupCodes', String('REAL_PROPERTY_GROUP'))
+    params = params.append('groupCodes', String('CLIENT_GROUP'))
+    this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
+      this.roles = obj.data
+    });
   }
 
   loadResidentialComplexes() {
