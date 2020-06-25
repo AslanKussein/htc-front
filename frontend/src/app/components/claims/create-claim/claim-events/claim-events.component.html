@@ -18,32 +18,32 @@
         </div>
         <div class="col-sm">
           <label for="form7">Описание события</label>
-          <textarea class="col-sm-12 control" rows="2" formControlName="description"></textarea>
+          <textarea class="col-sm-12 control" rows="1" formControlName="description"></textarea>
         </div>
         <div class="col-sm" *ngIf="eventsForm.value.eventTypeId == 1">
           <label for="form7">ID заявки - {{this.applicationId}}</label>
-          <textarea id="form7" class="col-sm-12 control" rows="2" readonly></textarea>
+          <textarea id="form7" class="col-sm-12 control" rows="1" readonly></textarea>
         </div>
       </div>
       <br/>
       <div class="row">
         <div class="col-sm-3">
-          <label for="fillFromAndTo" translate>Дата и Время:</label>
+          <label for="fillFromAndTo">Дата и Время:</label>
           <input type="text" id="fillFromAndTo" formControlName="eventDate" class="form-control" bsDatepicker
                  #ru="bsDatepicker"/>
         </div>
-        <div class="col-sm-2" style="margin: -7px;">
+        <div class="col-sm-2" style="margin: -24px;">
           <ngb-timepicker formControlName="time"></ngb-timepicker>
         </div>
         <div class="col-sm">
           <label for="form7">Комментарий</label>
-          <textarea class="col-sm-12 control" rows="2" formControlName="comment"></textarea>
+          <textarea class="col-sm-12 control" rows="1" formControlName="comment"></textarea>
         </div>
       </div>
     </div>
     <div class="row">
-      <button type="button" class="btn btn-btn btn2 btn-secondary">Закрыть</button>
-      <button type="button" class="btn btn-btn btn2 btn-success" [disabled]="!this.eventsForm.valid" (click)="save()">
+      <button type="button" class="btn btn-btn btn-sm btn2 btn-secondary">Закрыть</button>
+      <button type="button" class="btn btn-btn btn-sm btn2 btn-success" [disabled]="!this.eventsForm.valid" (click)="save()">
         Сохранить
       </button>
     </div>
@@ -75,17 +75,17 @@
             </div>
             <div class="col-sm" *ngIf="events?.eventType?.id == 1" [class.disabledDev]="events.disabledDev">
               <label for="form7">ID заявки - {{this.applicationId}}</label>
-              <textarea class="col-sm-12 control" rows="1" readonly></textarea>
+              <textarea class="col-sm-12 control" rows="2" readonly></textarea>
             </div>
             <div class="col-sm-2">
               <div class="row">
                 <div class="col-sm>">
-                  <button type="button" (click)="deleteEvent(events?.eventId)" class="btn btn-danger">
+                  <button type="button" (click)="deleteEvent(events?.eventId)" class="btn btn-sm btn-danger">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                   </button>
                 </div>
                 <div class="col-sm>">
-                  <button type="button" (click)="editEvent(events)" class="btn btn-primary">
+                  <button type="button" (click)="editEvent(events)" class="btn btn-sm btn-primary">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                   </button>
                 </div>
@@ -98,7 +98,7 @@
               <input type="text" [(ngModel)]="events.eventDate" class="form-control"
                      bsDatepicker #ru="bsDatepicker"/>
             </div>
-            <div class="col-sm-2" style="margin: -7px;" [class.disabledDev]="events.disabledDev">
+            <div class="col-sm-2" style="margin: -24px;" [class.disabledDev]="events.disabledDev">
               <ngb-timepicker [(ngModel)]="events.time"></ngb-timepicker>
             </div>
             <div class="col-sm">
@@ -109,8 +109,8 @@
                     <textarea class="col-sm-12 control" rows="2" [(ngModel)]="events.comment"></textarea>
                   </div>
                 </div>
-                <div class="col-sm">
-                  <button type="button" (click)="editEventComment(events)" class="btn btn-light">
+                <div class="col-sm-2">
+                  <button type="button" (click)="editEventComment(events)" class="btn btn-sm btn-primary">
                     <i class="fa fa-pencil" aria-hidden="true">Редактировать комментарий</i>
                   </button>
                 </div>

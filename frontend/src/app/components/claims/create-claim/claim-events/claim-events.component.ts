@@ -132,10 +132,9 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
   }
 
   getTime(date: any) {
-    console.log('date ', date)
     let time = {};
-    time['hour'] = new Date(date).getHours();
-    time['minute'] = new Date(date).getMinutes();
+    time['hour'] = new Date(date).getUTCHours();
+    time['minute'] = new Date(date).getUTCMinutes();
     return time;
   }
 

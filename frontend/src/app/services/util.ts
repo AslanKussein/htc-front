@@ -238,7 +238,11 @@ export class Util {
   }
 
   formatDate(date: any) {
-    return formatDate(date, 'dd.MM.yyyy', 'en-US');
+    return formatDate(date, 'dd.MM.yyyy HH:mm', 'en-US');
+  }
+
+  formatDateWithTimeZone(date: any) {
+    return new Date(date).toLocaleString("en-US", {timeZone: "Asia/Almaty"});
   }
 
   hasRGRole() {
