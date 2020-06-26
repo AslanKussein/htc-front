@@ -11,7 +11,7 @@
                        aria-describedby="basic-addon2" readonly>
                 <div class="input-group-append">
                   <button type="button" class="btn btn-sm btn-outline-primary" (click)="editApplication()">
-                    Редактировать
+                    <i class="fa fa-edit" aria-hidden="true"></i>
                   </button>
                 </div>
               </div>
@@ -24,7 +24,7 @@
           <legend class="scheduler-border">ID агента</legend>
           <div class="row">
             <div class="col-sm">
-              <input type="text" class="form-control text-uppercase" readonly [value]="claimViewDto.agent"/>
+              <input type="text" class="form-control text-uppercase" readonly [value]="agentFullName"/>
             </div>
           </div>
         </fieldset>
@@ -242,7 +242,7 @@
                         <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
                                [(ngModel)]="claimViewDto.floor"/>
                       </div>
-                      <div class="col-sm" *ngIf="!claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)">
+                      <div class="col-sm" *ngIf="!claimViewDto.isSell && isAuthor" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)">
                         <label>Номер квартиры</label>
                         <input type="text" class="form-control" readonly
                                [(ngModel)]="claimViewDto.apartmentNumber"/>
@@ -364,15 +364,33 @@
                             <input type="text" class="form-control" readonly
                                    [value]="getDicNameByLanguage(claimViewDto, 'district')"/>
                           </div>
-                          <div class="col-sm" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
-                            <label>Этажность</label>
-                            <input type="text" class="form-control" readonly [(ngModel)]="claimViewDto.numberOfFloors"/>
+                          <div class="col-sm" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
+                                util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                            <label>Этажность дома</label>
+                            <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                              <input type="text" class="form-control"
+                                     [(ngModel)]="claimViewDto.numberOfFloorsPeriod.from"
+                                     mask="separator" thousandSeparator=" " readonly/>
+                              <input type="text" class="form-control"
+                                     [(ngModel)]="claimViewDto.numberOfFloorsPeriod.to"
+                                     mask="separator" thousandSeparator=" " readonly/>
+                            </div>
+                            <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                                   [(ngModel)]="claimViewDto.numberOfFloors" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
                           </div>
                           <div class="col-sm" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
                                 util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                             <label>Кв. на площадке</label>
-                            <input type="text" class="form-control" readonly
-                                   [value]="claimViewDto.apartmentsOnTheSite"/>
+                            <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                              <input type="text" class="form-control"
+                                     [(ngModel)]="claimViewDto.apartmentsOnTheSitePeriod.from"
+                                     mask="0000" readonly/>
+                              <input type="text" class="form-control"
+                                     [(ngModel)]="claimViewDto.apartmentsOnTheSitePeriod.to"
+                                     mask="0000" readonly/>
+                            </div>
+                            <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                                   [(ngModel)]="claimViewDto.apartmentsOnTheSite" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
                           </div>
                         </div>
                         <div class="row">
@@ -385,8 +403,16 @@
                           <div class="col-sm" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
                                    util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                             <label>Год постройки</label>
-                            <input type="text" class="form-control" readonly
-                                   [(ngModel)]="claimViewDto.yearOfConstruction"/>
+                            <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                              <input type="text" class="form-control"
+                                     [(ngModel)]="claimViewDto.yearOfConstructionPeriod.from"
+                                     mask="0000" readonly/>
+                              <input type="text" class="form-control"
+                                     [(ngModel)]="claimViewDto.yearOfConstructionPeriod.to"
+                                     mask="0000" readonly/>
+                            </div>
+                            <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                                   [(ngModel)]="claimViewDto.yearOfConstruction" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
                           </div>
                           <div class="col-sm" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
                                    util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
@@ -474,22 +500,21 @@
             <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
               <div class="card-body">
                 <div class="row">
-                  <div class="col-sm-6">
+                  <div class="col-sm">
                     <div class="row">
-                      <div class="row">
                         <div class="col-sm" *ngIf="photoList.length > 0">
                           <fieldset class="scheduler-border col-sm">
                             <legend class="scheduler-border " translate>Фото объекта<br/>
                               <span class="badge badge-danger ml-2">{{photoList.length}}</span>
                             </legend>
                             <div id="photoCarousel" class="carousel slide" data-ride="carousel"
-                                 style="width: 302px;">
+                                 style="width: 350px;">
 
                               <div class="carousel-inner">
                                 <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                      *ngFor="let photo of photoList;let i = index">
                                   <div class="container">
-                                    <img [src]="photo.image" alt="First Slide" class="photoList" width="302"
+                                    <img [src]="photo.image" alt="First Slide" class="photoList" width="350"
                                          height="320">
                                   </div>
                                 </div>
@@ -509,11 +534,11 @@
                               <span class="badge badge-danger ml-2">{{photoPlanList.length}}</span>
                             </legend>
                             <div id="photoPlanList" class="carousel slide" data-ride="carousel"
-                                 style="width: 302px;">
+                                 style="width: 350px;">
                               <div class="carousel-inner">
                                 <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                      *ngFor="let plan of photoPlanList;let i = index">
-                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="302"
+                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="350"
                                        height="320">
                                 </div>
                               </div>
@@ -533,11 +558,11 @@
                               <span class="badge badge-danger ml-2">{{photo3DList.length}}</span>
                             </legend>
                             <div id="photo3DList" class="carousel slide" data-ride="carousel"
-                                 style="width: 302px;">
+                                 style="width: 350px;">
                               <div class="carousel-inner">
                                 <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                      *ngFor="let plan of photo3DList;let i = index">
-                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="302"
+                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="350"
                                        height="320">
                                 </div>
                               </div>
@@ -551,9 +576,7 @@
                           </fieldset>
                         </div>
                       </div>
-                    </div>
                   </div>
-                  <div class="col-sm-6"></div>
                 </div>
               </div>
             </div>

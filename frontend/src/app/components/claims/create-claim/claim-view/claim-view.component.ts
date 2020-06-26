@@ -10,6 +10,7 @@ import {UploaderService} from "../../../../services/uploader.service";
 import {CreateClaimComponent} from "../create-claim.component";
 import {HttpParams} from "@angular/common/http";
 import {RoleManagerService} from "../../../../services/roleManager.service";
+import {UserService} from "../../../../services/user.service";
 
 @Component({
   selector: 'app-claim-view',
@@ -20,16 +21,19 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   applicationId: number;
   claimViewDto: ClaimViewDto;
   subscriptions: Subscription = new Subscription();
-  clientFullName: string;
+  clientFullName: string = "";
+  agentFullName: string = "";
   photoList: any[] = [];
   photoPlanList: any[] = [];
   photo3DList: any[] = [];
   roles: any;
+  isAuthor: boolean = false;
 
   constructor(private actRoute: ActivatedRoute,
               public util: Util,
               private ngxLoader: NgxUiLoaderService,
               private ownerService: OwnerService,
+              private userService: UserService,
               private roleManagerService: RoleManagerService,
               private uploader: UploaderService,
               private createClaimComponent: CreateClaimComponent,
@@ -50,6 +54,11 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
         this.claimService.getApplicationViewById(this.applicationId).subscribe(res => {
           this.claimViewDto = res;
           this.searchByPhone(res.clientLogin);
+          this.searchByLoginAgent(res.agent);
+          if (this.util.getCurrentUser().login == res.agent) {
+            this.isAuthor = true;
+          }
+
           if (!this.util.isNullOrEmpty(this.claimViewDto?.photoIdList)) {
             for (const ph of this.claimViewDto.photoIdList) {
               this.fillPicture(ph, 1);
@@ -113,6 +122,15 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.ownerService.searchByPhone(login)
       .subscribe(res => {
           this.clientFullName = res.id + ' (' + res.surname + ' ' + res.firstName + ' ' + (res.patronymic ? res.patronymic : ' ') + ')';
+        }
+      ));
+  }
+
+  searchByLoginAgent(login: string) {
+    if (this.util.isNullOrEmpty(login)) return;
+    this.subscriptions.add(this.userService.findAgentByLogin(login)
+      .subscribe(res => {
+          this.agentFullName = res.id + ' (' + res.surname + ' ' + res.name + ' ' + (res.patronymic ? res.patronymic : ' ') + ')';
         }
       ));
   }
