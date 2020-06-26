@@ -1,5 +1,4 @@
 import {BaseEntity} from './baseEntity';
-import {ClientDto} from './createClaim/clientDto';
 
 /**
  * Модель краткой формы events
