@@ -10,7 +10,21 @@ import {
 import {CustomDateFormatter} from './customDateFormatter';
 import {EventsService} from "../../../services/events.service";
 import {Util} from "../../../services/util";
-import {SearchCommon} from "../../../models/common/search.common";
+
+const colors: any = {
+  blue: {
+    primary: '#0f42d9',
+    secondary: '#0c2878',
+  },
+  yellow: {
+    primary: '#eec406',
+    secondary: '#a88a00',
+  },
+  green: {
+    primary: '#519012',
+    secondary: '#06e748',
+  },
+};
 
 @Component({
   selector: 'app-calendar',
@@ -34,13 +48,8 @@ export class CalendarComponent implements OnInit {
   view: CalendarView = CalendarView.Month;
 
   refresh: Subject<any> = new Subject();
-  searchCommon: SearchCommon;
 
-  viewDate: Date = new Date();
-
-  modalData: {
-    event: CalendarEvent;
-  };
+  viewDate: Date = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
 
   eventsData = [];
   totalItems = 0;
@@ -48,7 +57,6 @@ export class CalendarComponent implements OnInit {
   currentPage = 1;
   date: any;
 
-  activeDayIsOpen: boolean = false;
 
   constructor(private modal: NgbModal,
               private eventsService: EventsService,
@@ -60,8 +68,6 @@ export class CalendarComponent implements OnInit {
   }
 
   handleEvent(event: CalendarEvent) {
-    // this.util.dnHref('')
-    // this.modalData = {event};
     this.modal.open(this.modalContent, {size: 'lg'});
   }
 
@@ -101,14 +107,18 @@ export class CalendarComponent implements OnInit {
   getEventForCalendar() {
     let searchParams = {};
     searchParams['from'] = this.viewDate;
-    searchParams['to'] = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 0);
+    searchParams['to'] = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 1);
     this.eventsService.getEventsForCalendar(searchParams).subscribe(obj => {
       if (!this.util.isNullOrEmpty(obj.data)) {
         this.events = [];
+        let color2: {
+          primary: '#eec406',
+          secondary: '#a88a00',
+        }
         obj.data.data.forEach(e => {
           let data = {
-            start: subDays(startOfDay(new Date(e.eventDate)), 1),
-            end: subDays(startOfDay(new Date(e.eventDate)), 1),
+            start: subDays(startOfDay(new Date(e.eventDate)), 0),
+            end: subDays(startOfDay(new Date(e.eventDate)), 0),
             title: e.eventType.name[this.util.getDicNameByLanguage()],
             color: this.getColorsByStatusId(e.eventType.id),
             allDay: true,
@@ -123,37 +133,13 @@ export class CalendarComponent implements OnInit {
   getColorsByStatusId(statusId: number) {
     switch (statusId) {
       case 1:
-        let color: {
-          primary: '#ad2121',
-          secondary: '#FAE3E3',
-        }
-        return color;
+        return colors.blue;
       case 2:
-        let color2: {
-          primary: '#e3bc08',
-          secondary: '#FDF1BA',
-        }
-        return color2;
+        return colors.yellow;
       case 3:
-      case 4:
-      case 5:
-      case 6:
-      case 7:
-      case 8:
-      case 9:
-      case 10:
+        return colors.green;
     }
-    /*
-        "id": 1, Первичный контакт
-        "id": 2 Встреча,
-        "id": 3 Договор на оказание услуг,
-        "id": 4 Реклама,
-        "id": 5 Фотосет,
-        "id": 6 Показ,
-        "id": 7 Закрытие сделки,
-        "id": 8 Успешно,
-        "id": 9 Завершен,
-        "id": 34 Договор о задатке/авансе,
-    */
+    //1 показ 2 звонок 3 встреча
+    //Просил цвета на отметки: синий – показ, зеленый – встреча, желтый – звонок.
   }
 }

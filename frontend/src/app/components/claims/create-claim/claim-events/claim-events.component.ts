@@ -29,6 +29,7 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
   itemsPerPage = 3;
   currentPage = 1;
   eventsDTO: EventsDTO;
+  commentDev: boolean = true;
 
   constructor(private util: Util,
               private formBuilder: FormBuilder,
@@ -66,6 +67,7 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
   }
 
   getEventsByApplicationId(pageNo: number) {
+    this.eventsData = [];
     if (!this.applicationId) {
       return
     }
@@ -93,6 +95,7 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
         }
         this.totalItems = res.data.total;
         this.currentPage = res.data.pageNumber + 1;
+
       }
     }));
   }
@@ -101,13 +104,22 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
     if (!this.util.isNullOrEmpty(this.eventsForm.value.time)) {
       this.eventsForm.value.eventDate.setHours(this.eventsForm.value.time.hour);
       this.eventsForm.value.eventDate.setMinutes(this.eventsForm.value.time.minute);
+      console.log(1)
     }
   }
 
   save() {
     this.setDateTime();
+    setTimeout(() => {
+      this.dnSave();
+    }, 1000);
+  }
+
+  dnSave() {
     this.subscriptions.add(this.eventsService.addEvent(this.eventsForm.value).subscribe(res => {
-      this.eventsService.putCommentEvent(res, this.eventsForm.value.comment).subscribe();
+      if (!this.util.isNullOrEmpty(this.eventsForm.value.comment)) {
+        this.eventsService.putCommentEvent(res, this.eventsForm.value.comment).subscribe();
+      }
       this.notificationService.showSuccess('Информация', 'Событие добавлено');
       this.getEventsByApplicationId(1);
     }))
@@ -133,8 +145,8 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
 
   getTime(date: any) {
     let time = {};
-    time['hour'] = new Date(date).getUTCHours();
-    time['minute'] = new Date(date).getUTCMinutes();
+    time['hour'] = new Date(date).getHours();
+    time['minute'] = new Date(date).getMinutes();
     return time;
   }
 
@@ -157,6 +169,10 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
 
   editEventComment(events: any) {
     events.disabledDevComment = false;
+  }
+
+  unBlock() {
+    this.commentDev = false;
   }
 
   ngOnDestroy() {

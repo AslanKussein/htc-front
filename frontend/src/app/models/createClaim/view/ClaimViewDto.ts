@@ -33,6 +33,9 @@ export class ClaimViewDto {
   public ceilingHeightPeriod: Period;
   public ceilingHeight: number;
   public numberOfBedroomsPeriod: Period;
+  public numberOfFloorsPeriod: Period;
+  public yearOfConstructionPeriod: Period;
+  public apartmentsOnTheSitePeriod: Period;
   public numberOfBedrooms: number;
   public atelier: boolean;
   public separateBathroom: boolean;

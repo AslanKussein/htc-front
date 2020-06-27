@@ -11,7 +11,7 @@
             placeholder="{{ 'patterns.chooseElement' | translate }}">
           </ng-select>
         </div>
-        <div class="col-sm-2" style="margin: -7px;">
+        <div class="col-sm-2">
           <i aria-hidden="true" *ngIf="eventsForm.value.eventTypeId == 1" class="fa fa-eye fa-2x">Показ</i>
           <i aria-hidden="true" *ngIf="eventsForm.value.eventTypeId == 2" class="fa fa-phone fa-2x">Звонок</i>
           <i aria-hidden="true" *ngIf="eventsForm.value.eventTypeId == 3" class="fa fa-handshake-o fa-2x">Встреча</i>
@@ -24,25 +24,30 @@
           <label for="form7">ID заявки - {{this.applicationId}}</label>
           <textarea id="form7" class="col-sm-12 control" rows="1" readonly></textarea>
         </div>
+        <div class="col-sm-1"></div>
       </div>
-      <br/>
       <div class="row">
         <div class="col-sm-3">
           <label for="fillFromAndTo">Дата и Время:</label>
           <input type="text" id="fillFromAndTo" formControlName="eventDate" class="form-control" bsDatepicker
                  #ru="bsDatepicker"/>
         </div>
-        <div class="col-sm-2" style="margin: -24px;">
+        <div class="col-sm-2" style="margin-top: -26px;">
           <ngb-timepicker formControlName="time"></ngb-timepicker>
         </div>
-        <div class="col-sm">
+        <div class="col-sm" [class.disabledDev]="commentDev">
           <label for="form7">Комментарий</label>
           <textarea class="col-sm-12 control" rows="1" formControlName="comment"></textarea>
+        </div>
+        <div class="col-sm-1">
+          <button type="button" *ngIf="commentDev" (click)="unBlock()" class="btn btn-sm btn-primary">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
         </div>
       </div>
     </div>
     <div class="row">
-      <button type="button" class="btn btn-btn btn-sm btn2 btn-secondary">Закрыть</button>
+<!--      <button type="button" class="btn btn-btn btn-sm btn2 btn-secondary">Закрыть</button>-->
       <button type="button" class="btn btn-btn btn-sm btn2 btn-success" [disabled]="!this.eventsForm.valid" (click)="save()">
         Сохранить
       </button>
@@ -55,7 +60,6 @@
           <br/>
           <div class="row">
             <div class="col-sm-2">
-              <label>Добавить событие</label>
               <ng-select
                 readonly="true"
                 [items]="appStatusesSort"
@@ -64,7 +68,7 @@
                 placeholder="{{ 'patterns.chooseElement' | translate }}">
               </ng-select>
             </div>
-            <div class="col-sm-2" style="margin: -7px;">
+            <div class="col-sm-2">
               <i aria-hidden="true" *ngIf="events.eventType?.id == 1" class="fa fa-eye fa-2x">Показ</i>
               <i aria-hidden="true" *ngIf="events.eventType?.id == 2" class="fa fa-phone fa-2x">Звонок</i>
               <i aria-hidden="true" *ngIf="events.eventType?.id == 3" class="fa fa-handshake-o fa-2x">Встреча</i>
@@ -98,20 +102,20 @@
               <input type="text" [(ngModel)]="events.eventDate" class="form-control"
                      bsDatepicker #ru="bsDatepicker"/>
             </div>
-            <div class="col-sm-2" style="margin: -24px;" [class.disabledDev]="events.disabledDev">
+            <div class="col-sm-2" style="margin-top: -26px;" [class.disabledDev]="events.disabledDev">
               <ngb-timepicker [(ngModel)]="events.time"></ngb-timepicker>
             </div>
             <div class="col-sm">
               <div class="row">
-                <div class="col-sm-10" [class.disabledDev]="events.disabledDevComment">
+                <div class="col-sm-9" [class.disabledDev]="events.disabledDevComment">
                   <label>Комментарий</label>
                   <div class="input-group">
                     <textarea class="col-sm-12 control" rows="2" [(ngModel)]="events.comment"></textarea>
                   </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm">
                   <button type="button" (click)="editEventComment(events)" class="btn btn-sm btn-primary">
-                    <i class="fa fa-pencil" aria-hidden="true">Редактировать комментарий</i>
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
                   </button>
                 </div>
               </div>
@@ -119,8 +123,8 @@
           </div>
         </div>
         <div class="row" *ngIf="!events.disabledDev || !events.disabledDevComment">
-          <button type="button" class="btn btn-btn btn2 btn-secondary" (click)="this.changeDisableDev(events, true)">Отмена</button>
-          <button type="button" class="btn btn-btn btn2 btn-success" (click)="update(events)">
+          <button type="button" class="btn btn-sm btn2 btn-secondary" (click)="this.changeDisableDev(events, true)">Отмена</button>
+          <button type="button" class="btn btn-sm btn2 btn-success" (click)="update(events)">
             Сохранить
           </button>
         </div>

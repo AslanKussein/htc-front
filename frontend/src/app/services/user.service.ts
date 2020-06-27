@@ -24,6 +24,13 @@ export class UserService {
     );
   }
 
+  findAgentByLogin(login: string): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/users/info?locale=RU&login=` + login, {}).pipe(
+      tap(),
+      catchError(UserService.handleError)
+    );
+  }
+
   /**
    * getAgents
    */
