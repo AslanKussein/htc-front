@@ -119,6 +119,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     if (!isValid) return;
     this.ngxLoader.startBackground();
     this.fillContractDto();
+    const iframe = window.document.getElementById('pdfIframe');
     this.subscriptions.add(this.contractService.generateContract(this.contractFormDto)
       .subscribe(res => {
         if(res) {
@@ -127,11 +128,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
           const byteArray = new Uint8Array(atob(res).split('').map(char => char.charCodeAt(0)));
           const blob = new Blob([byteArray], {type: 'application/pdf'});
           this.sourcePdf =  window.URL.createObjectURL(blob);
-          const link = window.document.createElement('a');
-          link.href = this.sourcePdf;
-          link.setAttribute('download', 'contract.pdf');
-          window.document.body.appendChild(link);
-          link.click();
+          iframe.setAttribute('src', this.sourcePdf);
           this.ngxLoader.stopBackground();
         }
       }, err => {

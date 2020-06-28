@@ -1,3 +1,9 @@
 .contract-form {
   height: 100%;
+  .root {
+    height: 100vh;
+    iframe {
+      height: 100vh;
+    }
+  }
 }
