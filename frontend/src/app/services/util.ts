@@ -20,6 +20,10 @@ export class Util {
     this.router.navigate([href]);
   }
 
+  dnHrefParam(href, param) {
+    this.router.navigate([href], { queryParams: { activeTab: param, fromBoard: true } });
+  }
+
   navigateByUrl(href) {
     this.router.navigateByUrl(href);
   }

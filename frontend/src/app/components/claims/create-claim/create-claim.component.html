@@ -4,26 +4,25 @@
       <div class="col-sm">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" id="fillClaims-tab" data-toggle="tab" href="#fillClaims" role="tab"
-               aria-controls="fillClaims"
-               aria-selected="true" translate> claim.title</a>
+            <a class="nav-link" [ngClass]="{ 'active':activeTab === 'claim'}" id="fillClaims-tab" data-toggle="tab" href="#fillClaims" role="tab"
+               aria-controls="fillClaims" (click)="changeTab('claim')"
+               aria-selected="true" > Заявки</a>
           </li>
           <li class="nav-item" *ngIf="this.applicationId">
-            <a class="nav-link" id="contractOU-tab" data-toggle="tab" href="#contractOU" role="tab"
-               aria-controls="contractOU"
-               aria-selected="false" translate>claim.contractOU</a>
+            <a class="nav-link" [ngClass]="{ 'active':activeTab === 'ou'}" id="contractOU-tab" data-toggle="tab" href="#contractOU" role="tab"
+               aria-controls="contractOU" (click)="changeTab('ou')"
+               aria-selected="false" >Договор ОУ</a>
           </li>
           <li class="nav-item" *ngIf="this.applicationId">
-            <a class="nav-link" id="impressions-tab" data-toggle="tab" href="#impressions" role="tab"
-               aria-controls="impressions"
-               aria-selected="false" translate>claim.impressions</a>
+            <a class="nav-link" [ngClass]="{ 'active':activeTab === 'events'}" id="impressions-tab" data-toggle="tab" href="#impressions" role="tab"
+               aria-controls="impressions" (click)="changeTab('events')"
+               aria-selected="false" >События</a>
           </li>
         </ul>
       </div>
     </div>
-
     <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" [formGroup]="applicationForm" id="fillClaims"
+      <div class="tab-pane fade" [ngClass]="activeTab == 'claim' ? 'active show' : ''" [formGroup]="applicationForm" id="fillClaims"
            role="tabpanel" aria-labelledby="fillClaims-tab">
         <div class="card-body">
           <div class="row">
@@ -1488,12 +1487,11 @@
             </div>
           </div>
         </div>
-
       </div>
-      <div class="tab-pane fade" id="contractOU" role="tabpanel" aria-labelledby="contractOU-tab">
+      <div class="tab-pane fade" id="contractOU" [ngClass]="activeTab == 'ou' ? 'active show' : ''" role="tabpanel" aria-labelledby="contractOU-tab">
         <app-contract-ou></app-contract-ou>
       </div>
-      <div class="tab-pane fade" id="impressions" role="tabpanel" aria-labelledby="impressions-tab">
+      <div class="tab-pane fade" id="impressions" [ngClass]="activeTab == 'events' ? 'active show' : ''" role="tabpanel" aria-labelledby="impressions-tab">
         <app-claim-events></app-claim-events>
       </div>
     </div>

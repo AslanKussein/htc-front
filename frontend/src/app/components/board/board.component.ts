@@ -9,6 +9,9 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {UserService} from "../../services/user.service";
 import {Subscription} from "rxjs";
 import {NewDicService} from "../../services/new.dic.service";
+import {ContractOuComponent} from "../claims/create-claim/contract-ou/contract-ou.component";
+import {RouterExtService} from "../../helpers/RouterExtService";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-board',
@@ -38,7 +41,12 @@ export class BoardComponent implements OnInit, OnDestroy {
               private notificationService: NotificationService,
               private ngxLoader: NgxUiLoaderService,
               private newDicService: NewDicService,
+              private router: Router,
+              private actRoute: ActivatedRoute,
               private userService: UserService) {
+    if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
+      this.activeTab = parseInt(this.actRoute.snapshot.queryParamMap.get('activeTab'));
+    }
   }
 
   ngOnInit(): void {
@@ -142,6 +150,11 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.appStatusesSort.push(m)
     }
     this.getBoardData(tab, ids);
+    this.router.navigate([], {
+      queryParams: {
+        activeTab: tab
+      }
+    });
   }
 
   getBgColorBySumm(price: number) {
@@ -231,7 +244,8 @@ export class BoardComponent implements OnInit, OnDestroy {
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
         this.openInnerPage('board/add-event');
       } else if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
-        alert('create dogovor')
+        this.util.dnHrefParam('create-claim/' + item.id, 'ou');
+        return;
       } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.3. С "Договор на оказание услуг *" на "Показ *"
         this.moveStatus(data);
       } else if (prevStatusId == 6 && currentStatusId == 10) { // 2.4. С "Показ *" на "Договор о задатке/авансе *"
@@ -245,7 +259,8 @@ export class BoardComponent implements OnInit, OnDestroy {
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
         this.openInnerPage('board/add-event');
       } else if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
-        alert('create dogovor')
+        this.util.dnHrefParam('create-claim/' + item.id, 'ou');
+        return;
       } else if (prevStatusId == 3 && (currentStatusId == 4 || currentStatusId == 5)) {// С "Договор на оказание услуг *" на "Фотосет", "Реклама"
         this.moveStatus(data);
       } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.4. С "Договор на оказание услуг *" на "Показ *"

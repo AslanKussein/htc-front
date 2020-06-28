@@ -16,7 +16,7 @@ import {RealPropertyDto} from "../../../models/createClaim/realPropertyDto";
 import {ClientDto} from "../../../models/createClaim/clientDto";
 import {PurchaseInfoDto} from "../../../models/createClaim/purchaseInfoDto";
 import {Period} from "../../../models/common/period";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {RoleManagerService} from "../../../services/roleManager.service";
 import {HttpParams} from "@angular/common/http";
@@ -99,7 +99,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   filesEdited: boolean = false;
   postcode: any;
   postcode2: any;
-  dicName:string;
+  dicName: string;
+  activeTab = 'claim';
 
   public parameters = {
     options: {
@@ -139,6 +140,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
               private userService: UserService,
               private dicService: DicService,
               private modal: NgbModal,
+              private router: Router,
               private newDicService: NewDicService,
               private kazPostService: KazPostService) {
     if (this.util.isNumeric(this.actRoute.snapshot.params.id)) {
@@ -147,6 +149,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       }
       this.saved = true;
       this.applicationId = Number(this.actRoute.snapshot.params.id);
+    }
+    if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
+      this.activeTab = this.actRoute.snapshot.queryParamMap.get('activeTab');
     }
   }
 
@@ -1483,11 +1488,16 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.modalRef.hide();
         this.clearForm();
       }));
-
-
     }
   }
 
+  changeTab(activeTab){
+    this.router.navigate([], {
+      queryParams: {
+        activeTab: activeTab
+      }
+    });
+  }
 
   checkPostData2() {
     if (!this.util.isNullOrEmpty(this.postcode2?.fullAddress)) {
