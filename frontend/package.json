@@ -1,6 +1,6 @@
 {
   "name": "htc",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config  proxy.conf.json --host htc.dilau.kz --port 80",

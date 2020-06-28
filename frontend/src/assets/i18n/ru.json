@@ -52,7 +52,9 @@
       "contractNumber": "Номер договора",
       "postcode": "Полный адрес",
       "apartmentNumber": "Номер квартиры",
-      "objectTypeId": "Тип объекта"
+      "objectTypeId": "Тип объекта",
+      "contractTypeId": "Тип договора",
+      "contractSum": "Сумма по договору"
     },
     "title": "Заявки",
     "step": "Шаг",

@@ -9,6 +9,7 @@ import {ContractService} from "../../../../services/contract.service";
 import {ClaimService} from "../../../../services/claim.service";
 import {ActivatedRoute} from "@angular/router";
 import {NgxUiLoaderService} from "ngx-ui-loader";
+import {NewDicService} from "../../../../services/new.dic.service";
 
 @Component({
   selector: 'app-contract-ou',
@@ -24,6 +25,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
   sourcePdf: any;
   isShowPdf = false;
   isDisabled = false;
+  contractTypes: any[];
   constructor(
     private util: Util,
     private formBuilder: FormBuilder,
@@ -33,12 +35,27 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     private actRoute: ActivatedRoute,
     private claimService: ClaimService,
     private ngxLoader: NgxUiLoaderService,
+    private newDicService: NewDicService,
   ) {
     this.applicationId = Number(this.actRoute.snapshot.params.id);
     this._createForm();
   }
 
   ngOnInit(): void {
+    this.getContractForm();
+    this.getContractType();
+  }
+  private _createForm(): void {
+    this.contractForm = this.formBuilder.group({
+      contractNumber: [null, Validators.required],
+      contractPeriod: [null, Validators.required],
+      contractSum: [null, Validators.required],
+      commission: [null, Validators.required],
+      contractTypeId: [null, Validators.required],
+    });
+  }
+
+  getContractForm(): void {
     if(this.applicationId) {
       this.subscriptions.add(this.claimService.getClaimById(this.applicationId)
         .subscribe(res => {
@@ -51,22 +68,18 @@ export class ContractOuComponent implements OnInit, OnDestroy {
         ));
     }
   }
-  private _createForm(): void {
-    this.contractForm = this.formBuilder.group({
-      contractNumber: [null, Validators.required],
-      contractPeriod: [null, Validators.required],
-      contractSum: [null, Validators.required],
-      commission: [null, Validators.required],
-      isExclusive: [false, Validators.nullValidator],
-      guid: ['test', Validators.nullValidator]
-    });
+
+  getContractType(): void {
+    this.subscriptions.add(this.newDicService.getDictionary('ContractType').subscribe(res => {
+      this.contractTypes = this.util.toSelectArray(res);
+    }));
   }
 
   fillContractForm(data: any): void {
     this.contractForm.contractNumber = data?.contractNumber;
     this.contractForm.contractSum = data?.contractSum;
-    this.contractForm.isExclusive = data?.isExclusive ? true : false;
-    this.contractForm.contractPeriod = data?.contractPeriod ? this.util.formatDate(data?.contractPeriod) : null;
+    this.contractForm.contractTypeId = data?.contractTypeId;
+    this.contractForm.contractPeriod = new Date(data?.contractPeriod);
     this.contractForm.commission = data?.commission;
   }
 
@@ -77,8 +90,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
       this.contractForm.value.contractPeriod,
       this.contractForm.value.contractSum,
       this.contractForm.value.commission,
-      this.contractForm.value.isExclusive,
-      this.contractForm.value.guid
+      this.contractForm.value.contractTypeId,
     );
   }
 
@@ -98,8 +110,8 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     const controls = this.contractForm.controls;
     for (const name in controls) {
       if (controls[name].invalid) {
-        this.translate.get('validator.' + name).subscribe((field: string) => {
-          this.notifyService.showWarning('Внимание','Поле ' + field + ' не заполнено!');
+        this.translate.get('claims.validator.' + name).subscribe((field: string) => {
+          this.notifyService.showWarning('Внимание',`Поле ${field} не заполнено!`);
         });
         isValid = false;
       }
@@ -107,7 +119,6 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     if (!isValid) return;
     this.ngxLoader.startBackground();
     this.fillContractDto();
-
     this.subscriptions.add(this.contractService.generateContract(this.contractFormDto)
       .subscribe(res => {
         if(res) {
@@ -124,6 +135,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
           this.ngxLoader.stopBackground();
         }
       }, err => {
+        this.notifyService.showError('', err?.ru);
         this.ngxLoader.stopBackground();
       }));
   }
@@ -133,24 +145,10 @@ export class ContractOuComponent implements OnInit, OnDestroy {
   }
 
   skipStep(): void {
-    let isValid = true;
-    const controls = this.contractForm.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        this.translate.get('validator.' + name).subscribe((field: string) => {
-          this.notifyService.showWarning('Внимание','Поле ' + field + ' не заполнено!');
-        });
-        isValid = false;
-      }
-    }
-    if (!isValid) return;
-
     this.fillContractDto();
-
     this.subscriptions.add(this.contractService.missContract(this.contractFormDto)
       .subscribe(res => {
         this.util.dnHref(localStorage.getItem('url'));
-        console.log('res', res);
       })
     );
   }
