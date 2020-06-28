@@ -5,7 +5,7 @@ export class ContractFormDto {
     private contractPeriod?: string, // Срок действия договора
     private contractSum?: number, // Сумма по договору
     private commission?: number, // Комиссия
-    private isExclusive?: boolean, // Признак эксклюзивного договора
+    private contractTypeId?: number, // Тип договора
     private guid?: string
   ) {
   }
