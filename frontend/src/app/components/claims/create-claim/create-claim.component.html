@@ -1480,10 +1480,9 @@
                       [disabled]="!this.applicationForm?.operationTypeId && !this.applicationForm?.objectTypeId">
                 <span class="fa fa-save" translate> patterns.save</span>
               </button>
-<!--              <button type="button" class="btn btn-success btn2 float-right btn-sm" *ngIf="edit" translate-->
-<!--                (click)="generateContract()">-->
-<!--                claim.generateContract-->
-<!--              </button>-->
+              <button type="button" class="btn btn-success btn2 float-right btn-sm" *ngIf="applicationId" (click)="activeTab = 'ou'" translate>
+                claim.generateContract
+              </button>
               <button type="button" (click)="cancel()" class="btn btn-default btn2 float-right btn-sm" translate>
                 patterns.cancel
               </button>
@@ -1503,7 +1502,6 @@
 
 <ng-template #modalContent let-close="close">
   <div class="modal-header">
-<!--    <h5 class="modal-title">Данный объект уже существует, вы согласны продолжить ?</h5>-->
     <button type="button" class="close" (click)="closeModalContent()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -1514,30 +1512,11 @@
         <p>
           Действие ограничено! В системе имеется заявка с данным объектом недвижимости! Попробуйте ввести другой адрес.
         </p>
-<!--        <table class="table table-bordered table-sm">-->
-<!--          <thead class="text-center">-->
-<!--          <tr>-->
-<!--            <th>ID заявки</th>-->
-<!--            <th>Дата создания</th>-->
-<!--            <th>ФИО агента</th>-->
-<!--            <th>Цена (тг)</th>-->
-<!--          </tr>-->
-<!--          </thead>-->
-<!--          <tbody style="cursor: pointer">-->
-<!--          <tr *ngFor="let rpD of data.applicationByRealPropertyDtoList;let i = index">-->
-<!--            <td>{{rpD.id}}</td>-->
-<!--            <td>{{util.formatDate(rpD?.creationDate)}}</td>-->
-<!--            <td>{{rpD?.agent}}</td>-->
-<!--            <td>{{util.numberFormat(rpD?.objectPrice)}}</td>-->
-<!--          </tr>-->
-<!--          </tbody>-->
-<!--        </table>-->
       </div>
     </div>
   </div>
   <div class="modal-footer">
-<!--    <button type="button" (click)="close()" class="btn btn-outline-secondary btn2">Отмена</button>-->
-    <button type="button"  (click)="closeModalContent()" class="btn btn-outline-primary btn-sm">Ok</button>
+    <button type="button" (click)="closeModalContent()" class="btn btn-outline-primary btn-sm">Ok</button>
   </div>
 </ng-template>
 

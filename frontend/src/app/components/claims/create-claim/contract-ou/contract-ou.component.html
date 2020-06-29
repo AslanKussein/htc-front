@@ -93,11 +93,10 @@
           <button type="button" class="btn btn-sm btn2 btn-secondary" (click)="backToPrev()" *ngIf="fromBoard">Назад</button>
           <button type="button" class="btn btn-sm btn2 btn-primary" (click)="generateContract()">Сформировать договор</button>
           <button type="button" class="btn btn-sm btn2 btn-light" (click)="skipStep()" [disabled]="isDisabled">Пропустить шаг</button>
-    <!--      <button type="button" class="btn btn-success" disabled>Распечатать</button>-->
           <button type="button" class="btn btn-sm btn2 btn-light" (click)="cancel()" *ngIf="!fromBoard">Отменить</button>
         </div>
       </div>
-      <div class="root">
+      <div class="root" *ngIf="isShowPdf">
         <iframe id="pdfIframe"  type="application/pdf" height="100vh" width="100%" frameBorder="0"></iframe>
       </div>
     </div>
