@@ -13,6 +13,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {UploaderService} from "../../../../services/uploader.service";
 import {Subscription} from "rxjs";
 import {Period} from "../../../../models/common/period";
+import {UserService} from "../../../../services/user.service";
 
 @Component({
   selector: 'app-client-card',
@@ -48,6 +49,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
               private uploader: UploaderService,
               private authenticationService: AuthenticationService,
               private actRoute: ActivatedRoute,
+              private userService: UserService,
               private util: Util) {
     this.subscriptions.add(this.authenticationService.currentUser.subscribe(x => this.currentUser = x));
     this.clientId = this.actRoute.snapshot.params.id;
@@ -136,6 +138,9 @@ export class ClientCardComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.claimService.getClaims(searchFilter).subscribe(res => {
       if (res != null && res.data != null && !res.data.data.empty) {
         this.claimData = res.data.data.data;
+        this.claimData.forEach(data =>
+          this.searchByLoginAgent(data)
+        )
         this.totalItems = res.data.totalElements;
         this.itemsPerPage = res.data.data.size;
       }
@@ -146,6 +151,22 @@ export class ClientCardComponent implements OnInit, OnDestroy {
   getDicNameByLanguage(claim: any, column: string) {
     let x = this.util.getDicNameByLanguage();
     return claim[column]?.name[x];
+  }
+
+  getDicNameByLanguagePayment(claim: any, column: string) {
+    let x = this.util.getDicNameByLanguage();
+    return !this.util.isNullOrEmpty(claim[column]) ? claim[column][x] : null;
+  }
+
+  searchByLoginAgent(claim) {
+    if (this.util.isNullOrEmpty(claim.agent)) return;
+    this.subscriptions.add(this.userService.findAgentByLogin(claim.agent)
+      .subscribe(res => {
+          claim['fullNameAgent'] = (res?.firstName + ' ' + res?.surname + ' ' + (res?.patronymic ? res?.patronymic : ' ')).toUpperCase()
+          claim['emailAgent'] = res?.email;
+          claim['phoneNumberAgent'] = res?.email;
+        }
+      ));
   }
 
   formatDate(claim: any) {

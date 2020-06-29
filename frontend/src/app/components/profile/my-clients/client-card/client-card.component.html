@@ -5,7 +5,7 @@
         <div class="btn-group btn-breadcrumb">
           <a href="#" class="btn btn-primary"><i class="fa fa-home"></i></a>
           <a href="#/profile" class="btn btn-primary">Личный кабинет</a>
-          <a href="#" class="btn btn-primary active">Карточка клиента</a>
+          <a class="btn btn-primary active">Карточка клиента</a>
 
         </div>
       </div>
@@ -84,6 +84,7 @@
             <tr>
               <th>ID заявки</th>
               <th>Операция</th>
+              <th>Дата создания</th>
               <th translate>fio</th>
               <th translate>phone</th>
               <th translate>e-mail</th>
@@ -98,22 +99,22 @@
             <tbody style="cursor: pointer">
             <tr *ngFor="let claim of claimData;let i = index">
               <td>
-                <a [routerLink]="['/create-claim/', claim?.id]">{{claim.id}}</a>
+                <a [routerLink]="['/create-claim-view/', claim?.id]">{{claim.id}}</a>
               </td>
               <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
-              <td>{{claim.fullname}}</td>
-              <td><span>+7{{claim.phone | mask: ' (000) 000-0000'}}</span></td>
-              <td>{{claim.email}}</td>
+              <td>{{formatDate(claim)}}</td>
+              <td>{{claim.fullNameAgent}}</td>
+              <td><span *ngIf="claim.phoneNumberAgent">+7{{claim.phoneNumberAgent | mask: ' (000) 000-0000'}}</span></td>
+              <td>{{claim.emailAgent}}</td>
               <td>{{getDicNameByLanguage(claim, 'district')}}</td>
               <td>{{claim.numberOfRooms}}</td>
               <td>{{claim.price}}</td>
-              <td></td>
+              <td>{{getDicNameByLanguagePayment(claim, 'paymentType')}}</td>
               <td>{{claim.totalArea}}</td>
               <td>{{getDicNameByLanguage(claim, 'status')}}</td>
             </tr>
             </tbody>
           </table>
-
 
           <pagination [(ngModel)]="currentPage"
                       [totalItems]="totalItems"
@@ -129,7 +130,6 @@
           </pagination>
         </div>
       </div>
-
 
       <ng-template #template class="modal-lg">
         <div class="modal-header">
@@ -153,7 +153,7 @@
                 <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.surname" [disabled]="!rgRoles">
               </div>
               <div>
-                <label class="col-sm col-form-label">Отчество<span class="text-danger">&nbsp;*</span></label>
+                <label class="col-sm col-form-label">Отчество</label>
                 <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.patronymic" [disabled]="!rgRoles">
               </div>
               <div>
@@ -161,15 +161,12 @@
                 <input type="text" class="col-sm form-control" name="nameEn" disabled [(ngModel)]="formClient.id" [disabled]="true">
               </div>
               <div>
-                <label class="col-sm col-form-label">Файл<span class="text-danger">&nbsp;*</span></label>
+                <label class="col-sm col-form-label">Файл</label>
                 <i class="fa fa-paperclip"></i>
                 <input type="file" (change)="onFileChanged($event)">
                 <div *ngFor="let obj of clientFiles">
                   <p *ngIf="!obj.isDeleted">{{obj.filename}} <a (click)="removeFileById(obj.guid)"> <i class="fa fa-times-circle fa-2x"></i></a> </p>
                 </div>
-
-
-
               </div>
             </div>
             <div class="col-sm">
@@ -186,14 +183,14 @@
                 </div>
               </div>
               <div *ngFor="let item of formClient.clientPhoneNumbersDtoList;let index = index">
-                <label class="col-sm col-form-label">Доп телефон<span class="text-danger">&nbsp;*</span></label>
+                <label class="col-sm col-form-label">Доп телефон</label>
                 <div class="row" style="margin-left: 1px"> <input type="text" class="col-sm form-control" [(ngModel)]="item.phoneNumber" prefix="+7" mask="(000) 000 00 00" [showMaskTyped]="true" [disabled]="!rgRoles">
                   <a  style="margin-left: 10px" (click)="clearPhone(item)"><i style="color:red"
                                                                               class="fa fa-times-circle fa-2x"></i></a></div>
 
               </div>
               <div>
-                <label class="col-sm col-form-label">Почта<span class="text-danger">&nbsp;*</span></label>
+                <label class="col-sm col-form-label">Почта</label>
                 <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formClient.email"  [disabled]="!rgRoles">
               </div>
               <div >
