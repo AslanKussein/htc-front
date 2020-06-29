@@ -9,7 +9,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link " id="pills-home-tab" (click)="addObjectTypes(1)" data-toggle="pill" href="#pills-home" role="tab"
-             aria-controls="pills-home" aria-selected="true">Квартиры</a>
+             aria-controls="pills-home" aria-selected="true">Квартира</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" id="pills-profile-tab" data-toggle="pill" (click)="addObjectTypes(2)"  href="#pills-profile" role="tab"
@@ -622,14 +622,11 @@
       <div class="row">
         <div class="col-sm-2">Найдено всего/</div>
         <div class="col-sm-3 float-left">
-          <ng-select name="ob"
-                     [items]="objectMy"
-                     [(ngModel)]="objectMyModel"
-                     (changeEvent)="myObjectChange()"
-                     (change)="myObjectChange()"
-                     bindValue="value">
-
-          </ng-select>
+          <select [(ngModel)]="objectMyModel" class="form-control" (change)="myObjectChange()">
+            <option *ngFor="let title of objectMy" [value]="title.value">
+              {{title.label}}
+            </option>
+          </select>
         </div>
         <div class="col-sm"></div>
       </div>
