@@ -553,7 +553,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   clearClientInfo() {
-    thapplicationForm.phoneNumber
+    // thapplicationForm.phoneNumber
   }
 
   searchByPhone(login: string) {
