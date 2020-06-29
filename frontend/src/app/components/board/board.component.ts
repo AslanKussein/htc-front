@@ -9,8 +9,6 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {UserService} from "../../services/user.service";
 import {Subscription} from "rxjs";
 import {NewDicService} from "../../services/new.dic.service";
-import {ContractOuComponent} from "../claims/create-claim/contract-ou/contract-ou.component";
-import {RouterExtService} from "../../helpers/RouterExtService";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
