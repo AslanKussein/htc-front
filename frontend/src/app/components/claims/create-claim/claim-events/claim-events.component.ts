@@ -30,6 +30,7 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
   currentPage = 1;
   eventsDTO: EventsDTO;
   commentDev: boolean = true;
+  today = new Date();
 
   constructor(private util: Util,
               private formBuilder: FormBuilder,
@@ -104,7 +105,6 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
     if (!this.util.isNullOrEmpty(this.eventsForm.value.time)) {
       this.eventsForm.value.eventDate.setHours(this.eventsForm.value.time.hour);
       this.eventsForm.value.eventDate.setMinutes(this.eventsForm.value.time.minute);
-      console.log(1)
     }
   }
 

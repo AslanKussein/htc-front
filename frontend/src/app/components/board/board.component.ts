@@ -63,7 +63,7 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   getBoardData(tab: number, ids: number) {
     let searchFilter = {};
-    searchFilter['agentLoginList'] = ['artursaduov'];
+    searchFilter['agentLoginList'] = [this.util.getCurrentUser().login];
     // searchFilter['agentLoginList'] = this.util.getCurrentUser().roles;
     searchFilter['applicationStatusList'] = ids;
     searchFilter['operationTypeId'] = tab == 3 ? null : tab;
@@ -160,7 +160,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   getBgColorBySumm(price: number) {
     let bgColor = 'bg-primary'
     if (price > 15000000 && price < 25000000) {
-      alert(1)
       bgColor = 'bg-warning'
     } else if (price > 25000000 && price < 35000000) {
       bgColor = 'bg-success'

@@ -21,6 +21,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
   boardSelect: any;
   eventsForm: any;
   text: string;
+  today = new Date();
 
   constructor(private board: BoardComponent,
               private util: Util,
