@@ -287,7 +287,9 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.openInnerPage('board/close-deal/' + this.activeTab);
       }
     }
-    this.sortStatusesDic(this.activeTab);
+    setTimeout(() => {
+      this.sortStatusesDic(this.activeTab);
+    }, 1000)
   }
 
   openInnerPage(url: string) {
