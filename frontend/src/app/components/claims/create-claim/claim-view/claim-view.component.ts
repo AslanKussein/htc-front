@@ -11,6 +11,7 @@ import {CreateClaimComponent} from "../create-claim.component";
 import {HttpParams} from "@angular/common/http";
 import {RoleManagerService} from "../../../../services/roleManager.service";
 import {UserService} from "../../../../services/user.service";
+import {Period} from "../../../../models/common/period";
 
 @Component({
   selector: 'app-claim-view',
@@ -46,6 +47,48 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
     this.getCheckOperationList();
   }
 
+  fillIsEmpty() {
+    if (this.util.isNullOrEmpty(this.claimViewDto.objectPricePeriod)) {
+      this.claimViewDto.objectPricePeriod = new Period(null, null)
+    }
+    if (this.util.isNullOrEmpty(this.claimViewDto.numberOfRoomsPeriod)) {
+      this.claimViewDto.numberOfRoomsPeriod = new Period(null, null)
+    }
+    if (this.util.isNullOrEmpty(this.claimViewDto.floorPeriod)) {
+      this.claimViewDto.floorPeriod = new Period(null, null)
+    }
+    if (this.util.isNullOrEmpty(this.claimViewDto.totalAreaPeriod)) {
+      this.claimViewDto.totalAreaPeriod = new Period(null, null)
+    }
+    if (this.util.isNullOrEmpty(this.claimViewDto.livingAreaPeriod)) {
+      this.claimViewDto.livingAreaPeriod = new Period(null, null)
+    }
+    if (this.util.isNullOrEmpty(this.claimViewDto.kitchenAreaPeriod)) {
+      this.claimViewDto.kitchenAreaPeriod = new Period(null, null)
+    }
+    if (this.util.isNullOrEmpty(this.claimViewDto.balconyAreaPeriod)) {
+      this.claimViewDto.balconyAreaPeriod = new Period(null, null)
+    }
+    if (this.util.isNullOrEmpty(this.claimViewDto.ceilingHeightPeriod)) {
+      this.claimViewDto.ceilingHeightPeriod = new Period(null, null)
+    }
+    if (this.util.isNullOrEmpty(this.claimViewDto.numberOfBedroomsPeriod)) {
+      this.claimViewDto.numberOfBedroomsPeriod = new Period(null, null)
+    }
+    if (this.util.isNullOrEmpty(this.claimViewDto.numberOfFloorsPeriod)) {
+      this.claimViewDto.numberOfFloorsPeriod = new Period(null, null)
+    }
+    if (this.util.isNullOrEmpty(this.claimViewDto.apartmentsOnTheSitePeriod)) {
+      this.claimViewDto.apartmentsOnTheSitePeriod = new Period(null, null)
+    }
+    if (this.util.isNullOrEmpty(this.claimViewDto.yearOfConstructionPeriod)) {
+      this.claimViewDto.yearOfConstructionPeriod = new Period(null, null)
+    }
+    if (this.util.isNullOrEmpty(this.claimViewDto.landAreaPeriod)) {
+      this.claimViewDto.landAreaPeriod = new Period(null, null)
+    }
+  }
+
   getApplicationById() {
     this.claimViewDto = new ClaimViewDto();
     this.ngxLoader.startBackground();
@@ -53,6 +96,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
       this.subscriptions.add(
         this.claimService.getApplicationViewById(this.applicationId).subscribe(res => {
           this.claimViewDto = res;
+          this.fillIsEmpty();
           this.searchByPhone(res.clientLogin);
           this.searchByLoginAgent(res.agent);
           if (this.util.getCurrentUser().login == res.agent) {
@@ -142,16 +186,11 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  setLoop(data: any, column: string) {
-    let txt = '';
-    if (!this.util.isNullOrEmpty(data[column])) {
+  getDicNameByLanguageColum(data: any) {
+    if (!this.util.isNullOrEmpty(data)) {
       let x = this.util.getDicNameByLanguage();
-      for (const ownerServiceElement of data[column]) {
-        txt += ownerServiceElement?.[x] + ', '
-      }
-      return txt;
+      return data[x];
     }
-    return '';
   }
 
   ngOnDestroy(): void {

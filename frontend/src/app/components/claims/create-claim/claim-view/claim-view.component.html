@@ -69,9 +69,11 @@
                   <div class="col-sm" [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
                                util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles)">
                     <label>Цена объекта (тг)</label>
-                    <input type="text" class="form-control" *ngIf="!claimViewDto.isSell" [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles)"
+                    <input type="text" class="form-control" *ngIf="!claimViewDto.isSell"
+                           [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles)"
                            mask="separator" thousandSeparator=" " readonly [(ngModel)]="claimViewDto.objectPrice"/>
-                    <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles)">
+                    <div class="input-group" *ngIf="claimViewDto.isSell"
+                         [hidden]="util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles)">
                       <input type="text" class="form-control"
                              mask="separator" thousandSeparator=" " readonly
                              [(ngModel)]="claimViewDto.objectPricePeriod.from"/>
@@ -96,7 +98,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm" *ngIf="!claimViewDto.isSell" [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles)">
+                  <div class="col-sm" *ngIf="!claimViewDto.isSell"
+                       [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles)">
                     <label>Обременение</label>
                     <div class="row">
                       <div class="col-sm text-center">
@@ -111,7 +114,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm" *ngIf="!claimViewDto.isSell" [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles)">
+                  <div class="col-sm" *ngIf="!claimViewDto.isSell"
+                       [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles)">
                     <label>Общая дол. соб-ть</label>
                     <div class="row">
                       <div class="col-sm text-center">
@@ -126,7 +130,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm" *ngIf="!claimViewDto.isSell" [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles)">
+                  <div class="col-sm" *ngIf="!claimViewDto.isSell"
+                       [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles)">
                     <label>Обмен</label>
                     <div class="row">
                       <div class="col-sm text-center">
@@ -143,6 +148,13 @@
                   </div>
                   <div class="col-sm">
                     <label>Признак</label>
+                    <div class="col-sm float-left">
+                      <div class="row" style="margin: 0"
+                           *ngFor="let data of claimViewDto.applicationFlagIdList;let i = index ">
+                        <input type="checkbox" class="custom-control-input" checked/>
+                        <label class="custom-control-label">{{getDicNameByLanguageColum(data)}}</label>
+                      </div>
+                    </div>
                   </div>
                   <div class="col-sm" [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
                              util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles)">
@@ -161,21 +173,24 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-sm" [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
+                <div class="row" [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
                              util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles)">
+                  <div class="col-sm">
                     <label>Причины торга</label>
-                    <textarea class="col-sm-12 control" rows="2"
-                              [value]="setLoop(claimViewDto, 'possibleReasonForBiddingIdList')" readonly></textarea>
+                    <div class="row" style="margin: 0"
+                         *ngFor="let data of claimViewDto.possibleReasonForBiddingIdList;let i = index ">
+                      <div class="col-sm">
+                        <input type="checkbox" class="custom-control-input" checked/>
+                        <label class="custom-control-label">{{getDicNameByLanguageColum(data)}}</label>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-sm" [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
-                             util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles)">
+                  <div class="col-sm">
                     <label class="mb-4">Размер торга</label>
                     <input type="text" class="form-control" readonly [(ngModel)]="claimViewDto.theSizeOfTrades"
                            mask="separator.2" thousandSeparator=" "/>
                   </div>
-                  <div class="col-sm" [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
-                             util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles)">
+                  <div class="col-sm">
                     <label>Комментарий</label>
                     <textarea class="col-sm-12 control" rows="2" [(ngModel)]="claimViewDto.comment" readonly></textarea>
                   </div>
@@ -202,7 +217,7 @@
                                  [value]="getDicNameByLanguage(claimViewDto, 'fullAddress')"/>
                         </div>
                       </div>
-                      <div class="row" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)">
+                      <div class="row" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)" *ngIf="!claimViewDto.isSell">
                         <div class="col-sm">
                           <label>ЖК</label>
                           <input type="text" class="form-control" readonly
@@ -221,28 +236,47 @@
                       <div class="col-sm" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
                               util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                         <label>Количество комнат</label>
-                        <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                        <div class="input-group" *ngIf="claimViewDto.isSell"
+                             [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                           <input type="text" class="form-control" [(ngModel)]="claimViewDto.numberOfRoomsPeriod.from"
                                  mask="separator" thousandSeparator=" " readonly/>
                           <input type="text" class="form-control" [(ngModel)]="claimViewDto.numberOfRoomsPeriod.to"
                                  mask="separator" thousandSeparator=" " readonly/>
                         </div>
-                        <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
+                        <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                               [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
                                [(ngModel)]="claimViewDto.numberOfRooms"/>
                       </div>
-                      <div class="col-sm" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
+                      <div class="col-sm" *ngIf="!claimViewDto.isFlat" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
+                              util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                        <label>Площадь участка</label>
+                        <div class="input-group" *ngIf="claimViewDto.isSell"
+                             [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                          <input type="text" class="form-control" [(ngModel)]="claimViewDto.landAreaPeriod.from"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                          <input type="text" class="form-control" [(ngModel)]="claimViewDto.landAreaPeriod.to"
+                                 mask="separator" thousandSeparator=" " readonly/>
+                        </div>
+                        <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                               [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
+                               [(ngModel)]="claimViewDto.landArea"/>
+                      </div>
+                      <div class="col-sm" *ngIf="claimViewDto.isFlat" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
                               util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                         <label>Этаж</label>
-                        <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                        <div class="input-group" *ngIf="claimViewDto.isSell"
+                             [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                           <input type="text" class="form-control" [(ngModel)]="claimViewDto.floorPeriod.from"
                                  mask="separator" thousandSeparator=" " readonly/>
                           <input type="text" class="form-control" [(ngModel)]="claimViewDto.floorPeriod.to"
                                  mask="separator" thousandSeparator=" " readonly/>
                         </div>
-                        <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
+                        <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                               [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
                                [(ngModel)]="claimViewDto.floor"/>
                       </div>
-                      <div class="col-sm" *ngIf="!claimViewDto.isSell && isAuthor" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)">
+                      <div class="col-sm" *ngIf="!claimViewDto.isSell && isAuthor && claimViewDto.isFlat"
+                           [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)">
                         <label>Номер квартиры</label>
                         <input type="text" class="form-control" readonly
                                [(ngModel)]="claimViewDto.apartmentNumber"/>
@@ -255,55 +289,62 @@
                         <div class="row">
                           <div class="col-sm">
                             <label>Площадь</label>
-                            <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                            <div class="input-group" *ngIf="claimViewDto.isSell"
+                                 [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                               <input type="text" class="form-control" [(ngModel)]="claimViewDto.totalAreaPeriod.from"
                                      mask="separator" thousandSeparator=" " readonly/>
                               <input type="text" class="form-control" [(ngModel)]="claimViewDto.totalAreaPeriod.to"
                                      mask="separator" thousandSeparator=" " readonly/>
                             </div>
-                            <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
+                            <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                                   [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"
                                    [(ngModel)]="claimViewDto.totalArea"/>
                           </div>
                           <div class="col-sm">
                             <label>Жилая</label>
-                            <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                            <div class="input-group" *ngIf="claimViewDto.isSell"
+                                 [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                               <input type="text" class="form-control" [(ngModel)]="claimViewDto.livingAreaPeriod.from"
                                      mask="separator" thousandSeparator=" " readonly/>
                               <input type="text" class="form-control" [(ngModel)]="claimViewDto.livingAreaPeriod.to"
                                      mask="separator" thousandSeparator=" " readonly/>
                             </div>
                             <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
-                                   [(ngModel)]="claimViewDto.livingArea" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
+                                   [(ngModel)]="claimViewDto.livingArea"
+                                   [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
                           </div>
-                        </div>
-                        <div class="row">
                           <div class="col-sm">
                             <label>Кухня</label>
-                            <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                            <div class="input-group" *ngIf="claimViewDto.isSell"
+                                 [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                               <input type="text" class="form-control" [(ngModel)]="claimViewDto.kitchenAreaPeriod.from"
                                      mask="separator" thousandSeparator=" " readonly/>
                               <input type="text" class="form-control" [(ngModel)]="claimViewDto.kitchenAreaPeriod.to"
                                      mask="separator" thousandSeparator=" " readonly/>
                             </div>
                             <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
-                                   [(ngModel)]="claimViewDto.kitchenArea" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
+                                   [(ngModel)]="claimViewDto.kitchenArea"
+                                   [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
                           </div>
+                        </div>
+                        <div class="row" *ngIf="claimViewDto.isFlat">
                           <div class="col-sm">
                             <label>Балкон</label>
-                            <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                            <div class="input-group" *ngIf="claimViewDto.isSell"
+                                 [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                               <input type="text" class="form-control" [(ngModel)]="claimViewDto.balconyAreaPeriod.from"
                                      mask="separator" thousandSeparator=" " readonly/>
                               <input type="text" class="form-control" [(ngModel)]="claimViewDto.balconyAreaPeriod.to"
                                      mask="separator" thousandSeparator=" " readonly/>
                             </div>
                             <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
-                                   [(ngModel)]="claimViewDto.balconyArea" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
+                                   [(ngModel)]="claimViewDto.balconyArea"
+                                   [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
                           </div>
-                        </div>
-                        <div class="row">
                           <div class="col-sm">
                             <label>Высота потолков</label>
-                            <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                            <div class="input-group" *ngIf="claimViewDto.isSell"
+                                 [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                               <input type="text" class="form-control"
                                      [(ngModel)]="claimViewDto.ceilingHeightPeriod.from"
                                      mask="separator" thousandSeparator=" " readonly/>
@@ -311,11 +352,13 @@
                                      mask="separator" thousandSeparator=" " readonly/>
                             </div>
                             <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
-                                   [(ngModel)]="claimViewDto.ceilingHeight" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
+                                   [(ngModel)]="claimViewDto.ceilingHeight"
+                                   [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
                           </div>
-                          <div class="col-sm">
+                          <div class="col-sm" *ngIf="claimViewDto.isFlat">
                             <label>Количество спален</label>
-                            <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                            <div class="input-group" *ngIf="claimViewDto.isSell"
+                                 [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                               <input type="text" class="form-control"
                                      [(ngModel)]="claimViewDto.numberOfBedroomsPeriod.from"
                                      mask="separator" thousandSeparator=" " readonly/>
@@ -324,10 +367,11 @@
                                      mask="separator" thousandSeparator=" " readonly/>
                             </div>
                             <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
-                                   [(ngModel)]="claimViewDto.numberOfBedrooms" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
+                                   [(ngModel)]="claimViewDto.numberOfBedrooms"
+                                   [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
                           </div>
                         </div>
-                        <div class="row" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
+                        <div class="row" *ngIf="claimViewDto.isFlat" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
                                    util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                           <div class="col-sm">
                             <div class="col-sm text-center">
@@ -335,7 +379,7 @@
                               <label class="custom-control-label">Студия</label>
                             </div>
                           </div>
-                          <div class="col-sm" >
+                          <div class="col-sm">
                             <div class="col-sm text-center">
                               <input type="checkbox" [(ngModel)]="claimViewDto.separateBathroom"
                                      class="custom-control-input"/>
@@ -345,7 +389,8 @@
                         </div>
                       </fieldset>
                     </div>
-                    <div class="row" *ngIf="!claimViewDto.isSell" [hidden]="util.hasShowApplicationGroup('VIEW_SALE_OBJECT_INFO', roles)">
+                    <div class="row" *ngIf="!claimViewDto.isSell"
+                         [hidden]="util.hasShowApplicationGroup('VIEW_SALE_OBJECT_INFO', roles)">
                       <div class="col-sm">
                         <label>Описание</label>
                         <textarea class="col-sm-12 control" rows="2" [(ngModel)]="claimViewDto.description"
@@ -367,7 +412,8 @@
                           <div class="col-sm" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
                                 util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                             <label>Этажность дома</label>
-                            <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                            <div class="input-group" *ngIf="claimViewDto.isSell"
+                                 [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                               <input type="text" class="form-control"
                                      [(ngModel)]="claimViewDto.numberOfFloorsPeriod.from"
                                      mask="separator" thousandSeparator=" " readonly/>
@@ -376,12 +422,14 @@
                                      mask="separator" thousandSeparator=" " readonly/>
                             </div>
                             <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
-                                   [(ngModel)]="claimViewDto.numberOfFloors" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
+                                   [(ngModel)]="claimViewDto.numberOfFloors"
+                                   [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
                           </div>
-                          <div class="col-sm" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
+                          <div class="col-sm" *ngIf="claimViewDto.isFlat" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
                                 util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                             <label>Кв. на площадке</label>
-                            <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                            <div class="input-group" *ngIf="claimViewDto.isSell"
+                                 [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                               <input type="text" class="form-control"
                                      [(ngModel)]="claimViewDto.apartmentsOnTheSitePeriod.from"
                                      mask="0000" readonly/>
@@ -390,7 +438,8 @@
                                      mask="0000" readonly/>
                             </div>
                             <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
-                                   [(ngModel)]="claimViewDto.apartmentsOnTheSite" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
+                                   [(ngModel)]="claimViewDto.apartmentsOnTheSite"
+                                   [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
                           </div>
                         </div>
                         <div class="row">
@@ -403,7 +452,8 @@
                           <div class="col-sm" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
                                    util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                             <label>Год постройки</label>
-                            <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                            <div class="input-group" *ngIf="claimViewDto.isSell"
+                                 [hidden]="util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                               <input type="text" class="form-control"
                                      [(ngModel)]="claimViewDto.yearOfConstructionPeriod.from"
                                      mask="0000" readonly/>
@@ -412,18 +462,40 @@
                                      mask="0000" readonly/>
                             </div>
                             <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
-                                   [(ngModel)]="claimViewDto.yearOfConstruction" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
+                                   [(ngModel)]="claimViewDto.yearOfConstruction"
+                                   [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"/>
                           </div>
-                          <div class="col-sm" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
+                          <div class="col-sm" *ngIf="claimViewDto.isFlat" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
                                    util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                             <label>Лифт</label>
-                            <input type="text" class="form-control" readonly
-                                   [value]="setLoop(claimViewDto, 'typeOfElevatorList')"/>
+                            <div class="row" style="margin: 0"
+                                 *ngFor="let data of claimViewDto.typeOfElevatorList;let i = index ">
+                              <input type="checkbox" class="custom-control-input" checked/>
+                              <label class="custom-control-label">{{getDicNameByLanguageColum(data)}}</label>
+                            </div>
                           </div>
+                        </div>
+                        <div class="row" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
+                                   util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
+                            <div class="col-sm" *ngIf="!claimViewDto.isSell">
+                              <label>Состояние</label>
+                              <input type="text" class="form-control" readonly
+                                     [value]="getDicNameByLanguage(claimViewDto, 'houseCondition')"/>
+                            </div>
+                            <div class="col-sm" *ngIf="!claimViewDto.isFlat">
+                              <label>Канализация</label>
+                              <input type="text" class="form-control" readonly
+                                     [value]="getDicNameByLanguage(claimViewDto, 'sewerage')"/>
+                            </div>
+                            <div class="col-sm" *ngIf="!claimViewDto.isFlat">
+                              <label>Отопление</label>
+                              <input type="text" class="form-control" readonly
+                                     [value]="getDicNameByLanguage(claimViewDto, 'heatingSystem')"/>
+                            </div>
                         </div>
                       </fieldset>
                     </div>
-                    <div class="row">
+                    <div class="row" *ngIf="claimViewDto.isFlat">
                       <fieldset class="scheduler-border col-sm" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
                             util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                         <legend class="scheduler-border">Подъезд</legend>
@@ -449,7 +521,7 @@
                         </div>
                       </fieldset>
                     </div>
-                    <div class="row">
+                    <div class="row" *ngIf="claimViewDto.isFlat">
                       <fieldset class="scheduler-border col-sm" [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles) &&
                             util.hasShowRealPropertyGroup('VIEW_PURCHASE_OBJECT_INFO', roles)">
                         <legend class="scheduler-border">Территория</legend>
@@ -458,8 +530,11 @@
                             <div class="row">
                               <div class="col-sm">
                                 <label>Парковка</label>
-                                <input type="text" class="form-control" readonly
-                                       [value]="setLoop(claimViewDto, 'parkingTypes')"/>
+                                <div class="row" style="margin: 0"
+                                     *ngFor="let data of claimViewDto.parkingTypes;let i = index ">
+                                  <input type="checkbox" class="custom-control-input" checked/>
+                                  <label class="custom-control-label">{{getDicNameByLanguageColum(data)}}</label>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -502,80 +577,80 @@
                 <div class="row">
                   <div class="col-sm">
                     <div class="row">
-                        <div class="col-sm" *ngIf="photoList.length > 0">
-                          <fieldset class="scheduler-border col-sm">
-                            <legend class="scheduler-border " translate>Фото объекта<br/>
-                              <span class="badge badge-danger ml-2">{{photoList.length}}</span>
-                            </legend>
-                            <div id="photoCarousel" class="carousel slide" data-ride="carousel"
-                                 style="width: 350px;">
+                      <div class="col-sm" *ngIf="photoList.length > 0">
+                        <fieldset class="scheduler-border col-sm">
+                          <legend class="scheduler-border " translate>Фото объекта<br/>
+                            <span class="badge badge-danger ml-2">{{photoList.length}}</span>
+                          </legend>
+                          <div id="photoCarousel" class="carousel slide" data-ride="carousel"
+                               style="width: 350px;">
 
-                              <div class="carousel-inner">
-                                <div class="carousel-item" [class]="i==0 ? 'active': ''"
-                                     *ngFor="let photo of photoList;let i = index">
-                                  <div class="container">
-                                    <img [src]="photo.image" alt="First Slide" class="photoList" width="350"
-                                         height="320">
-                                  </div>
-                                </div>
-                              </div>
-                              <a class="carousel-control-prev" href="#photoCarousel" data-slide="prev">
-                                <span class="carousel-control-prev-icon bg-dark"></span>
-                              </a>
-                              <a class="carousel-control-next" href="#photoCarousel" data-slide="next">
-                                <span class="carousel-control-next-icon bg-dark"></span>
-                              </a>
-                            </div>
-                          </fieldset>
-                        </div>
-                        <div class="col-sm" *ngIf="photoPlanList.length > 0">
-                          <fieldset class="scheduler-border col-sm">
-                            <legend class="scheduler-border" translate>Планы<br/>
-                              <span class="badge badge-danger ml-2">{{photoPlanList.length}}</span>
-                            </legend>
-                            <div id="photoPlanList" class="carousel slide" data-ride="carousel"
-                                 style="width: 350px;">
-                              <div class="carousel-inner">
-                                <div class="carousel-item" [class]="i==0 ? 'active': ''"
-                                     *ngFor="let plan of photoPlanList;let i = index">
-                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="350"
+                            <div class="carousel-inner">
+                              <div class="carousel-item" [class]="i==0 ? 'active': ''"
+                                   *ngFor="let photo of photoList;let i = index">
+                                <div class="container">
+                                  <img [src]="photo.image" alt="First Slide" class="photoList" width="350"
                                        height="320">
                                 </div>
                               </div>
-                              <a class="carousel-control-prev" href="#photoPlanList" data-slide="prev">
-                                <span class="carousel-control-prev-icon bg-dark"></span>
-                              </a>
-                              <a class="carousel-control-next" href="#photoPlanList" data-slide="next">
-                                <span class="carousel-control-next-icon bg-dark"></span>
-                              </a>
                             </div>
-                          </fieldset>
-                        </div>
-
-                        <div class="col-sm" *ngIf="photo3DList.length > 0">
-                          <fieldset class="scheduler-border col-sm">
-                            <legend class="scheduler-border" translate>3D тур<br/>
-                              <span class="badge badge-danger ml-2">{{photo3DList.length}}</span>
-                            </legend>
-                            <div id="photo3DList" class="carousel slide" data-ride="carousel"
-                                 style="width: 350px;">
-                              <div class="carousel-inner">
-                                <div class="carousel-item" [class]="i==0 ? 'active': ''"
-                                     *ngFor="let plan of photo3DList;let i = index">
-                                  <img [src]="plan.image" alt="First Slide" class="photoList" width="350"
-                                       height="320">
-                                </div>
-                              </div>
-                              <a class="carousel-control-prev" href="#photo3DList" data-slide="prev">
-                                <span class="carousel-control-prev-icon bg-dark"></span>
-                              </a>
-                              <a class="carousel-control-next" href="#photo3DList" data-slide="next">
-                                <span class="carousel-control-next-icon bg-dark"></span>
-                              </a>
-                            </div>
-                          </fieldset>
-                        </div>
+                            <a class="carousel-control-prev" href="#photoCarousel" data-slide="prev">
+                              <span class="carousel-control-prev-icon bg-dark"></span>
+                            </a>
+                            <a class="carousel-control-next" href="#photoCarousel" data-slide="next">
+                              <span class="carousel-control-next-icon bg-dark"></span>
+                            </a>
+                          </div>
+                        </fieldset>
                       </div>
+                      <div class="col-sm" *ngIf="photoPlanList.length > 0">
+                        <fieldset class="scheduler-border col-sm">
+                          <legend class="scheduler-border" translate>Планы<br/>
+                            <span class="badge badge-danger ml-2">{{photoPlanList.length}}</span>
+                          </legend>
+                          <div id="photoPlanList" class="carousel slide" data-ride="carousel"
+                               style="width: 350px;">
+                            <div class="carousel-inner">
+                              <div class="carousel-item" [class]="i==0 ? 'active': ''"
+                                   *ngFor="let plan of photoPlanList;let i = index">
+                                <img [src]="plan.image" alt="First Slide" class="photoList" width="350"
+                                     height="320">
+                              </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#photoPlanList" data-slide="prev">
+                              <span class="carousel-control-prev-icon bg-dark"></span>
+                            </a>
+                            <a class="carousel-control-next" href="#photoPlanList" data-slide="next">
+                              <span class="carousel-control-next-icon bg-dark"></span>
+                            </a>
+                          </div>
+                        </fieldset>
+                      </div>
+
+                      <div class="col-sm" *ngIf="photo3DList.length > 0">
+                        <fieldset class="scheduler-border col-sm">
+                          <legend class="scheduler-border" translate>3D тур<br/>
+                            <span class="badge badge-danger ml-2">{{photo3DList.length}}</span>
+                          </legend>
+                          <div id="photo3DList" class="carousel slide" data-ride="carousel"
+                               style="width: 350px;">
+                            <div class="carousel-inner">
+                              <div class="carousel-item" [class]="i==0 ? 'active': ''"
+                                   *ngFor="let plan of photo3DList;let i = index">
+                                <img [src]="plan.image" alt="First Slide" class="photoList" width="350"
+                                     height="320">
+                              </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#photo3DList" data-slide="prev">
+                              <span class="carousel-control-prev-icon bg-dark"></span>
+                            </a>
+                            <a class="carousel-control-next" href="#photo3DList" data-slide="next">
+                              <span class="carousel-control-next-icon bg-dark"></span>
+                            </a>
+                          </div>
+                        </fieldset>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

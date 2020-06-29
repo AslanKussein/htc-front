@@ -12,6 +12,7 @@ export class ClaimViewDto {
   public probabilityOfBidding: boolean;
   public mortgage: boolean;
   public isSell: boolean;
+  public isFlat: boolean;
   public encumbrance: boolean;
   public sharedOwnershipProperty: boolean;
   public exchange: boolean;
@@ -19,7 +20,9 @@ export class ClaimViewDto {
   public theSizeOfTrades: number;
   public comment: string;
   public numberOfRoomsPeriod: Period;
+  public landAreaPeriod: Period;
   public numberOfRooms: number;
+  public landArea: number;
   public floorPeriod: Period;
   public floor: number;
   public totalAreaPeriod: Period;
@@ -59,4 +62,7 @@ export class ClaimViewDto {
   public housingPlanImageIdList: any;
   public virtualTourImageIdList: any;
   public description: string;
+  public houseCondition: any;
+  public heatingSystem: any;
+  public sewerage: any;
 }
