@@ -238,12 +238,15 @@ export class BoardComponent implements OnInit, OnDestroy {
    * @param prevStatusId
    */
   changeStatus(event: CdkDragDrop<string[]>, item: any, prevStatusId: number) {
+    let currentStatusId = parseInt(event.container.id);
+
     if (parseInt(event.previousContainer.id) > parseInt(event.container.id)) {
-      return
+      if (prevStatusId != 5 && currentStatusId != 4) {
+        alert(1)
+        return
+      }
     }
     this._boardSelect = item;
-
-    let currentStatusId = parseInt(event.container.id);
 
     let data = {applicationId: item.id, statusId: currentStatusId};
 
@@ -273,6 +276,8 @@ export class BoardComponent implements OnInit, OnDestroy {
       } else if (prevStatusId == 3 && (currentStatusId == 4 || currentStatusId == 5)) {// С "Договор на оказание услуг *" на "Фотосет", "Реклама"
         this.moveStatus(data);
       } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.4. С "Договор на оказание услуг *" на "Показ *"
+        this.moveStatus(data);
+      } else if (prevStatusId == 5 && currentStatusId == 4) {//  2.4. С "Фотосет*" на "Реклама *"
         this.moveStatus(data);
       } else if ((prevStatusId == 4 || prevStatusId == 5) && currentStatusId == 6) {//  2.5. Фотосет" или "Реклама" на статус "Показ"
         this.moveStatus(data);
