@@ -89,6 +89,7 @@
       </form>
       <div>
         <div class="actions mb-3">
+
           <button type="button" class="btn btn-sm btn2 btn-secondary" (click)="backToPrev()" *ngIf="fromBoard">Назад</button>
           <button type="button" class="btn btn-sm btn2 btn-primary" (click)="generateContract()">Сформировать договор</button>
           <button type="button" class="btn btn-sm btn2 btn-light" (click)="skipStep()" [disabled]="isDisabled">Пропустить шаг</button>

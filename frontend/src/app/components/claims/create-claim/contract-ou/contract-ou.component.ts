@@ -171,9 +171,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
   }
 
   backToPrev() {
-    if(this.canDeactivate()) {
-      this.util.navigateByUrl(localStorage.getItem('previousUrl'));
-    }
+    this.util.navigateByUrl(localStorage.getItem('previousUrl'));
   }
 
   canDeactivate(): boolean | Observable<boolean> {
