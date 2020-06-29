@@ -133,16 +133,18 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     if (!isValid) return;
     this.ngxLoader.startBackground();
     this.fillContractDto();
-    const iframe = window.document.getElementById('pdfIframe');
     this.subscriptions.add(this.contractService.generateContract(this.contractFormDto)
       .subscribe(res => {
         if(res) {
           this.isDisabled = true;
           this.isShowPdf = true;
-          const byteArray = new Uint8Array(atob(res).split('').map(char => char.charCodeAt(0)));
-          const blob = new Blob([byteArray], {type: 'application/pdf'});
-          this.sourcePdf =  window.URL.createObjectURL(blob);
-          iframe.setAttribute('src', this.sourcePdf);
+          setTimeout(() => {
+            const iframe = window.document.getElementById('pdfIframe');
+            const byteArray = new Uint8Array(atob(res).split('').map(char => char.charCodeAt(0)));
+            const blob = new Blob([byteArray], {type: 'application/pdf'});
+            this.sourcePdf =  window.URL.createObjectURL(blob);
+            iframe.setAttribute('src', this.sourcePdf);
+          }, 300);
           this.ngxLoader.stopBackground();
         }
       }, err => {
