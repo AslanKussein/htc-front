@@ -540,7 +540,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.applicationForm.ceilingHeight = this.util.nvl(this.applicationForm.residentialComplexId?.ceilingHeight, null);//Кол-во кв
     this.postCode = this.applicationForm.residentialComplexId?.buildingDto?.postcode;
     this.loadDataFromPostApi();
-    this.showModalChooseClaim();
+    if(!this.applicationId) {
+      this.showModalChooseClaim();
+    }
     this.cdRef.detectChanges();
   }
 
@@ -772,11 +774,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.setValidator('totalArea', Validators.required);
         this.setValidator('numberOfBedrooms', Validators.required);
         this.setValidator('apartmentNumber', Validators.required);
-        // if (this.util.isNullOrEmpty(this.applicationForm?.residentialComplexId)) {
-        //   this.setValidator('apartmentNumber', Validators.required);
-        // } else {
-        //   this.setValidator('apartmentNumber', Validators.nullValidator);
-        // }
       } else if (this.isSell()) { // купить
         this.setValidator('districtId', Validators.required);
         this.setValidator('objectPrice', Validators.nullValidator);
@@ -1363,7 +1360,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
             this.applicationForm.streetId = res.street?.id;
             this.applicationForm.districtId = res.district?.id;
             this.applicationForm.houseNumber = res.houseNumber;
-            this.showModalChooseClaim();
+            if(!this.applicationId) {
+              this.showModalChooseClaim();
+            }
             this.ngxLoader.stopBackground();
           }, 1000);
         }, () => this.ngxLoader.stopBackground()));
