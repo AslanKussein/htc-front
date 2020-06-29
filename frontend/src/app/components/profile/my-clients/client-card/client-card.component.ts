@@ -162,9 +162,9 @@ export class ClientCardComponent implements OnInit, OnDestroy {
     if (this.util.isNullOrEmpty(claim.agent)) return;
     this.subscriptions.add(this.userService.findAgentByLogin(claim.agent)
       .subscribe(res => {
-          claim['fullNameAgent'] = (res?.firstName + ' ' + res?.surname + ' ' + (res?.patronymic ? res?.patronymic : ' ')).toUpperCase()
+          claim['fullNameAgent'] = (res?.surname + ' ' + res?.name).toUpperCase()
           claim['emailAgent'] = res?.email;
-          claim['phoneNumberAgent'] = res?.email;
+          claim['phoneNumberAgent'] = res?.phone;
         }
       ));
   }
