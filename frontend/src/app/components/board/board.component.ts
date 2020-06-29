@@ -31,6 +31,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   activeTab: number = 3;
   displayBoardContent: boolean = true;
   agentList: Dic[];
+  login: string = this.util.getCurrentUser().login;
 
   get boardSelect(): Board {
     return this._boardSelect;
@@ -61,9 +62,9 @@ export class BoardComponent implements OnInit, OnDestroy {
     }));
   }
 
-  getBoardData(tab: number, ids: number) {
+  getBoardData(tab: number, ids: number, login: string) {
     let searchFilter = {};
-    searchFilter['agentLoginList'] = [this.util.getCurrentUser().login];
+    searchFilter['agentLoginList'] = [login];
     // searchFilter['agentLoginList'] = this.util.getCurrentUser().roles;
     searchFilter['applicationStatusList'] = ids;
     searchFilter['operationTypeId'] = tab == 3 ? null : tab;
@@ -136,6 +137,15 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
   }
 
+  filtredLogin(login: string) {
+    if (!this.util.isNullOrEmpty(login)) {
+      this.login = login;
+    } else {
+      this.login = this.util.getCurrentUser().login;
+    }
+    this.sortStatusesDic(this.activeTab);
+  }
+
   sortStatusesDic(tab: number) {
     this.appStatusesSort = [];
     this.activeTab = tab;
@@ -149,7 +159,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       m['code'] = status;
       this.appStatusesSort.push(m)
     }
-    this.getBoardData(tab, ids);
+    this.getBoardData(tab, ids, this.login);
     this.router.navigate([], {
       queryParams: {
         activeTab: tab

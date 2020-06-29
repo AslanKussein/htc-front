@@ -40,9 +40,9 @@
     <div class="row" *ngIf="this.activeTab != 3">
       <div class="col-sm">
         <span>Фильтры:</span>
-        <button type="button" class="btn btn-sm btn-link">Все</button>
+        <button type="button" class="btn btn-sm btn-link" (click)="filtredLogin(null)">Все</button>
         <button type="button" *ngFor="let agent of agentList;let i = index"
-                class="btn btn-sm btn-link">{{agent.name}}</button>
+                class="btn btn-sm btn-link" (click)="filtredLogin(agent.login)">{{agent.name}}</button>
       </div>
     </div>
     <br>
