@@ -411,6 +411,9 @@
                           </div>
                         </div>
                       </div>
+                      <div class="row" *ngIf="!this.applicationId">
+                        <button class="btn btn2 btn-sm btn-link" type="button" (click)="clearClientInfo()">Очистить</button>
+                      </div>
                     </div>
                   </div>
                 </div>

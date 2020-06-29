@@ -552,6 +552,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     }, 800);
   }
 
+  clearClientInfo() {
+    thapplicationForm.phoneNumber
+  }
+
   searchByPhone(login: string) {
     if (this.util.isNullOrEmpty(login)) return;
     this.subscriptions.add(this.ownerService.searchByPhone(login)

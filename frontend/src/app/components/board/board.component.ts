@@ -38,7 +38,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   constructor(private boardService: BoardService,
-              private util: Util,
+              public util: Util,
               private notificationService: NotificationService,
               private ngxLoader: NgxUiLoaderService,
               private newDicService: NewDicService,
@@ -252,6 +252,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     if (this.activeTab == 1) {// воронка покупателей
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
         this.openInnerPage('board/add-event');
+        return;
       } else if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
         this.util.dnHrefParam('create-claim/' + item.id, 'ou');
         return;
@@ -267,6 +268,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     } else if (this.activeTab == 2) {// воронка ПРОДАЖИ
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
         this.openInnerPage('board/add-event');
+        return;
       } else if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
         this.util.dnHrefParam('create-claim/' + item.id, 'ou');
         return;
@@ -298,5 +300,9 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  refresh(): void {
+    window.location.reload();
   }
 }
