@@ -133,7 +133,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
         ToastrModule.forRoot(),
         NgxMaskModule.forRoot(options),
         MDBBootstrapModule.forRoot(),
-        AngularYandexMapsModule.forRoot('658f67a2-fd77-42e9-b99e-2bd48c4ccad4'),
         ChartsModule,
         CalendarModule.forRoot({
             provide: DateAdapter,
