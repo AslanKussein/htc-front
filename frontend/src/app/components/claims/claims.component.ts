@@ -23,7 +23,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   subscriptions: Subscription = new Subscription();
 
   constructor(private claimService: ClaimService,
-              private util: Util,
+              public util: Util,
               private formBuilder: FormBuilder,
               private ownerService: OwnerService,
               private notification: NotificationService,
@@ -117,7 +117,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
     if (!this.util.isNullOrEmpty(claim.phone)) {
       this.subscriptions.add(this.ownerService.searchByPhone(claim.phone)
         .subscribe(res => {
-          claim['fullName'] = res?.firstName.concat(' ', res?.surname, ' ' , res?.patronymic ? res?.patronymic : ' ').toUpperCase()
+          claim['fullName'] = (res?.firstName + ' ' + res?.surname + ' ' + (res?.patronymic ? res?.patronymic : ' ')).toUpperCase()
           claim['email'] = res?.email;
         }));
     }

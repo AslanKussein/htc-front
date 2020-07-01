@@ -152,7 +152,7 @@ export class ObjectsComponent implements OnInit, OnDestroy {
       searchFilter['apartmentNumber'] = parseInt(this.formData.numKvart);
     }
     if (!this.util.isNullOrEmpty(this.formData.zalog)) {
-      searchFilter['encumbrance'] = parseInt(this.formData.zalog);
+      searchFilter['encumbrance'] = parseInt(this.formData.zalog)==1?true:false;
     }
     searchFilter['price'] = new Period(this.formData?.priceFrom, this.formData?.priceTo);
     searchFilter['floor'] = new Period(this.formData?.floorFrom, this.formData?.floorTo);

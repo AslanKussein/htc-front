@@ -17,16 +17,19 @@
 
 
         <div class="col-sm-10">
-          <div style="border: solid 1px black; padding: 5px; ">
-            <a *ngIf="adminRoles" (click)="openModal(template);editDic()"><i style="color: blue" class="fa fa-edit fa-2x"></i></a>
-            <a *ngIf="adminRoles" style="margin-left: 10px" (click)="openModal(template);addDic()"><i style="color:green"
-                                                                                                      class="fa fa-plus-circle fa-2x"></i></a>
-            <a *ngIf="adminRoles" (click)="openModal(template2);deleteDic()" style="margin-left: 10px"><i style="color:red"
-                                                                                                          class="fa fa-times-circle fa-2x"></i></a>
+          <div *ngIf="showActions()"
+               style="border: solid 1px black; padding: 5px;">
+            <a *ngIf="adminRoles" (click)="openModal(template);editDic()">
+              <i style="color: blue" class="fa fa-edit fa-2x"></i>
+            </a>
+            <a *ngIf="adminRoles" style="margin-left: 10px" (click)="openModal(template);addDic()">
+              <i style="color:green" class="fa fa-plus-circle fa-2x"></i>
+            </a>
+            <a *ngIf="adminRoles" (click)="openModal(template2);deleteDic()" style="margin-left: 10px">
+              <i style="color:red" class="fa fa-times-circle fa-2x"></i></a>
           </div>
 
-          <div style="border: solid 1px black; padding: 5px;
-     overflow: auto;">
+          <div style="border: solid 1px black; padding: 5px;overflow: auto;">
             <table *ngIf="resident" class="table table-bordered text-center">
               <thead class="text-center">
               <tr>
@@ -46,7 +49,7 @@
                 <th>Высота потолков</th>
                 <th>Материал постройки</th>
                 <th>Класс жилья</th>
-                <th>Состояние</th>
+                <th>Состояние недвижимости</th>
                 <th>Тип лифта</th>
                 <th>Консьерж</th>
                 <th>Колясочная</th>
@@ -139,7 +142,14 @@
                   {{dic.housingClass}}
                 </td>
                 <td>
-                  {{dic.housingConditionId}}
+                  <ng-select
+                    [disabled]="true"
+
+                    bindValue="value"
+                    bindLabel="label"
+                    [items]="houseConditions"
+                    [(ngModel)]="dic.housingConditionId">
+                  </ng-select>
                 </td>
                 <td>
                   <ng-select
@@ -353,7 +363,7 @@
           </div>
           <div class="col-sm" *ngIf="resident">
             <label class="col-sm col-form-label">Номер дома (дробь/буква/строение)</label>
-            <input type="text" maxlength="3" class="col-sm form-control" name="houseNumberFraction"
+            <input type="text" maxlength="3" disabled="true" class="col-sm form-control" name="houseNumberFraction"
                    [(ngModel)]="formRes.buildingDto.houseNumberFraction">
           </div>
           <div class="col-sm" *ngIf="resident">
@@ -420,9 +430,13 @@
                    [(ngModel)]="formRes.housingClass">
           </div>
           <div class="col-sm" *ngIf="resident">
-            <label class="col-sm col-form-label">Состояние</label>
-            <input type="text" maxlength="50" class="col-sm form-control" name="housingCondition"
-                   [(ngModel)]="formRes.housingConditionId">
+            <label class="col-sm col-form-label">Состояние недвижимости</label>
+            <ng-select
+              bindValue="value"
+              bindLabel="label"
+              [items]="houseConditions"
+              [(ngModel)]="formRes.housingConditionId">
+            </ng-select>
           </div>
           <div class="col-sm" *ngIf="resident">
             <label class="col-sm col-form-label">Тип лифта</label>

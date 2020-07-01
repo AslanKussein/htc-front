@@ -140,7 +140,7 @@
               <th translate>Количество комнат</th>
               <th translate>Цена</th>
               <th translate>Вид расчета</th>
-              <th translate>Прошадь</th>
+              <th translate>Площадь</th>
               <th translate>Этаж</th>
               <th translate>Статус</th>
               <th translate>Комментарий</th>
@@ -149,7 +149,7 @@
             <tbody style="cursor: pointer">
             <tr *ngFor="let claim of claimData;let i = index">
               <td>
-                <a [routerLink]="['/create-claim-view/', claim?.id]">{{claim.id}}</a>
+                <a [routerLink]="['/create-claim/', claim?.id]">{{claim.id}}</a>
               </td>
               <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
               <td>{{formatDate(claim)}}</td>
@@ -159,7 +159,7 @@
               <td>{{getDicNameByLanguage(claim, 'district')}}</td>
               <td>{{claim.numberOfRooms}}</td>
               <td>{{claim.price}}</td>
-              <td></td>
+              <td>{{claim.paymentType[util.getDicNameByLanguage()]}}</td>
               <td>{{claim.totalArea}}</td>
               <td>{{claim.floor}}</td>
               <td>{{getDicNameByLanguage(claim, 'status')}}</td>

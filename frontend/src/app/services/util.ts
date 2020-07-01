@@ -33,7 +33,7 @@ export class Util {
     if (data) {
       const len = data.length;
       for (let i = 0; i < len; i++) {
-        list.push({value: data[i][idField], label: data[i].multiLang[labelField], code: data[i]['code']});
+        list.push({value: data[i][idField], label: data[i].multiLang[labelField], code: data[i]['code'], operationCode: data[i]['operationCode']});
       }
     }
     return list;
@@ -90,6 +90,21 @@ export class Util {
           value: data.data[i][idField],
           label: data.data[i][labelField],
           description: data.data[i]['description']
+        });
+      }
+    }
+    return list;
+  }
+
+  toSelectArrayFlag(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
+    const list = [];
+    if (data) {
+      const len = data.length;
+      for (let i = 0; i < len; i++) {
+        list.push({
+          value: data[i][idField],
+          label: data[i].multiLang[labelField],
+          code: data[i].operationType['code'],
         });
       }
     }

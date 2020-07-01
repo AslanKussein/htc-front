@@ -18,3 +18,9 @@ legend {
   padding: 5px 5px 5px 10px;
   background-color: #ffffff;
 }
+
+textarea, textarea:focus {
+  border: none;
+  outline: none !important;
+  border-bottom: 1px solid black;
+}

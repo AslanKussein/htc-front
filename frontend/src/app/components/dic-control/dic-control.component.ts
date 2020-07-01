@@ -33,6 +33,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
   typeOfElevator: Dic[];
   parkingTypes: Dic[];
   yardTypes: Dic[];
+  houseConditions: Dic[];
   resident: boolean;
   editOrDelete: boolean;
   actions: string;
@@ -48,11 +49,11 @@ export class DicControlComponent implements OnInit, OnDestroy {
   kazPost: any;
   apiParam: string;
   apiPage: number = 0;
-  postCode: string;
   postcode: any;
   timer: any;
   postcodeDic:null;
-
+  formData: any;
+  formRes: any;
   constructor(private util: Util,
               private modalService: BsModalService,
               private notifyService: NotificationService,
@@ -74,51 +75,19 @@ export class DicControlComponent implements OnInit, OnDestroy {
     this.adminRoles = true;
   }
 
-  formRes = {
-    apartmentsOnTheSite: '',
-    buildingDto: {
-      cityId: null,
-      districtId: null,
-      houseNumber: null,
-      houseNumberFraction: '',
-      latitude: null,
-      longitude: null,
-      postcode: '',
-      streetId: null,
-    },
-    ceilingHeight: null,
-    concierge: false,
-    houseName: '',
-    housingClass: '',
-    housingConditionId: null,
-    materialOfConstructionId: null,
-    numberOfApartments: 0,
-    numberOfEntrances: 0,
-    numberOfFloors: 0,
-    playground: false,
-    propertyDeveloperId: null,
-    typeOfElevatorIdList: [],
-    parkingTypeIds: [],
-    wheelchair: false,
-    yardTypeId: null,
-    countryId: null,
-    yearOfConstruction: 0
-  };
+  ngOnInit(): void {
+    this.ngxLoader.start();
+    this._createFormData();
+    this._createFormRes();
+    this.loadDictionary();
+    this.loadResidenceComplex(1);
+    this.resident = true;
+    this.dicName = 'residential-complexes';
+    this.loadDicAll();
+  }
 
-  formData = {
-    code: '',
-    multiLang: {
-      nameEn: '',
-      nameRu: '',
-      nameKz: '',
-    },
-    parentId: null,
-
-  };
-
-
-  clearForm() {
-    this.formData = {
+  private _createFormData() {
+    this.formData = Object.assign({}, {
       code: '',
       multiLang: {
         nameEn: '',
@@ -126,10 +95,13 @@ export class DicControlComponent implements OnInit, OnDestroy {
         nameKz: '',
       },
       parentId: null,
-    };
-    this.formRes = {
+    });
+  }
+
+  private _createFormRes() {
+    this.formRes = Object.assign({}, {
       apartmentsOnTheSite: '',
-      "buildingDto": {
+      buildingDto: {
         cityId: null,
         districtId: null,
         houseNumber: null,
@@ -156,24 +128,11 @@ export class DicControlComponent implements OnInit, OnDestroy {
       yardTypeId: null,
       countryId: null,
       yearOfConstruction: 0
-    };
-
-    this.clickColumnDic = null;
-
-  }
-
-  ngOnInit(): void {
-    this.ngxLoader.start();
-    this.loadDictionary();
-    this.loadResidenceComplex(1);
-    this.resident = true;
-    this.dicName = 'residential-complexes';
-    this.loadDicAll();
+    });
 
   }
 
   openModal(template: TemplateRef<any>) {
-    console.log(template)
     // this.modalRef = this.modalService.show(template);
     this.modalRef = this.modalService.show(template, {keyboard: false, backdrop: 'static'});
     // this.modalRef.result.then(() => { console.log('When user closes'); }, () => { console.log('Backdrop click')})
@@ -181,28 +140,31 @@ export class DicControlComponent implements OnInit, OnDestroy {
 
   loadDictionary() {
     this.subscriptions.add(this.newDicService.getDictionary('City').subscribe(res => {
-      this.cities = res;
+      this.cities = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('District').subscribe(res => {
-      this.districts = res;
+      this.districts = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('Street').subscribe(res => {
-      this.streets = res;
+      this.streets = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('PropertyDeveloper').subscribe(res => {
-      this.propertyDevelopers = res;
+      this.propertyDevelopers = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('MaterialOfConstruction').subscribe(res => {
-      this.materialsOfConstruction = res;
+      this.materialsOfConstruction = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('TypeOfElevator').subscribe(res => {
-      this.typeOfElevator = res;
+      this.typeOfElevator = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('ParkingType').subscribe(res => {
-      this.parkingTypes = res;
+      this.parkingTypes = this.util.toSelectArray(res);
     }));
     this.subscriptions.add(this.newDicService.getDictionary('YardType').subscribe(res => {
-      this.yardTypes = res;
+      this.yardTypes = this.util.toSelectArray(res);
+    }));
+    this.subscriptions.add(this.newDicService.getDictionary('HouseCondition').subscribe(res => {
+      this.houseConditions = this.util.toSelectArray(res);
     }));
 
     this.ngxLoader.stop();
@@ -215,7 +177,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
       pageableDto: {
         direction: "ASC",
         // pageNumber: pageNo - 1,
-        pageSize: 16,
+        pageSize: 100,
         sortBy: "id"
       }
     };
@@ -238,7 +200,6 @@ export class DicControlComponent implements OnInit, OnDestroy {
       }
     };
 
-    console.log(search)
     this.subscriptions.add(this.dicService.getDicsAllPageable(search).subscribe(res => {
       if (res != null && res.data != null) {
         this.dictionary = res.data.data;
@@ -301,6 +262,8 @@ export class DicControlComponent implements OnInit, OnDestroy {
   }
 
 
+
+
   editDic() {
     this.actions = 'EDIT';
     if (this.clickColumnDic == null) {
@@ -312,6 +275,13 @@ export class DicControlComponent implements OnInit, OnDestroy {
         this.subscriptions.add(this.newDicService.getResidentialComplexesByPostcode(this.clickColumnDic.buildingDto?.postcode).subscribe(data => {
             if (data != null) {
               this.formRes = data;
+              this.subscriptions.add(
+                this.kazPostService.getDataFromDb(this.clickColumnDic.buildingDto?.postcode).subscribe(res=> {
+                    this.postcode = res?.addressRus;
+                  }
+                )
+              )
+
             }
           }, err => {
             this.notifyService.showError('warning', err);
@@ -375,7 +345,6 @@ export class DicControlComponent implements OnInit, OnDestroy {
   submit() {
     if (this.actions == 'ADD') {
       if (this.dicName == 'residential-complexes') {
-        console.log(this.formRes)
         if (this.util.isNullOrEmpty(this.formRes.buildingDto.cityId) || this.util.isNullOrEmpty(this.formRes.buildingDto.streetId) || this.util.isNullOrEmpty(this.formRes.buildingDto.houseNumber)
           || this.util.isNullOrEmpty(this.formRes.houseName)) {
           this.notifyService.showError('Пожалуйста, заполните все поля', "");
@@ -535,24 +504,34 @@ export class DicControlComponent implements OnInit, OnDestroy {
 
       this.subscriptions.add(this.kazPostService.checkPostData(this.postcode?.fullAddress).subscribe(res => {
         this.formRes.buildingDto.postcode = this.postcode?.value;
-        let interval;
-        let timeLeft: number = 1;
-        interval = setInterval(() => {
-          if (timeLeft > 0) {
-            timeLeft--;
-          } else {
-            this.loadDictionary();
-            this.formRes.buildingDto.cityId = res.city.id;
-            this.formRes.buildingDto.districtId = res.district.id;
-            this.formRes.buildingDto.streetId = res.street.id;
-            this.formRes.buildingDto.houseNumber = res.houseNumber;
-            this.ngxLoader.stop();
-
-          }
-        }, 300)
-
+        setTimeout(() => {
+          this.loadDictionary();
+          this.formRes.buildingDto.cityId = res.city.id;
+          this.formRes.buildingDto.districtId = res.district.id;
+          this.formRes.buildingDto.streetId = res.street.id;
+          this.formRes.buildingDto.houseNumber = res.houseNumber;
+          this.ngxLoader.stop();
+        }, 300);
       }));
     }
   }
 
+  showActions() {
+    let isShow = true;
+    if (this.dicName === 'District') {
+      isShow = false;
+    } else if (this.dicName === 'City') {
+      isShow = false;
+    } else if (this.dicName === 'Street') {
+      isShow = false;
+    }
+    return isShow;
+  }
+
+  clearForm() {
+    this._createFormData();
+    this._createFormRes();
+    this.clickColumnDic = null;
+    this.postcode = null;
+  }
 }

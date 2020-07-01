@@ -14,11 +14,11 @@ export class ClaimService {
   }
 
   getClaims(search: any): Observable<any> {
-    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getApplicationList`, search);
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/api/register/getApplicationList`, search);
   }
 
   getShortApplicationList(search: any): Observable<any> {
-    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/register/getShortApplicationList`, search);
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/api/register/getShortApplicationList`, search);
   }
 
   getClaimById(id: number): Observable<any> {
@@ -48,6 +48,14 @@ export class ClaimService {
 
   public getApartmentByNumberAndPostcode(apartmentNumber: number, postCode: string): Observable<any> {
     return this.http.get(`${this.configService.apiDataManagerUrl}/api/applications/getApartmentByNumberAndPostcode/` + apartmentNumber + `/` + postCode, {})
+      .pipe(
+        tap()
+      );
+  }
+
+
+  public getApplicationViewById(id: number): Observable<any> {
+    return this.http.get(`${this.configService.apiDataManagerUrl}/api/application-view/` + id, {})
       .pipe(
         tap()
       );
