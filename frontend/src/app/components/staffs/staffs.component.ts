@@ -68,7 +68,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
   getGroup(){
     this.ngxLoader.start();
     let obj={
-      roles:135
+      roles:7
     };
     this.staffService.getUserInfo(obj).subscribe(res => {
       if (res != null) {
