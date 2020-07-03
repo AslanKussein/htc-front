@@ -499,6 +499,7 @@
                                     [items]="residentialComplexes"
                                     [(ngModel)]="applicationForm.residentialComplexId"
                                     (ngModelChange)="setResidenceComplexType()"
+                                    (clear)="clearResidentialComplex()"
                                     formControlName="residentialComplexId"
                                     placeholder="{{ 'claim.building' | translate }}">
                                   </ng-select>

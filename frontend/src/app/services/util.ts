@@ -25,7 +25,7 @@ export class Util {
   }
 
   navigateByUrl(href) {
-    this.router.navigateByUrl(href);
+    this.router.navigateByUrl(href, { replaceUrl: true });
   }
 
   isNullOrEmpty(e: any) {
