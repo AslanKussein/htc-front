@@ -7,7 +7,7 @@ import {NotificationService} from "../../../../services/notification.service";
 import {TranslateService} from "@ngx-translate/core";
 import {ContractService} from "../../../../services/contract.service";
 import {ClaimService} from "../../../../services/claim.service";
-import {ActivatedRoute, NavigationEnd, Router, RoutesRecognized} from "@angular/router";
+import {ActivatedRoute, Router, RoutesRecognized} from "@angular/router";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {NewDicService} from "../../../../services/new.dic.service";
 import {filter, pairwise} from "rxjs/operators";

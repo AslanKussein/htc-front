@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {BoardService} from "../../services/board.service";
 import {Dic} from "../../models/dic";
@@ -11,6 +11,7 @@ import {Subscription} from "rxjs";
 import {NewDicService} from "../../services/new.dic.service";
 import {ActivatedRoute, Router, RoutesRecognized} from "@angular/router";
 import {filter, pairwise} from "rxjs/operators";
+import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 
 @Component({
   selector: 'app-board',
@@ -28,16 +29,19 @@ export class BoardComponent implements OnInit, OnDestroy {
   totalCommission: number;
   applicationCount: number;
   activeTab: number = 3;
+  selectId: number;
   displayBoardContent: boolean = true;
   agentList: Dic[];
   login: string = this.util.getCurrentUser().login;
-
+  modalRef2: BsModalRef;
   get boardSelect(): Board {
     return this._boardSelect;
   }
+  @ViewChild('modalContentAdvance', {static: true}) modalContentAdvance: TemplateRef<any>;
 
   constructor(private boardService: BoardService,
               public util: Util,
+              private modalService: BsModalService,
               private notificationService: NotificationService,
               private ngxLoader: NgxUiLoaderService,
               private newDicService: NewDicService,
@@ -260,7 +264,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       }
     }
     this._boardSelect = item;
-
+    this.selectId = item.id;
     let data = {applicationId: item.id, statusId: currentStatusId};
 
     if (this.activeTab == 1) {// воронка покупателей
@@ -273,7 +277,8 @@ export class BoardComponent implements OnInit, OnDestroy {
       } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.3. С "Договор на оказание услуг *" на "Показ *"
         this.moveStatus(data);
       } else if (prevStatusId == 6 && currentStatusId == 10) { // 2.4. С "Показ *" на "Договор о задатке/авансе *"
-        alert('БУДЕТ ССЫЛКА')
+        this.openModal2()
+        return;
       }else if (prevStatusId == 6 && currentStatusId == 7) { //NEW С "Показ *" на на "Закрытие сделки *" - обязательный статус
         alert('БУДЕТ ССЫЛКА')
       } else if (prevStatusId == 10 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
@@ -320,6 +325,14 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  openModal2() {
+    this.modalRef2 = this.modalService.show(this.modalContentAdvance);
+  }
+
+  showToAdvance(param) {
+    this.util.dnHrefParam('create-claim/' + this.selectId, param);
   }
 
   refresh(): void {

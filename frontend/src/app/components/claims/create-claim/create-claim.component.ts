@@ -1494,6 +1494,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   changeTab(activeTab){
+    this.activeTab = activeTab;
     this.router.navigate([], {
       queryParams: {
         activeTab: activeTab
