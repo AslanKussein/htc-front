@@ -7,11 +7,11 @@
 <div class="modal-body" [formGroup]="loginForm">
   <p>Время cесии истекло, для продолжения работы в системе авторизуйтесь заново</p>
 
-  <input type="text" class="form-control mb-4" placeholder="Логин"
-         formControlName="username" [ngModel]="loginForm.username"/>
+  <input type="text" class="form-control mb-4" placeholder="Логин" (keyup.enter)="login()"
+         formControlName="username"/>
   <div class="input-group mb-3">
-    <input type="password" class="form-control" placeholder="Пароль" #x aria-label="password"
-           aria-describedby="basic-addon2" formControlName="password" [ngModel]="loginForm.password">
+    <input type="password" class="form-control" placeholder="Пароль" #x aria-label="password" (keyup.enter)="login()"
+           aria-describedby="basic-addon2" formControlName="password">
 
     <div class="input-group-append">
       <a class="input-group-text" id="basic-addon2" (click)="x.type=x.type=='password'?'text':'password'"><i

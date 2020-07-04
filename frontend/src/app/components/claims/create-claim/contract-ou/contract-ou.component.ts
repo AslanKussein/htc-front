@@ -52,7 +52,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
         console.log('previous url', events[0].urlAfterRedirects);
         console.log('current url', events[1].urlAfterRedirects);
         localStorage.setItem('previousUrl', events[0].urlAfterRedirects)
-      });
+      })
   }
 
   ngOnInit(): void {

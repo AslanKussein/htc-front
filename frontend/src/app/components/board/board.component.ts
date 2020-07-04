@@ -9,7 +9,8 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {UserService} from "../../services/user.service";
 import {Subscription} from "rxjs";
 import {NewDicService} from "../../services/new.dic.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RoutesRecognized} from "@angular/router";
+import {filter, pairwise} from "rxjs/operators";
 
 @Component({
   selector: 'app-board',
@@ -18,7 +19,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class BoardComponent implements OnInit, OnDestroy {
   subscriptions: Subscription = new Subscription();
-
+  height: number;
   appStatuses: Dic[];
   appStatusesSort: Dic[];
   appStatusesData: any;
@@ -43,6 +44,15 @@ export class BoardComponent implements OnInit, OnDestroy {
               private router: Router,
               private actRoute: ActivatedRoute,
               private userService: UserService) {
+    this.router.events
+      .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
+      .subscribe((events: RoutesRecognized[]) => {
+        if (events[1].urlAfterRedirects.includes("board/close-deal") && !this.displayBoardContent) {
+          console.log(789789)
+          this.openInnerPage('board/close-deal/' + this.activeTab);
+          return
+        }
+      })
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
       this.activeTab = parseInt(this.actRoute.snapshot.queryParamMap.get('activeTab'));
     }
@@ -58,6 +68,9 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.userService.getAgents().subscribe(obj => {
       this.agentList = obj.data;
     }));
+    setTimeout(() => {
+      this.height = document.body.scrollHeight;
+    }, 2000)
   }
 
   getBoardData(tab: number, ids: number, login: string) {
@@ -158,7 +171,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.appStatusesSort.push(m)
     }
     this.getBoardData(tab, ids, this.login);
-    this.router.navigate([], {
+    this.router.navigate(['/board'], {
       queryParams: {
         activeTab: tab
       }
@@ -254,7 +267,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
         this.openInnerPage('board/add-event');
         return;
-      } else if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
+      } else if ((prevStatusId == 1 || prevStatusId == 2) && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
         this.util.dnHrefParam('create-claim/' + item.id, 'ou');
         return;
       } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.3. С "Договор на оказание услуг *" на "Показ *"
@@ -265,12 +278,13 @@ export class BoardComponent implements OnInit, OnDestroy {
         alert('БУДЕТ ССЫЛКА')
       } else if (prevStatusId == 10 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
         this.openInnerPage('board/close-deal/' + this.activeTab);
+        return;
       }
     } else if (this.activeTab == 2) {// воронка ПРОДАЖИ
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
         this.openInnerPage('board/add-event');
         return;
-      } else if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
+      } else if ((prevStatusId == 1 || prevStatusId == 2) && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
         this.util.dnHrefParam('create-claim/' + item.id, 'ou');
         return;
       } else if (prevStatusId == 3 && (currentStatusId == 4 || currentStatusId == 5)) {// С "Договор на оказание услуг *" на "Фотосет", "Реклама"
@@ -285,11 +299,12 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.moveStatus(data);
       } else if (prevStatusId == 6 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
         this.openInnerPage('board/close-deal/' + this.activeTab);
+        return;
       }
     }
     setTimeout(() => {
       this.sortStatusesDic(this.activeTab);
-    }, 1000)
+    }, 500)
   }
 
   openInnerPage(url: string) {

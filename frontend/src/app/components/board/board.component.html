@@ -32,7 +32,6 @@
     </ul>
     <div class="text-center" style="font-size: 18px">
       <span><i class="fa fa-lightbulb-o" style="color: orange"></i> Всего в активе {{applicationCount}} сделок</span>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <span><i class="fa fa-money" style="color: green"></i>  Общая комиссия {{totalCommission | mask : 'separator.2' }}
         ₸</span>
     </div>
@@ -63,7 +62,8 @@
         <div *ngIf="data.boardData"
              cdkDropList
              [cdkDropListData]="data.boardData.applicationLightDtoList?.data"
-             class="example-list dropItem"
+             class="example-list "
+             [ngStyle]="{'min-height.px': this.height}"
              [id]="data.value"
              (cdkDropListDropped)="drop($event)">
           <div *ngFor="let item of data.boardData.applicationLightDtoList?.data; let i = index" cdkDrag
