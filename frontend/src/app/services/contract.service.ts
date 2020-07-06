@@ -4,6 +4,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Observable, throwError} from "rxjs";
 import {tap} from "rxjs/operators";
 import {catchError} from "rxjs/internal/operators";
+import {ContractFormAgreementDto} from "../models/createClaim/ContractFormAgreementDto";
 
 
 @Injectable({
@@ -39,7 +40,7 @@ export class ContractService {
       .pipe(tap());
   }
 
-  generateDepositContract(data: any): Observable<any> {
+  generateDepositContract(data: ContractFormAgreementDto): Observable<any> {
     return this.http.post(`${this.configService.apiDataManagerUrl}/api/contracts/generateDepositContract`, data, {
       responseType: 'text',
     })

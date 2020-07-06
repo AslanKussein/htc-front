@@ -8,6 +8,7 @@ import {Subscription} from "rxjs";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {ContractFormAgreementDto} from "../../../../models/createClaim/ContractFormAgreementDto";
 import {FormBuilder, Validators} from "@angular/forms";
+import {NotificationService} from "../../../../services/notification.service";
 
 @Component({
   selector: 'app-advance',
@@ -28,6 +29,7 @@ export class AdvanceComponent implements OnInit {
               private router: Router,
               private formBuilder: FormBuilder,
               private ngxLoader: NgxUiLoaderService,
+              private notifyService: NotificationService,
               private contractService: ContractService,
               public createClaimComponent: CreateClaimComponent) {
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('fromBoard'))) {
@@ -40,12 +42,11 @@ export class AdvanceComponent implements OnInit {
         console.log('current url', events[1].urlAfterRedirects);
         localStorage.setItem('previousUrl', events[0].urlAfterRedirects)
       })
-
   }
 
   ngOnInit(): void {
     this.contractForm = this.formBuilder.group({
-      applicationId: [null, Validators.nullValidator],
+      applicationId: [Number(this.actRoute.snapshot.params.id), Validators.nullValidator],
       payTypeId: [this.createClaimComponent.activeTab == 'advanceAgreement' ? 5 : 4, Validators.nullValidator],
       payedSum: [null, Validators.required]
     });
@@ -68,30 +69,31 @@ export class AdvanceComponent implements OnInit {
     //   }
     // }
     // if (!isValid) return;
-    // this.ngxLoader.startBackground();
+    this.ngxLoader.startBackground();
     // this.fillContractDto();
-    // this.subscriptions.add(this.contractService.generateContract(this.contractFormDto)
-    //   .subscribe(res => {
-    //     if(res) {
-    //       this.isDisabled = true;
-    //       this.isShowPdf = true;
-    //       setTimeout(() => {
-    //         const iframe = window.document.getElementById('pdfIframe');
-    //         const byteArray = new Uint8Array(atob(res).split('').map(char => char.charCodeAt(0)));
-    //         const blob = new Blob([byteArray], {type: 'application/pdf'});
-    //         this.sourcePdf =  window.URL.createObjectURL(blob);
-    //         iframe.setAttribute('src', this.sourcePdf);
-    //       }, 300);
-    //     }
-    //     this.ngxLoader.stopBackground();
-    //   }, err => {
-    //     this.notifyService.showError('', err?.ru);
-    //     this.ngxLoader.stopBackground();
-    //   }));
+    this.subscriptions.add(this.contractService.generateDepositContract(this.contractFormDto)
+      .subscribe(res => {
+        if(res) {
+          console.log(res)
+          // this.isDisabled = true;
+          // this.isShowPdf = true;
+          // setTimeout(() => {
+          //   const iframe = window.document.getElementById('pdfIframe');
+          //   const byteArray = new Uint8Array(atob(res).split('').map(char => char.charCodeAt(0)));
+          //   const blob = new Blob([byteArray], {type: 'application/pdf'});
+          //   this.sourcePdf =  window.URL.createObjectURL(blob);
+          //   iframe.setAttribute('src', this.sourcePdf);
+          // }, 300);
+        }
+        this.ngxLoader.stopBackground();
+      }, err => {
+        this.notifyService.showError('', err?.ru);
+        this.ngxLoader.stopBackground();
+      }));
   }
 
   searchApplication() {
-    this.subscriptions.add(this.contractService.getContractForm(this.contractForm.applicationId).subscribe(res => {
+    this.subscriptions.add(this.contractService.getContractForm(this.contractForm.sellApplicationId).subscribe(res => {
       console.log(res)
     }));
   }
