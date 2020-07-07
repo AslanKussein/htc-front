@@ -145,6 +145,8 @@ export class ContractOuComponent implements OnInit, OnDestroy {
             const blob = new Blob([file], {type: 'application/pdf'});
             this.sourcePdf = window.URL.createObjectURL(blob);
             iframe.setAttribute('src', this.sourcePdf);
+          }, error => {
+            this.notifyService.showError('', error?.ru);
           });
         }
         this.ngxLoader.stopBackground();
