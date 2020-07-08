@@ -14,7 +14,7 @@
             </button>
           </div>
           <div class="row">
-            <label>Сумма аванса (тг)<span class="text-danger">&nbsp;*</span></label>
+            <label>Сумма {{payType}} (тг)<span class="text-danger">&nbsp;*</span></label>
             <input type="text" class="form-control" formControlName="payedSum"
                    [(ngModel)]="contractForm.payedSum"
                    mask="separator" suffix=" ₸" thousandSeparator=" "/>
@@ -22,9 +22,7 @@
         </div>
         <div class="col-sm">
           <fieldset class="scheduler-border col-sm">
-            <legend class="scheduler-border" translate>Соглашение о
-              приеме {{this.createClaimComponent.activeTab == 'advanceAgreement' ? 'аванса' : 'задатка'}}</legend>
-
+            <legend class="scheduler-border">Соглашение о приеме {{payType}}</legend>
             <div class="root" *ngIf="isShowPdf">
               <iframe id="pdfIframe" type="application/pdf" height="100vh" width="100%" frameBorder="0"></iframe>
             </div>

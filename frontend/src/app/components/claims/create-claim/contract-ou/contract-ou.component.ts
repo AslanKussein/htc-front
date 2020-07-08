@@ -51,8 +51,6 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     this.router.events
       .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
       .subscribe((events: RoutesRecognized[]) => {
-        console.log('previous url', events[0].urlAfterRedirects);
-        console.log('current url', events[1].urlAfterRedirects);
         localStorage.setItem('previousUrl', events[0].urlAfterRedirects)
       })
   }

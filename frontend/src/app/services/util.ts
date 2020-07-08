@@ -404,4 +404,8 @@ export class Util {
     }
     return true;
   }
+
+  refresh(): void {
+    window.location.reload();
+  }
 }
