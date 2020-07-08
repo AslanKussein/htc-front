@@ -62,6 +62,7 @@ import {ruLocale} from "ngx-bootstrap/locale";
 import {AngularYandexMapsModule} from "angular8-yandex-maps";
 import { ClaimViewComponent } from './components/claims/create-claim/claim-view/claim-view.component';
 import { ContractOuComponent } from './components/claims/create-claim/contract-ou/contract-ou.component';
+import { MyAgentsComponent } from './components/profile/my-agents/my-agents.component';
 import {NewsComponent} from "./components/news/news.component";
 import {AnalyticsComponent} from "./components/analytics/analytics.component";
 import {AdvanceComponent} from "./components/claims/create-claim/advance/advance.component";
@@ -113,6 +114,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     ClaimEventsComponent,
     ClaimViewComponent,
     ContractOuComponent,
+    MyAgentsComponent,
     NewsComponent,
     AnalyticsComponent,
     ModalComponent,
