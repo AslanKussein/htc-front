@@ -299,7 +299,7 @@ export class Util {
       return false;
     }
     for (const routerElement of JSON.parse(localStorage.getItem('currentUser')).roles) {
-      if (routerElement == 'РГ') {
+      if (routerElement == 'РГ' || routerElement == "Руководитель группы") {
         return true;
       }
     }
