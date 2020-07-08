@@ -5,40 +5,46 @@
         <div class="col-sm-2">
           <div class="row">
             <label>ID заявки<span class="text-danger">&nbsp;*</span></label>
-            <div class="input-group mb-3">
-              <input type="number" class="form-control" placeholder="ID заявки" formControlName="sellApplicationId"
-                     aria-describedby="button-addon2" [(ngModel)]="contractForm.sellApplicationId">
-              <div class="input-group-append" [class.disabled]="!contractForm.sellApplicationId">
-                <button class="btn btn-purple btn-sm m-0 px-3 py-2 z-depth-0 waves-effect" (click)="searchApplication()" type="button" id="button-addon2">
-                  <i class="fa fa-search" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
+            <input type="number" class="form-control" placeholder="ID заявки" formControlName="sellApplicationId"
+                   aria-describedby="button-addon2" [(ngModel)]="contractForm.sellApplicationId">
+          </div>
+          <div class="row">
+            <button class="btn btn-purple btn-sm btn2" (click)="searchApplication()" type="button" id="button-addon2">
+              <i class="fa fa-search" aria-hidden="true"></i> Поиск заявки по объекту
+            </button>
           </div>
           <div class="row">
             <label>Сумма аванса (тг)<span class="text-danger">&nbsp;*</span></label>
             <input type="text" class="form-control" formControlName="payedSum"
+                   [(ngModel)]="contractForm.payedSum"
                    mask="separator" suffix=" ₸" thousandSeparator=" "/>
           </div>
         </div>
         <div class="col-sm">
           <fieldset class="scheduler-border col-sm">
-            <legend class="scheduler-border" translate>Соглашение о приеме {{this.createClaimComponent.activeTab == 'advanceAgreement' ? 'аванса' : 'задатка'}}</legend>
+            <legend class="scheduler-border" translate>Соглашение о
+              приеме {{this.createClaimComponent.activeTab == 'advanceAgreement' ? 'аванса' : 'задатка'}}</legend>
+
+            <div class="root" *ngIf="isShowPdf">
+              <iframe id="pdfIframe" type="application/pdf" height="100vh" width="100%" frameBorder="0"></iframe>
+            </div>
           </fieldset>
-          <div class="root" *ngIf="isShowPdf">
-            <iframe id="pdfIframe" type="application/pdf" height="100vh" width="100%" frameBorder="0"></iframe>
-          </div>
         </div>
         <div class="col-sm-2">
           <div class="row">
-            <button type="button" (click)="generateContract()" class="btn btn-purple btn2 btn-sm">Сформировать договор</button>
+            <button type="button" [disabled]="!this.contractForm.valid" (click)="generateContract()"
+                    class="btn btn-purple btn2 btn-sm">
+              Сформировать договор
+            </button>
           </div>
-          <div class="row">
-            <button type="button" class="btn btn-deep-purple btn2 btn-sm">Распечатка</button>
+          <div class="row" *ngIf="isShowPdf">
+            <a type="button" [href]="this.util.generatorFullUrl(this.uuid)" target="_blank"
+               class="btn btn-deep-purple btn2 btn-sm">Распечатка</a>
           </div>
           <div class="row">
             <button type="button" class="btn btn-indigo btn2 btn-sm" *ngIf="!fromBoard">Отменить</button>
-            <button type="button" class="btn btn-indigo btn2 btn-sm" (click)="backToPrev()" *ngIf="fromBoard">Назад</button>
+            <button type="button" class="btn btn-indigo btn2 btn-sm" (click)="backToPrev()" *ngIf="fromBoard">Назад
+            </button>
           </div>
         </div>
       </div>

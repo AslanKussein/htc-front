@@ -277,7 +277,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.3. С "Договор на оказание услуг *" на "Показ *"
         this.moveStatus(data);
       } else if (prevStatusId == 6 && currentStatusId == 10) { // 2.4. С "Показ *" на "Договор о задатке/авансе *"
-        this.openModal2()
+        this.openModal2(this.modalContentAdvance, '-modal-sm');
         return;
       }else if (prevStatusId == 6 && currentStatusId == 7) { //NEW С "Показ *" на на "Закрытие сделки *" - обязательный статус
         alert('БУДЕТ ССЫЛКА')
@@ -327,8 +327,8 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  openModal2() {
-    this.modalRef2 = this.modalService.show(this.modalContentAdvance);
+  openModal2(template, class_) {
+    this.modalRef2 = this.modalService.show(template, {class: class_});
   }
 
   showToAdvance(param) {
@@ -337,5 +337,9 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   refresh(): void {
     window.location.reload();
+  }
+
+  closeRequestApplication() {
+    console.log(789)
   }
 }

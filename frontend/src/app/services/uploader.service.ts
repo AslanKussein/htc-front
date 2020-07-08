@@ -69,7 +69,7 @@ export class UploaderService {
   }
 
   public getResumePhoto(guid): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiFileManagerUrl}//download/` + guid, {})
+    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/api/download/` + guid, {})
       .pipe(
         tap(),
       );

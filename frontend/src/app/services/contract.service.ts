@@ -40,13 +40,10 @@ export class ContractService {
       .pipe(tap());
   }
 
-  generateDepositContract(data: ContractFormAgreementDto): Observable<any> {
-    return this.http.post(`${this.configService.apiDataManagerUrl}/api/contracts/generateDepositContract`, data, {
-      responseType: 'text',
-    })
+  public generateDepositContract(data): Observable<any> {
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/contracts/generateDepositContract`, data)
       .pipe(
         tap(),
-        catchError(ContractService.handleError)
       );
   }
 

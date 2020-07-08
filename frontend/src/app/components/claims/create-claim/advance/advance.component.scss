@@ -18,3 +18,9 @@ legend {
   padding: 5px 5px 5px 10px;
   background-color: #ffffff;
 }
+.root {
+  height: 100vh;
+  iframe {
+    height: 100vh;
+  }
+}

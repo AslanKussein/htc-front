@@ -231,7 +231,7 @@ export class Util {
 
   generatorFullUrl(uuid: string) {
     return `${this.configService.apiFileManagerUrl}` + '/open-api/download/' + uuid;
-}
+  }
 
   isNumeric(val: any): val is number | string {
     // parseFloat NaNs numeric-cast false positives (null|true|false|"")
@@ -243,6 +243,10 @@ export class Util {
 
   formatDate(date: any) {
     return formatDate(date, 'dd.MM.yyyy', 'en-US');
+  }
+
+  toLocaleDateString(date: any) {
+    return new Date(date).toLocaleDateString();
   }
 
   formatDateWithTimeZone(date: any) {

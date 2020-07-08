@@ -533,8 +533,6 @@
                   </div>
                 </div>
 
-
-
                 <div class="form-group row">
                   <label class="col-sm col-form-label text-right">В залоге</label>
                   <div class="col-sm">
@@ -597,8 +595,6 @@
           </div>
         </div>
 
-
-
         <div class="row">
           <div class="form-group col-sm">
             <button type="button" mdbBtn color="success"
@@ -615,6 +611,7 @@
                     translate>
               clear
             </button>
+            <button type="button" class="btn btn-sm btn2 btn-secondary" (click)="backToPrev()" *ngIf="fromBoard">Назад</button>
           </div>
         </div>
       </div>
@@ -631,9 +628,64 @@
         <div class="col-sm"></div>
       </div>
       <br/>
-      <div class="row">
+      <div class="row" *ngIf="fromBoard">
         <div class="col-sm">
-          <table class="table table-bordered table-sm">
+          <table class="table table-bordered table-striped table-sm">
+            <thead class="text-center">
+            <tr>
+              <th translate>Фото</th>
+              <th translate>Адрес</th>
+              <th translate>Комнатность</th>
+              <th translate>Общая площадь</th>
+              <th translate>Этаж</th>
+              <th translate>Год постройки</th>
+              <th translate>Материал</th>
+              <th translate>Район</th>
+              <th translate>Состояние</th>
+              <th translate></th>
+            </tr>
+            </thead>
+            <tbody style="cursor: pointer">
+            <tr *ngFor="let object of objectsData;let i = index">
+              <td><img *ngIf="getImgUrl(object)" [src]="getImgUrl(object)" alt="First Slide" class="photoList" height="100px"></td>
+              <td>{{object.address?.nameRu}}</td>
+              <td>{{object.numberOfRooms}}</td>
+              <td>{{object.totalArea}}</td>
+              <td>{{object.floor}}</td>
+              <td>{{object.yearOfConstruction}}</td>
+              <td>{{object.materialOfConstruction?.name?.nameRu}}</td>
+              <td>{{object.district?.name?.nameRu}}</td>
+              <td>{{object.houseCondition?.name?.nameRu}}</td>
+              <td>
+                <span class="table-remove">
+                  <button type="button" class="btn btn-mdb-color btn-sm btn-rounded btn-sm my-0"
+                          (click)="openModal(openObjectClaims, 'modal-lg', object)">Заявки по обекту</button>
+                </span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="row">
+            <div class="col-sm">
+              <pagination [(ngModel)]="currentPage"
+                          [totalItems]="totalItems"
+                          [itemsPerPage]="itemsPerPage"
+                          [maxSize]="10"
+                          [rotate]="true"
+                          [boundaryLinks]="true"
+                          previousText="&lsaquo;"
+                          nextText="&rsaquo;"
+                          firstText="&laquo;"
+                          lastText="&raquo;"
+                          (pageChanged)="pageChanged($event)">
+              </pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="!fromBoard">
+        <div class="col-sm">
+          <table class="table table-bordered table-striped table-sm">
             <thead class="text-center">
             <tr>
               <th>№</th>
@@ -688,3 +740,54 @@
     </div>
   </div>
 </div>
+<ng-template #openObjectClaims let-close="close">
+  <div class="modal-header">
+    Заявки по объекту
+    <button type="button" class="close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm">
+        <table class="table table-bordered table-striped table-sm">
+          <thead class="text-center">
+          <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Дата</th>
+            <th>Цена</th>
+            <th>Ипотека</th>
+            <th>Вер-тъ торга</th>
+            <th>Обрем-е</th>
+            <th>Обмен</th>
+            <th>Аналитика</th>
+            <th>Агент</th>
+            <th>Телефон</th>
+          </tr>
+          </thead>
+          <tbody style="cursor: pointer">
+          <tr *ngFor="let object of selectObject.applicationList;let i = index">
+            <td>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="tableDefaultCheck1" (change)="checkedObjects(object, $event)">
+                <label class="custom-control-label" for="tableDefaultCheck1"></label>
+              </div>
+            </td>
+            <td>{{object.applicationId}}</td>
+            <td>{{util.toLocaleDateString(object.creationDate)}}</td>
+            <td>{{object.price | mask: 'separator'}}</td>
+            <td>{{object.mortgage?.nameRu}}</td>
+            <td>{{object.probabilityOfBidding?.nameRu}}</td>
+            <td>{{object.encumbrance?.nameRu}}</td>
+            <td>{{object.exchange?.nameRu}}</td>
+            <td>{{object.priceAnalytics}}</td>
+            <td>{{object.fullName}}</td>
+            <td><span *ngIf="object.phone">+7 {{object.phone | mask: '(000) 000-0000'}}</span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</ng-template>

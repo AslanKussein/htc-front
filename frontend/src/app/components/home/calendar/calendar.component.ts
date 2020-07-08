@@ -34,13 +34,12 @@ const colors: any = {
   providers: [
     {
       provide: CalendarDateFormatter,
-      useClass: CustomDateFormatter,
     },
   ],
 })
 export class CalendarComponent implements OnInit {
 
-  locale: string = 'ru-KZ';
+  locale: string = 'ru-Ru';
   events: CalendarEvent[] = [];
 
   @ViewChild('modalContent', {static: true}) modalContent: TemplateRef<any>;
@@ -86,13 +85,19 @@ export class CalendarComponent implements OnInit {
     return this.util.formatDate(date);
   }
 
+  format2(date: any) {
+    return new Date(date).toLocaleString();
+  }
+
   getDicNameByLanguage(data: any, column: string) {
     let x = this.util.getDicNameByLanguage();
     return data[column]?.name[x];
   }
 
   getEventsByDate(pageNo: number) {
-    this.eventsService.getEventsByDate(addDays(this.date, 1)).subscribe(res => {
+    console.log(this.date)
+    console.log()
+    this.eventsService.getEventsByDate(startOfDay(addDays(this.date, 1))).subscribe(res => {
       if (res != null && res.data != null) {
         this.eventsData = res.data.data.data;
         this.totalItems = res.data.total;
@@ -111,14 +116,13 @@ export class CalendarComponent implements OnInit {
     this.eventsService.getEventsForCalendar(searchParams).subscribe(obj => {
       if (!this.util.isNullOrEmpty(obj.data)) {
         this.events = [];
-        let color2: {
-          primary: '#eec406',
-          secondary: '#a88a00',
-        }
+
         obj.data.data.forEach(e => {
+          console.log(startOfDay(new Date(e.eventDate)), ' ', e.eventDate )
+          // console.log(subDays(startOfDay(new Date(e.eventDate)), 0))
           let data = {
-            start: subDays(startOfDay(new Date(e.eventDate)), 0),
-            end: subDays(startOfDay(new Date(e.eventDate)), 0),
+            start: new Date(e.eventDate),
+            end: new Date(e.eventDate),
             title: e.eventType.name[this.util.getDicNameByLanguage()],
             color: this.getColorsByStatusId(e.eventType.id),
             allDay: true,

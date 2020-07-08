@@ -16,4 +16,8 @@ export class ObjectService {
     return this.http.post<any>(`${this.configService.apiViewManagerUrl}/open-api/realProperty/getRealPropertyList`, search);
   }
 
+  getRealPropertyWithAppList(search: any): Observable<any> {
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/api/register/getRealPropertyWithAppList`, search);
+  }
+
 }

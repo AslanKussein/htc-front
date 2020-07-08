@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router, RoutesRecognized} from "@angular/router";
 import {Dic} from "../../models/dic";
 import {language} from "../../../environments/language";
 import {Util} from "../../services/util";
@@ -12,7 +12,9 @@ import {Subscription} from "rxjs";
 import {NewDicService} from "../../services/new.dic.service";
 import {DicService} from "../../services/dic.service";
 import {ObjectFilterDto} from "../../models/objectFilterDto";
-
+import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
+import {filter, pairwise} from "rxjs/operators";
+import {AdvanceComponent} from "../claims/create-claim/advance/advance.component";
 
 @Component({
   selector: 'app-objects',
@@ -32,16 +34,32 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   objectMyModel: number;
   subscriptions: Subscription = new Subscription();
   objectFilterDto: ObjectFilterDto;
+  modalRef: BsModalRef;
+  empty: boolean = false;
+  fromBoard: boolean = false;
+
+  @ViewChild('openObjectClaims', {static: true}) openObjectClaims: TemplateRef<any>;
 
   constructor(private router: Router,
               private objectService: ObjectService,
               private uploadService: UploaderService,
               private notifyService: NotificationService,
-              private util: Util,
+              public util: Util,
+              private actRoute: ActivatedRoute,
+              private modalService: BsModalService,
               private newDicService: NewDicService,
               private dicService: DicService,
               private uploaderService: UploaderService,
               private ngxLoader: NgxUiLoaderService) {
+
+    if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('fromBoard'))) {
+      this.fromBoard = this.actRoute.snapshot.queryParamMap.get('fromBoard') == 'true';
+    }
+    this.router.events
+      .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
+      .subscribe((events: RoutesRecognized[]) => {
+        localStorage.setItem('previousUrl', events[0].urlAfterRedirects)
+      })
   }
 
   formData = {
@@ -79,7 +97,7 @@ export class ObjectsComponent implements OnInit, OnDestroy {
     this.objectMy = [
       {label: 'Все объекты', value: 1},
       {label: 'Мои объекты', value: 2},
-    ]
+    ];
   }
 
   myObjectChange() {
@@ -93,6 +111,7 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   }
 
   objectsData;
+  selectObject: any;
   totalItems = 0;
   itemsPerPage = 10;
   currentPage = 1;
@@ -180,15 +199,25 @@ export class ObjectsComponent implements OnInit, OnDestroy {
     if (!this.util.isNullOrEmpty(this.formData.my)) {
       this.objectFilterDto.my = this.formData.my;
     }
-
-    this.subscriptions.add(this.objectService.getObjects(this.objectFilterDto).subscribe(res => {
-      this.objectsData = res.data.data.data;
-      this.totalItems = res.data.total;
-      this.currentPage = res.data.pageNumber + 1;
-      if (res.data.data.size == 0) {
-        this.notifyService.showInfo('Ничего не найдено!', 'Внимание');
-      }
-    }));
+    if (this.fromBoard) {
+      this.subscriptions.add(this.objectService.getRealPropertyWithAppList(this.objectFilterDto).subscribe(res => {
+        this.objectsData = res.data.data.data;
+        this.totalItems = res.data.total;
+        this.currentPage = res.data.pageNumber + 1;
+        if (res.data.data.empty) {
+          this.empty = true;
+        }
+      }));
+    } else {
+      this.subscriptions.add(this.objectService.getObjects(this.objectFilterDto).subscribe(res => {
+        this.objectsData = res.data.data.data;
+        this.totalItems = res.data.total;
+        this.currentPage = res.data.pageNumber + 1;
+        if (res.data.data.size == 0) {
+          this.notifyService.showInfo('Ничего не найдено!', 'Внимание');
+        }
+      }));
+    }
     this.ngxLoader.stop();
   }
 
@@ -255,5 +284,30 @@ export class ObjectsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  openModal(template, class_, object: any) {
+    this.selectObject = object;
+    this.modalRef = this.modalService.show(template, {class: class_});
+  }
+
+  backToPrev() {
+    this.util.navigateByUrl(localStorage.getItem('previousUrl'));
+  }
+
+  checkedObjects(object: any, $event: any) {
+    if ($event.target.checked) {
+      let prevUrl = localStorage.getItem('previousUrl');
+      if (!this.util.isNullOrEmpty(prevUrl)) {
+        if (!this.util.isNullOrEmpty(localStorage.getItem('previousUrl').split('&sellApplicationId=')[0])) {
+          prevUrl = localStorage.getItem('previousUrl').split('&sellApplicationId=')[0] + '&sellApplicationId=' + object.applicationId
+        } else {
+          prevUrl = localStorage.getItem('previousUrl') + '&sellApplicationId=' + object.applicationId
+        }
+      }
+      this.util.navigateByUrl(prevUrl);
+      this.modalRef.hide();
+      return;
+    }
   }
 }

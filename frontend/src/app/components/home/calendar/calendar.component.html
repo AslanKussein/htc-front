@@ -11,7 +11,6 @@
     [viewDate]="viewDate"
     [refresh]="refresh"
     [events]="events"
-    [locale]="locale"
     (dayClicked)="getEventsByClick($event.day)"
     [weekStartsOn]="1"
     (eventClicked)="handleEvent($event.event)"
@@ -44,7 +43,7 @@
           <tbody style="cursor: pointer">
           <tr *ngFor="let ev of eventsData;let i = index">
             <td>{{i+1}}</td>
-            <td>{{format(ev?.eventDate)}}</td>
+            <td>{{format2(ev?.eventDate)}}</td>
             <td>{{getDicNameByLanguage(ev, 'eventType')}}</td>
             <td>{{getDicNameByLanguage(ev, 'operationType')}}</td>
             <td>
