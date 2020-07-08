@@ -32,7 +32,7 @@
         </div>
         <div class="col-sm-2">
           <div class="row">
-            <button type="button" [disabled]="!this.contractForm.valid" (click)="generateContract()"
+            <button type="button" *ngIf="!isShowPdf" [disabled]="!this.contractForm.valid" (click)="generateContract()"
                     class="btn btn-purple btn2 btn-sm">
               Сформировать договор
             </button>

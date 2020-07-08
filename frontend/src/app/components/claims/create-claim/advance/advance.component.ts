@@ -24,7 +24,7 @@ export class AdvanceComponent implements OnInit, OnDestroy {
   title: string;
   fromBoard: boolean = false;
   subscriptions: Subscription = new Subscription();
-  isShowPdf = true;
+  isShowPdf = false;
   url: string;
   uuid: string = "66ee7e14-a334-4574-b59b-7ef4e919401c";
   contractForm: any;
@@ -73,37 +73,27 @@ export class AdvanceComponent implements OnInit, OnDestroy {
   generateContract(): void {
     this.ngxLoader.startBackground();
     this.fillContractDto();
-    console.log(this.contractForm.value)
 
-    // this.subscriptions.add(this.contractService.generateDepositContract(this.contractForm.value)
-    //   .subscribe(res => {
-    //     console.log(res)
-    //     if (res) {
+    this.subscriptions.add(this.contractService.generateDepositContract(this.contractForm.value)
+      .subscribe(res => {
+        console.log(res)
+        if (res) {
+          this.isShowPdf = true;
           if (!this.util.isNullOrEmpty(this.uuid)) {
             this.uploaderService.getResumePhoto(this.uuid).subscribe(file => {
               const iframe = window.document.getElementById('pdfIframe');
               const blob = new Blob([file], {type: 'application/pdf'});
               this.sourcePdf = window.URL.createObjectURL(blob);
-              console.log(this.sourcePdf)
               iframe.setAttribute('src', this.sourcePdf);
             }, error => {
               this.notifyService.showError('', error?.ru);
             });
           }
-      //     console.log(res)
-      //     // this.isDisabled = true;
-      //     this.isShowPdf = true;
-      //     // setTimeout(() => {
-      //     //   const iframe = window.document.getElementById('pdfIframe');
-      //     //   const byteArray = new Uint8Array(atob(res).split('').map(char => char.charCodeAt(0)));
-      //     //   const blob = new Blob([byteArray], {type: 'application/pdf'});
-      //     //   this.sourcePdf =  window.URL.createObjectURL(blob);
-      //     //   iframe.setAttribute('src', this.sourcePdf);
-      //     // }, 300);
-      //   }
-      // }, err => {
-      //   this.notifyService.showError('', err?.ru);
-      // }));
+          this.isShowPdf = true;
+        }
+      }, err => {
+        this.notifyService.showError('', err?.ru);
+      }));
     this.ngxLoader.stopBackground();
   }
 
