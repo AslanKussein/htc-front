@@ -951,7 +951,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   fillApplication() {
     this.application = new ApplicationDto(
-      null,
+      this.applicationId || null,
       this.applicationForm.operationTypeId?.value,
       this.applicationForm.phoneNumber,
       this.applicationForm.agentLogin,

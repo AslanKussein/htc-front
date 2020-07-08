@@ -47,6 +47,10 @@ export class StaffService {
     return this.http.get<any>(`${this.configService.apiRoleManagerUrl}/roles`, {params});
   }
 
+  getOrganizationList(): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/organizations/getAll`);
+  }
+
   getGroupList(): Observable<any> {
     let params = new HttpParams();
     params = params.append('locale', String(language.language));

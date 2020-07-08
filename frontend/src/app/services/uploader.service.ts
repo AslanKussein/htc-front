@@ -69,10 +69,8 @@ export class UploaderService {
   }
 
   public getResumePhoto(guid): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiFileManagerUrl}/api/download/` + guid, {})
-      .pipe(
-        tap(),
-      );
+    return this.http.get(`${this.configService.apiFileManagerUrl}/api/download/${guid}`, {responseType: 'blob'})
+      .pipe(tap());
   }
 
   public getEventMessage(event: HttpEvent<any>) {

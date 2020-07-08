@@ -16,6 +16,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
   modalRef: BsModalRef;
   roles: Dic[];
   groups: Dic[];
+  organizations: Dic[];
   actions: string;
   subscriptions: Subscription = new Subscription();
 
@@ -36,6 +37,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
     residentialComplexes: null,
     roles: null,
     group: null,
+    organizationId: null,
     isActive: true,
     login: null,
     pass: '',
@@ -78,6 +80,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
     this.ngxLoader.stop();
   }
 
+
   getUserInfo() {
     this.ngxLoader.start();
     this.subscriptions.add(this.staffService.getUserInfo(this.filter).subscribe(res => {
@@ -113,6 +116,10 @@ export class StaffsComponent implements OnInit, OnDestroy {
 
     this.staffService.getRoleList().subscribe(data => {
       this.roles = this.util.toSelectArrayRoles2(data);
+    });
+    this.staffService.getOrganizationList().subscribe(data => {
+      this.organizations = this.util.toSelectArrayOrganization(data);
+      console.log(this.organizations)
     });
 
     this.getGroup();
@@ -215,6 +222,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
       residentialComplexes: null,
       roles: null,
       group: null,
+      organizationId: null,
       isActive: true,
       login: null,
       pass: '',
