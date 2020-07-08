@@ -9,6 +9,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {UserService} from "../../services/user.service";
 import {Subscription} from "rxjs";
 import {NewDicService} from "../../services/new.dic.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-board',
@@ -28,17 +29,23 @@ export class BoardComponent implements OnInit, OnDestroy {
   activeTab: number = 3;
   displayBoardContent: boolean = true;
   agentList: Dic[];
+  login: string = this.util.getCurrentUser().login;
 
   get boardSelect(): Board {
     return this._boardSelect;
   }
 
   constructor(private boardService: BoardService,
-              private util: Util,
+              public util: Util,
               private notificationService: NotificationService,
               private ngxLoader: NgxUiLoaderService,
               private newDicService: NewDicService,
+              private router: Router,
+              private actRoute: ActivatedRoute,
               private userService: UserService) {
+    if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
+      this.activeTab = parseInt(this.actRoute.snapshot.queryParamMap.get('activeTab'));
+    }
   }
 
   ngOnInit(): void {
@@ -53,9 +60,9 @@ export class BoardComponent implements OnInit, OnDestroy {
     }));
   }
 
-  getBoardData(tab: number, ids: number) {
+  getBoardData(tab: number, ids: number, login: string) {
     let searchFilter = {};
-    searchFilter['agentLoginList'] = ['artursaduov'];
+    searchFilter['agentLoginList'] = [login];
     // searchFilter['agentLoginList'] = this.util.getCurrentUser().roles;
     searchFilter['applicationStatusList'] = ids;
     searchFilter['operationTypeId'] = tab == 3 ? null : tab;
@@ -113,7 +120,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     if (this.activeTab == 3) {
       code = ['002001', '002002', '002003', '002005', '002004', '002006', '002010', '002007'];
     } else if (this.activeTab == 2) {
-      code = ['002001', '002002', '002003', '002004', '002005', '002006', '002007']
+      code = ['002001', '002002', '002003', '002005', '002004', '002006', '002007']
     } else if (this.activeTab == 1) {
       code = ['002001', '002002', '002003', '002006', '002010', '002007']
     }
@@ -126,6 +133,15 @@ export class BoardComponent implements OnInit, OnDestroy {
         return obj;
       }
     }
+  }
+
+  filtredLogin(login: string) {
+    if (!this.util.isNullOrEmpty(login)) {
+      this.login = login;
+    } else {
+      this.login = this.util.getCurrentUser().login;
+    }
+    this.sortStatusesDic(this.activeTab);
   }
 
   sortStatusesDic(tab: number) {
@@ -141,13 +157,17 @@ export class BoardComponent implements OnInit, OnDestroy {
       m['code'] = status;
       this.appStatusesSort.push(m)
     }
-    this.getBoardData(tab, ids);
+    this.getBoardData(tab, ids, this.login);
+    this.router.navigate([], {
+      queryParams: {
+        activeTab: tab
+      }
+    });
   }
 
   getBgColorBySumm(price: number) {
     let bgColor = 'bg-primary'
     if (price > 15000000 && price < 25000000) {
-      alert(1)
       bgColor = 'bg-warning'
     } else if (price > 25000000 && price < 35000000) {
       bgColor = 'bg-success'
@@ -218,41 +238,58 @@ export class BoardComponent implements OnInit, OnDestroy {
    * @param prevStatusId
    */
   changeStatus(event: CdkDragDrop<string[]>, item: any, prevStatusId: number) {
+    let currentStatusId = parseInt(event.container.id);
+
     if (parseInt(event.previousContainer.id) > parseInt(event.container.id)) {
-      return
+      if (prevStatusId != 5 && currentStatusId != 4) {
+        alert(1)
+        return
+      }
     }
     this._boardSelect = item;
-
-    let currentStatusId = parseInt(event.container.id);
 
     let data = {applicationId: item.id, statusId: currentStatusId};
 
     if (this.activeTab == 1) {// воронка покупателей
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
         this.openInnerPage('board/add-event');
+        return;
       } else if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
-        alert('create dogovor')
+        this.util.dnHrefParam('create-claim/' + item.id, 'ou');
+        return;
       } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.3. С "Договор на оказание услуг *" на "Показ *"
         this.moveStatus(data);
       } else if (prevStatusId == 6 && currentStatusId == 10) { // 2.4. С "Показ *" на "Договор о задатке/авансе *"
         alert('БУДЕТ ССЫЛКА')
+      }else if (prevStatusId == 6 && currentStatusId == 7) { //NEW С "Показ *" на на "Закрытие сделки *" - обязательный статус
+        alert('БУДЕТ ССЫЛКА')
       } else if (prevStatusId == 10 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
         this.openInnerPage('board/close-deal/' + this.activeTab);
       }
-    } else if (this.activeTab == 2) {
+    } else if (this.activeTab == 2) {// воронка ПРОДАЖИ
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
         this.openInnerPage('board/add-event');
+        return;
       } else if (prevStatusId == 2 && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
-        alert('create dogovor')
+        this.util.dnHrefParam('create-claim/' + item.id, 'ou');
+        return;
       } else if (prevStatusId == 3 && (currentStatusId == 4 || currentStatusId == 5)) {// С "Договор на оказание услуг *" на "Фотосет", "Реклама"
         this.moveStatus(data);
       } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.4. С "Договор на оказание услуг *" на "Показ *"
+        this.moveStatus(data);
+      } else if (prevStatusId == 5 && currentStatusId == 4) {//  2.4. С "Фотосет*" на "Реклама *"
+        this.moveStatus(data);
+      } else if ((prevStatusId == 4 || prevStatusId == 5) && currentStatusId == 6) {//  2.5. Фотосет" или "Реклама" на статус "Показ"
+        this.moveStatus(data);
+      } else if (prevStatusId == 5 && currentStatusId == 4) {// 2.4 NEW Заявка может переноситься со статуса "Фотосет" на статус "Реклама"
         this.moveStatus(data);
       } else if (prevStatusId == 6 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
         this.openInnerPage('board/close-deal/' + this.activeTab);
       }
     }
-    this.sortStatusesDic(this.activeTab);
+    setTimeout(() => {
+      this.sortStatusesDic(this.activeTab);
+    }, 1000)
   }
 
   openInnerPage(url: string) {
@@ -268,5 +305,9 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  refresh(): void {
+    window.location.reload();
   }
 }

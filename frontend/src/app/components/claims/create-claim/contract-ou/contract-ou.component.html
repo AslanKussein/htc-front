@@ -1,0 +1,105 @@
+<div class="card">
+  <div class="card-body">
+    <div class="contract-form" ngxUiLoaderBlurred>
+      <form [formGroup]="contractForm">
+        <div class="row">
+          <div class="col-sm">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Номер договора
+                <span class="text-danger">&nbsp;*</span>
+              </label>
+              <div class="col-sm-7">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Номер договора"
+                  formControlName="contractNumber"
+                  [(ngModel)]="contractForm.contractNumber"/>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Сумма по договору(тг)
+                <span class="text-danger">&nbsp;*</span>
+              </label>
+              <div class="col-sm-7">
+                <input type="text" min="0" max="20" class="form-control"
+                       placeholder="Сумма по договору" maxlength="20"
+                       (change)="changeContractSum()"
+                       mask="separator" thousandSeparator=" "
+                       formControlName="contractSum"
+                       [(ngModel)]="contractForm.contractSum"/>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Тип договора
+                <span class="text-danger">&nbsp;*</span>
+              </label>
+              <div class="col-sm-7">
+                <ng-select
+                  [items]="contractTypes"
+                  bindValue="value"
+                  [(ngModel)]="contractForm.contractTypeId"
+                  formControlName="contractTypeId"
+                  placeholder="{{ 'claim.encumbrance' | translate }}">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Срок действия договора
+                <span class="text-danger">&nbsp;*</span>
+              </label>
+              <div class="col-sm-7">
+                <input
+                  type="text"
+                  placeholder="dd.MM.yyyy"
+                  class="form-control"
+                  bsDatepicker #ru="bsDatepicker"
+                  formControlName="contractPeriod"
+                  [(ngModel)]="contractForm.contractPeriod"/>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Размер комиссии (тг)
+                <span class="text-danger">&nbsp;*</span>
+              </label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control"
+                       min="0" max="20"
+                       maxlength="20"
+                       disabled
+                       [(ngModel)]="contractForm.commission"
+                       placeholder="Размер комиссии"
+                       mask="separator" thousandSeparator=" "
+                       formControlName="commission"/>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm"></div>
+        </div>
+      </form>
+      <div>
+        <div class="actions mb-3">
+
+          <button type="button" class="btn btn-sm btn2 btn-secondary" (click)="backToPrev()" *ngIf="fromBoard">Назад</button>
+          <button type="button" class="btn btn-sm btn2 btn-primary" (click)="generateContract()">Сформировать договор</button>
+          <button type="button" class="btn btn-sm btn2 btn-light" (click)="skipStep()" [disabled]="isDisabled">Пропустить шаг</button>
+          <button type="button" class="btn btn-sm btn2 btn-light" (click)="cancel()" *ngIf="!fromBoard">Отменить</button>
+        </div>
+      </div>
+      <div class="root" *ngIf="isShowPdf">
+        <iframe id="pdfIframe"  type="application/pdf" height="100vh" width="100%" frameBorder="0"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+

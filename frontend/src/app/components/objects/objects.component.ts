@@ -11,6 +11,7 @@ import {NotificationService} from "../../services/notification.service";
 import {Subscription} from "rxjs";
 import {NewDicService} from "../../services/new.dic.service";
 import {DicService} from "../../services/dic.service";
+import {ObjectFilterDto} from "../../models/objectFilterDto";
 
 
 @Component({
@@ -30,6 +31,7 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   objectMy: any;
   objectMyModel: number;
   subscriptions: Subscription = new Subscription();
+  objectFilterDto: ObjectFilterDto;
 
   constructor(private router: Router,
               private objectService: ObjectService,
@@ -65,7 +67,7 @@ export class ObjectsComponent implements OnInit, OnDestroy {
     garage: '',
     attic: '',
     my: null,
-    objectTypes: 1
+    objectTypes: null
   };
 
   ngOnInit(): void {
@@ -132,45 +134,54 @@ export class ObjectsComponent implements OnInit, OnDestroy {
 
   findObjects(pageNo: number) {
     this.ngxLoader.start();
-    let searchFilter = {};
-
-    searchFilter['pageNumber'] = pageNo - 1;
-    searchFilter['pageSize'] = 10;
+    this.objectFilterDto = new ObjectFilterDto();
+    this.objectFilterDto.pageNumber = pageNo - 1;
+    this.objectFilterDto.pageSize = 10;
     if (!this.util.isNullOrEmpty(this.formData.districtsId)) {
-      searchFilter['districtId'] = parseInt(this.formData.districtsId);
+      this.objectFilterDto.districtId = parseInt(this.formData.districtsId);
     }
     if (!this.util.isNullOrEmpty(this.formData.typeHome)) {
-      searchFilter['materialOfConstructionId'] = parseInt(this.formData.typeHome);
+      this.objectFilterDto.materialOfConstructionId = parseInt(this.formData.typeHome);
     }
     if (!this.util.isNullOrEmpty(this.formData.residentialComplexes)) {
-      searchFilter['residentialComplexId'] = parseInt(this.formData.residentialComplexes);
+      this.objectFilterDto.residentialComplexId = parseInt(this.formData.residentialComplexes);
     }
     if (!this.util.isNullOrEmpty(this.formData.objectTypes)) {
-      searchFilter['objectTypeId'] = this.formData.objectTypes;
+      this.objectFilterDto.objectTypeId = this.formData.objectTypes;
     }
     if (!this.util.isNullOrEmpty(this.formData.numKvart)) {
-      searchFilter['apartmentNumber'] = parseInt(this.formData.numKvart);
+      this.objectFilterDto.apartmentNumber = parseInt(this.formData.numKvart);
     }
     if (!this.util.isNullOrEmpty(this.formData.zalog)) {
-      searchFilter['encumbrance'] = parseInt(this.formData.zalog)==1?true:false;
+      this.objectFilterDto.encumbrance = parseInt(this.formData.zalog) == 1 ? true : false;
     }
-    searchFilter['price'] = new Period(this.formData?.priceFrom, this.formData?.priceTo);
-    searchFilter['floor'] = new Period(this.formData?.floorFrom, this.formData?.floorTo);
-    searchFilter['floorInTheHouse'] = new Period(this.formData?.floorsFrom, this.formData?.floorsTo);
-    searchFilter['totalArea'] = new Period(this.formData?.totalAreaFrom, this.formData?.totalAreaTo);
-    searchFilter['livingArea'] = new Period(this.formData?.livingSpaceFrom, this.formData?.livingSpaceTo);
-    searchFilter['kitchenArea'] = new Period(this.formData?.kitchenAreaFrom, this.formData?.kitchenAreaTo);
+    if (!this.util.isEmptyObject(new Period(this.formData.priceFrom, this.formData.priceTo))) {
+      this.objectFilterDto.price = new Period(this.formData.priceFrom, this.formData.priceTo);
+    }
+    if (!this.util.isEmptyObject(new Period(this.formData.floorFrom, this.formData.floorTo))) {
+      this.objectFilterDto.floor = new Period(this.formData.floorFrom, this.formData.floorTo);
+    }
+    if (!this.util.isEmptyObject(new Period(this.formData.floorsFrom, this.formData.floorsTo))) {
+      this.objectFilterDto.floorInTheHouse = new Period(this.formData.floorsFrom, this.formData.floorsTo);
+    }
+    if (!this.util.isEmptyObject(new Period(this.formData.totalAreaFrom, this.formData.totalAreaTo))) {
+      this.objectFilterDto.totalArea = new Period(this.formData.totalAreaFrom, this.formData.totalAreaTo);
+    }
+    if (!this.util.isEmptyObject(new Period(this.formData.livingSpaceFrom, this.formData.livingSpaceTo))) {
+      this.objectFilterDto.livingArea = new Period(this.formData.livingSpaceFrom, this.formData.livingSpaceTo);
+    }
+    if (!this.util.isEmptyObject(new Period(this.formData.kitchenAreaFrom, this.formData.kitchenAreaTo))) {
+      this.objectFilterDto.kitchenArea = new Period(this.formData.kitchenAreaFrom, this.formData.kitchenAreaTo);
+    }
 
     if (!this.util.isNullOrEmpty(this.formData.numberOfRooms)) {
-      searchFilter['numberOfRooms'] = parseInt(this.formData.numberOfRooms);
+      this.objectFilterDto.numberOfRooms = parseInt(this.formData.numberOfRooms);
     }
-
     if (!this.util.isNullOrEmpty(this.formData.my)) {
-      searchFilter['my'] = this.formData.my;
+      this.objectFilterDto.my = this.formData.my;
     }
-    // searchFilter['sortBy'] = 'application.objectPrice'
 
-    this.subscriptions.add(this.objectService.getObjects(searchFilter).subscribe(res => {
+    this.subscriptions.add(this.objectService.getObjects(this.objectFilterDto).subscribe(res => {
       this.objectsData = res.data.data.data;
       this.totalItems = res.data.total;
       this.currentPage = res.data.pageNumber + 1;
@@ -179,6 +190,15 @@ export class ObjectsComponent implements OnInit, OnDestroy {
       }
     }));
     this.ngxLoader.stop();
+  }
+
+  isEmpty(obj: any): boolean {
+    for(const key in obj) {
+      if (obj[key]) {
+        return false;
+      }
+    }
+    return true;
   }
 
   getImgUrl(obj: any) {

@@ -14,6 +14,7 @@ export class ApplicationSellDataDto {
     private probabilityOfBidding?: boolean,//Вероятность торга
     private sharedOwnershipProperty?: boolean,//Общая долевая собственность
     private theSizeOfTrades?: number,//Размер торга
+    private applicationFlagIdList?: any // Признак
   ) {
   }
 }

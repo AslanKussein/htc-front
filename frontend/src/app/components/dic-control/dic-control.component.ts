@@ -267,11 +267,10 @@ export class DicControlComponent implements OnInit, OnDestroy {
   editDic() {
     this.actions = 'EDIT';
     if (this.clickColumnDic == null) {
-      this.notifyService.showError('warning', 'Не выбрана запись для редактирования');
+      this.notifyService.showError('Внимание', 'Не выбрана запись для редактирования');
       this.modalRef.hide();
     } else {
       if (this.dicName == 'residential-complexes') {
-
         this.subscriptions.add(this.newDicService.getResidentialComplexesByPostcode(this.clickColumnDic.buildingDto?.postcode).subscribe(data => {
             if (data != null) {
               this.formRes = data;
@@ -281,10 +280,9 @@ export class DicControlComponent implements OnInit, OnDestroy {
                   }
                 )
               )
-
             }
           }, err => {
-            this.notifyService.showError('warning', err);
+            this.notifyService.showError('', err?.ru);
             this.modalRef.hide();
             this.clearForm();
           }
@@ -297,7 +295,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
 
   deleteDic() {
     if (this.clickColumnDic == null) {
-      this.notifyService.showError('warning', 'Не выбрана запись для удаления');
+      this.notifyService.showError('Внимание', 'Не выбрана запись для удаления');
       this.modalRef.hide();
     } else {
       if (this.dicName == 'residential-complexes') {
@@ -312,13 +310,13 @@ export class DicControlComponent implements OnInit, OnDestroy {
     if (this.dicName == 'residential-complexes') {
       this.subscriptions.add(this.dicService.deleteResidentalComplex(this.clickColumnDic).subscribe(data => {
           if (data != null) {
-            this.notifyService.showSuccess('success', 'Успешно сохранено');
-            this.loadDictionaryForEdit(this.dicName);///////////////
+            this.notifyService.showSuccess('', 'Успешно сохранено');
+            this.loadDictionaryForEdit(this.dicName);
             this.modalRef.hide();
             this.clearForm();
           }
         }, err => {
-          this.notifyService.showError('warning', err.message);
+          this.notifyService.showError('', err?.ru);
           this.loadDictionaryForEdit(this.dicName);
           this.modalRef.hide();
           this.clearForm();
@@ -327,13 +325,13 @@ export class DicControlComponent implements OnInit, OnDestroy {
     } else {
       this.subscriptions.add(this.dicService.deleteDicNew(this.clickColumnDic, this.dicName).subscribe(data => {
           if (data != null) {
-            this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.notifyService.showSuccess('', 'Успешно сохранено');
             this.loadDictionaryForEdit(this.dicName);
             this.modalRef.hide();
             this.clearForm();
           }
         }, err => {
-          this.notifyService.showError('warning', err.message);
+          this.notifyService.showError('', err?.ru);
           this.loadDictionaryForEdit(this.dicName);
           this.modalRef.hide();
           this.clearForm();
@@ -352,13 +350,13 @@ export class DicControlComponent implements OnInit, OnDestroy {
         }
         this.subscriptions.add(this.dicService.saveResidentalComplex(this.formRes).subscribe(data => {
             if (data != null) {
-              this.notifyService.showSuccess('success', 'Успешно сохранено');
+              this.notifyService.showSuccess('', 'Успешно сохранено');
               this.loadDictionaryForEdit(this.dicName);
               this.modalRef.hide();
               this.clearForm();
             }
           }, err => {
-            this.notifyService.showError('warning', err.message);
+            this.notifyService.showError('', err?.ru);
             this.loadDictionaryForEdit(this.dicName);
             this.modalRef.hide();
             this.clearForm();
@@ -380,13 +378,13 @@ export class DicControlComponent implements OnInit, OnDestroy {
 
         this.subscriptions.add(this.dicService.saveDicNew(saveForm).subscribe(data => {
           if (data != null) {
-            this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.notifyService.showSuccess('', 'Успешно сохранено');
             this.loadDictionaryForEdit(this.dicName);
             this.modalRef.hide();
             this.clearForm();
           }
         }, err => {
-          this.notifyService.showError('warning', err.message);
+          this.notifyService.showError('', err?.ru);
           this.loadDictionaryForEdit(this.dicName);
           this.modalRef.hide();
           this.clearForm();
@@ -400,13 +398,13 @@ export class DicControlComponent implements OnInit, OnDestroy {
         }
         this.subscriptions.add(this.dicService.updateResidentalComplex(this.formRes).subscribe(data => {
           if (data != null) {
-            this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.notifyService.showSuccess('', 'Успешно сохранено');
             this.loadDictionaryForEdit(this.dicName);
             this.modalRef.hide();
             this.clearForm();
           }
         }, err => {
-          this.notifyService.showError('warning', err.message);
+          this.notifyService.showError('', err?.ru);
           this.loadDictionaryForEdit(this.dicName);
           this.modalRef.hide();
           this.clearForm();
@@ -427,13 +425,13 @@ export class DicControlComponent implements OnInit, OnDestroy {
 
         this.subscriptions.add(this.dicService.updateDicNew(this.formData, saveForm).subscribe(data => {
           if (data != null) {
-            this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.notifyService.showSuccess('', 'Успешно сохранено');
             this.loadDictionaryForEdit(this.dicName);
             this.modalRef.hide();
             this.clearForm();
           }
         }, err => {
-          this.notifyService.showError('warning', err.message);
+          this.notifyService.showError('', err?.ru);
           this.loadDictionaryForEdit(this.dicName);
           this.modalRef.hide();
           this.clearForm();

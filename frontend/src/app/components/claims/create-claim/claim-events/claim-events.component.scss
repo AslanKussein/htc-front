@@ -2,3 +2,8 @@
   border-top: 1px dashed black;
 }
 
+textarea, textarea:focus {
+  border: none;
+  outline: none !important;
+  border-bottom: 1px solid black;
+}

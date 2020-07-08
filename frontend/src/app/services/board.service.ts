@@ -24,7 +24,7 @@ export class BoardService {
   }
 
   changeStatus(data: any) {
-    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/api/applications/changeStatus`, data)
+    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/api/kanban/changeStatus`, data)
       .pipe(
         tap(data => {
         }),

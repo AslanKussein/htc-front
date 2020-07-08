@@ -16,7 +16,7 @@ import {RealPropertyDto} from "../../../models/createClaim/realPropertyDto";
 import {ClientDto} from "../../../models/createClaim/clientDto";
 import {PurchaseInfoDto} from "../../../models/createClaim/purchaseInfoDto";
 import {Period} from "../../../models/common/period";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {RoleManagerService} from "../../../services/roleManager.service";
 import {HttpParams} from "@angular/common/http";
@@ -95,10 +95,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   aboutMap: boolean = false;
   existsClient: boolean = false;
   edit: boolean = true;
+  view: boolean = true;
   filesEdited: boolean = false;
   postcode: any;
   postcode2: any;
-  dicName:string;
+  dicName: string;
+  activeTab = 'claim';
 
   public parameters = {
     options: {
@@ -138,15 +140,20 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
               private userService: UserService,
               private dicService: DicService,
               private modal: NgbModal,
+              private router: Router,
               private newDicService: NewDicService,
               private kazPostService: KazPostService) {
     if (this.util.isNumeric(this.actRoute.snapshot.params.id)) {
-      this.edit = false;
+      if (!this.view) {
+        this.edit = false;
+      }
       this.saved = true;
       this.applicationId = Number(this.actRoute.snapshot.params.id);
     }
+    if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
+      this.activeTab = this.actRoute.snapshot.queryParamMap.get('activeTab');
+    }
   }
-
 
   formRes = {
     apartmentsOnTheSite: '',
@@ -248,10 +255,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       possibleReasonForBiddingIdList: [null, Validators.nullValidator],
       note: [null, Validators.nullValidator],
       description: [null, Validators.nullValidator],
-      cadastralNumber: [null, Validators.nullValidator],
-      cadastralNumber1: [null, Validators.nullValidator],
-      cadastralNumber2: [null, Validators.nullValidator],
-      cadastralNumber3: [null, Validators.nullValidator],
       propertyDeveloperId: [null, Validators.nullValidator],
       housingClass: [null, Validators.nullValidator],
       houseConditionId: [null, Validators.nullValidator],
@@ -305,7 +308,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     if (this.applicationId != null) {
       setTimeout(() => {
         this.loadDataById(this.applicationId);
-
       }, 1000);
     } else {
       this.ngxLoader.stopBackground();
@@ -315,16 +317,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   getCheckOperationList() {
-    this.subscriptions.add(this.roleManagerService.getOperations().subscribe(
-      data => {
-        let params = new HttpParams();
-        for (const el of data.data) {
-          params = params.append('groupCodes', String(el.code))
-        }
-        this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
-          this.roles = obj.data
-        });
-      }))
+    let params = new HttpParams();
+    params = params.append('groupCodes', String('APPLICATION_GROUP'))
+    params = params.append('groupCodes', String('REAL_PROPERTY_GROUP'))
+    params = params.append('groupCodes', String('CLIENT_GROUP'))
+    this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
+      this.roles = obj.data
+    });
   }
 
   loadResidentialComplexes() {
@@ -499,6 +498,26 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     if (this.applicationId && !this.edit) return;
     this.readonlyChooseJK = !this.util.isNullOrEmpty(this.applicationForm.residentialComplexId);
     if (this.util.isNullOrEmpty(this.applicationForm.residentialComplexId)) {
+      this.applicationForm.houseNumber = null;//Номер дома
+      this.applicationForm.houseNumberFraction = null;//номер дробь
+      this.applicationForm.districtId = null;//Район
+      this.applicationForm.numberOfFloors = null;//Этажность дома
+      this.applicationForm.apartmentsOnTheSite = null;//Кв. на площадке
+      this.applicationForm.materialOfConstructionId = null;//Материал
+      this.applicationForm.yearOfConstruction = null;//Год постройки
+      this.applicationForm.typeOfElevatorList = null;//Лифт
+      this.applicationForm.concierge = null;//Консьерж
+      this.applicationForm.wheelchair = null;//Колясочная
+      this.applicationForm.parkingTypeIds = null;///Парковка
+      this.applicationForm.yardTypeId = null;//Двор
+      this.applicationForm.playground = null;//Детская площадка
+      this.applicationForm.propertyDeveloperId = null;//Затройщик
+      this.applicationForm.housingClass = null;//Класс жилья
+      this.applicationForm.houseConditionId = null;//Состояния
+      this.applicationForm.numberOfApartments = null;//Кол-во кв
+      this.applicationForm.ceilingHeight = null;//Кол-во кв
+      this.postCode = null;
+      this.applicationForm.postcode = null;
       return;
     }
     this.applicationForm.houseNumber = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.houseNumber, null);//Номер дома
@@ -521,7 +540,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.applicationForm.ceilingHeight = this.util.nvl(this.applicationForm.residentialComplexId?.ceilingHeight, null);//Кол-во кв
     this.postCode = this.applicationForm.residentialComplexId?.buildingDto?.postcode;
     this.loadDataFromPostApi();
-    this.showModalChooseClaim();
+    if(!this.applicationId) {
+      this.showModalChooseClaim();
+    }
     this.cdRef.detectChanges();
   }
 
@@ -539,7 +560,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       .subscribe(res => {
         this.fillApplicationFormClientData(res);
         this.existsClient = true;
-      }, () => this.clearApplicationFormClientData()));
+      }));
   }
 
   clearApplicationFormClientData() {
@@ -612,10 +633,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.yardTypeId = data?.purchaseInfoDto?.yardTypeId;
       this.applicationForm.yearOfConstructionFrom = data?.purchaseInfoDto?.yearOfConstructionPeriod?.from;
       this.applicationForm.yearOfConstructionTo = data?.purchaseInfoDto?.yearOfConstructionPeriod?.to;
+      this.applicationForm.atelier = data?.purchaseInfoDto?.atelier;
+      this.applicationForm.separateBathroom = data?.purchaseInfoDto?.separateBathroom;
     }
     if (!this.util.isNullOrEmpty(data?.realPropertyDto)) {
       this.applicationForm.apartmentNumber = data?.realPropertyDto?.apartmentNumber;
-      this.applicationForm.atelier = this.util.toString(data?.realPropertyDto?.atelier);
+      this.applicationForm.atelier = data?.realPropertyDto?.atelier || data?.purchaseInfoDto?.atelier;
       this.applicationForm.apartmentNumber = data?.realPropertyDto?.apartmentNumber;
       this.applicationForm.balconyArea = data?.realPropertyDto?.balconyArea;
       if (!this.util.isNullOrEmpty(data?.realPropertyDto?.buildingDto)) {
@@ -629,7 +652,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.applicationForm.streetId = data?.realPropertyDto?.buildingDto?.streetId;
         this.applicationForm.residentialComplexId = this.util.getDictionaryValueById(this.residentialComplexes, data?.realPropertyDto?.buildingDto?.residentialComplexId);
       }
-      this.fillCadastralNumber(data?.realPropertyDto?.cadastralNumber);
       this.applicationForm.floor = data?.realPropertyDto?.floor;
       if (!this.util.isNullOrEmpty(data?.realPropertyDto?.generalCharacteristicsDto)) {
         this.applicationForm.apartmentsOnTheSite = data?.realPropertyDto?.generalCharacteristicsDto?.apartmentsOnTheSite;
@@ -655,7 +677,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.metadataStatusId = data?.realPropertyDto?.metadataStatusId;
       this.applicationForm.numberOfBedrooms = data?.realPropertyDto?.numberOfBedrooms;
       this.applicationForm.numberOfRooms = data?.realPropertyDto?.numberOfRooms;
-      this.applicationForm.separateBathroom = data?.realPropertyDto?.separateBathroom;
+      this.applicationForm.separateBathroom = data?.realPropertyDto?.separateBathroom || data?.purchaseInfoDto?.separateBathroom;
       this.applicationForm.sewerageId = data?.realPropertyDto?.sewerageId;
       this.applicationForm.totalArea = data?.realPropertyDto?.totalArea;
       if (!this.util.isNullOrEmpty(data?.realPropertyDto?.photoIdList)) {
@@ -687,11 +709,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       }, 1000);
       this.applicationForm.probabilityOfBidding = this.util.toString(data?.sellDataDto?.probabilityOfBidding);
       this.applicationForm.theSizeOfTrades = data?.sellDataDto?.theSizeOfTrades;
-      this.applicationForm.applicationFlagIdList = data?.purchaseInfoDto?.applicationFlagIdList;
+      this.applicationForm.applicationFlagIdList = data?.sellDataDto?.applicationFlagIdList;
     }
     this.loadDataFromPostApi();
     this.applicationForm.unification = 'address';
-    if (!this.util.isNullOrEmpty(this.applicationForm.residentialComplexId)) {
+    if (!this.util.isNullOrEmpty(this.applicationForm.residentialComplexId) && data?.realPropertyDto?.apartmentNumber) {
       this.applicationForm.unification = 'residence';
     }
   }
@@ -703,16 +725,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         }
       )
     )
-  }
-
-  fillCadastralNumber(data: string) {
-    if (!this.util.isNullOrEmpty(data)) {
-      let splited = data?.split(':');
-      this.applicationForm.cadastralNumber = this.util.nvl(splited[0], null);
-      this.applicationForm.cadastralNumber1 = this.util.nvl(splited[1], null);
-      this.applicationForm.cadastralNumber2 = this.util.nvl(splited[2], null);
-      this.applicationForm.cadastralNumber3 = this.util.nvl(splited[3], null);
-    }
   }
 
   showPhotoFull(url: any) {
@@ -755,24 +767,20 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   validate() {
-    if (this.isApartment()) { //кв
-      if (this.isBuy()) {//продать
+    if (this.isApartment()) { // кв
+      if (this.isBuy()) { // продать
         this.setValidator('objectPrice', Validators.required);
         this.setValidator('numberOfRooms', Validators.required);
         this.setValidator('totalArea', Validators.required);
         this.setValidator('numberOfBedrooms', Validators.required);
-        if (this.util.isNullOrEmpty(this.applicationForm?.residentialComplexId)) {
-          this.setValidator('apartmentNumber', Validators.required);
-        } else {
-          this.setValidator('apartmentNumber', Validators.nullValidator);
-        }
-      } else if (this.isSell()) { //купить
+        this.setValidator('apartmentNumber', Validators.required);
+      } else if (this.isSell()) { // купить
         this.setValidator('districtId', Validators.required);
         this.setValidator('objectPrice', Validators.nullValidator);
       }
-    } else if (this.isHouse()) {//дом
+    } else if (this.isHouse()) { // дом
       this.setValidator('districtId', Validators.required);
-      if (this.isBuy()) {//продать
+      if (this.isBuy()) { // продать
         this.setValidator('houseNumber', Validators.required);
         this.setValidator('landArea', Validators.required);
         this.setValidator('totalArea', Validators.required);
@@ -820,7 +828,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       new Period(this.applicationForm?.objectPriceFrom, this.applicationForm?.objectPriceTo),
       this.applicationForm.possibleReasonForBiddingIdList,
       this.applicationForm.applicationFlagIdList
-    )
+    );
   }
 
   fillPurchaseInfoDto() {
@@ -844,7 +852,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.typeOfElevatorList,
       this.applicationForm.wheelchair,
       this.applicationForm.yardTypeId,
-      new Period(this.applicationForm.yearOfConstructionFrom, this.applicationForm.yearOfConstructionTo)
+      new Period(this.applicationForm.yearOfConstructionFrom, this.applicationForm.yearOfConstructionTo),
+      this.applicationForm.atelier,
+      this.applicationForm.separateBathroom,
     )
   }
 
@@ -898,7 +908,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.atelier,
       this.applicationForm.balconyArea,
       this.fillBuildingDto(),
-      this.setCadastralNumber(),
       this.applicationForm.floor,
       this.fillGeneralCharacteristicsDto(),
       this.applicationForm.heatingSystemId,
@@ -918,14 +927,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       photoPlanList,
       photoList,
       photo3DList
-    )
-  }
-
-  setCadastralNumber() {
-    return this.applicationForm.cadastralNumber || '' + ':' +
-           this.applicationForm.cadastralNumber1 || '' + ':' +
-           this.applicationForm.cadastralNumber2 || '' + ':' +
-           this.applicationForm.cadastralNumber3 || '';
+    );
   }
 
   fillSellDataDto() {
@@ -941,6 +943,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.probabilityOfBidding,
       this.applicationForm.sharedOwnershipProperty,
       this.applicationForm.theSizeOfTrades,
+      this.applicationForm.applicationFlagIdList
     )
   }
 
@@ -986,11 +989,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.validate();
     this.application = new ApplicationDto();
     this.application.realPropertyDto = new RealPropertyDto();
-    if (!this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber) && (this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber1) ||
-      this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber2) || this.util.isNullOrEmpty(this.applicationForm?.cadastralNumber3))) {
-      this.notifyService.showError("Ошибка", "Длина поле кадастровый номер не верно");
-      this.ngxLoader.stopBackground();
-    }
 
     if (!this.util.isNullOrEmpty(this.applicationForm.parkingTypeIds)) {
       if (this.applicationForm.parkingTypeIds.indexOf("1") == 0) {
@@ -1018,31 +1016,30 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     }
 
     this.fillApplication();
-
     if (this.applicationId != null) {
       this.subscriptions.add(this.claimService.updateClaim(this.applicationId, this.application)
         .subscribe(data => {
           if (data != null) {
-            this.notifyService.showSuccess('success', 'Успешно обновлено');
+            this.notifyService.showSuccess('', 'Успешно обновлено');
           }
         }, err => {
           this.ngxLoader.stopBackground();
-          this.notifyService.showWarning('warning', err);
+          this.notifyService.showWarning('', err?.ru);
         }));
     } else {
       this.subscriptions.add(this.claimService.saveClaim(this.application)
         .subscribe(data => {
           if (data != null) {
             this.saved = true;
-            this.util.dnHref('claims')
-            this.notifyService.showSuccess('success', 'Успешно сохранено');
+            this.util.dnHref('claims');
+            this.notifyService.showSuccess('', 'Успешно сохранено');
           }
         }, err => {
           this.ngxLoader.stopBackground();
           if (err?.ru.includes('На апартаменты')) {
             this.modal.open(this.modalContent, {size: 'sm'});
           } else {
-            this.notifyService.showWarning('warning', err?.ru);
+            this.notifyService.showWarning('', err?.ru);
           }
         }));
     }
@@ -1054,7 +1051,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.saved = false;
       this.canDeactivate();
     }
-    this.util.dnHref('home')
+    this.util.dnHref('home');
   }
 
   showHideHeader(id: number) {
@@ -1088,7 +1085,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   canDeactivate(): boolean | Observable<boolean> {
     if (!this.saved) {
       let result = confirm("Вы хотите покинуть страницу?");
-      if (result) {
+      if (result && !this.applicationId) {
         if (this.photoList.length > 0) {
           this.removePhoto(this.photoList);
         }
@@ -1176,13 +1173,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   loadMap() {
     if (!this.util.isNullOrEmpty(this.applicationForm.postcode)) {
-      let str='';
+      let str = '';
       if(!this.util.isNullOrEmpty(this.applicationForm.postcode.label)){
-         str=this.applicationForm.postcode?.label;
+         str = this.applicationForm.postcode?.label;
       }else {
-        str=this.applicationForm.postcode;
+        str = this.applicationForm.postcode;
       }
-
 
       this.modelMap.instance.search(str).then(data => {
         this.ddd.geometry.setCoordinates([data.responseMetaData.SearchResponse.Point.coordinates[1], data.responseMetaData.SearchResponse.Point.coordinates[0]])
@@ -1285,7 +1281,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.applicationForm.apartmentNumber = data?.apartmentNumber;
     this.applicationForm.atelier = data?.atelier;
     this.applicationForm.balconyArea = data?.balconyArea;
-    this.fillCadastralNumber(data?.cadastralNumber);
     this.applicationForm.floor = data?.floor;
     this.applicationForm.floor = data?.floor;
     this.applicationForm.heatingSystemId = data?.heatingSystemId;
@@ -1365,7 +1360,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
             this.applicationForm.streetId = res.street?.id;
             this.applicationForm.districtId = res.district?.id;
             this.applicationForm.houseNumber = res.houseNumber;
-            this.showModalChooseClaim();
+            if(!this.applicationId) {
+              this.showModalChooseClaim();
+            }
             this.ngxLoader.stopBackground();
           }, 1000);
         }, () => this.ngxLoader.stopBackground()));
@@ -1451,20 +1448,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
               this.applicationForm.residentialComplexId.value = data.id;
               this.applicationForm.residentialComplexId.label = data.houseName;
               this.ngxLoader.stopBackground();
-            }, 300)
-            // let interval;
-            // let timeLeft: number = 1;
-            // interval = setInterval(() => {
-            //   if (timeLeft > 0) {
-            //     timeLeft--;
-            //   } else {
-            //     this.loadDictionary();
-            //     this.applicationForm.residentialComplexId=data;
-            //     this.applicationForm.residentialComplexId.value=data.id;
-            //     this.applicationForm.residentialComplexId.label=data.houseName;
-            //     this.ngxLoader.stopBackground();
-            //   }
-            // }, 300)
+            }, 300);
           }
         }, err => {
           this.notifyService.showError('warning', err.message);
@@ -1496,28 +1480,23 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
           setTimeout(() => {
             this.loadDictionary();
             this.ngxLoader.stopBackground();
-          }, 300)
-          // let interval;
-          // let timeLeft: number = 1;
-          // interval = setInterval(() => {
-          //   if (timeLeft > 0) {
-          //     timeLeft--;
-          //   } else {
-          //     this.loadDictionary();
-          //     this.ngxLoader.stopBackground();
-          //     }
-          // }, 300)
+          }, 300);
         }
       }, err => {
         this.notifyService.showError('warning', err.message);
         this.modalRef.hide();
         this.clearForm();
       }));
-
-
     }
   }
 
+  changeTab(activeTab){
+    this.router.navigate([], {
+      queryParams: {
+        activeTab: activeTab
+      }
+    });
+  }
 
   checkPostData2() {
     if (!this.util.isNullOrEmpty(this.postcode2?.fullAddress)) {
@@ -1533,27 +1512,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
           this.formRes.buildingDto.houseNumber = res.houseNumber;
           this.ngxLoader.stopBackground();
         }, 300);
-        // let interval;
-        // let timeLeft: number = 1;
-        // interval = setInterval(() => {
-        //   if (timeLeft > 0) {
-        //     timeLeft--;
-        //   } else {
-        //     this.loadDictionary();
-        //     this.formRes.buildingDto.cityId = res.city.id;
-        //     this.formRes.buildingDto.districtId = res.district.id;
-        //     this.formRes.buildingDto.streetId = res.street.id;
-        //     this.formRes.buildingDto.houseNumber = res.houseNumber;
-        //     this.ngxLoader.stopBackground();
-        //
-        //   }
-        // }, 300)
-
       }));
     }
-  }
-
-  generateContract() {
-    console.log('applicationId', this.applicationId);
   }
 }

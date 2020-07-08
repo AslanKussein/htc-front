@@ -29,6 +29,8 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
   itemsPerPage = 3;
   currentPage = 1;
   eventsDTO: EventsDTO;
+  commentDev: boolean = true;
+  today = new Date();
 
   constructor(private util: Util,
               private formBuilder: FormBuilder,
@@ -55,7 +57,7 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
 
   sortStatus() {
     this.subscriptions.add(this.newDicService.getDictionary('EventType').subscribe(res => {
-      this.appStatusesSort = res;
+      this.appStatusesSort = this.util.toSelectArray(res);
     }));
   }
 
@@ -66,6 +68,7 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
   }
 
   getEventsByApplicationId(pageNo: number) {
+    this.eventsData = [];
     if (!this.applicationId) {
       return
     }
@@ -85,13 +88,15 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
           obj['photoSet'] = argument.photoSet;
           obj['realPropertyId'] = argument.realPropertyId;
           obj['eventDate'] = this.util.formatDate(argument.eventDate);
-          obj['time'] = this.getTime(this.util.formatDate(argument.eventDate));
+          obj['time'] = this.getTime(argument.eventDate);
           obj['eventType'] = argument.eventType
           obj['disabledDev'] = true
+          obj['disabledDevComment'] = true
           this.eventsData.push(obj)
         }
         this.totalItems = res.data.total;
         this.currentPage = res.data.pageNumber + 1;
+
       }
     }));
   }
@@ -105,8 +110,16 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
 
   save() {
     this.setDateTime();
+    setTimeout(() => {
+      this.dnSave();
+    }, 1000);
+  }
+
+  dnSave() {
     this.subscriptions.add(this.eventsService.addEvent(this.eventsForm.value).subscribe(res => {
-      this.eventsService.putCommentEvent(res, this.eventsForm.value.comment).subscribe();
+      if (!this.util.isNullOrEmpty(this.eventsForm.value.comment)) {
+        this.eventsService.putCommentEvent(res, this.eventsForm.value.comment).subscribe();
+      }
       this.notificationService.showSuccess('Информация', 'Событие добавлено');
       this.getEventsByApplicationId(1);
     }))
@@ -147,10 +160,19 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
 
   changeDisableDev(events: any, res: boolean) {
     events.disabledDev = res;
+    events.disabledDevComment = res;
   }
 
   editEvent(events: any) {
     this.changeDisableDev(events, false);
+  }
+
+  editEventComment(events: any) {
+    events.disabledDevComment = false;
+  }
+
+  unBlock() {
+    this.commentDev = false;
   }
 
   ngOnDestroy() {

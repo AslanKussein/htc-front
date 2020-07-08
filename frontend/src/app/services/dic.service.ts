@@ -31,11 +31,11 @@ export class DicService {
   }
 
   public getResidentialComplexesPageable(search: any): Observable<any> {
-    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/api/residential-complexes/getAllPageable`, search);
+    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/open-api/residential-complexes/getAllPageable`, search);
   }
 
   public getResidentialComplexes(): Observable<any> {
-    return this.http.get(`${this.configService.apiDataManagerUrl}/api/residential-complexes`, {})
+    return this.http.get(`${this.configService.apiDataManagerUrl}/open-api/residential-complexes`, {})
       .pipe(
         tap(),
         catchError(DicService.handleError)
@@ -44,7 +44,7 @@ export class DicService {
 
 
   public getResidentialComplexesById(id): Observable<any> {
-    return this.http.get(`${this.configService.apiDataManagerUrl}/api/residential-complexes/` + id, {})
+    return this.http.get(`${this.configService.apiDataManagerUrl}/open-api/residential-complexes/` + id, {})
       .pipe(
         tap(),
         catchError(DicService.handleError)
@@ -106,7 +106,7 @@ export class DicService {
   }
 
   public saveResidentalComplex(obj): Observable<any> {
-    return this.http.post(`${this.configService.apiDataManagerUrl}/api/residential-complexes`, obj)
+    return this.http.post(`${this.configService.apiDataManagerUrl}/open-api/residential-complexes`, obj)
       .pipe(
         tap(),
         catchError(DicService.handleError)
@@ -114,7 +114,7 @@ export class DicService {
   }
 
   public updateResidentalComplex(obj): Observable<any> {
-    return this.http.put(`${this.configService.apiDataManagerUrl}/api/residential-complexes/` + obj.id, obj)
+    return this.http.put(`${this.configService.apiDataManagerUrl}/open-api/residential-complexes/` + obj.id, obj)
       .pipe(
         tap(),
         catchError(DicService.handleError)
@@ -122,7 +122,7 @@ export class DicService {
   }
 
   public deleteResidentalComplex(obj): Observable<any> {
-    return this.http.delete(`${this.configService.apiDataManagerUrl}/api/residential-complexes/` + obj.id)
+    return this.http.delete(`${this.configService.apiDataManagerUrl}/open-api/residential-complexes/` + obj.id)
       .pipe(
         tap(),
         catchError(DicService.handleError)

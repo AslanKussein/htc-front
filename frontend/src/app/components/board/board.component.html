@@ -3,7 +3,7 @@
   <div class="row">
     <div class="btn-group btn-breadcrumb">
       <a href="#" class="btn btn-primary"><i class="fa fa-home"></i></a>
-      <a class="btn btn-primary active">Панель управления</a>
+      <a class="btn btn-primary active" (click)="util.dnHrefParam('board', 3); refresh()">Панель управления</a>
     </div>
   </div>
 
@@ -17,17 +17,17 @@
       <li class="nav-item">
         <a class="nav-link" [ngClass]="activeTab == 3 ? 'active' : ''" id="home-tab" data-toggle="tab" href="#home"
            role="tab" aria-controls="home"
-           aria-selected="true" (click)="sortStatusesDic(3)" translate>board.commonBoard</a>
+           aria-selected="true" (click)="sortStatusesDic(3);" translate>board.commonBoard</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" [ngClass]="activeTab == 2 ? 'active' : ''" id="profile-tab" data-toggle="tab"
            href="#profile" role="tab" aria-controls="profile"
-           aria-selected="false" (click)="sortStatusesDic(2)" translate>board.sellBoard</a>
+           aria-selected="false" (click)="sortStatusesDic(2)">Воронка продаж</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" [ngClass]="activeTab == 1 ? 'active' : ''" id="contact-tab" data-toggle="tab"
            href="#contact" role="tab" aria-controls="contact"
-           aria-selected="false" (click)="sortStatusesDic(1)" translate>board.buyerBoard</a>
+           aria-selected="false" (click)="sortStatusesDic(1)">Воронка покупателей</a>
       </li>
     </ul>
     <div class="text-center" style="font-size: 18px">
@@ -40,9 +40,9 @@
     <div class="row" *ngIf="this.activeTab != 3">
       <div class="col-sm">
         <span>Фильтры:</span>
-        <button type="button" class="btn btn-sm btn-link">Все</button>
+        <button type="button" class="btn btn-sm btn-link" (click)="filtredLogin(null)">Все</button>
         <button type="button" *ngFor="let agent of agentList;let i = index"
-                class="btn btn-sm btn-link">{{agent.name}}</button>
+                class="btn btn-sm btn-link" (click)="filtredLogin(agent.login)">{{agent.name}}</button>
       </div>
     </div>
     <br>

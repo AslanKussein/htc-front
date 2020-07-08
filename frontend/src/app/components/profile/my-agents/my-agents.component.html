@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col-sm">
+    <br/>
+    <div class="input-group w-50">
+      <input type="text" class="form-control" placeholder="Поиск" id="mail" [(ngModel)]="text">
+      <div class="input-group-append">
+        <span class="input-group-text" (click)="findAgents(1)"><i aria-hidden="true" class="fa fa-search text-info"></i></span>
+      </div>
+    </div>
+    <br/>
+
+    <table class="table table-bordered table-sm">
+      <thead class="text-center">
+      <tr>
+        <th>ID</th>
+        <th>Имя Фамилия</th>
+        <th translate>Рейтинг</th>
+        <th translate>Договора</th>
+        <th translate>Сумма задатков</th>
+        <th translate>Сумма продаж</th>
+        <th translate>Последняя сделка</th>
+        <th translate>Сумма ПС</th>
+      </tr>
+      </thead>
+      <tbody style="cursor: pointer">
+      <tr *ngFor="let agent of agentData;let i = index">
+        <td>
+          <!--<a [routerLink]="['/create-claim/', claim?.id]">{{claim.id}}</a>-->
+          {{agent.id}}
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <pagination [(ngModel)]="currentPage"
+                [totalItems]="totalItems"
+                [itemsPerPage]="itemsPerPage"
+                [maxSize]="10"
+                [rotate]="true"
+                [boundaryLinks]="true"
+                previousText="&lsaquo;"
+                nextText="&rsaquo;"
+                firstText="&laquo;"
+                lastText="&raquo;"
+                (pageChanged)="pageChanged($event)">
+    </pagination>
+  </div>
+</div>

@@ -4,26 +4,25 @@
       <div class="col-sm">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" id="fillClaims-tab" data-toggle="tab" href="#fillClaims" role="tab"
-               aria-controls="fillClaims"
-               aria-selected="true" translate> claim.title</a>
+            <a class="nav-link" [ngClass]="{ 'active':activeTab === 'claim'}" id="fillClaims-tab" data-toggle="tab" href="#fillClaims" role="tab"
+               aria-controls="fillClaims" (click)="changeTab('claim')"
+               aria-selected="true" > Заявки</a>
           </li>
           <li class="nav-item" *ngIf="this.applicationId">
-            <a class="nav-link" id="contractOU-tab" data-toggle="tab" href="#contractOU" role="tab"
-               aria-controls="contractOU"
-               aria-selected="false" translate>claim.contractOU</a>
+            <a class="nav-link" [ngClass]="{ 'active':activeTab === 'ou'}" id="contractOU-tab" data-toggle="tab" href="#contractOU" role="tab"
+               aria-controls="contractOU" (click)="changeTab('ou')"
+               aria-selected="false" >Договор ОУ</a>
           </li>
           <li class="nav-item" *ngIf="this.applicationId">
-            <a class="nav-link" id="impressions-tab" data-toggle="tab" href="#impressions" role="tab"
-               aria-controls="impressions"
-               aria-selected="false" translate>claim.impressions</a>
+            <a class="nav-link" [ngClass]="{ 'active':activeTab === 'events'}" id="impressions-tab" data-toggle="tab" href="#impressions" role="tab"
+               aria-controls="impressions" (click)="changeTab('events')"
+               aria-selected="false" >События</a>
           </li>
         </ul>
       </div>
     </div>
-
     <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" [formGroup]="applicationForm" id="fillClaims"
+      <div class="tab-pane fade" [ngClass]="activeTab == 'claim' ? 'active show' : ''" [formGroup]="applicationForm" id="fillClaims"
            role="tabpanel" aria-labelledby="fillClaims-tab">
         <div class="card-body">
           <div class="row">
@@ -83,7 +82,7 @@
                                [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
                                          util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
                                          util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles)">
-                            <label translate>claim.operation<span class="text-danger">&nbsp;*</span></label>
+                            <label>Операция<span class="text-danger">&nbsp;*</span></label>
                             <ng-select
                               [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles) && this.applicationId"
                               [items]="operationType"
@@ -101,7 +100,7 @@
                                [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
                                          util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
                                          util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles)">
-                            <label translate>claim.objectType<span class="text-danger">&nbsp;*</span></label>
+                            <label>Тип объекта<span class="text-danger">&nbsp;*</span></label>
                             <ng-select [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_DEAL_DATA', roles)"
                                        [items]="objectType"
                                        [(ngModel)]="applicationForm.objectTypeId"
@@ -118,7 +117,7 @@
                                util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
                                util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles) &&
                                util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles)">
-                            <label translate>claim.objectPriceInLim
+                            <label>Цена объекта (тг)
                               <span class="text-danger"
                                     *ngIf="(isBuy() && !applicationForm.objectPrice)">&nbsp;*</span>
                             </label>
@@ -159,7 +158,7 @@
                                util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
                                util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles) &&
                                util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles)">
-                            <label translate>claim.ipoteka</label>
+                            <label>Ипотека</label>
                             <ng-select
                               [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_PURCHASE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
                               [items]="dicDynamic"
@@ -172,7 +171,7 @@
                           <div class="col-sm" *ngIf="isBuy()">
                             <div
                               [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)">
-                              <label translate>claim.encumbrance</label>
+                              <label>Обременение</label>
                               <ng-select
                                 [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles)"
                                 [items]="dicDynamic"
@@ -228,7 +227,7 @@
                               placeholder="{{ 'claim.probabilityBargaining' | translate }}">
                             </ng-select>
                           </div>
-                          <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 1">
+                          <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 'true'">
                             <label for="form1" translate>claim.bidAmount</label>
                             <input type="text" class="form-control" maxlength="20"
                                    oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
@@ -241,7 +240,7 @@
                                    formControlName="theSizeOfTrades" min="0"/>
                           </div>
                         </div>
-                        <div *ngIf="applicationForm.probabilityOfBidding == 1"
+                        <div *ngIf="applicationForm.probabilityOfBidding == 'true'"
                              [hidden]="util.hasShowApplicationGroup('VIEW_SALE_DEAL_INFO', roles) &&
                              util.hasShowApplicationGroup('VIEW_PURCHASE_DEAL_INFO', roles) &&
                              util.hasShowApplicationGroup('UPDATE_SALE_DEAL_INFO', roles) &&
@@ -411,6 +410,9 @@
                             </div>
                           </div>
                         </div>
+                      </div>
+                      <div class="row" *ngIf="!this.applicationId">
+                        <button class="btn btn2 btn-sm btn-link" type="button" (click)="clearApplicationFormClientData()">Очистить</button>
                       </div>
                     </div>
                   </div>
@@ -584,7 +586,7 @@
                                 <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>
                               </div>
                             </div>
-<!--                            Пока убрал-->
+<!--                            Сказали пока убрать-->
 <!--                            <div class="col-sm"-->
 <!--                                 [hidden]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_INFO', roles)"-->
 <!--                                 *ngIf="isSell()">-->
@@ -647,48 +649,6 @@
                                        formControlName="numberOfRooms"/>
                                 <div *ngIf="f.numberOfRooms.touched && f.numberOfRooms.invalid" class="text-danger">
                                   <div *ngIf="f.numberOfRooms.errors.required" translate>claim.requiredField</div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            [hidden]="util.hasShowRealPropertyGroup('VIEW_SALE_OBJECT_DATA', roles) && util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)">
-                            <div class="row" *ngIf="isBuy()">
-                              <div class="col-sm">
-                                <label for="cadastralNumber">Кадастровый номер</label>
-                                <div class="input-group">
-                                  <input type="text" id="cadastralNumber" class="form-control"
-                                         placeholder="00:000:000"
-                                         [(ngModel)]="applicationForm.cadastralNumber" mask="00:000:000"
-                                         formControlName="cadastralNumber"
-                                         (keypress)="util.keyPress($event)"
-                                         [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
-                                  <input type="text" class="form-control"
-                                         [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber1 == null)}"
-                                         [(ngModel)]="applicationForm.cadastralNumber1" maxlength="12"
-                                         formControlName="cadastralNumber1"
-                                         placeholder=":000000000000"
-                                         (keypress)="util.keyPress($event)"
-                                         [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
-                                  <input type="text" class="form-control"
-                                         [(ngModel)]="applicationForm.cadastralNumber2" maxlength="12"
-                                         [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber2 == null)}"
-                                         formControlName="cadastralNumber2"
-                                         placeholder=":000000000000"
-                                         (keypress)="util.keyPress($event)"
-                                         [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
-                                  <input type="text" class="form-control"
-                                         [ngClass]="{'border-danger': (applicationForm.cadastralNumber != null && applicationForm.cadastralNumber3 == null)}"
-                                         [(ngModel)]="applicationForm.cadastralNumber3" maxlength="12"
-                                         formControlName="cadastralNumber3"
-                                         placeholder=":000000000000"
-                                         (keypress)="util.keyPress($event)"
-                                         [readonly]="util.hasShowRealPropertyGroup('UPDATE_SALE_OBJECT_DATA', roles)"/>
-                                </div>
-                                <div *ngIf="f.cadastralNumber.touched && f.cadastralNumber.invalid" class="text-danger">
-                                  <div *ngIf="applicationForm.cadastralNumber != null">Длина поле кадастровый номер не
-                                    верно
-                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -1112,7 +1072,7 @@
                                   <ng-select
                                     [items]="sewerageSystems"
                                     [(ngModel)]="applicationForm.sewerageId"
-                                    formControlName="heatingSystemId"
+                                    formControlName="sewerageId"
                                     bindValue="value"
                                     placeholder="Канализация">
                                   </ng-select>
@@ -1283,7 +1243,7 @@
                               </fieldset>
                             </div>
                             <div class="row mb-4"
-                                 [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_OBJECT_INFO', roles) && util.hasShowApplicationGroup('UPDATE_SALE_OBJECT_INFO', roles)">
+                                 [class.disabledDev]="util.hasShowApplicationGroup('UPDATE_SALE_OBJECT_INFO', roles)">
                               <div class="col-sm" *ngIf="isBuy()">
                                 <label translate>Описание</label>
                                 <textarea rows="1" class="col-sm-12 control"
@@ -1520,8 +1480,7 @@
                       [disabled]="!this.applicationForm?.operationTypeId && !this.applicationForm?.objectTypeId">
                 <span class="fa fa-save" translate> patterns.save</span>
               </button>
-              <button type="button" class="btn btn-success btn2 float-right btn-sm" *ngIf="edit" translate
-                (click)="generateContract()">
+              <button type="button" class="btn btn-success btn2 float-right btn-sm" *ngIf="applicationId" (click)="activeTab = 'ou'" translate>
                 claim.generateContract
               </button>
               <button type="button" (click)="cancel()" class="btn btn-default btn2 float-right btn-sm" translate>
@@ -1530,12 +1489,11 @@
             </div>
           </div>
         </div>
-
       </div>
-      <div class="tab-pane fade" id="contractOU" role="tabpanel" aria-labelledby="contractOU-tab">
-        2
+      <div class="tab-pane fade" id="contractOU" [ngClass]="activeTab == 'ou' ? 'active show' : ''" role="tabpanel" aria-labelledby="contractOU-tab">
+        <app-contract-ou></app-contract-ou>
       </div>
-      <div class="tab-pane fade" id="impressions" role="tabpanel" aria-labelledby="impressions-tab">
+      <div class="tab-pane fade" id="impressions" [ngClass]="activeTab == 'events' ? 'active show' : ''" role="tabpanel" aria-labelledby="impressions-tab">
         <app-claim-events></app-claim-events>
       </div>
     </div>
@@ -1544,7 +1502,6 @@
 
 <ng-template #modalContent let-close="close">
   <div class="modal-header">
-<!--    <h5 class="modal-title">Данный объект уже существует, вы согласны продолжить ?</h5>-->
     <button type="button" class="close" (click)="closeModalContent()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -1555,30 +1512,11 @@
         <p>
           Действие ограничено! В системе имеется заявка с данным объектом недвижимости! Попробуйте ввести другой адрес.
         </p>
-<!--        <table class="table table-bordered table-sm">-->
-<!--          <thead class="text-center">-->
-<!--          <tr>-->
-<!--            <th>ID заявки</th>-->
-<!--            <th>Дата создания</th>-->
-<!--            <th>ФИО агента</th>-->
-<!--            <th>Цена (тг)</th>-->
-<!--          </tr>-->
-<!--          </thead>-->
-<!--          <tbody style="cursor: pointer">-->
-<!--          <tr *ngFor="let rpD of data.applicationByRealPropertyDtoList;let i = index">-->
-<!--            <td>{{rpD.id}}</td>-->
-<!--            <td>{{util.formatDate(rpD?.creationDate)}}</td>-->
-<!--            <td>{{rpD?.agent}}</td>-->
-<!--            <td>{{util.numberFormat(rpD?.objectPrice)}}</td>-->
-<!--          </tr>-->
-<!--          </tbody>-->
-<!--        </table>-->
       </div>
     </div>
   </div>
   <div class="modal-footer">
-<!--    <button type="button" (click)="close()" class="btn btn-outline-secondary btn2">Отмена</button>-->
-    <button type="button"  (click)="closeModalContent()" class="btn btn-outline-primary btn-sm">Ok</button>
+    <button type="button" (click)="closeModalContent()" class="btn btn-outline-primary btn-sm">Ok</button>
   </div>
 </ng-template>
 

@@ -20,6 +20,10 @@ export class Util {
     this.router.navigate([href]);
   }
 
+  dnHrefParam(href, param) {
+    this.router.navigate([href], { queryParams: { activeTab: param, fromBoard: true } });
+  }
+
   navigateByUrl(href) {
     this.router.navigateByUrl(href);
   }
@@ -55,7 +59,6 @@ export class Util {
     if (data) {
       const len = data.length;
       for (let i = 0; i < len; i++) {
-        console.log(data[i])
         list.push({value: data[i][idField], label: data[i].multiLang[labelField], code: data[i]['code']});
       }
     }
@@ -239,7 +242,11 @@ export class Util {
   }
 
   formatDate(date: any) {
-    return formatDate(date, 'dd.MM.yyyy HH:mm', 'en-US');
+    return formatDate(date, 'dd.MM.yyyy', 'en-US');
+  }
+
+  formatDateWithTimeZone(date: any) {
+    return new Date(date).toLocaleString("en-US", {timeZone: "Asia/Almaty"});
   }
 
   hasRGRole() {
@@ -296,6 +303,7 @@ export class Util {
         }
       }
     }
+    return true;
   }
 
   hasShowApplicationGroup(operation: string, roles: any) {
@@ -306,6 +314,7 @@ export class Util {
         }
       }
     }
+    return true
   }
 
   toSelectArrayGroup(data, idField = 'id', surname = 'surname', name = 'name') {
@@ -331,6 +340,7 @@ export class Util {
         }
       }
     }
+    return true
   }
 
   keyPress(event: KeyboardEvent) {
@@ -339,5 +349,14 @@ export class Util {
 
   numberFormat(val: any) {
     return val ? val.toLocaleString() : '';
+  }
+
+  isEmptyObject(obj: any): boolean {
+    for(const key in obj) {
+      if (obj[key]) {
+        return false;
+      }
+    }
+    return true;
   }
 }

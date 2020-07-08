@@ -19,14 +19,14 @@ export class RoleManagerService {
    * getOperations
    */
   getOperations(): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiRoleManagerUrl}/api/operations?locale=` + language.language, {});
+    return this.http.get<any>(`${this.configService.apiRoleManagerUrl}/operations?locale=` + language.language, {});
   }
 
   /**
    * getCheckOperationList
    */
   getCheckOperationList(params: any): Observable<any> {
-    return this.http.get<any>(`${this.configService.apiRoleManagerUrl}/api/operations/check`, {params}).pipe(
+    return this.http.get<any>(`${this.configService.apiRoleManagerUrl}/operations/check`, {params}).pipe(
       tap(data => {
       }),
       catchError(this.handleError)

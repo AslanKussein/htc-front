@@ -12,13 +12,12 @@ pipeline {
         maven 'mvn-3.6.3'
     }
     stages {
-        stage('Code analysis') {
+        stage('Send message telegram') {
             steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh 'mvn clean package sonar:sonar'
-                }
+                sh 'curl -s -X POST https://api.telegram.org/bot1200725402:AAFDvrnCbLLdPai9jmhQzj9QI0cWWfvSnGs/sendMessage -d chat_id=-394666533 -d text="Starting deploy htc-front"'
             }
         }
+
 
         stage('Build') {
             steps {
@@ -78,9 +77,11 @@ pipeline {
     post {
         success {
             echo 'All good, we passed tests.'
+            sh 'curl -s -X POST https://api.telegram.org/bot1200725402:AAFDvrnCbLLdPai9jmhQzj9QI0cWWfvSnGs/sendMessage -d chat_id=-394666533 -d text="Finished deploy htc-front"'
         }
         failure {
             sh "docker service update --rollback ${SERVICE_NAME}"
+            sh 'curl -s -X POST https://api.telegram.org/bot1200725402:AAFDvrnCbLLdPai9jmhQzj9QI0cWWfvSnGs/sendMessage -d chat_id=-394666533 -d text="Error deploying htc-front"'
         }
     }
 }
