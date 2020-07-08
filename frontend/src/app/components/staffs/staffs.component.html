@@ -116,6 +116,15 @@
                          [(ngModel)]="formData.group">
               </ng-select>
             </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Организация<span class="text-danger">&nbsp;*</span></label>
+              <ng-select name="residentialComplexes"
+                         placeholder="Организация"
+                         [items]="organizations"
+                         bindValue="value"
+                         [(ngModel)]="formData.organizationId">
+              </ng-select>
+            </div>
             <div class="col-sm text-right">
               <button type="button" class="btn btn-primary" (click)="submit()" style="margin: 10px">
                 Сохранить

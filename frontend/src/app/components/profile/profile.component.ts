@@ -37,11 +37,12 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate, OnDestr
     if (this.currentUser.roles != null) {
       this.agentRoles = false;
       this.rgRoles = false;
+      console.log(this.currentUser.roles)
       for (const role of this.currentUser.roles) {
         if (role == 'AGENT_GROUP_CHOOSE') {
           this.agentRoles = true;
         }
-        if (role == 'РГ') {
+        if (role == 'Руководитель группы') {
           this.rgRoles = true;
         }
       }
