@@ -105,6 +105,10 @@
           <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
              aria-selected="false">Мои сделки</a>
         </li>
+        <li class="nav-item" *ngIf="rgRoles">
+          <a class="nav-link" id="agent-tab" data-toggle="tab" href="#agent" role="tab" aria-controls="contact"
+             aria-selected="false">Мои агенты</a>
+        </li>
       </ul>
       <div class="tab-content" id="myTabContent2">
         <div class="tab-pane fade " id="home" role="tabpanel" aria-labelledby="home-tab" >
@@ -115,6 +119,9 @@
         </div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab" *ngIf="agentRoles || rgRoles">
           <app-my-claims></app-my-claims>
+        </div>
+        <div class="tab-pane fade" id="agent" role="tabpanel" aria-labelledby="agent-tab" *ngIf="agentRoles || rgRoles">
+          <app-my-agents></app-my-agents>
         </div>
       </div>
     </div>
