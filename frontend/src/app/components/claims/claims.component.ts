@@ -12,6 +12,7 @@ import {SearchCommon} from "../../models/common/search.common";
 import {Period} from "../../models/common/period";
 import {OwnerService} from "../../services/owner.service";
 import {NewDicService} from "../../services/new.dic.service";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-claims',
@@ -25,6 +26,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   constructor(private claimService: ClaimService,
               public util: Util,
               private formBuilder: FormBuilder,
+              private userService: UserService,
               private ownerService: OwnerService,
               private notification: NotificationService,
               private newDicService: NewDicService,
@@ -56,6 +58,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
       lastCommentDateFrom: [null, Validators.nullValidator],
       lastCommentDateTo: [null, Validators.nullValidator],
       text: [null, Validators.nullValidator],
+      applicationId: [null, Validators.nullValidator],
     });
 
     this.findClaims(1);
@@ -84,6 +87,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
     searchFilter['operationTypeId'] = this.applicationSearchForm.value.operationTypeId;
     searchFilter['applicationStatusList'] = this.applicationSearchForm.value.applicationStatusList;
     searchFilter['text'] = this.applicationSearchForm.value.text;
+    searchFilter['applicationId'] = this.applicationSearchForm.value.applicationId;
     searchFilter['direction'] = 'DESC';
     searchFilter['sortBy'] = 'id';
     searchFilter['pageNumber'] = pageNo - 1;
@@ -92,7 +96,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
       if (res != null && res.data != null) {
         this.claimData = res.data.data.data;
         this.claimData.forEach(data =>
-          this.searchByPhone(data)
+          this.searchByLoginAgent(data)
         )
         this.totalItems = res.data.total;
         this.currentPage = res.data.pageNumber + 1;
@@ -113,14 +117,15 @@ export class ClaimsComponent implements OnInit, OnDestroy {
     return formatDate(claim.creationDate, 'dd.MM.yyyy HH:mm', 'en-US');
   }
 
-  searchByPhone(claim: any) {
-    if (!this.util.isNullOrEmpty(claim.phone)) {
-      this.subscriptions.add(this.ownerService.searchByPhone(claim.phone)
-        .subscribe(res => {
-          claim['fullName'] = (res?.firstName + ' ' + res?.surname + ' ' + (res?.patronymic ? res?.patronymic : ' ')).toUpperCase()
-          claim['email'] = res?.email;
-        }));
-    }
+  searchByLoginAgent(claim) {
+    if (this.util.isNullOrEmpty(claim.agent)) return;
+    this.subscriptions.add(this.userService.findAgentByLogin(claim.agent)
+      .subscribe(res => {
+          claim['fullNameAgent'] = (res?.surname + ' ' + res?.name).toUpperCase()
+          claim['emailAgent'] = res?.email;
+          claim['phoneNumberAgent'] = res?.phone;
+        }
+      ));
   }
 
   ngOnDestroy() {

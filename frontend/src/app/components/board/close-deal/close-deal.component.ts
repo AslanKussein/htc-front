@@ -12,12 +12,23 @@ export class CloseDealComponent implements OnInit {
 
   boardSelect: any;
   operationId: number;
+  contractStatus: number;
+  contractStatusName: string;
+  //contractStatus: | GENERATED = 1| MISSING = 2
 
   constructor(private board: BoardComponent,
               private util: Util,
               private actRoute: ActivatedRoute) {
     this.board.displayBoardContent = false;
     this.boardSelect = this.board.boardSelect;
+    if (this.util.isNullOrEmpty(this.boardSelect.contractStatus)) {
+      this.contractStatus = 2;
+      this.contractStatusName = 'Сформировать';
+    } else {
+      this.contractStatus = this.boardSelect.contractStatus?.id;
+      this.contractStatusName = this.boardSelect?.name?.nameRu;
+    }
+    console.log(this.boardSelect)
     if (this.util.isNullOrEmpty(this.boardSelect)) {
       this.cancel()
     }
@@ -26,9 +37,14 @@ export class CloseDealComponent implements OnInit {
     }
   }
 
+  generateOu() {
+    this.util.dnHrefParam('create-claim/' + this.boardSelect.id, 'ou');
+    return;
+  }
+
   cancel() {
     this.board.displayBoardContent = true;
-    this.util.dnHref('board');
+    this.util.navigateByUrl('/board');
     this.board.sortStatusesDic(this.board.activeTab);
   }
 

@@ -494,52 +494,54 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     }
   }
 
+  clearResidentialComplex() {
+    this.applicationForm.houseNumber = null;//Номер дома
+    this.applicationForm.houseNumberFraction = null;//номер дробь
+    this.applicationForm.districtId = null;//Район
+    this.applicationForm.numberOfFloors = null;//Этажность дома
+    this.applicationForm.apartmentsOnTheSite = null;//Кв. на площадке
+    this.applicationForm.materialOfConstructionId = null;//Материал
+    this.applicationForm.yearOfConstruction = null;//Год постройки
+    this.applicationForm.typeOfElevatorList = null;//Лифт
+    this.applicationForm.concierge = null;//Консьерж
+    this.applicationForm.wheelchair = null;//Колясочная
+    this.applicationForm.parkingTypeIds = null;///Парковка
+    this.applicationForm.yardTypeId = null;//Двор
+    this.applicationForm.playground = null;//Детская площадка
+    this.applicationForm.propertyDeveloperId = null;//Затройщик
+    this.applicationForm.housingClass = null;//Класс жилья
+    this.applicationForm.houseConditionId = null;//Состояния
+    this.applicationForm.numberOfApartments = null;//Кол-во кв
+    this.applicationForm.ceilingHeight = null;//Кол-во кв
+    this.postCode = null;
+    this.applicationForm.postcode = null;
+  }
+
   setResidenceComplexType() {
     if (this.applicationId && !this.edit) return;
     this.readonlyChooseJK = !this.util.isNullOrEmpty(this.applicationForm.residentialComplexId);
-    if (this.util.isNullOrEmpty(this.applicationForm.residentialComplexId)) {
-      this.applicationForm.houseNumber = null;//Номер дома
-      this.applicationForm.houseNumberFraction = null;//номер дробь
-      this.applicationForm.districtId = null;//Район
-      this.applicationForm.numberOfFloors = null;//Этажность дома
-      this.applicationForm.apartmentsOnTheSite = null;//Кв. на площадке
-      this.applicationForm.materialOfConstructionId = null;//Материал
-      this.applicationForm.yearOfConstruction = null;//Год постройки
-      this.applicationForm.typeOfElevatorList = null;//Лифт
-      this.applicationForm.concierge = null;//Консьерж
-      this.applicationForm.wheelchair = null;//Колясочная
-      this.applicationForm.parkingTypeIds = null;///Парковка
-      this.applicationForm.yardTypeId = null;//Двор
-      this.applicationForm.playground = null;//Детская площадка
-      this.applicationForm.propertyDeveloperId = null;//Затройщик
-      this.applicationForm.housingClass = null;//Класс жилья
-      this.applicationForm.houseConditionId = null;//Состояния
-      this.applicationForm.numberOfApartments = null;//Кол-во кв
-      this.applicationForm.ceilingHeight = null;//Кол-во кв
-      this.postCode = null;
-      this.applicationForm.postcode = null;
-      return;
+    if (this.applicationForm.residentialComplexId) {
+      this.applicationForm.houseNumber = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.houseNumber, null);//Номер дома
+      this.applicationForm.houseNumberFraction = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.houseNumberFraction, null);//номер дробь
+      this.applicationForm.districtId = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.districtId, null);//Район
+      this.applicationForm.numberOfFloors = this.util.nvl(this.applicationForm.residentialComplexId?.numberOfFloors, null);//Этажность дома
+      this.applicationForm.apartmentsOnTheSite = this.util.nvl(this.applicationForm.residentialComplexId?.apartmentsOnTheSite, null);//Кв. на площадке
+      this.applicationForm.materialOfConstructionId = this.util.nvl(this.applicationForm.residentialComplexId?.materialOfConstructionId, null);//Материал
+      this.applicationForm.yearOfConstruction = this.util.nvl(this.applicationForm.residentialComplexId?.yearOfConstruction, null);//Год постройки
+      this.applicationForm.typeOfElevatorList = this.util.nvl(this.applicationForm.residentialComplexId?.typeOfElevator, null);//Лифт
+      this.applicationForm.concierge = this.util.nvl(this.util.toString(this.applicationForm.residentialComplexId?.concierge), null);//Консьерж
+      this.applicationForm.wheelchair = this.util.nvl(this.util.toString(this.applicationForm.residentialComplexId?.wheelchair), null);//Колясочная
+      this.applicationForm.parkingTypeIds = this.util.nvl(this.applicationForm.residentialComplexId?.parkingTypeIds, null);///Парковка
+      this.applicationForm.yardTypeId = this.util.nvl(this.applicationForm.residentialComplexId?.yardType, null);//Двор
+      this.applicationForm.playground = this.util.nvl(this.util.toString(this.applicationForm.residentialComplexId?.playground), null);//Детская площадка
+      this.applicationForm.propertyDeveloperId = this.util.nvl(this.applicationForm.residentialComplexId?.propertyDeveloperId, null);//Затройщик
+      this.applicationForm.housingClass = this.util.nvl(this.applicationForm.residentialComplexId?.housingClass, null);//Класс жилья
+      this.applicationForm.houseConditionId = this.util.nvl(this.applicationForm.residentialComplexId?.houseConditionId, null);//Состояния
+      this.applicationForm.numberOfApartments = this.util.nvl(this.applicationForm.residentialComplexId?.numberOfApartments, null);//Кол-во кв
+      this.applicationForm.ceilingHeight = this.util.nvl(this.applicationForm.residentialComplexId?.ceilingHeight, null);//Кол-во кв
+      this.postCode = this.applicationForm.residentialComplexId?.buildingDto?.postcode;
+      this.loadDataFromPostApi();
     }
-    this.applicationForm.houseNumber = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.houseNumber, null);//Номер дома
-    this.applicationForm.houseNumberFraction = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.houseNumberFraction, null);//номер дробь
-    this.applicationForm.districtId = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.districtId, null);//Район
-    this.applicationForm.numberOfFloors = this.util.nvl(this.applicationForm.residentialComplexId?.numberOfFloors, null);//Этажность дома
-    this.applicationForm.apartmentsOnTheSite = this.util.nvl(this.applicationForm.residentialComplexId?.apartmentsOnTheSite, null);//Кв. на площадке
-    this.applicationForm.materialOfConstructionId = this.util.nvl(this.applicationForm.residentialComplexId?.materialOfConstructionId, null);//Материал
-    this.applicationForm.yearOfConstruction = this.util.nvl(this.applicationForm.residentialComplexId?.yearOfConstruction, null);//Год постройки
-    this.applicationForm.typeOfElevatorList = this.util.nvl(this.applicationForm.residentialComplexId?.typeOfElevator, null);//Лифт
-    this.applicationForm.concierge = this.util.nvl(this.util.toString(this.applicationForm.residentialComplexId?.concierge), null);//Консьерж
-    this.applicationForm.wheelchair = this.util.nvl(this.util.toString(this.applicationForm.residentialComplexId?.wheelchair), null);//Колясочная
-    this.applicationForm.parkingTypeIds = this.util.nvl(this.applicationForm.residentialComplexId?.parkingTypeIds, null);///Парковка
-    this.applicationForm.yardTypeId = this.util.nvl(this.applicationForm.residentialComplexId?.yardType, null);//Двор
-    this.applicationForm.playground = this.util.nvl(this.util.toString(this.applicationForm.residentialComplexId?.playground), null);//Детская площадка
-    this.applicationForm.propertyDeveloperId = this.util.nvl(this.applicationForm.residentialComplexId?.propertyDeveloperId, null);//Затройщик
-    this.applicationForm.housingClass = this.util.nvl(this.applicationForm.residentialComplexId?.housingClass, null);//Класс жилья
-    this.applicationForm.houseConditionId = this.util.nvl(this.applicationForm.residentialComplexId?.houseConditionId, null);//Состояния
-    this.applicationForm.numberOfApartments = this.util.nvl(this.applicationForm.residentialComplexId?.numberOfApartments, null);//Кол-во кв
-    this.applicationForm.ceilingHeight = this.util.nvl(this.applicationForm.residentialComplexId?.ceilingHeight, null);//Кол-во кв
-    this.postCode = this.applicationForm.residentialComplexId?.buildingDto?.postcode;
-    this.loadDataFromPostApi();
     if(!this.applicationId) {
       this.showModalChooseClaim();
     }
@@ -949,7 +951,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   fillApplication() {
     this.application = new ApplicationDto(
-      null,
+      this.applicationId || null,
       this.applicationForm.operationTypeId?.value,
       this.applicationForm.phoneNumber,
       this.applicationForm.agentLogin,
@@ -1296,6 +1298,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     if (!this.util.isNullOrEmpty(buildingDto)) {
       this.applicationForm.cityId = buildingDto.cityId;
       this.applicationForm.districtId = buildingDto.districtId;
+
       this.applicationForm.houseNumber = buildingDto.houseNumber;
       this.applicationForm.houseNumberFraction = buildingDto.houseNumberFraction;
       this.applicationForm.latitude = buildingDto.latitude;
@@ -1491,6 +1494,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   changeTab(activeTab){
+    this.activeTab = activeTab;
     this.router.navigate([], {
       queryParams: {
         activeTab: activeTab

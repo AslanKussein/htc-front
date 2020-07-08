@@ -14,6 +14,11 @@
                aria-selected="false" >Договор ОУ</a>
           </li>
           <li class="nav-item" *ngIf="this.applicationId">
+            <a class="nav-link" [ngClass]="{ 'active':activeTab === 'advanceAgreement' || activeTab === 'depositAgreement'}" id="advanceAgreement-tab" data-toggle="tab" href="#advanceAgreement" role="tab"
+               aria-controls="advanceAgreement" (click)="openModal2(modalContentAdvance)"
+               aria-selected="false" >Соглашение {{activeTab === 'advanceAgreement' ? 'Аванса' : ''}} {{activeTab === 'depositAgreement' ? 'Задатка':''}}</a>
+          </li>
+          <li class="nav-item" *ngIf="this.applicationId">
             <a class="nav-link" [ngClass]="{ 'active':activeTab === 'events'}" id="impressions-tab" data-toggle="tab" href="#impressions" role="tab"
                aria-controls="impressions" (click)="changeTab('events')"
                aria-selected="false" >События</a>
@@ -499,6 +504,7 @@
                                     [items]="residentialComplexes"
                                     [(ngModel)]="applicationForm.residentialComplexId"
                                     (ngModelChange)="setResidenceComplexType()"
+                                    (clear)="clearResidentialComplex()"
                                     formControlName="residentialComplexId"
                                     placeholder="{{ 'claim.building' | translate }}">
                                   </ng-select>
@@ -1474,17 +1480,26 @@
             </div>
           </div>
           <div class="row">
+            <div class="col-sm"></div>
             <div class="col-sm">
-              <button type="button" mdbBtn color="success" class="btn btn-info btn-sm btn2 float-right"
+              <button type="button" (click)="cancel()" class="btn btn-default btn2  btn-sm" translate>
+                patterns.cancel
+              </button>
+              <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn2 light-blue text-white btn-sm dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false" translate>
+                  claim.generateContract
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                  <a class="dropdown-item" (click)="changeTab('ou');">Соглашение ОУ</a>
+                  <a class="dropdown-item" (click)="changeTab('advanceAgreement');">Соглашение аванса</a>
+                  <a class="dropdown-item" (click)="changeTab('depositAgreement');">Соглашение задатка</a>
+                </div>
+              </div>
+              <button type="button" mdbBtn color="success" class="btn btn-info btn-sm btn2 "
                       mdbWavesEffect (click)="submit()" *ngIf="edit"
                       [disabled]="!this.applicationForm?.operationTypeId && !this.applicationForm?.objectTypeId">
-                <span class="fa fa-save" translate> patterns.save</span>
-              </button>
-              <button type="button" class="btn btn-success btn2 float-right btn-sm" *ngIf="applicationId" (click)="activeTab = 'ou'" translate>
-                claim.generateContract
-              </button>
-              <button type="button" (click)="cancel()" class="btn btn-default btn2 float-right btn-sm" translate>
-                patterns.cancel
+                <span class="fa fa-save"> Сохранить</span>
               </button>
             </div>
           </div>
@@ -1492,6 +1507,9 @@
       </div>
       <div class="tab-pane fade" id="contractOU" [ngClass]="activeTab == 'ou' ? 'active show' : ''" role="tabpanel" aria-labelledby="contractOU-tab">
         <app-contract-ou></app-contract-ou>
+      </div>
+      <div class="tab-pane fade" id="advanceAgreement" *ngIf="isSell()" [ngClass]="(activeTab === 'advanceAgreement' || activeTab === 'depositAgreement') ? 'active show' : ''" role="tabpanel" aria-labelledby="advanceAgreement-tab">
+        <app-advance></app-advance>
       </div>
       <div class="tab-pane fade" id="impressions" [ngClass]="activeTab == 'events' ? 'active show' : ''" role="tabpanel" aria-labelledby="impressions-tab">
         <app-claim-events></app-claim-events>
@@ -1517,6 +1535,24 @@
   </div>
   <div class="modal-footer">
     <button type="button" (click)="closeModalContent()" class="btn btn-outline-primary btn-sm">Ok</button>
+  </div>
+</ng-template>
+
+<ng-template #modalContentAdvance let-close="close">
+  <div class="modal-header">
+    <button type="button" class="close" (click)="modalRef2.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm">
+        <button type="button" (click)="changeTab('advanceAgreement');modalRef2.hide()" class="btn btn2 btn-indigo btn-sm">Соглашение аванса</button>
+      </div>
+      <div class="col-sm">
+        <button type="button" (click)="changeTab('depositAgreement');modalRef2.hide()" class="btn btn2 btn-deep-purple btn-sm">Соглашение задатка</button>
+      </div>
+    </div>
   </div>
 </ng-template>
 
@@ -1587,9 +1623,6 @@
     </div>
     <div class="col-sm" *ngIf="resident">
       <label class="col-sm col-form-label">Улица<span class="text-danger">&nbsp;*</span></label>
-
-
-
       <ng-select
         disabled="true"
         required="true"

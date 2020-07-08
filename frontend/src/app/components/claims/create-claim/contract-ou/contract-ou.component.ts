@@ -7,10 +7,11 @@ import {NotificationService} from "../../../../services/notification.service";
 import {TranslateService} from "@ngx-translate/core";
 import {ContractService} from "../../../../services/contract.service";
 import {ClaimService} from "../../../../services/claim.service";
-import {ActivatedRoute, NavigationEnd, Router, RoutesRecognized} from "@angular/router";
+import {ActivatedRoute, Router, RoutesRecognized} from "@angular/router";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {NewDicService} from "../../../../services/new.dic.service";
 import {filter, pairwise} from "rxjs/operators";
+import {UploaderService} from "../../../../services/uploader.service";
 
 @Component({
   selector: 'app-contract-ou',
@@ -40,6 +41,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     private ngxLoader: NgxUiLoaderService,
     private newDicService: NewDicService,
     private router: Router,
+    private uploaderService: UploaderService
   ) {
     this.applicationId = Number(this.actRoute.snapshot.params.id);
     this._createForm();
@@ -52,7 +54,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
         console.log('previous url', events[0].urlAfterRedirects);
         console.log('current url', events[1].urlAfterRedirects);
         localStorage.setItem('previousUrl', events[0].urlAfterRedirects)
-      });
+      })
   }
 
   ngOnInit(): void {
@@ -104,7 +106,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
       this.contractForm.value.contractPeriod,
       this.contractForm.value.contractSum,
       this.contractForm.value.commission,
-      this.contractForm.value.contractTypeId,
+      this.contractForm.value.contractTypeId
     );
   }
 
@@ -135,16 +137,17 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     this.fillContractDto();
     this.subscriptions.add(this.contractService.generateContract(this.contractFormDto)
       .subscribe(res => {
-        if(res) {
+        if (res) {
           this.isDisabled = true;
           this.isShowPdf = true;
-          setTimeout(() => {
+          this.uploaderService.getResumePhoto(res).subscribe(file => {
             const iframe = window.document.getElementById('pdfIframe');
-            const byteArray = new Uint8Array(atob(res).split('').map(char => char.charCodeAt(0)));
-            const blob = new Blob([byteArray], {type: 'application/pdf'});
-            this.sourcePdf =  window.URL.createObjectURL(blob);
+            const blob = new Blob([file], {type: 'application/pdf'});
+            this.sourcePdf = window.URL.createObjectURL(blob);
             iframe.setAttribute('src', this.sourcePdf);
-          }, 300);
+          }, error => {
+            this.notifyService.showError('', error?.ru);
+          });
         }
         this.ngxLoader.stopBackground();
       }, err => {

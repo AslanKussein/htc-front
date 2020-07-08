@@ -2,8 +2,9 @@ import {Injectable} from "@angular/core";
 import {ConfigService} from "./config.service";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Observable, throwError} from "rxjs";
-import {tap} from "rxjs/operators";
+import {map, tap} from "rxjs/operators";
 import {catchError} from "rxjs/internal/operators";
+import {ContractFormAgreementDto} from "../models/createClaim/ContractFormAgreementDto";
 
 
 @Injectable({
@@ -16,12 +17,15 @@ export class ContractService {
 
   generateContract(data: any): Observable<any> {
     return this.http.post(`${this.configService.apiDataManagerUrl}/api/contracts/generateContract`, data, {
-      responseType: 'text',
-    })
-      .pipe(
-        tap(),
-        catchError(ContractService.handleError)
-      );
+      responseType: 'text'
+    }).pipe(
+        map((response) => {
+        return response;
+      }),
+      catchError((err, caught) => {
+        console.log('ererere', err);
+        throw err;
+      }));
   }
 
   getCommission(params: any): Observable<any> {
@@ -37,6 +41,16 @@ export class ContractService {
   missContract(data: any): Observable<any> {
     return this.http.post(`${this.configService.apiDataManagerUrl}/api/contracts/missContract`, data)
       .pipe(tap());
+  }
+
+  generateDepositContract(data: ContractFormAgreementDto): Observable<any> {
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/contracts/generateDepositContract`, data, {
+      responseType: 'text',
+    })
+      .pipe(
+        tap(),
+        catchError(ContractService.handleError)
+      );
   }
 
   private static handleError(error: HttpErrorResponse) {

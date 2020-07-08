@@ -63,6 +63,9 @@ import {AngularYandexMapsModule} from "angular8-yandex-maps";
 import { ClaimViewComponent } from './components/claims/create-claim/claim-view/claim-view.component';
 import { ContractOuComponent } from './components/claims/create-claim/contract-ou/contract-ou.component';
 import { MyAgentsComponent } from './components/profile/my-agents/my-agents.component';
+import {NewsComponent} from "./components/news/news.component";
+import {AnalyticsComponent} from "./components/analytics/analytics.component";
+import {AdvanceComponent} from "./components/claims/create-claim/advance/advance.component";
 
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
@@ -112,6 +115,10 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     ClaimViewComponent,
     ContractOuComponent,
     MyAgentsComponent,
+    NewsComponent,
+    AnalyticsComponent,
+    ModalComponent,
+    AdvanceComponent,
   ],
     imports: [
         BrowserModule,
@@ -135,6 +142,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
         ToastrModule.forRoot(),
         NgxMaskModule.forRoot(options),
         MDBBootstrapModule.forRoot(),
+        // AngularYandexMapsModule.forRoot('658f67a2-fd77-42e9-b99e-2bd48c4ccad4'),
         ChartsModule,
         CalendarModule.forRoot({
             provide: DateAdapter,

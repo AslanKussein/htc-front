@@ -45,6 +45,10 @@
           </div>
         </div>
         <div class="row">
+          <div class="col-sm-2">
+            <label translate>ID заявки</label>
+            <input type="text" mask="separator" id="applicationId" class="form-control" formControlName="applicationId">
+          </div>
           <div class="col-sm-3">
             <label translate>claim.lastCommentDateR.from</label>
             <input type="text" id="lastCommentDateFrom" class="form-control" formControlName="lastCommentDateFrom"
@@ -153,9 +157,9 @@
               </td>
               <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
               <td>{{formatDate(claim)}}</td>
-              <td>{{claim.fullName}}</td>
-              <td width="120px"><span *ngIf="claim.phone">+7 {{claim.phone | mask: '(000) 000-0000'}}</span></td>
-              <td>{{claim.email}}</td>
+              <td>{{claim.fullNameAgent}}</td>
+              <td width="120px"><span *ngIf="claim.phoneNumberAgent">+7 {{claim.phoneNumberAgent | mask: '(000) 000-0000'}}</span></td>
+              <td>{{claim.emailAgent}}</td>
               <td>{{getDicNameByLanguage(claim, 'district')}}</td>
               <td>{{claim.numberOfRooms}}</td>
               <td>{{claim.price}}</td>
