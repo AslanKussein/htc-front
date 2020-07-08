@@ -28,14 +28,13 @@
           <!--<a [routerLink]="['/create-claim/', claim?.id]">{{claim.id}}</a>-->
           {{agent.id}}
         </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>{{agent.name}} {{agent.surname}} </td>
+        <td>{{agent.rating}}</td>
+        <td>{{agent.agentContractAmount}}</td>
+        <td>{{agent.depositAmount}}</td>
+        <td>{{agent.saleAmount}}</td>
+        <td>{{agent.description}}</td>
+        <td>{{agent.lastContractSum}}</td>
       </tr>
       </tbody>
     </table>

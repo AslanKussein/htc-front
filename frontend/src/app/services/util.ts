@@ -65,6 +65,17 @@ export class Util {
     return list;
   }
 
+  toSelectArrayNewDic2(data, idField = 'id', labelField = this.getDicNameByLanguage2()) {
+    const list = [];
+    if (data) {
+      const len = data.length;
+      for (let i = 0; i < len; i++) {
+        list.push({value: data[i][idField], label: data[i].multiLang[labelField], code: data[i]['code']});
+      }
+    }
+    return list;
+  }
+
   toSelectArrayRoles(data, idField = 'id') {
     const list = [];
     if (data) {
@@ -99,6 +110,20 @@ export class Util {
     return list;
   }
 
+  toSelectArrayOrganization(data, idField = 'id', labelField = this.getDicNameByLanguage2()) {
+    const list = [];
+    if (data) {
+      const len = data.length;
+      for (let i = 0; i < len; i++) {
+        list.push({
+          value: data[i][idField],
+          label: data[i][labelField]
+        });
+      }
+    }
+    return list;
+  }
+
   toSelectArrayFlag(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
     const list = [];
     if (data) {
@@ -125,6 +150,22 @@ export class Util {
     switch (this._language.language) {
       case "kz":
         fieldName = 'nameKz';
+        break;
+      case "en":
+        fieldName = 'nameEn';
+        break;
+      default:
+        fieldName = 'nameRu';
+        break;
+    }
+    return fieldName;
+  }
+
+  getDicNameByLanguage2() {
+    let fieldName;
+    switch (this._language.language) {
+      case "kz":
+        fieldName = 'nameKk';
         break;
       case "en":
         fieldName = 'nameEn';
