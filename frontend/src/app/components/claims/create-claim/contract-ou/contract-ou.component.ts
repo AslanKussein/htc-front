@@ -12,6 +12,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {NewDicService} from "../../../../services/new.dic.service";
 import {filter, pairwise} from "rxjs/operators";
 import {UploaderService} from "../../../../services/uploader.service";
+import {Dic} from "../../../../models/dic";
 
 @Component({
   selector: 'app-contract-ou',
@@ -27,9 +28,10 @@ export class ContractOuComponent implements OnInit, OnDestroy {
   sourcePdf: any;
   isShowPdf = false;
   isDisabled = false;
-  contractTypes: any[];
+  contractTypes: Dic[];
   fromBoard: boolean = false;
-
+  operationType: Dic[];
+  isBuy: boolean;
   constructor(
     private util: Util,
     private formBuilder: FormBuilder,
@@ -56,8 +58,8 @@ export class ContractOuComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadDictionary();
     this.getContractForm();
-    this.getContractType();
   }
   private _createForm(): void {
     this.contractForm = this.formBuilder.group({
@@ -65,7 +67,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
       contractPeriod: [null, Validators.required],
       contractSum: [null, Validators.required],
       commission: [null, Validators.required],
-      contractTypeId: [null, Validators.required],
+      contractTypeId: [null, Validators.nullValidator],
     });
   }
 
@@ -73,19 +75,25 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     if(this.applicationId) {
       this.subscriptions.add(this.claimService.getClaimById(this.applicationId)
         .subscribe(res => {
-            if (res && res.contractDto && res.contractDto?.applicationId) {
-              this.fillContractForm(res.contractDto);
-              this.isDisabled = true;
-            }
-            this.objectTypeId = res?.objectTypeId;
+          const operationType = this.util.getDictionaryValueById(this.operationType, res?.operationTypeId);
+          this.isBuy = operationType?.code === '001002';
+          if (res && res.contractDto && res.contractDto?.applicationId) {
+            this.fillContractForm(res.contractDto);
+            this.isDisabled = true;
+          }
+          this.objectTypeId = res?.objectTypeId;
           }
         ));
     }
   }
 
-  getContractType(): void {
+  loadDictionary(): void {
+    this.subscriptions.add(this.newDicService.getDictionary('OperationType').subscribe(res => {
+      this.operationType = this.util.toSelectArray(res);
+    }));
     this.subscriptions.add(this.newDicService.getDictionary('ContractType').subscribe(res => {
       this.contractTypes = this.util.toSelectArray(res);
+      this.contractTypes = this.contractTypes.filter(el => el.code !== '001004');
     }));
   }
 
@@ -121,10 +129,14 @@ export class ContractOuComponent implements OnInit, OnDestroy {
 
   generateContract(): void {
     let isValid = true;
+    if(this.isBuy) {
+      this.contractForm.controls['contractTypeId'].setValidators([Validators.required]);
+      this.contractForm.controls['contractTypeId'].updateValueAndValidity();
+    }
     const controls = this.contractForm.controls;
     for (const name in controls) {
       if (controls[name].invalid) {
-        this.translate.get('claims.validator.' + name).subscribe((field: string) => {
+        this.translate.get('claim.validator.' + name).subscribe((field: string) => {
           this.notifyService.showWarning('Внимание',`Поле ${field} не заполнено!`);
         });
         isValid = false;
