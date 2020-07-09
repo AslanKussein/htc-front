@@ -272,7 +272,7 @@ export class Util {
 
   generatorFullUrl(uuid: string) {
     return `${this.configService.apiFileManagerUrl}` + '/open-api/download/' + uuid;
-}
+  }
 
   isNumeric(val: any): val is number | string {
     // parseFloat NaNs numeric-cast false positives (null|true|false|"")
@@ -286,6 +286,10 @@ export class Util {
     return formatDate(date, 'dd.MM.yyyy', 'en-US');
   }
 
+  toLocaleDateString(date: any) {
+    return new Date(date).toLocaleDateString();
+  }
+
   formatDateWithTimeZone(date: any) {
     return new Date(date).toLocaleString("en-US", {timeZone: "Asia/Almaty"});
   }
@@ -295,7 +299,7 @@ export class Util {
       return false;
     }
     for (const routerElement of JSON.parse(localStorage.getItem('currentUser')).roles) {
-      if (routerElement == 'РГ') {
+      if (routerElement == 'РГ' || routerElement == "Руководитель группы") {
         return true;
       }
     }
@@ -399,5 +403,9 @@ export class Util {
       }
     }
     return true;
+  }
+
+  refresh(): void {
+    window.location.reload();
   }
 }

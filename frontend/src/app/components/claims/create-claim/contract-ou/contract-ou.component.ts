@@ -51,8 +51,6 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     this.router.events
       .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
       .subscribe((events: RoutesRecognized[]) => {
-        console.log('previous url', events[0].urlAfterRedirects);
-        console.log('current url', events[1].urlAfterRedirects);
         localStorage.setItem('previousUrl', events[0].urlAfterRedirects)
       })
   }
@@ -137,18 +135,17 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     this.fillContractDto();
     this.subscriptions.add(this.contractService.generateContract(this.contractFormDto)
       .subscribe(res => {
-        if (res) {
-          this.isDisabled = true;
-          this.isShowPdf = true;
-          this.uploaderService.getResumePhoto(res).subscribe(file => {
-            const iframe = window.document.getElementById('pdfIframe');
-            const blob = new Blob([file], {type: 'application/pdf'});
-            this.sourcePdf = window.URL.createObjectURL(blob);
-            iframe.setAttribute('src', this.sourcePdf);
-          }, error => {
-            this.notifyService.showError('', error?.ru);
-          });
-        }
+        const uuid = res?.uuid;
+        this.isDisabled = true;
+        this.isShowPdf = true;
+        this.uploaderService.getResumePhoto(uuid).subscribe(file => {
+          const iframe = window.document.getElementById('pdfIframe');
+          const blob = new Blob([file], {type: 'application/pdf'});
+          this.sourcePdf = window.URL.createObjectURL(blob);
+          iframe.setAttribute('src', this.sourcePdf);
+        }, error => {
+          this.notifyService.showError('', error?.ru);
+        });
         this.ngxLoader.stopBackground();
       }, err => {
         this.notifyService.showError('', err?.ru);

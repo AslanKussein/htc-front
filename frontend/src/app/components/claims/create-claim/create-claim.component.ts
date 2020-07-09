@@ -33,6 +33,7 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {NewDicService} from "../../../services/new.dic.service";
 import {DicService} from "../../../services/dic.service";
 import {Subject} from "rxjs/internal/Subject";
+import {AdvanceComponent} from "./advance/advance.component";
 
 @Injectable({
   providedIn: 'root'

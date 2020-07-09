@@ -32,8 +32,9 @@
         </li>
       </ul>
       <div class="text-center" style="font-size: 18px">
-        <span><i class="fa fa-lightbulb-o" style="color: orange"></i> Всего в активе {{applicationCount}} сделок</span>
-        <span><i class="fa fa-money" style="color: green"></i>  Общая комиссия {{totalCommission | mask : 'separator.2' }}
+        <span><i class="fa fa-lightbulb-o" style="color: orange"></i> Всего в активе {{applicationCount}} сделок &nbsp;&nbsp;</span>
+        <span><i class="fa fa-money"
+                 style="color: green"></i>  Общая комиссия {{totalCommission | mask : 'separator.2' }}
           ₸</span>
       </div>
       <br>
@@ -70,8 +71,15 @@
             <div *ngFor="let item of data.boardData.applicationLightDtoList?.data; let i = index" cdkDrag
                  [class]="item.style" (cdkDragDropped)="changeStatus($event,item, data.value)">
               <div class="card">
+                <div class="card-header">
+                  {{item.id}} &nbsp;{{item.operationType?.name[getDicNameByLanguage()]}}
+                  <button type="button" class="close"
+                          (click)="this.openModal2(this.closeRequestApplication, 'modal-lg')" data-dismiss="modal"
+                          aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
                 <div class="card-body" [class]="getBgColorBySumm(item.price)">
-                  <p class="card-text">{{item.id}} &nbsp;{{item.operationType?.name[getDicNameByLanguage()]}}</p>
                   <p class="card-text">
                     {{item.agentLogin}}<br/>
                     {{item.numberOfRooms}} комнатная, кв {{item.totalArea}}
@@ -80,7 +88,7 @@
                     <span *ngIf="activeTab == 1">{{item.district?.name[getDicNameByLanguage()]}}</span>
                     <br/><span>цена: {{item.price | mask : 'separator.2'}}</span></p>
                   <i class="fa fa-phone" *ngIf="item.phone"><a href="tel:8{{item.phone}}"
-                                                               class="text-white"> {{item.phone | mask: '+0 (000) 000-0000'}}</a></i>
+                                                               class="text-white">+7{{item.phone | mask: ' (000) 000-0000'}}</a></i>
                 </div>
                 <div class="card-footer">
                   {{item.clientFullname}}
@@ -103,11 +111,61 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-sm">
-        <button type="button" (click)="modalRef2.hide();showToAdvance('advanceAgreement')" class="btn btn2 btn-info btn-sm">Соглашение аванса</button>
+        <button type="button" (click)="modalRef2.hide();showToAdvance('advanceAgreement')"
+                class="btn btn2 btn-info btn-sm">Соглашение аванса
+        </button>
       </div>
       <div class="col-sm">
-        <button type="button" (click)="modalRef2.hide();showToAdvance('depositAgreement')" class="btn btn2 btn-primary btn-sm">Соглашение задатка</button>
+        <button type="button" (click)="modalRef2.hide();showToAdvance('depositAgreement')"
+                class="btn btn2 btn-primary btn-sm">Соглашение задатка
+        </button>
       </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #closeRequestApplication let-close="close">
+  <div class="modal-header">
+    Закрыть заявку
+    <button type="button" class="close" (click)="modalRef2.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm-3">
+        <fieldset class="scheduler-border col-sm">
+          <legend class="scheduler-border">ID</legend>
+          <div class="row">
+            <div class="col-sm">
+              <input type="text" class="form-control text-uppercase" readonly/>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-sm">
+        <fieldset class="scheduler-border col-sm">
+          <legend class="scheduler-border">Агента (ID)</legend>
+          <div class="row">
+            <div class="col-sm">
+              <input type="text" class="form-control text-uppercase" readonly/>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-sm">
+        <fieldset class="scheduler-border col-sm">
+          <legend class="scheduler-border">Клиента (ID)</legend>
+          <div class="row">
+            <div class="col-sm">
+              <input type="text" class="form-control text-uppercase" readonly/>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="row">
+
     </div>
   </div>
 </ng-template>

@@ -17,15 +17,8 @@ export class ContractService {
 
   generateContract(data: any): Observable<any> {
     return this.http.post(`${this.configService.apiDataManagerUrl}/api/contracts/generateContract`, data, {
-      responseType: 'text'
-    }).pipe(
-        map((response) => {
-        return response;
-      }),
-      catchError((err, caught) => {
-        console.log('ererere', err);
-        throw err;
-      }));
+      responseType: 'json'
+    }).pipe(tap());
   }
 
   getCommission(params: any): Observable<any> {
@@ -43,13 +36,10 @@ export class ContractService {
       .pipe(tap());
   }
 
-  generateDepositContract(data: ContractFormAgreementDto): Observable<any> {
-    return this.http.post(`${this.configService.apiDataManagerUrl}/api/contracts/generateDepositContract`, data, {
-      responseType: 'text',
-    })
+  public generateDepositContract(data): Observable<any> {
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/contracts/generateDepositContract`, data)
       .pipe(
         tap(),
-        catchError(ContractService.handleError)
       );
   }
 
