@@ -322,6 +322,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     params = params.append('groupCodes', String('APPLICATION_GROUP'))
     params = params.append('groupCodes', String('REAL_PROPERTY_GROUP'))
     params = params.append('groupCodes', String('CLIENT_GROUP'))
+    params = params.append('groupCodes', String('AGENT_GROUP'))
     this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
       this.roles = obj.data
     });
@@ -1160,10 +1161,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         }
       }
     }))
-  }
-
-  hasRGRole() {
-    return this.util.hasRGRole();
   }
 
   getMap() {

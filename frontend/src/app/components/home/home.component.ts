@@ -13,6 +13,8 @@ import {OwnerService} from "../../services/owner.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {Subscription} from "rxjs";
 import {NewDicService} from "../../services/new.dic.service";
+import {HttpParams} from "@angular/common/http";
+import {RoleManagerService} from "../../services/roleManager.service";
 
 @Component({
   selector: 'app-home',
@@ -32,9 +34,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   currentPage = 1;
   applicationLightDto: ApplicationLightDto;
   existsClient: boolean = false;
+  roles: any;
 
   constructor(private formBuilder: FormBuilder,
-              private util: Util,
+              public util: Util,
               private notification: NotificationService,
               private claimService: ClaimService,
               private userService: UserService,
@@ -42,6 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               private ownerService: OwnerService,
               private ngxLoader: NgxUiLoaderService,
               private newDicService: NewDicService,
+              private roleManagerService: RoleManagerService,
               private cdRef: ChangeDetectorRef) {
   }
 
@@ -59,10 +63,19 @@ export class HomeComponent implements OnInit, OnDestroy {
       objectTypeId: [null, Validators.required],
     });
 
-    if (this.hasRGRole()) {
-      this.applicationLightForm.controls['agentLogin'].setValidators([Validators.required]);
-      this.applicationLightForm.controls["agentLogin"].updateValueAndValidity();
-    }
+    let params = new HttpParams();
+    params = params.append('groupCodes', String('APPLICATION_GROUP'))
+    params = params.append('groupCodes', String('REAL_PROPERTY_GROUP'))
+    params = params.append('groupCodes', String('CLIENT_GROUP'))
+    params = params.append('groupCodes', String('AGENT_GROUP'))
+    this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
+      if (!this.util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', obj.data) &&
+        this.util.hasShowAgentGroup('CHOOSE_ANY_AGENT', obj.data)) {
+        this.applicationLightForm.controls['agentLogin'].setValidators([Validators.required]);
+        this.applicationLightForm.controls["agentLogin"].updateValueAndValidity();
+      }
+      this.roles = obj.data
+    });
 
     this.cdRef.detectChanges()
 
@@ -165,10 +178,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   formatDate(claim: any) {
     return formatDate(claim.creationDate, 'dd.MM.yyyy HH:mm', 'en-US');
-  }
-
-  hasRGRole() {
-    return this.util.hasRGRole();
   }
 
   ngOnDestroy() {

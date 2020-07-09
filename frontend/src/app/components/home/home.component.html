@@ -83,7 +83,8 @@
               <textarea id="form7" class="md-textarea form-control" rows="4" formControlName="note"></textarea>
             </div>
           </div>
-          <div class="form-group row" *ngIf="hasRGRole()">
+          <div class="form-group row" [hidden]="util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) &&
+                                         util.hasShowAgentGroup('CHOOSE_ANY_AGENT', roles)">
             <label for="form7" class="col-sm-3 col-form-label" translate>Выберите агента
               <span class="text-danger" *ngIf="!applicationLightForm.value.agentList">&nbsp;*</span>
             </label>
