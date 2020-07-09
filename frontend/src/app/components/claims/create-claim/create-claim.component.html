@@ -69,8 +69,8 @@
                             </div>
                           </div>
                         </div>
-
-                        <div class="col-sm" *ngIf="hasRGRole()">
+                        <div class="col-sm" [hidden]="util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) &&
+                                         util.hasShowAgentGroup('CHOOSE_ANY_AGENT', roles)">
                           <label>Выберите агента</label>
                           <ng-select
                             [items]="agentList"

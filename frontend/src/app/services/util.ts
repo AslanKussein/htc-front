@@ -294,18 +294,6 @@ export class Util {
     return new Date(date).toLocaleString("en-US", {timeZone: "Asia/Almaty"});
   }
 
-  hasRGRole() {
-    if (this.isNullOrEmpty(JSON.parse(localStorage.getItem('currentUser')).roles)) {
-      return false;
-    }
-    for (const routerElement of JSON.parse(localStorage.getItem('currentUser')).roles) {
-      if (routerElement == 'РГ' || routerElement == "Руководитель группы") {
-        return true;
-      }
-    }
-    return false;
-  }
-
   nvl(val: any, val2: any) {
     return this.isNullOrEmpty(val) ? val2 : val;
   }
@@ -338,6 +326,17 @@ export class Util {
       }
     }
     return list;
+  }
+
+  hasShowAgentGroup(operation: string, roles: any) {
+    if (!this.isNullOrEmpty(roles)) {
+      for (const data of roles) {
+        if (data.code === 'AGENT_GROUP') {
+          return !data.operations.includes(operation);
+        }
+      }
+    }
+    return true;
   }
 
   hasShowClientGroup(operation: string, roles: any) {
