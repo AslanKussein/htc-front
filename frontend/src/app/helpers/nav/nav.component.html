@@ -1,75 +1,156 @@
 <!--Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark indigo" *ngIf="currentUser">
-  <a class="navbar-brand" href="#">HTC</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
-          aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item " [ngClass]="isActive() ? 'active' : ''">
-        <a class="nav-link" (click)="dnHref('analytics')">
-          <span translate>analytics.title</span>
-        </a>
-      </li>
-      <li class="nav-item" [ngClass]="isActive() ? 'active' : ''">
-        <a class="nav-link" (click)="dnHref('news')">
-          <span translate>news.title</span>
-        </a>
-      </li>
-      <li class="nav-item" [ngClass]="isActive() ? 'active' : ''">
-        <a class="nav-link" (click)="dnHref('objects')">
-          <span translate>objects.title</span>
-        </a>
-      </li>
-      <li class="nav-item" [ngClass]="isActive() ? 'active' : ''">
-        <a class="nav-link" (click)="dnHref('board')">
-          <span translate>controlPanels.title</span>
-        </a>
-      </li>
-      <li class="nav-item" [ngClass]="isActive() ? 'active' : ''">
-        <a (click)="dnHref('claims')" class="nav-link">
-          <span translate>claim.title</span>
-        </a>
-      </li>
-      <li class="nav-item" [ngClass]="isActive() ? 'active' : ''">
-        <a class="nav-link" (click)="dnHref('staffs')">
-          <span translate>staffs.title</span>
-        </a>
-      </li>
-      <li class="nav-item" [ngClass]="isActive() ? 'active' : ''">
-        <a class="nav-link" (click)="dnHref('dic-control')">
-          <span translate>Управление справочниками</span>
-        </a>
-      </li>
-    </ul>
-    <ul class="navbar-nav ml-auto nav-flex-icons">
-<!--      <li class="nav-item" [className]="_language.language == 'ru' ? 'active' : ''">-->
-<!--        <a class="nav-link waves-effect waves-light">-->
-<!--          <a (click)="changeLang('ru')">Рус</a>-->
-<!--        </a>-->
-<!--      </li>-->
-<!--      <li class="nav-item" [className]="_language.language == 'kz' ? 'active' : ''">-->
-<!--        <a class="nav-link waves-effect waves-light">-->
-<!--          <a (click)="changeLang('kz')">Қаз</a>-->
-<!--        </a>-->
-<!--      </li>-->
-      <li class="nav-item dropdown">
 
-        <a class="nav-link dropdown-toggle text-uppercase" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-user"></i> {{currentUser?.surname}} {{currentUser?.name}}
-        </a>
-        <div class="dropdown-menu dropdown-menu-right dropdown-default"
-             aria-labelledby="navbarDropdownMenuLink-333">
-          <a class="dropdown-item" (click)="dnHref('profile')" translate>profile.myProfile</a>
-          <hr/>
-          <a class="dropdown-item" (click)="logout()" translate>profile.exit</a>
-        </div>
-      </li>
-    </ul>
+
+  <div class="row" style="  position: fixed;z-index: 9999999" *ngIf="currentUser">
+    <div class="st31">
+      <div class="st35 clearfix">
+        <img src="../../../assets/images/logo2.png" class="st36">
+      </div>
+      <div class="st34 clearfix">
+        <p class="Vitrina">VITRINA</p>
+      </div>
+      <div class="clearfix"></div>
+      <div class="gst34">
+        <ul class="gst34">
+          <li class="nav-item" [ngClass]="isActive() ? 'active' : ''">
+            <a class="nav-link" (click)="dnHref('objects')">
+              <span translate class="gst35">objects.title</span>
+            </a>
+          </li>
+          <li class="nav-item" style="padding-top: 30px" [ngClass]="isActive() ? 'active' : ''">
+            <a class="nav-link" (click)="dnHref('board')">
+              <span translate class="gst35">controlPanels.title</span>
+            </a>
+          </li>
+          <li class="nav-item" style="padding-top: 30px" [ngClass]="isActive() ? 'active' : ''">
+            <a (click)="dnHref('claims')" class="nav-link">
+              <span translate class="gst35">claim.title</span>
+            </a>
+          </li>
+          <li class="nav-item" style="padding-top: 30px" [ngClass]="isActive() ? 'active' : ''">
+            <a class="nav-link" (click)="dnHref('staffs')">
+              <span translate class="gst35">staffs.title</span>
+            </a>
+          </li>
+          <li class="nav-item" style="padding-top: 30px" [ngClass]="isActive() ? 'active' : ''">
+            <a class="nav-link" (click)="dnHref('dic-control')">
+              <span translate class="gst35">Управление справочниками</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="st334">
+
+     <p class="st335">Аналитика</p>
+      <p class="st336"></p>
+      <p class="st337">Новости</p>
+      <div class="col-sm"></div>
+      <!--<div class="input-group">-->
+        <!--<input type="text" class="st3355" placeholder="Поиск">-->
+        <!--<div class="input-group-append">-->
+          <!--<i class="fa fa-2x fa-search st3377"></i>-->
+        <!--</div>-->
+      <!--</div>-->
+      <div class="st3378">
+        <ul class="navbar-nav ml-auto nav-flex-icons " >
+          <li class="nav-item dropdown">
+
+            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-3333" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false"
+            style="margin-left: -140px">
+              <i class="fa fa-2x fa-user"></i>
+              Мой профиль
+            </a>
+            <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                 aria-labelledby="navbarDropdownMenuLink-3333">
+              <a class="dropdown-item" (click)="dnHref('profile')" translate>profile.myProfile</a>
+              <hr/>
+              <a class="dropdown-item" (click)="logout()" translate>profile.exit</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+
+
+    </div>
   </div>
-</nav>
+
+
+
+
+<!--<nav class="navbar navbar-expand-lg navbar-dark indigo" *ngIf="currentUser">-->
+  <!--<a class="navbar-brand" href="#">HTC</a>-->
+  <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"-->
+          <!--aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">-->
+    <!--<span class="navbar-toggler-icon"></span>-->
+  <!--</button>-->
+  <!--<div class="collapse navbar-collapse" id="navbarSupportedContent-333">-->
+    <!--<ul class="navbar-nav mr-auto">-->
+      <!--<li class="nav-item " [ngClass]="isActive() ? 'active' : ''">-->
+        <!--<a class="nav-link" (click)="dnHref('analytics')">-->
+          <!--<span translate>analytics.title</span>-->
+        <!--</a>-->
+      <!--</li>-->
+      <!--<li class="nav-item" [ngClass]="isActive() ? 'active' : ''">-->
+        <!--<a class="nav-link" (click)="dnHref('news')">-->
+          <!--<span translate>news.title</span>-->
+        <!--</a>-->
+      <!--</li>-->
+      <!--<li class="nav-item" [ngClass]="isActive() ? 'active' : ''">-->
+        <!--<a class="nav-link" (click)="dnHref('objects')">-->
+          <!--<span translate>objects.title</span>-->
+        <!--</a>-->
+      <!--</li>-->
+      <!--<li class="nav-item" [ngClass]="isActive() ? 'active' : ''">-->
+        <!--<a class="nav-link" (click)="dnHref('board')">-->
+          <!--<span translate>controlPanels.title</span>-->
+        <!--</a>-->
+      <!--</li>-->
+      <!--<li class="nav-item" [ngClass]="isActive() ? 'active' : ''">-->
+        <!--<a (click)="dnHref('claims')" class="nav-link">-->
+          <!--<span translate>claim.title</span>-->
+        <!--</a>-->
+      <!--</li>-->
+      <!--<li class="nav-item" [ngClass]="isActive() ? 'active' : ''">-->
+        <!--<a class="nav-link" (click)="dnHref('staffs')">-->
+          <!--<span translate>staffs.title</span>-->
+        <!--</a>-->
+      <!--</li>-->
+      <!--<li class="nav-item" [ngClass]="isActive() ? 'active' : ''">-->
+        <!--<a class="nav-link" (click)="dnHref('dic-control')">-->
+          <!--<span translate>Управление справочниками</span>-->
+        <!--</a>-->
+      <!--</li>-->
+    <!--</ul>-->
+    <!--<ul class="navbar-nav ml-auto nav-flex-icons">-->
+<!--&lt;!&ndash;      <li class="nav-item" [className]="_language.language == 'ru' ? 'active' : ''">&ndash;&gt;-->
+<!--&lt;!&ndash;        <a class="nav-link waves-effect waves-light">&ndash;&gt;-->
+<!--&lt;!&ndash;          <a (click)="changeLang('ru')">Рус</a>&ndash;&gt;-->
+<!--&lt;!&ndash;        </a>&ndash;&gt;-->
+<!--&lt;!&ndash;      </li>&ndash;&gt;-->
+<!--&lt;!&ndash;      <li class="nav-item" [className]="_language.language == 'kz' ? 'active' : ''">&ndash;&gt;-->
+<!--&lt;!&ndash;        <a class="nav-link waves-effect waves-light">&ndash;&gt;-->
+<!--&lt;!&ndash;          <a (click)="changeLang('kz')">Қаз</a>&ndash;&gt;-->
+<!--&lt;!&ndash;        </a>&ndash;&gt;-->
+<!--&lt;!&ndash;      </li>&ndash;&gt;-->
+      <!--<li class="nav-item dropdown">-->
+
+        <!--<a class="nav-link dropdown-toggle text-uppercase" id="navbarDropdownMenuLink-333" data-toggle="dropdown"-->
+           <!--aria-haspopup="true" aria-expanded="false">-->
+          <!--<i class="fa fa-user"></i> {{currentUser?.surname}} {{currentUser?.name}}-->
+        <!--</a>-->
+        <!--<div class="dropdown-menu dropdown-menu-right dropdown-default"-->
+             <!--aria-labelledby="navbarDropdownMenuLink-333">-->
+          <!--<a class="dropdown-item" (click)="dnHref('profile')" translate>profile.myProfile</a>-->
+          <!--<hr/>-->
+          <!--<a class="dropdown-item" (click)="logout()" translate>profile.exit</a>-->
+        <!--</div>-->
+      <!--</li>-->
+    <!--</ul>-->
+  <!--</div>-->
+<!--</nav>-->
 
 <!--<ul class="nav justify-content-center lighten-4 py-1 nav2" *ngIf="currentUser">-->
 <!--  <li class="nav-item">-->

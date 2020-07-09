@@ -4,6 +4,7 @@
 
 /* You can add global styles to this file, and also import other style files */
 body {
+
   height: 100%;
   font-family: 'Cuprum', sans-serif !important;
 }
@@ -102,6 +103,13 @@ app-charts {
   border: none!important;
   outline: none!important;
 }
+.modal-content {
+  margin-top: 160px;
+}
+.card-body.card-bg{
+  padding-left: 400px;padding-top: 160px;
+}
+
 
 fieldset {
   margin: 5px;

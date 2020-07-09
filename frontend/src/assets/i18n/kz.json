@@ -6,7 +6,34 @@
     "title": "Новости"
   },
   "сlaim": {
-    "title": "Заявление"
+    "title": "Заявление",
+    "validator": {
+      "landArea": "Площадь участка",
+      "districtId": "Район",
+      "cityId": "Город",
+      "contractPeriod": "Срок действия договора",
+      "amount": "Сумма по договору",
+      "firstName": "Имя",
+      "surname": "Фамилия",
+      "phoneNumber": "Контакты",
+      "objectPrice": "Цена объекта (тг)",
+      "streetId": "Улица",
+      "houseNumber": "Номер дома",
+      "numberOfRooms": "Количество комнат",
+      "totalArea": "Площадь",
+      "livingArea": "Жилая",
+      "kitchenArea": "Кухня",
+      "ceilingHeight": "Высота потолков",
+      "numberOfBedrooms": "Количество спален",
+      "operationTypeId": "Операция",
+      "contractNumber": "Номер договора",
+      "postcode": "Полный адрес",
+      "apartmentNumber": "Номер квартиры",
+      "objectTypeId": "Тип объекта",
+      "contractTypeId": "Тип договора",
+      "contractSum": "Сумма по договору",
+      "commission": "Размер комиссии"
+    }
   },
   "board": {
     "title": "Канбан"
