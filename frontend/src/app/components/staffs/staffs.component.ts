@@ -155,7 +155,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
           this.modalRef.hide();
         }));
 
-      this.staffService.updateUserActiveById(this.formData)
+      this.subscriptions.add(this.staffService.updateUserActiveById(this.formData)
         .subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
@@ -164,9 +164,9 @@ export class StaffsComponent implements OnInit, OnDestroy {
           this.notifyService.showError('warning', err.message);
           this.findObjects(1);
           this.modalRef.hide();
-        });
+        }));
 
-      this.staffService.updateOrganizationById(this.formData)
+      this.subscriptions.add(this.staffService.updateOrganizationById(this.formData)
         .subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('success', 'Успешно сохранено');
@@ -175,7 +175,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
           this.notifyService.showError('warning', err.message);
           this.findObjects(1);
           this.modalRef.hide();
-        });
+        }));
 
       if (!this.util.isNullOrEmpty(this.formData.passNew) && !this.util.isNullOrEmpty(this.formData.passNew2)) {
         if (this.formData.passNew == this.formData.passNew2) {
