@@ -32,6 +32,15 @@ export class BoardService {
       );
   }
 
+  completeDeal(data: any) {
+    return this.http.post<any>(`${this.configService.apiDataManagerUrl}/api/kanban/completeDeal`, data)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(BoardService.handleError)
+      );
+  }
+
   private static handleError(error: HttpErrorResponse) {
     return throwError(
       error);
