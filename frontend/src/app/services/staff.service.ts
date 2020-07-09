@@ -71,6 +71,13 @@ export class StaffService {
       );
   }
 
+  public updateOrganizationById(obj): Observable<any> {
+    return this.http.put(`${this.configService.apiUserManagerUrl}/api/users/` + obj.id + `/organization`, {organizationId: obj.organizationId})
+      .pipe(
+        tap(),
+      );
+  }
+
   public updateUserRolesById(obj): Observable<any> {
     return this.http.put(`${this.configService.apiUserManagerUrl}/api/users/` + obj.id + `/roles`, {roles: obj.roles})
       .pipe(
