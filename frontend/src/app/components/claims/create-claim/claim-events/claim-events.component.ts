@@ -120,6 +120,7 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
       if (!this.util.isNullOrEmpty(this.eventsForm.value.comment)) {
         this.eventsService.putCommentEvent(res, this.eventsForm.value.comment).subscribe();
       }
+      this.eventsForm.reset();
       this.notificationService.showSuccess('Информация', 'Событие добавлено');
       this.getEventsByApplicationId(1);
     }))
@@ -138,6 +139,7 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
     }
     this.subscriptions.add(this.eventsService.updateEvent(events.eventId, events).subscribe(res => {
       this.changeDisableDev(events, true);
+      this.eventsForm.reset();
       this.notificationService.showSuccess('Информация', 'Событие изменено');
       this.eventsService.putCommentEvent(res, events.comment).subscribe();
     }));
