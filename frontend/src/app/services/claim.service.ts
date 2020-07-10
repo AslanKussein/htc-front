@@ -46,13 +46,19 @@ export class ClaimService {
       );
   }
 
+  public reassignApplication(obj): Observable<any> {
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/applications/reassignApplication`, obj)
+      .pipe(
+        tap()
+      );
+  }
+
   public getApartmentByNumberAndPostcode(apartmentNumber: number, postCode: string): Observable<any> {
     return this.http.get(`${this.configService.apiDataManagerUrl}/api/applications/getApartmentByNumberAndPostcode/` + apartmentNumber + `/` + postCode, {})
       .pipe(
         tap()
       );
   }
-
 
   public getApplicationViewById(id: number): Observable<any> {
     // return this.http.get(`http://localhost:8080/api/application-view/` + id, {})

@@ -1,7 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {Util} from "../../../services/util";
 import {BoardComponent} from "../board.component";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
+import {BoardService} from "../../../services/board.service";
+import {Subscription} from "rxjs";
+import {NotificationService} from "../../../services/notification.service";
+import {UploaderService} from "../../../services/uploader.service";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-close-deal',
@@ -9,31 +15,38 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./close-deal.component.scss']
 })
 export class CloseDealComponent implements OnInit {
-
+  subscriptions: Subscription = new Subscription();
+  @ViewChild('_modalContentAdvance', {static: true}) private _modalContentAdvance: TemplateRef<any>;
   boardSelect: any;
   operationId: number;
   contractStatus: number;
   contractStatusName: string;
+  depositStatusName: string;
+  selectedFile: File;
+  contractGuid: string;
+  depositGuid: string;
   //contractStatus: | GENERATED = 1| MISSING = 2
+  modalRef2: BsModalRef;
 
   constructor(private board: BoardComponent,
               private util: Util,
+              private location: Location,
+              private boardService: BoardService,
+              private notificationService: NotificationService,
+              private modalService: BsModalService,
+              private uploader: UploaderService,
               private actRoute: ActivatedRoute) {
     this.board.displayBoardContent = false;
     this.boardSelect = this.board.boardSelect;
-    if (this.util.isNullOrEmpty(this.boardSelect.contractStatus)) {
-      this.contractStatus = 2;
-      this.contractStatusName = 'Сформировать';
-    } else {
-      this.contractStatus = this.boardSelect.contractStatus?.id;
-      this.contractStatusName = this.boardSelect?.name?.nameRu;
-    }
+    this.contractStatus = this.util.isNullOrEmpty(this.boardSelect?.contractStatus) ? 2 : this.boardSelect?.contractStatus?.id;
+    this.contractStatusName = this.util.isNullOrEmpty(this.boardSelect?.contractStatus) ? 'Сформировать' : this.boardSelect?.contractStatus?.name?.nameRu;
+    this.depositStatusName = this.boardSelect?.hasDepositContract ? 'Сформирован' : 'Сформировать';
     console.log(this.boardSelect)
     if (this.util.isNullOrEmpty(this.boardSelect)) {
       this.cancel()
     }
-    if (this.util.isNumeric(this.actRoute.snapshot.params.id)) {
-      this.operationId = Number(this.actRoute.snapshot.params.id);
+    if (this.util.isNumeric(this.actRoute.snapshot.params.operationId)) {
+      this.operationId = Number(this.actRoute.snapshot.params.operationId);
     }
   }
 
@@ -42,34 +55,72 @@ export class CloseDealComponent implements OnInit {
     return;
   }
 
+  // generateOu() {
+  //   this.util.dnHrefParam('create-claim/' + this.boardSelect.id, 'ou');
+  //   return;
+  // }
+
+  openModal() {
+    this.modalRef2 = this.modalService.show(this._modalContentAdvance, {class: '-modal-sm'});
+  }
+
+  showToAdvance(param) {
+    this.util.dnHrefParam('create-claim/' + this.boardSelect.id, param);
+  }
+
   cancel() {
-    this.board.displayBoardContent = true;
-    this.util.navigateByUrl('/board');
-    this.board.sortStatusesDic(this.board.activeTab);
+    // this.board.displayBoardContent = true;
+    this.location.replaceState('board');
+    this.util.refresh()
+    // this.board.sortStatusesDic(this.board.activeTab);
   }
 
   ngOnInit(): void {
   }
 
   onFileChange(event, id: number) {
-    // this.isUpload = true;
-    // if (event.target.files && event.target.files[0]) {
-    //   let filesAmount = event.target.files.length;
-    //   for (let i = 0; i < filesAmount; i++) {
-    //     this.selectedFile = event.target.files[i];
-    //     this.subscriptions.add(this.uploader.uploadData(this.selectedFile)
-    //       .subscribe(data => {
-    //         if (data && data.message) {
-    //           this.percent = data.message;
-    //         }
-    //         if (data && data.uuid) {
-    //           this.filesEdited = true;
-    //           this.fillPicture(data, id);
-    //           this.isUpload = false;
-    //         }
-    //       }));
-    //   }
-    // }
+    if (event.target.files && event.target.files[0]) {
+      let filesAmount = event.target.files.length;
+      for (let i = 0; i < filesAmount; i++) {
+        this.selectedFile = event.target.files[i];
+        this.subscriptions.add(this.uploader.uploadData(this.selectedFile)
+          .subscribe(data => {
+            if (data && data.uuid) {
+              if (id == 1) {
+                this.contractGuid = data.uuid
+              }
+              if (id == 2) {
+                this.depositGuid = data.uuid
+              }
+            }
+          }));
+      }
+    }
+  }
+
+  completeDeal() {
+    let obj = {};
+    obj["applicationId"] = this.boardSelect.id;
+    if (this.util.isNullOrEmpty(this.contractGuid)) {
+      this.notificationService.showWarning('Прикрепите скан Договора ОУ', 'Информация')
+      return;
+    }
+    obj["contractGuid"] = this.contractGuid
+    if (this.operationId == 1) {
+      if (this.boardSelect.hasDepositContract) {
+        if (this.util.isNullOrEmpty(this.depositGuid)) {
+          this.notificationService.showWarning('Прикрепите скан Договора о авансе/задатке', 'Информация')
+          return;
+        }
+      }
+      obj["depositGuid"] = this.depositGuid
+    }
+    this.subscriptions.add(
+      this.boardService.completeDeal(obj).subscribe(res => {
+        this.notificationService.showInfo('Сделка закрыта', 'Информация');
+        this.cancel();
+      })
+    )
   }
 
 }

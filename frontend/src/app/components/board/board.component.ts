@@ -37,7 +37,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   get boardSelect(): Board {
     return this._boardSelect;
   }
-  @ViewChild('modalContentAdvance', {static: true}) modalContentAdvance: TemplateRef<any>;
+  @ViewChild('modalContentAdvance', {static: true}) private _modalContentAdvance: TemplateRef<any>;
 
   constructor(private boardService: BoardService,
               public util: Util,
@@ -48,16 +48,7 @@ export class BoardComponent implements OnInit, OnDestroy {
               private router: Router,
               private actRoute: ActivatedRoute,
               private userService: UserService) {
-    this.router.events
-      .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
-      .subscribe((events: RoutesRecognized[]) => {
-        console.log(events[1].urlAfterRedirects)
-        // if (events[1].urlAfterRedirects.includes("board/close-deal") && !this.displayBoardContent) {
-        //   console.log(789789)
-        //   this.openInnerPage('board/close-deal/' + this.activeTab);
-        //   return
-        // }
-      })
+
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
       this.activeTab = parseInt(this.actRoute.snapshot.queryParamMap.get('activeTab'));
     }
@@ -176,11 +167,38 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.appStatusesSort.push(m)
     }
     this.getBoardData(tab, ids, this.login);
-    this.router.navigate(['/board'], {
-      queryParams: {
-        activeTab: tab
-      }
-    });
+    console.log(this.router.url
+
+      )
+
+    if (this.router.url.includes("board/close-deal")) {
+      this.displayBoardContent = false;
+      this.openInnerPage('board/close-deal/' + this.activeTab);
+      return
+    } else {
+      this.router.navigate(['/board'], {
+        queryParams: {
+          activeTab: tab
+        }
+      });
+    }
+    // this.router.events
+    //   .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
+    //   .subscribe((events: RoutesRecognized[]) => {
+    //     console.log(events[1].urlAfterRedirects.includes("board/close-deal"))
+    //     if (events[1].urlAfterRedirects.includes("board/close-deal")) {
+    //       console.log(789789)
+    //       this.displayBoardContent = false;
+    //       this.openInnerPage('board/close-deal/' + this.activeTab);
+    //       return
+    //     } else {
+    //       this.router.navigate(['/board'], {
+    //         queryParams: {
+    //           activeTab: tab
+    //         }
+    //       });
+    //     }
+    //   })
   }
 
   getBgColorBySumm(price: number) {
@@ -259,7 +277,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     let currentStatusId = parseInt(event.container.id);
 
     if (parseInt(event.previousContainer.id) > parseInt(event.container.id)) {
-      if ((prevStatusId != 5 && currentStatusId != 4) || prevStatusId != 10 && currentStatusId != 7) {
+      if ((prevStatusId != 5 && currentStatusId != 4) && (prevStatusId != 10 && currentStatusId != 7)) {
         return
       }
     }
@@ -277,7 +295,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.3. С "Договор на оказание услуг *" на "Показ *"
         this.moveStatus(data);
       } else if (prevStatusId == 6 && currentStatusId == 10) { // 2.4. С "Показ *" на "Договор о задатке/авансе *"
-        this.openModal2(this.modalContentAdvance, '-modal-sm');
+        this.openModal2(this._modalContentAdvance, '-modal-sm');
         return;
       }else if (prevStatusId == 6 && currentStatusId == 7) { //NEW С "Показ *" на на "Закрытие сделки *" - обязательный статус
         alert('БУДЕТ ССЫЛКА')
@@ -288,7 +306,6 @@ export class BoardComponent implements OnInit, OnDestroy {
     } else if (this.activeTab == 2) {// воронка ПРОДАЖИ
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
         this.openInnerPage('board/add-event');
-        alert(1)
         return;
       } else if ((prevStatusId == 1 || prevStatusId == 2) && currentStatusId == 3) {//2.2. С "Встреча *" на "Договор на оказание услуг *"
         this.util.dnHrefParam('create-claim/' + item.id, 'ou');
@@ -305,7 +322,6 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.moveStatus(data);
       } else if (prevStatusId == 6 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
         this.openInnerPage('board/close-deal/' + this.activeTab);
-        alert(1)
         return;
       }
     }

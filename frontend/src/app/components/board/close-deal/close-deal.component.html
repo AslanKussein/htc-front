@@ -15,33 +15,56 @@
         <div class="col-sm" [class.disabledDev]="contractStatus == 2">
           <label class="btn btn-info btn2 btn-sm">Сканированный документ
             <i class="fa fa-upload"></i>
-            <input type="file" multiple="" hidden (change)="onFileChange($event, 3)">
+            <input type="file" multiple="" hidden (change)="onFileChange($event, 1)">
           </label>
         </div>
       </div>
     </fieldset>
-
-    <fieldset class="scheduler-border col-sm" *ngIf="operationId == 2">
+    <fieldset class="scheduler-border col-sm" *ngIf="operationId == 1">
       <legend class="scheduler-border">Договор о авансе/задатке</legend>
-      <div class="row">
-        <div class="col-sm">
-          <label class="btn btn-info btn2 btn-sm">Статус:
-            <i class="fa fa-upload"></i>
-            <input type="file" multiple="" hidden (change)="onFileChange($event, 3)">
-          </label>
+
+      <div class="form-group row" [class.disabledDev]="this.boardSelect.hasDepositContract">
+        <label class="col-sm-2 col-form-label">Статус</label>
+        <div class="col-sm-10">
+          <button type="button" class="btn btn-success btn-sm btn2" (click)="this.openModal()">{{depositStatusName}}</button>
         </div>
-        <div class="col-sm">
+      </div>
+
+      <div class="row">
+        <div class="col-sm" [class.disabledDev]="!this.boardSelect.hasDepositContract">
           <label class="btn btn-info btn2 btn-sm">Сканированный документ
             <i class="fa fa-upload"></i>
-            <input type="file" multiple="" hidden (change)="onFileChange($event, 3)">
+            <input type="file" multiple="" hidden (change)="onFileChange($event, 2)">
           </label>
         </div>
       </div>
+
     </fieldset>
   </div>
   <div class="card-footer">
     <button type="button" class="btn btn-secondary btn-sm btn2" (click)="cancel()">Отмена</button>
-    <button type="button" class="btn btn-success btn-sm btn2">Закрыть сделку</button>
+    <button type="button" class="btn btn-success btn-sm btn2" (click)="completeDeal()">Закрыть сделку</button>
   </div>
 
 </div>
+<ng-template #_modalContentAdvance let-close="close">
+  <div class="modal-header">
+    <button type="button" class="close" (click)="modalRef2.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm">
+        <button type="button" (click)="modalRef2.hide();showToAdvance('advanceAgreement')"
+                class="btn btn2 btn-info btn-sm">Соглашение аванса
+        </button>
+      </div>
+      <div class="col-sm">
+        <button type="button" (click)="modalRef2.hide();showToAdvance('depositAgreement')"
+                class="btn btn2 btn-primary btn-sm">Соглашение задатка
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
