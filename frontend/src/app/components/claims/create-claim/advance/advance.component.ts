@@ -51,6 +51,9 @@ export class AdvanceComponent implements OnInit, OnDestroy {
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('fromBoard'))) {
       this.fromBoard = this.actRoute.snapshot.queryParamMap.get('fromBoard') == 'true';
     }
+    if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
+      this.payTypeId = this.actRoute.snapshot.queryParamMap.get('activeTab') == 'advanceAgreement' ? '5' : '4';
+    }
     this.router.events
       .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
       .subscribe((events: RoutesRecognized[]) => {

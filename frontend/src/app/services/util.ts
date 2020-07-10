@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {language} from "../../environments/language";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ConfigService} from "./config.service";
 import {isArray} from "rxjs/internal-compatibility";
 import {formatDate} from '@angular/common';
@@ -12,6 +12,7 @@ export class Util {
   _language = language;
 
   constructor(private router: Router,
+              protected route: ActivatedRoute,
               private configService: ConfigService) {
   }
 
@@ -406,5 +407,12 @@ export class Util {
 
   refresh(): void {
     window.location.reload();
+  }
+
+  deleteQueryParameterFromCurrentRoute(href) {
+    const params = { ...this.route.snapshot.queryParams };
+    delete params.esid;
+    console.log(params)
+    this.router.navigate([href], { queryParams: params });
   }
 }

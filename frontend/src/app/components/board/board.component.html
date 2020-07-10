@@ -42,8 +42,8 @@
         <div class="col-sm">
           <span>Фильтры:</span>
           <button type="button" class="btn btn-sm btn-link" (click)="filtredLogin(null)">Все</button>
-          <button type="button" *ngFor="let agent of agentList;let i = index"
-                  class="btn btn-sm btn-link" (click)="filtredLogin(agent.login)">{{agent.name}}</button>
+          <a type="button" *ngFor="let agent of agentList;let i = index"
+                  class="btn btn-sm btn-link" (click)="filtredLogin(agent.login)">{{agent.name}}</a>
         </div>
       </div>
       <br>
