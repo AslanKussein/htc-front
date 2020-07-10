@@ -117,9 +117,9 @@ export class DicControlComponent implements OnInit, OnDestroy {
       housingClass: '',
       housingConditionId: null,
       materialOfConstructionId: null,
-      numberOfApartments: 0,
-      numberOfEntrances: 0,
-      numberOfFloors: 0,
+      numberOfApartments: null,
+      numberOfEntrances: null,
+      numberOfFloors: null,
       playground: false,
       propertyDeveloperId: null,
       typeOfElevatorIdList: [],
@@ -127,7 +127,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
       wheelchair: false,
       yardTypeId: null,
       countryId: null,
-      yearOfConstruction: 0
+      yearOfConstruction: null
     });
 
   }
