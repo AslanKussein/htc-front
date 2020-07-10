@@ -298,7 +298,8 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.openModal2(this._modalContentAdvance, '-modal-sm');
         return;
       }else if (prevStatusId == 6 && currentStatusId == 7) { //NEW С "Показ *" на на "Закрытие сделки *" - обязательный статус
-        alert('БУДЕТ ССЫЛКА')
+        this.openInnerPage('board/close-deal/' + this.activeTab);
+        return;
       } else if (prevStatusId == 10 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
         this.openInnerPage('board/close-deal/' + this.activeTab);
         return;

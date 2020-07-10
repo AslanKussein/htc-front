@@ -30,7 +30,7 @@ export class CloseDealComponent implements OnInit {
   modalRef2: BsModalRef;
 
   constructor(private board: BoardComponent,
-              private util: Util,
+              public util: Util,
               private location: Location,
               private boardService: BoardService,
               private notificationService: NotificationService,
@@ -55,11 +55,6 @@ export class CloseDealComponent implements OnInit {
     this.util.dnHrefParam('create-claim/' + this.boardSelect.id, 'ou');
     return;
   }
-
-  // generateOu() {
-  //   this.util.dnHrefParam('create-claim/' + this.boardSelect.id, 'ou');
-  //   return;
-  // }
 
   openModal() {
     this.modalRef2 = this.modalService.show(this._modalContentAdvance, {class: '-modal-sm'});
