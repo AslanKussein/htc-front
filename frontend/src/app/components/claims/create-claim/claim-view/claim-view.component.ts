@@ -10,6 +10,8 @@ import {UploaderService} from "../../../../services/uploader.service";
 import {CreateClaimComponent} from "../create-claim.component";
 import {UserService} from "../../../../services/user.service";
 import {Period} from "../../../../models/common/period";
+import {Dic} from "../../../../models/dic";
+import {NotificationService} from "../../../../services/notification.service";
 
 @Component({
   selector: 'app-claim-view',
@@ -26,12 +28,15 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   photoPlanList: any[] = [];
   photo3DList: any[] = [];
   isAuthor: boolean = false;
+  agentList: Dic[];
+
   constructor(private actRoute: ActivatedRoute,
               public util: Util,
               private ngxLoader: NgxUiLoaderService,
               private ownerService: OwnerService,
               private userService: UserService,
               private uploader: UploaderService,
+              private notifyService: NotificationService,
               private createClaimComponent: CreateClaimComponent,
               private claimService: ClaimService) {
     this.applicationId = Number(this.actRoute.snapshot.params.id);
@@ -39,6 +44,9 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getApplicationById();
+    this.subscriptions.add(this.userService.getAgentsToAssign().subscribe(obj => {
+      this.agentList = this.util.toSelectArrayRoles(obj.data, 'login');
+    }));
   }
 
   hasShowGroup(operation: any) {
@@ -204,5 +212,27 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
       }
     }
     return false;
+  }
+
+  reassignApplication() {
+    this.ngxLoader.startBackground();
+    let data = {};
+
+    if (this.util.isNullOrEmpty(this.claimViewDto.agent)) {
+      this.ngxLoader.stopBackground();
+      this.notifyService.showInfo('Для переназначения нужно выбрать агента', 'Информация');
+      return;
+    }
+    data['agent'] = this.claimViewDto.agent;
+    data['applicationId'] = this.applicationId;
+
+    this.subscriptions.add(this.claimService.reassignApplication(data)
+        .subscribe(res => {
+              this.notifyService.showInfo('Переназначено', 'Информация');
+            }, error => {
+              this.notifyService.showError('', error?.ru);
+            }
+        ))
+    this.ngxLoader.stopBackground();
   }
 }
