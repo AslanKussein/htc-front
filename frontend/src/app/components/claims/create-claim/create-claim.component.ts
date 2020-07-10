@@ -32,8 +32,6 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {NewDicService} from "../../../services/new.dic.service";
 import {DicService} from "../../../services/dic.service";
-import {Subject} from "rxjs/internal/Subject";
-import {AdvanceComponent} from "./advance/advance.component";
 
 @Injectable({
   providedIn: 'root'
@@ -88,7 +86,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   saved: boolean = false;
   modalRef: BsModalRef;
   applicationId: number;
-  roles: any;
+  operationList: any;
   headerDeal: boolean = false;
   clientDeal: boolean = false;
   aboutObject: boolean = false;
@@ -207,7 +205,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
     this.modelMap = [];
     this.ngxLoader.startBackground();
-    this.getCheckOperationList();
     this.applicationForm = this.formBuilder.group({
       id: [null, Validators.nullValidator],
       operationTypeId: [null, Validators.required],
@@ -315,17 +312,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     }
     window.scrollTo(0, 0);
     this.applicationForm.unification = 'address';
-  }
-
-  getCheckOperationList() {
-    let params = new HttpParams();
-    params = params.append('groupCodes', String('APPLICATION_GROUP'))
-    params = params.append('groupCodes', String('REAL_PROPERTY_GROUP'))
-    params = params.append('groupCodes', String('CLIENT_GROUP'))
-    params = params.append('groupCodes', String('AGENT_GROUP'))
-    this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
-      this.roles = obj.data
-    });
   }
 
   loadResidentialComplexes() {
@@ -445,6 +431,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.cdRef.detectChanges();
         this.ngxLoader.stopBackground();
         this.setApplicationFlagSort();
+        this.operationList = data?.operationList;
       }
     }));
   }
@@ -1048,6 +1035,19 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         }));
     }
     this.ngxLoader.stopBackground();
+  }
+
+  hasShowGroup(operation: any) {
+    if (!this.util.isNullOrEmpty(this.operationList)) {
+      for (const data of this.operationList) {
+        if (!this.util.isNullOrEmpty(data)) {
+          if (operation.includes(data)) {
+            return false;
+          }
+        }
+      }
+    }
+    return true
   }
 
   reassignApplication() {

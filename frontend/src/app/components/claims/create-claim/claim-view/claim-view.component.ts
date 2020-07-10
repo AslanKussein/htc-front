@@ -8,8 +8,6 @@ import {ClaimViewDto} from "../../../../models/createClaim/view/ClaimViewDto";
 import {OwnerService} from "../../../../services/owner.service";
 import {UploaderService} from "../../../../services/uploader.service";
 import {CreateClaimComponent} from "../create-claim.component";
-import {HttpParams} from "@angular/common/http";
-import {RoleManagerService} from "../../../../services/roleManager.service";
 import {UserService} from "../../../../services/user.service";
 import {Period} from "../../../../models/common/period";
 
@@ -27,15 +25,12 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   photoList: any[] = [];
   photoPlanList: any[] = [];
   photo3DList: any[] = [];
-  roles: any;
   isAuthor: boolean = false;
-
   constructor(private actRoute: ActivatedRoute,
               public util: Util,
               private ngxLoader: NgxUiLoaderService,
               private ownerService: OwnerService,
               private userService: UserService,
-              private roleManagerService: RoleManagerService,
               private uploader: UploaderService,
               private createClaimComponent: CreateClaimComponent,
               private claimService: ClaimService) {
@@ -44,7 +39,19 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getApplicationById();
-    this.getCheckOperationList();
+  }
+
+  hasShowGroup(operation: any) {
+    if (!this.util.isNullOrEmpty(this.claimViewDto.operationList)) {
+      for (const data of this.claimViewDto.operationList) {
+        if (!this.util.isNullOrEmpty(data)) {
+          if (operation.includes(data)) {
+            return false;
+          }
+        }
+      }
+    }
+    return true
   }
 
   fillIsEmpty() {
@@ -96,6 +103,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
       this.subscriptions.add(
         this.claimService.getApplicationViewById(this.applicationId).subscribe(res => {
           this.claimViewDto = res;
+
           this.fillIsEmpty();
           this.searchByPhone(res.clientLogin);
           this.searchByLoginAgent(res.agent);
@@ -130,16 +138,6 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
       this.createClaimComponent.view = true;
       this.util.dnHref('create-claim/' + this.applicationId)
     }
-  }
-
-  getCheckOperationList() {
-    let params = new HttpParams();
-    params = params.append('groupCodes', String('APPLICATION_GROUP'))
-    params = params.append('groupCodes', String('REAL_PROPERTY_GROUP'))
-    params = params.append('groupCodes', String('CLIENT_GROUP'))
-    this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
-      this.roles = obj.data
-    });
   }
 
   fillPicture(guid: any, id: number) {
@@ -195,5 +193,16 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  hasUpdateRole() {
+    if (!this.util.isNullOrEmpty(this.claimViewDto.operationList)) {
+      for (const operation of this.claimViewDto.operationList) {
+        if (operation.includes("UPDATE_")) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
