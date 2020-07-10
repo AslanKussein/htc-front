@@ -74,7 +74,7 @@
                 <div class="card-header">
                   {{item.id}} &nbsp;{{item.operationType?.name[getDicNameByLanguage()]}}
                   <button type="button" class="close"
-                          (click)="this.openModal2(this.closeRequestApplication, 'modal-lg')" data-dismiss="modal"
+                          (click)="this.openModal2(this.closeRequestApplication, 'modal-xl')" data-dismiss="modal"
                           aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -134,16 +134,12 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-sm-3">
-        <fieldset class="scheduler-border col-sm">
-          <legend class="scheduler-border">ID</legend>
-          <div class="row">
-            <div class="col-sm">
-              <input type="text" class="form-control text-uppercase" readonly/>
-            </div>
-          </div>
-        </fieldset>
+        <h4>
+          Продажа <br>
+          ID - <span>1111</span>
+        </h4>
       </div>
-      <div class="col-sm">
+      <div class="col-sm-4">
         <fieldset class="scheduler-border col-sm">
           <legend class="scheduler-border">Агента (ID)</legend>
           <div class="row">
@@ -153,7 +149,7 @@
           </div>
         </fieldset>
       </div>
-      <div class="col-sm">
+      <div class="col-sm-4">
         <fieldset class="scheduler-border col-sm">
           <legend class="scheduler-border">Клиента (ID)</legend>
           <div class="row">
@@ -165,7 +161,39 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-sm">
+        <table class="table table-bordered table-sm">
+          <thead class="text-center">
+          <tr>
+            <th>Фото</th>
+            <th>Адрес</th>
+            <th>Цена</th>
+            <th>Комнатность</th>
+            <th>Статус</th>
+            <th>Документы</th>
+            <th>Комиссия</th>
+          </tr>
+          </thead>
+          <tbody style="cursor: pointer">
 
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+        <label>Если Вы хотите принудительно завершить сделку на данном этапе "Статус" то заполните обоснование для принудительного завершения заявки</label>
+        <textarea
+          class="col-sm-12 control" rows="4"
+          placeholder="Пояснение принудительного завершения заявки">
+        </textarea>
+      </div>
+    </div>
+    <div class="row text-right">
+      <div class="col-sm">
+        <button type="button" class="btn btn-btn btn2 btn-secondary">Отмена</button>
+        <button type="button" class="btn btn-btn btn2 btn-success">Не реализован</button>
+      </div>
     </div>
   </div>
 </ng-template>
