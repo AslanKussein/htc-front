@@ -642,6 +642,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.yearOfConstructionTo = data?.purchaseInfoDto?.yearOfConstructionPeriod?.to;
       this.applicationForm.atelier = data?.purchaseInfoDto?.atelier;
       this.applicationForm.separateBathroom = data?.purchaseInfoDto?.separateBathroom;
+      this.applicationForm.sewerageId = data?.purchaseInfoDto?.sewerageId;
+      this.applicationForm.heatingSystemId = data?.purchaseInfoDto?.heatingSystemId;
     }
     if (!this.util.isNullOrEmpty(data?.realPropertyDto)) {
       this.applicationForm.apartmentNumber = data?.realPropertyDto?.apartmentNumber;
@@ -862,6 +864,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       new Period(this.applicationForm.yearOfConstructionFrom, this.applicationForm.yearOfConstructionTo),
       this.applicationForm.atelier,
       this.applicationForm.separateBathroom,
+      this.applicationForm.sewerageId,
+      this.applicationForm.heatingSystemId
     )
   }
 
