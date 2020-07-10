@@ -122,6 +122,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   postCode: string;
   isUpload = false;
   percent: number;
+  roles: any;
 
   constructor(public util: Util,
               private notifyService: NotificationService,
@@ -310,6 +311,21 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     } else {
       this.ngxLoader.stopBackground();
     }
+    let params = new HttpParams();
+    params = params.append('groupCodes', String('APPLICATION_GROUP'))
+    params = params.append('groupCodes', String('REAL_PROPERTY_GROUP'))
+    params = params.append('groupCodes', String('CLIENT_GROUP'))
+    params = params.append('groupCodes', String('AGENT_GROUP'))
+    this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
+      let operation = [];
+      for (const role of obj.data) {
+        if (!this.util.isNullOrEmpty(role.operations)) {
+          operation = operation.concat(role.operations);
+        }
+      }
+      this.roles = operation;
+    });
+
     window.scrollTo(0, 0);
     this.applicationForm.unification = 'address';
   }
@@ -1038,11 +1054,23 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   hasShowGroup(operation: any) {
-    if (!this.util.isNullOrEmpty(this.operationList)) {
-      for (const data of this.operationList) {
-        if (!this.util.isNullOrEmpty(data)) {
-          if (operation.includes(data)) {
-            return false;
+    if (this.util.isNullOrEmpty(this.applicationId)) {
+      if (!this.util.isNullOrEmpty(this.roles)) {
+        for (const data of this.roles) {
+          if (!this.util.isNullOrEmpty(data)) {
+            if (operation.includes(data)) {
+              return false;
+            }
+          }
+        }
+      }
+    } else {
+      if (!this.util.isNullOrEmpty(this.operationList)) {
+        for (const data of this.operationList) {
+          if (!this.util.isNullOrEmpty(data)) {
+            if (operation.includes(data)) {
+              return false;
+            }
           }
         }
       }
