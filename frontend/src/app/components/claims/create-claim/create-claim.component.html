@@ -80,6 +80,11 @@
                             placeholder="{{ 'patterns.chooseElement' | translate }}">
                           </ng-select>
                         </div>
+                        <div class="col-sm" [hidden]="util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) &&
+                                         util.hasShowAgentGroup('CHOOSE_ANY_AGENT', roles)">
+                          <br>
+                          <button type="button" (click)="reassignApplication()" class="btn-sm btn btn-outline-primary">OK</button>
+                        </div>
                       </div>
                       <div [class.disabled]="!edit">
                         <div class="row">
