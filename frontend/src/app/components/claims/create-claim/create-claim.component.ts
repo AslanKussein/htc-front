@@ -173,9 +173,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     housingClass: '',
     housingConditionId: null,
     materialOfConstructionId: null,
-    numberOfApartments: 0,
-    numberOfEntrances: 0,
-    numberOfFloors: 0,
+    numberOfApartments: null,
+    numberOfEntrances: null,
+    numberOfFloors: null,
     playground: false,
     propertyDeveloperId: null,
     typeOfElevatorIdList: [],
@@ -183,7 +183,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     wheelchair: false,
     yardTypeId: null,
     countryId: null,
-    yearOfConstruction: 0
+    yearOfConstruction: null
   };
 
   formData = {
@@ -423,9 +423,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       housingClass: '',
       housingConditionId: null,
       materialOfConstructionId: null,
-      numberOfApartments: 0,
-      numberOfEntrances: 0,
-      numberOfFloors: 0,
+      numberOfApartments: null,
+      numberOfEntrances: null,
+      numberOfFloors: null,
       playground: false,
       propertyDeveloperId: null,
       typeOfElevatorIdList: [],
@@ -433,7 +433,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       wheelchair: false,
       yardTypeId: null,
       countryId: null,
-      yearOfConstruction: 0
+      yearOfConstruction: null
     };
     }
 
