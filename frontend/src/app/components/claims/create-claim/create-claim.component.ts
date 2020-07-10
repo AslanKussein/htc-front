@@ -1055,6 +1055,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     let data = {};
 
     if (this.util.isNullOrEmpty(this.applicationForm.value.agent)) {
+      this.ngxLoader.stopBackground();
       this.notifyService.showInfo('Для переназначения нужно выбрать агента', 'Информация');
       return;
     }
