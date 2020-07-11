@@ -65,4 +65,5 @@ export class ClaimViewDto {
   public houseCondition: any;
   public heatingSystem: any;
   public sewerage: any;
+  public operationList: any;
 }

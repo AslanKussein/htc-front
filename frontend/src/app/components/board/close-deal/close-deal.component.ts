@@ -8,6 +8,7 @@ import {Subscription} from "rxjs";
 import {NotificationService} from "../../../services/notification.service";
 import {UploaderService} from "../../../services/uploader.service";
 import {Location} from '@angular/common';
+import {FileDto} from "../../../models/fileDto";
 
 @Component({
   selector: 'app-close-deal',
@@ -23,13 +24,13 @@ export class CloseDealComponent implements OnInit {
   contractStatusName: string;
   depositStatusName: string;
   selectedFile: File;
-  contractGuid: string;
-  depositGuid: string;
+  contract: FileDto;
+  deposit: FileDto;
   //contractStatus: | GENERATED = 1| MISSING = 2
   modalRef2: BsModalRef;
 
   constructor(private board: BoardComponent,
-              private util: Util,
+              public util: Util,
               private location: Location,
               private boardService: BoardService,
               private notificationService: NotificationService,
@@ -54,11 +55,6 @@ export class CloseDealComponent implements OnInit {
     this.util.dnHrefParam('create-claim/' + this.boardSelect.id, 'ou');
     return;
   }
-
-  // generateOu() {
-  //   this.util.dnHrefParam('create-claim/' + this.boardSelect.id, 'ou');
-  //   return;
-  // }
 
   openModal() {
     this.modalRef2 = this.modalService.show(this._modalContentAdvance, {class: '-modal-sm'});
@@ -87,10 +83,10 @@ export class CloseDealComponent implements OnInit {
           .subscribe(data => {
             if (data && data.uuid) {
               if (id == 1) {
-                this.contractGuid = data.uuid
+                this.contract = data
               }
               if (id == 2) {
-                this.depositGuid = data.uuid
+                this.deposit = data
               }
             }
           }));
@@ -101,19 +97,19 @@ export class CloseDealComponent implements OnInit {
   completeDeal() {
     let obj = {};
     obj["applicationId"] = this.boardSelect.id;
-    if (this.util.isNullOrEmpty(this.contractGuid)) {
+    if (this.util.isNullOrEmpty(this.contract.uuid)) {
       this.notificationService.showWarning('Прикрепите скан Договора ОУ', 'Информация')
       return;
     }
-    obj["contractGuid"] = this.contractGuid
+    obj["contractGuid"] = this.contract.uuid
     if (this.operationId == 1) {
       if (this.boardSelect.hasDepositContract) {
-        if (this.util.isNullOrEmpty(this.depositGuid)) {
+        if (this.util.isNullOrEmpty(this.deposit.uuid)) {
           this.notificationService.showWarning('Прикрепите скан Договора о авансе/задатке', 'Информация')
           return;
         }
       }
-      obj["depositGuid"] = this.depositGuid
+      obj["depositGuid"] = this.deposit.uuid
     }
     this.subscriptions.add(
       this.boardService.completeDeal(obj).subscribe(res => {

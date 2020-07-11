@@ -1,5 +1,107 @@
-.login-page {
-  width: 500px;
-  margin: 0 auto;
-  background-color: white;
+html, body, app-root {
+  height: 100%;
+  margin: 10px;
+}
+
+.main-block {
+  margin-top: -26px;
+  position: fixed;
+  min-width: 100%;
+  min-height: 100%;
+  background-image: url("src/assets/images/2307.jpg");
+  background-repeat: no-repeat;
+  background-size: 1920px 1080px;
+  background-position: center;
+}
+@function black($opacity) {
+  @return rgba(black, $opacity)
+}
+@function white($opacity) {
+  @return rgba(white, $opacity)
+}
+.main-block-dark {
+  position: fixed;
+  min-width: 100%;
+  min-height: 100%;
+  background: black(0.9);
+}
+
+.hidden-router {
+  flex: 1 1 auto;
+  display: flex;
+  overflow: hidden;
+}
+
+.main-section-block {
+  max-width: 30rem;
+  background-color: #ffffff !important;
+  z-index: 1;
+}
+
+.montserrat-label {
+  font-family: Montserrat-Regular;
+  font-size: 1rem;
+  color: #1a1a1a;
+  line-height: 8px;
+  text-align: left;
+  margin-left: 2rem;
+}
+
+.montserrat-icon {
+  transform: scale(1.5, 1.4);
+  margin: 8px;
+}
+
+.show-password {
+  font-family: Cuprum;
+  font-size: 0.875rem;
+  color: #656c75;
+  line-height: 0.5rem;
+  text-align: left
+}
+
+.enter-btn {
+  background-color: #00b2a8;
+  outline-color: #00b2a8;
+  border-color: #00b2a8;
+}
+
+.aquaColor {
+  color: #00b2a8;
+}
+
+label, input {
+  position: relative;
+  display: block;
+  padding-right: 76px;
+  width: 170px;
+  box-sizing: border-box;
+}
+
+label::after {
+  content: '.' attr(data-domain);
+  position: absolute;
+  top: 4px;
+  left: 94px;
+  font-family: arial, helvetica, sans-serif;
+  font-size: 12px;
+  display: block;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: bold;
+}
+
+.vitrina {
+  font-family: Romul;
+  font-size: 2.5625rem;
+  letter-spacing: 6.23px;
+  color: #0d0d0d;
+}
+
+.input-group-text {
+  background-color: transparent ;
+  border-left: none;
+}
+
+.input-group>.custom-select:not(:last-child), .input-group>.form-control:not(:last-child) {
+  border-right: white;
 }

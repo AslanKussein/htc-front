@@ -26,7 +26,9 @@ export class PurchaseInfoDto {
     private yardTypeId?: any,//Двор(закрытый/открытый)
     private yearOfConstructionPeriod?: Period,//год постройки
     private atelier?: boolean, // Студия
-    private separateBathroom?: boolean // Санузел раздельный
+    private separateBathroom?: boolean, // Санузел раздельный
+    private sewerageId?: number,//Канализация
+    private heatingSystemId?: number//Отопление
   ) {
   }
 }

@@ -8,10 +8,10 @@ import {ClaimViewDto} from "../../../../models/createClaim/view/ClaimViewDto";
 import {OwnerService} from "../../../../services/owner.service";
 import {UploaderService} from "../../../../services/uploader.service";
 import {CreateClaimComponent} from "../create-claim.component";
-import {HttpParams} from "@angular/common/http";
-import {RoleManagerService} from "../../../../services/roleManager.service";
 import {UserService} from "../../../../services/user.service";
 import {Period} from "../../../../models/common/period";
+import {Dic} from "../../../../models/dic";
+import {NotificationService} from "../../../../services/notification.service";
 
 @Component({
   selector: 'app-claim-view',
@@ -27,16 +27,16 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   photoList: any[] = [];
   photoPlanList: any[] = [];
   photo3DList: any[] = [];
-  roles: any;
   isAuthor: boolean = false;
+  agentList: Dic[];
 
   constructor(private actRoute: ActivatedRoute,
               public util: Util,
               private ngxLoader: NgxUiLoaderService,
               private ownerService: OwnerService,
               private userService: UserService,
-              private roleManagerService: RoleManagerService,
               private uploader: UploaderService,
+              private notifyService: NotificationService,
               private createClaimComponent: CreateClaimComponent,
               private claimService: ClaimService) {
     this.applicationId = Number(this.actRoute.snapshot.params.id);
@@ -44,7 +44,22 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getApplicationById();
-    this.getCheckOperationList();
+    this.subscriptions.add(this.userService.getAgentsToAssign().subscribe(obj => {
+      this.agentList = this.util.toSelectArrayRoles(obj.data, 'login');
+    }));
+  }
+
+  hasShowGroup(operation: any) {
+    if (!this.util.isNullOrEmpty(this.claimViewDto.operationList)) {
+      for (const data of this.claimViewDto.operationList) {
+        if (!this.util.isNullOrEmpty(data)) {
+          if (operation.includes(data)) {
+            return false;
+          }
+        }
+      }
+    }
+    return true
   }
 
   fillIsEmpty() {
@@ -96,6 +111,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
       this.subscriptions.add(
         this.claimService.getApplicationViewById(this.applicationId).subscribe(res => {
           this.claimViewDto = res;
+
           this.fillIsEmpty();
           this.searchByPhone(res.clientLogin);
           this.searchByLoginAgent(res.agent);
@@ -130,16 +146,6 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
       this.createClaimComponent.view = true;
       this.util.dnHref('create-claim/' + this.applicationId)
     }
-  }
-
-  getCheckOperationList() {
-    let params = new HttpParams();
-    params = params.append('groupCodes', String('APPLICATION_GROUP'))
-    params = params.append('groupCodes', String('REAL_PROPERTY_GROUP'))
-    params = params.append('groupCodes', String('CLIENT_GROUP'))
-    this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
-      this.roles = obj.data
-    });
   }
 
   fillPicture(guid: any, id: number) {
@@ -195,5 +201,38 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  hasUpdateRole() {
+    if (!this.util.isNullOrEmpty(this.claimViewDto.operationList)) {
+      for (const operation of this.claimViewDto.operationList) {
+        if (operation.includes("UPDATE_")) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  reassignApplication() {
+    this.ngxLoader.startBackground();
+    let data = {};
+
+    if (this.util.isNullOrEmpty(this.claimViewDto.agent)) {
+      this.ngxLoader.stopBackground();
+      this.notifyService.showInfo('Для переназначения нужно выбрать агента', 'Информация');
+      return;
+    }
+    data['agent'] = this.claimViewDto.agent;
+    data['applicationId'] = this.applicationId;
+
+    this.subscriptions.add(this.claimService.reassignApplication(data)
+        .subscribe(res => {
+              this.notifyService.showInfo('Переназначено', 'Информация');
+            }, error => {
+              this.notifyService.showError('', error?.ru);
+            }
+        ))
+    this.ngxLoader.stopBackground();
   }
 }

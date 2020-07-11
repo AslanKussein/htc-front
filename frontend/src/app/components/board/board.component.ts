@@ -327,8 +327,9 @@ export class BoardComponent implements OnInit, OnDestroy {
       } else if (prevStatusId == 6 && currentStatusId == 10) { // 2.4. С "Показ *" на "Договор о задатке/авансе *"
         this.openModal2(this._modalContentAdvance, '-modal-sm', null);
         return;
-      } else if (prevStatusId == 6 && currentStatusId == 7) { //NEW С "Показ *" на на "Закрытие сделки *" - обязательный статус
-        alert('БУДЕТ ССЫЛКА')
+      }else if (prevStatusId == 6 && currentStatusId == 7) { //NEW С "Показ *" на на "Закрытие сделки *" - обязательный статус
+        this.openInnerPage('board/close-deal/' + this.activeTab);
+        return;
       } else if (prevStatusId == 10 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
         this.openInnerPage('board/close-deal/' + this.activeTab);
         return;
@@ -431,7 +432,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   onToggle() {
-    console.log('asdasd');
     this.isActive = !this.isActive;
   }
 

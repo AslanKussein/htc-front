@@ -32,8 +32,6 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {NewDicService} from "../../../services/new.dic.service";
 import {DicService} from "../../../services/dic.service";
-import {Subject} from "rxjs/internal/Subject";
-import {AdvanceComponent} from "./advance/advance.component";
 
 @Injectable({
   providedIn: 'root'
@@ -88,7 +86,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   saved: boolean = false;
   modalRef: BsModalRef;
   applicationId: number;
-  roles: any;
+  operationList: any;
   headerDeal: boolean = false;
   clientDeal: boolean = false;
   aboutObject: boolean = false;
@@ -124,6 +122,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   postCode: string;
   isUpload = false;
   percent: number;
+  roles: any;
 
   constructor(public util: Util,
               private notifyService: NotificationService,
@@ -174,9 +173,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     housingClass: '',
     housingConditionId: null,
     materialOfConstructionId: null,
-    numberOfApartments: 0,
-    numberOfEntrances: 0,
-    numberOfFloors: 0,
+    numberOfApartments: null,
+    numberOfEntrances: null,
+    numberOfFloors: null,
     playground: false,
     propertyDeveloperId: null,
     typeOfElevatorIdList: [],
@@ -184,7 +183,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     wheelchair: false,
     yardTypeId: null,
     countryId: null,
-    yearOfConstruction: 0
+    yearOfConstruction: null
   };
 
   formData = {
@@ -207,7 +206,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
     this.modelMap = [];
     this.ngxLoader.startBackground();
-    this.getCheckOperationList();
     this.applicationForm = this.formBuilder.group({
       id: [null, Validators.nullValidator],
       operationTypeId: [null, Validators.required],
@@ -313,19 +311,23 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     } else {
       this.ngxLoader.stopBackground();
     }
-    window.scrollTo(0, 0);
-    this.applicationForm.unification = 'address';
-  }
-
-  getCheckOperationList() {
     let params = new HttpParams();
     params = params.append('groupCodes', String('APPLICATION_GROUP'))
     params = params.append('groupCodes', String('REAL_PROPERTY_GROUP'))
     params = params.append('groupCodes', String('CLIENT_GROUP'))
     params = params.append('groupCodes', String('AGENT_GROUP'))
     this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
-      this.roles = obj.data
+      let operation = [];
+      for (const role of obj.data) {
+        if (!this.util.isNullOrEmpty(role.operations)) {
+          operation = operation.concat(role.operations);
+        }
+      }
+      this.roles = operation;
     });
+
+    window.scrollTo(0, 0);
+    this.applicationForm.unification = 'address';
   }
 
   loadResidentialComplexes() {
@@ -421,9 +423,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       housingClass: '',
       housingConditionId: null,
       materialOfConstructionId: null,
-      numberOfApartments: 0,
-      numberOfEntrances: 0,
-      numberOfFloors: 0,
+      numberOfApartments: null,
+      numberOfEntrances: null,
+      numberOfFloors: null,
       playground: false,
       propertyDeveloperId: null,
       typeOfElevatorIdList: [],
@@ -431,7 +433,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       wheelchair: false,
       yardTypeId: null,
       countryId: null,
-      yearOfConstruction: 0
+      yearOfConstruction: null
     };
     }
 
@@ -445,6 +447,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.cdRef.detectChanges();
         this.ngxLoader.stopBackground();
         this.setApplicationFlagSort();
+        this.operationList = data?.operationList;
       }
     }));
   }
@@ -639,6 +642,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.yearOfConstructionTo = data?.purchaseInfoDto?.yearOfConstructionPeriod?.to;
       this.applicationForm.atelier = data?.purchaseInfoDto?.atelier;
       this.applicationForm.separateBathroom = data?.purchaseInfoDto?.separateBathroom;
+      this.applicationForm.sewerageId = data?.purchaseInfoDto?.sewerageId;
+      this.applicationForm.heatingSystemId = data?.purchaseInfoDto?.heatingSystemId;
     }
     if (!this.util.isNullOrEmpty(data?.realPropertyDto)) {
       this.applicationForm.apartmentNumber = data?.realPropertyDto?.apartmentNumber;
@@ -859,6 +864,8 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       new Period(this.applicationForm.yearOfConstructionFrom, this.applicationForm.yearOfConstructionTo),
       this.applicationForm.atelier,
       this.applicationForm.separateBathroom,
+      this.applicationForm.sewerageId,
+      this.applicationForm.heatingSystemId
     )
   }
 
@@ -1048,6 +1055,31 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         }));
     }
     this.ngxLoader.stopBackground();
+  }
+
+  hasShowGroup(operation: any) {
+    if (this.util.isNullOrEmpty(this.applicationId)) {
+      if (!this.util.isNullOrEmpty(this.roles)) {
+        for (const data of this.roles) {
+          if (!this.util.isNullOrEmpty(data)) {
+            if (operation.includes(data)) {
+              return false;
+            }
+          }
+        }
+      }
+    } else {
+      if (!this.util.isNullOrEmpty(this.operationList)) {
+        for (const data of this.operationList) {
+          if (!this.util.isNullOrEmpty(data)) {
+            if (operation.includes(data)) {
+              return false;
+            }
+          }
+        }
+      }
+    }
+    return true
   }
 
   reassignApplication() {
