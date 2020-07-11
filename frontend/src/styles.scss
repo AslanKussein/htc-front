@@ -4,9 +4,12 @@
 
 /* You can add global styles to this file, and also import other style files */
 body {
-
+  //background-image: url('src/assets/images/2307.jpg');
+  //background-repeat: no-repeat;
+  //background-size: 1920px auto;
+  line-height: 0;
   height: 100%;
-  font-family: 'Cuprum', sans-serif !important;
+  font-family: 'Cuprum', sans-serif;
 }
 .wrapper {
   height:auto !important;

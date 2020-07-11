@@ -1,72 +1,69 @@
 <div class="main-block">
-  <div class="container-sm my-5 py-5 z-depth-1 main-section-block">
+  <div class="main-block-dark">
+    <div class="container-sm my-5 py-5 main-section-block">
 
-    <div class="row" [formGroup]="loginForm">
-      <div class="col">
-        <div class="row">
-          <div class="col-sm"></div>
-          <div class="col-sm">
-            <img src="assets/images/logo2.png" width="188px" height="164px" class="text-center"/>
-          </div>
-          <div class="col-sm"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm">
-            <p class="vitrina text-center">VITRINA</p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-2"></div>
-          <div class="col-sm">
-            <label class="montserrat-label">Логин</label>
-            <div class="input-group margin-bottom-sm">
-              <span class="input-group-addon"><i class="fa fa-user-o montserrat-icon"></i></span>
-              <input class="form-control" type="text" formControlName="username" (keyup.enter)="login()">
-            </div>
-            <div *ngIf="f.username.touched && f.username.invalid"
-                 class="text-danger text-center">
-              <div *ngIf="f.username.errors.required">Введите логин пользователя</div>
+      <div class="row">
+        <img src="assets/images/logo2.png" style="margin: 0 auto" width="188" height="164" class="text-center"/>
+      </div>
+      <div class="row" [formGroup]="loginForm">
+        <div class="col">
+          <div class="row">
+            <div class="col-sm">
+              <p class="vitrina text-center">VITRINA</p>
             </div>
           </div>
-          <div class="col-sm-2"></div>
-        </div>
-
-        <div class="row">
-          <div class="col-sm-2"></div>
-          <div class="col-sm">
-            <label class="montserrat-label">Пароль</label>
-            <div class="input-group margin-bottom-sm">
-              <span class="input-group-addon"><i class="fa fa-key montserrat-icon"></i></span>
-              <input type="password" class="form-control" #x aria-label="password"
-                     aria-describedby="basic-addon2" formControlName="password" (keyup.enter)="login()">
-              <div class="input-group-append">
-                <a class="input-group-text" id="basic-addon2" (click)="x.type=x.type=='password'?'text':'password'">
-                  <span class="show-password">Показать</span>
-                </a>
+          <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm">
+              <label class="montserrat-label">Логин</label>
+              <div class="input-group margin-bottom-sm mb-3">
+                <span class="input-group-addon"><i class="fa fa-user-o montserrat-icon"></i></span>
+                <input class="form-control" type="text" formControlName="username" (keyup.enter)="login()">
+              </div>
+              <div *ngIf="f.username.touched && f.username.invalid"
+                   class="text-danger text-center">
+                <div *ngIf="f.username.errors.required">Введите логин пользователя</div>
               </div>
             </div>
-            <div *ngIf="f.password.touched && f.password.invalid"
-                 class="text-danger text-center">
-              <div *ngIf="f.password.errors.required">Введите пароль пользователя</div>
-            </div>
+            <div class="col-sm-2"></div>
           </div>
-          <div class="col-sm-2"></div>
-        </div>
 
-        <div class="row">
-          <div class="col-sm-2"></div>
-          <div class="col-sm">
+          <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm">
+              <label class="montserrat-label">Пароль</label>
+              <div class="input-group margin-bottom-sm mb-3">
+                <span class="input-group-addon"><i class="fa fa-key montserrat-icon"></i></span>
+                <input type="password" class="form-control" #x aria-label="password"
+                       aria-describedby="basic-addon2" formControlName="password" (keyup.enter)="login()">
+                <div class="input-group-append">
+                  <a class="input-group-text" id="basic-addon2" (click)="x.type=x.type=='password'?'text':'password'">
+                    <span class="show-password">Показать</span>
+                  </a>
+                </div>
+              </div>
+              <div *ngIf="f.password.touched && f.password.invalid"
+                   class="text-danger text-center">
+                <div *ngIf="f.password.errors.required">Введите пароль пользователя</div>
+              </div>
+            </div>
+            <div class="col-sm-2"></div>
           </div>
-          <div class="col-sm">
-            <button class="btn float-right btn-primary btn-block enter-btn" [disabled]="!this.loginForm.valid"
-                    (click)="login()">
-              Вход
-            </button>
+
+          <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm">
+            </div>
+            <div class="col-sm">
+              <button class="btn float-right btn-primary btn-block enter-btn" [disabled]="!this.loginForm.valid"
+                      (click)="login()">
+                Вход
+              </button>
+            </div>
+            <div class="col-sm-2"></div>
           </div>
-          <div class="col-sm-2"></div>
         </div>
       </div>
     </div>
   </div>
-
 </div>
