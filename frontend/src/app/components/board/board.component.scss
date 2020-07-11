@@ -15,8 +15,9 @@
 }
 
 .boardTitle {
-  max-height: 100px;
-  min-height: 100px;
+  max-height: 110px;
+  min-height: 110px;
+  font-size: 14px;
 }
 
 .card-bg {
@@ -26,4 +27,24 @@
 .addRight{
   border-right: 1px solid #7f7f7f;
 }
-
+.content-bundle {
+  display: none;
+  &.active {
+    display: flex;
+    transition: margin .5s ease, transform .5s ease;
+  }
+}
+.toggle-label {
+  h5 {
+    display: inline-block;
+  }
+  i {
+    transition: all .2s ease-in-out;
+  }
+  &.active {
+    i {
+      transform: rotate(180deg);
+      transition: all .2s ease-in-out;
+    }
+  }
+}

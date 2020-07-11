@@ -12,6 +12,8 @@ import {NewDicService} from "../../services/new.dic.service";
 import {ActivatedRoute, Router, RoutesRecognized} from "@angular/router";
 import {filter, pairwise} from "rxjs/operators";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
+import {HttpParams} from "@angular/common/http";
+import {RoleManagerService} from "../../services/roleManager.service";
 
 @Component({
   selector: 'app-board',
@@ -34,6 +36,18 @@ export class BoardComponent implements OnInit, OnDestroy {
   agentList: Dic[];
   login: string = this.util.getCurrentUser().login;
   modalRef2: BsModalRef;
+  objectData: any[] = [];
+  agentFullname: string;
+  clientFullname: string;
+  applicationId: number;
+  isSell: boolean;
+  targetAppData: any[] = [];
+  isActive: boolean = false;
+  secondId: number;
+  file: any;
+  comment: string;
+  isSellTargetApp: boolean;
+  roles: any;
   get boardSelect(): Board {
     return this._boardSelect;
   }
@@ -47,7 +61,8 @@ export class BoardComponent implements OnInit, OnDestroy {
               private newDicService: NewDicService,
               private router: Router,
               private actRoute: ActivatedRoute,
-              private userService: UserService) {
+              private userService: UserService,
+              private roleManagerService: RoleManagerService) {
 
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
       this.activeTab = parseInt(this.actRoute.snapshot.queryParamMap.get('activeTab'));
@@ -60,13 +75,24 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.appStatuses = this.util.toSelectArray(res);
       this.sortStatusesDic(this.activeTab);
     }));
-
+    this.getCheckOperationList();
     this.subscriptions.add(this.userService.getAgents().subscribe(obj => {
       this.agentList = obj.data;
     }));
     setTimeout(() => {
       this.height = document.body.scrollHeight;
-    }, 2000)
+    }, 2000);
+  }
+
+  getCheckOperationList() {
+    let params = new HttpParams();
+    params = params.append('groupCodes', String('APPLICATION_GROUP'))
+    params = params.append('groupCodes', String('REAL_PROPERTY_GROUP'))
+    params = params.append('groupCodes', String('CLIENT_GROUP'))
+    params = params.append('groupCodes', String('AGENT_GROUP'))
+    this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
+      this.roles = obj.data;
+    });
   }
 
   getBoardData(tab: number, ids: number, login: string) {
@@ -122,16 +148,18 @@ export class BoardComponent implements OnInit, OnDestroy {
     "id": 8,002008: "Успешно",
     "id": 9,002009: "Завершен",
     "id": 10,002010: "Договор о задатке/авансе",
+    "id": 11,002011: "Согласование успешной реализации заявки",
+    "id": 12,002012: "Согласование не реализованной заявки"
   }
 ]*/
   getStatusCodesByTab() {
     let code;
     if (this.activeTab == 3) {
-      code = ['002001', '002002', '002003', '002005', '002004', '002006', '002010', '002007'];
+      code = ['002001', '002002', '002003', '002005', '002004', '002006', '002010', '002007', '002011', '002012'];
     } else if (this.activeTab == 2) {
-      code = ['002001', '002002', '002003', '002005', '002004', '002006', '002007']
+      code = ['002001', '002002', '002003', '002005', '002004', '002006', '002007', '002011', '002012'];
     } else if (this.activeTab == 1) {
-      code = ['002001', '002002', '002003', '002006', '002010', '002007']
+      code = ['002001', '002002', '002003', '002006', '002010', '002007', '002011', '002012'];
     }
     return code;
   }
@@ -269,6 +297,8 @@ export class BoardComponent implements OnInit, OnDestroy {
    "id": 8, Успешно
    "id": 9, Завершен
    "id": 10, Договор о задатке/авансе
+   "id": 11, Согласование успешной реализации заявки
+   "id": 12, Согласование не реализованной заявки
    * @param event
    * @param item
    * @param prevStatusId
@@ -295,9 +325,9 @@ export class BoardComponent implements OnInit, OnDestroy {
       } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.3. С "Договор на оказание услуг *" на "Показ *"
         this.moveStatus(data);
       } else if (prevStatusId == 6 && currentStatusId == 10) { // 2.4. С "Показ *" на "Договор о задатке/авансе *"
-        this.openModal2(this._modalContentAdvance, '-modal-sm');
+        this.openModal2(this._modalContentAdvance, '-modal-sm', null);
         return;
-      }else if (prevStatusId == 6 && currentStatusId == 7) { //NEW С "Показ *" на на "Закрытие сделки *" - обязательный статус
+      } else if (prevStatusId == 6 && currentStatusId == 7) { //NEW С "Показ *" на на "Закрытие сделки *" - обязательный статус
         alert('БУДЕТ ССЫЛКА')
       } else if (prevStatusId == 10 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
         this.openInnerPage('board/close-deal/' + this.activeTab);
@@ -345,8 +375,47 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  openModal2(template, class_) {
+  openModal2(template, class_, item) {
     this.modalRef2 = this.modalService.show(template, {class: class_});
+    if (!item) return;
+    this.isSell = item.operationType?.code === '001002'; // Продать
+    this.applicationId = item.id;
+    this.subscriptions.add(this.boardService.getApplication(this.applicationId).subscribe(res => {
+      if (res) {
+        this.fillObjectData(res);
+      }
+    }));
+  }
+
+  fillObjectData(data: any): void {
+    this.clearObjectData();
+    this.agentFullname = data.agentFullname;
+    this.clientFullname = data.clientFullname;
+    const obj = {
+      photoIdList: data.photoIdList,
+      address: data.address[this.util.getDicNameByLanguage()],
+      commission: data.commission,
+      objectPrice: data.objectPrice,
+      status: data.status?.name[this.util.getDicNameByLanguage()],
+      numberOfRooms: data.numberOfRooms,
+      numberOfRoomsPeriod: data.numberOfRoomsPeriod,
+      objectPricePeriod: data.objectPricePeriod,
+      contractGuid: data.contractGuid,
+      depositGuid: data.depositGuid
+    };
+    this.objectData.push(obj);
+  }
+
+  clearObjectData(): void {
+    this.agentFullname = this.clientFullname = null;
+    this.objectData = [];
+  }
+
+  getImgUrl(photoIdList: any) {
+    if (!this.util.isNullOrEmpty(photoIdList) && !this.util.isNullOrEmpty(photoIdList)) {
+      return this.util.generatorPreviewUrl(photoIdList[0]);
+    }
+    return null;
   }
 
   showToAdvance(param) {
@@ -359,5 +428,51 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   closeRequestApplication() {
     console.log(789)
+  }
+
+  onToggle() {
+    console.log('asdasd');
+    this.isActive = !this.isActive;
+  }
+
+  onSearch(): void {
+    this.subscriptions.add(this.boardService.completeTargetApplication(this.secondId).subscribe(res => {
+      this.isSellTargetApp = res.operationType?.code === '001002'; // Продать
+      const data = {
+        id: res.id,
+        operationType: res.operationType?.name[this.util.getDicNameByLanguage()],
+        objectPrice: res.objectPrice,
+        objectPricePeriod: res.objectPricePeriod,
+        numberOfRooms: res.numberOfRooms,
+        numberOfRoomsPeriod: res.numberOfRoomsPeriod,
+        createDate: res.createDate,
+        district: res.district?.name[this.util.getDicNameByLanguage()],
+        totalArea: res.totalArea,
+        totalAreaPeriod: res.totalAreaPeriod,
+        floor: res.floor,
+        floorPeriod: res.floorPeriod,
+        status: res.status?.name[this.util.getDicNameByLanguage()],
+        agentFullname: res.agentFullname,
+        agentPhone: res.agentPhone
+      };
+      this.targetAppData.push(data);
+    }));
+  }
+
+  closeDeal(type: boolean) {
+    const obj = {
+      applicationId: this.applicationId,
+      comment: this.comment,
+      approve: type,
+      targetApplicationId: 0
+    };
+    this.subscriptions.add(this.boardService.forceCloseDeal(obj).subscribe(res => {
+      console.log('result', res);
+    }));
+  }
+
+  clearTargetAppData(): void {
+    this.secondId = null;
+    this.targetAppData = [];
   }
 }
