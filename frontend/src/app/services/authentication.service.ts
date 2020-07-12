@@ -38,6 +38,11 @@ export class AuthenticationService implements OnDestroy {
     return this.currentUserSubject.value;
   }
 
+  update() {
+    this.currentUserSubject = new BehaviorSubject<User>(this.util.getCurrentUser());
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
+
   login(loginForm: any, id: number) {
     this.subscriptions.add(this.loginIDP(loginForm?.value)
       .pipe(first())
@@ -105,14 +110,6 @@ export class AuthenticationService implements OnDestroy {
 
   getJwtToken() {
     return localStorage.getItem(this.JWT_TOKEN);
-  }
-
-  addToken(request: HttpRequest<any>, token: string) {
-    return request.clone({
-      setHeaders: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
   }
 
   public storeTokens(tokens: User) {

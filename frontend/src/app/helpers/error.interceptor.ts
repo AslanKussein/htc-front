@@ -10,6 +10,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {ActivatedRoute} from "@angular/router";
 import {BsModalService} from "ngx-bootstrap/modal";
 import {LoginModalComponent} from "../components/login/login-modal/login-modal.component";
+import {User} from "../models/users";
 
 @Injectable({providedIn: 'root'})
 export class ErrorInterceptor implements HttpInterceptor {
@@ -63,6 +64,13 @@ export class ErrorInterceptor implements HttpInterceptor {
       return this.authenticationService.refreshToken().pipe(
         switchMap((token: any) => {
           this.isRefreshing = false;
+
+          let persons = JSON.parse(localStorage.getItem('currentUser'));
+
+          persons.access_token = token.access_token;
+          persons.refresh_token = token.refresh_token;
+          localStorage.setItem("currentUser", JSON.stringify(persons));
+          this.authenticationService.update();
           this.refreshTokenSubject.next(token.access_token);
           this.authenticationService.storeTokens(token);
           request = request.clone({
