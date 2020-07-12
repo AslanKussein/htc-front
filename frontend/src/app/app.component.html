@@ -4,14 +4,14 @@
   <div class="bg-dark border-right" id="sidebar-wrapper" *ngIf="currentUser">
     <div class="mb-5"></div>
     <div class="row">
-      <img (click)="util.dnHref('home')" src="assets/images/logo2.png"
-           style="margin: 0 auto; max-width: 151px; max-height: 131px"/>
+      <img (click)="util.dnHref('home')" src="assets/images/home/Лого.png"
+           style="margin: 0 auto; max-width: 200px; max-height: 180px"/>
     </div>
 
-    <p class="vitrina text-center">VITRINA</p>
-
     <div class="list-group list-group-flush li-item-side">
-      <a href="#" class="list-group-item list-group-item-action bg-dark" routerLink="/objects" translate>objects.title</a>
+      <a href="#" class="list-group-item list-group-item-action bg-dark" routerLink="/objects" translate>
+        objects.title
+      </a>
       <a href="#" class="list-group-item list-group-item-action bg-dark" routerLink="/board" translate>controlPanels.title</a>
       <a href="#" class="list-group-item list-group-item-action bg-dark" routerLink="/claims" translate>claim.title</a>
       <a href="#" class="list-group-item list-group-item-action bg-dark" routerLink="/staffs" translate>staffs.title</a>
