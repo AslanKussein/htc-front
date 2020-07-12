@@ -11,8 +11,8 @@
                        alt="Card image cap">
                 </div>
                 <div class="card-body">
-                  <h4 class="card-title">Агентские договора:</h4>
-                  <p class="card-text">2 500 000 тг</p>
+                  <h5 class="card-title" style="font-size: 16px">Агентские договора:</h5>
+                  <p class="font-weight-bold">{{'99999999' | mask: 'separator':','}} тг</p>
                 </div>
               </div>
             </div>
@@ -23,8 +23,8 @@
                        alt="Card image cap">
                 </div>
                 <div class="card-body">
-                  <h4 class="card-title">Сумма задатков:</h4>
-                  <p class="card-text">1 000 000 тг</p>
+                  <h5 class="card-title" style="font-size: 16px">Сумма задатков:</h5>
+                  <p class="font-weight-bold">{{'99999999' | mask: 'separator':','}} тг</p>
                 </div>
               </div>
             </div>
@@ -35,8 +35,8 @@
                        alt="Card image cap">
                 </div>
                 <div class="card-body">
-                  <h4 class="card-title">Сумма продаж:</h4>
-                  <p class="card-text">70 000 000 тг</p>
+                  <h5 class="card-title" style="font-size: 16px">Сумма продаж:</h5>
+                  <p class="font-weight-bold">{{'99999999' | mask: 'separator':','}} тг</p>
                 </div>
               </div>
             </div>
@@ -48,19 +48,25 @@
             <div class="col-sm">
               <ul class="list-group">
                 <li class="list-group-item">
-                  <div class="row">
-                    <div class="col-sm-1">
+                  <div class="row" style="margin: 0">
+                    <div class="col-sm-2">
                       <span class="badge badge-pill badge-info">1</span>
+                      <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg"
+                           class="rounded-circle z-depth-0"
+                           alt="avatar image" height="35">
                     </div>
-                    <div class="col-sm-4">
-                      Гущина Любовь
+                    <div class="col-sm">
+                      <span class="badge-txt">Гущина Любовь</span>
+                    </div>
+                    <div class="col-sm">
+                      <span class="badge badge-pill badge-info badge-txt">{{'99999999' | mask: 'separator':','}} млн</span>
+                    </div>
+                    <div class="col-sm-2">
+                      <span class="text-warning font-weight-bold float-right badge-txt"><i aria-hidden="true"
+                                                                                           class="fa fa-star">9.8</i></span>
                     </div>
                   </div>
                 </li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
               </ul>
             </div>
           </div>
@@ -75,18 +81,18 @@
             </div>
           </div>
           <div class="row">
-            <input type="text" class="form-control" placeholder="Имя"
+            <input type="text" class="form-controls" placeholder="Имя"
                    formControlName="name"/>
             <div *ngIf="f.name.touched && f.name.invalid" class="text-danger">
               <div *ngIf="f.name.errors.required" translate>claim.requiredField</div>
             </div>
           </div>
           <div class="row">
-            <input type="text" class="form-control" id="patronymic" placeholder="Отчество"
+            <input type="text" class="form-controls" id="patronymic" placeholder="Отчество"
                    formControlName="patronymic">
           </div>
           <div class="row">
-            <input type="text" id="phoneNumber" class="form-control"
+            <input type="text" id="phoneNumber" class="form-controls"
                    name="phoneNumber" placeholder="Телефон"
                    [formControl]="applicationLightForm.controls['phoneNumber']"
                    prefix="+7" mask=' (000) 000-0000'
@@ -115,7 +121,8 @@
             <div class="col-sm-3" *ngFor="let type of operationType;let i = index">
               <div class="form-check-inline">
                 <label class="form-check-label">
-                  <input type="radio" class="form-check-input" formControlName="operationTypeId" value="">{{type.label}}
+                  <input type="radio" class="form-check-input" formControlName="operationTypeId"
+                         [value]="type.value" [(ngModel)]="operationTypeId">{{type.label}}
                 </label>
               </div>
               <div *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid" class="text-danger">
@@ -138,41 +145,42 @@
           </div>
           <div class="row">
             <button class="btn col-sm btn-link float-left" (click)="clear()" translate>clear</button>
-            <button class="btn btn-default col-sm float-right" [disabled]="!this.applicationLightForm.valid"
+            <button class="btn col-sm float-right text-white" style="background-color: #00b2a8"
+                    [disabled]="!this.applicationLightForm.valid"
                     (click)="onSave()" translate>patterns.save
             </button>
           </div>
         </div>
       </div>
 
-
-      <br/>
       <div class="row">
         <div class="col-sm">
           <app-calendar></app-calendar>
         </div>
+      </div>
+      <div class="row">
         <div class="col-sm">
-          <table class="table table-bordered table-sm">
+          <table class="table table-striped table-sm">
             <thead class="text-center">
             <tr>
               <th>ID заявки</th>
               <th>Операция</th>
               <th translate>claim.objectType</th>
-              <th translate>claim.crDateFrom</th>
               <th translate>fio</th>
               <th translate>phone</th>
+              <th translate>claim.crDateFrom</th>
             </tr>
             </thead>
             <tbody style="cursor: pointer">
-            <tr *ngFor="let claim of claimLightData;let i = index">
+            <tr *ngFor="let claim of claimLightData;let i = index" class="text-center">
               <td>
                 <a [routerLink]="['/create-claim/', claim?.id]">{{claim.id}}</a>
               </td>
               <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
               <td>{{getDicNameByLanguage(claim, 'objectType')}}</td>
-              <td>{{formatDate(claim)}}</td>
               <td>{{claim.fullname}}</td>
-              <td><span>+7{{claim.phone | mask: ' (000) 000-0000'}}</span></td>
+              <td><span *ngIf="claim.phone">+7{{claim.phone | mask: ' (000) 000-0000'}}</span></td>
+              <td style="color: #00b2a8">{{formatDate(claim)}}</td>
             </tr>
             </tbody>
           </table>

@@ -25,7 +25,6 @@ import {ErrorInterceptor} from "./helpers/error.interceptor";
 import {JwtInterceptor} from "./helpers/jwt.interceptor";
 import {ToastrModule} from 'ngx-toastr';
 import {UploaderService} from "./services/uploader.service";
-import {ChartsModule} from 'ng2-charts';
 import {CalendarModule, DateAdapter} from 'angular-calendar';
 import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
 import localeRu from '@angular/common/locales/ru';
@@ -140,8 +139,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     ToastrModule.forRoot(),
     NgxMaskModule.forRoot(options),
     // AngularYandexMapsModule.forRoot('658f67a2-fd77-42e9-b99e-2bd48c4ccad4'),
-    ChartsModule,
-    CalendarModule.forRoot({
+      CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
@@ -149,6 +147,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NgbModule,
     AngularYandexMapsModule,
     MDBBootstrapModule.forRoot(),
+    MDBBootstrapModule.forRoot()
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

@@ -35,6 +35,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   applicationLightDto: ApplicationLightDto;
   existsClient: boolean = false;
   roles: any;
+  operationTypeId: any;
 
   constructor(private formBuilder: FormBuilder,
               public util: Util,
@@ -95,7 +96,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   fillApplicationLightDTO() {
     this.applicationLightDto = new ApplicationLightDto();
-    this.applicationLightDto.operationTypeId = this.applicationLightForm?.value.operationTypeId?.value
+    this.applicationLightDto.operationTypeId = this.operationTypeId;
+    // this.applicationLightDto.operationTypeId = this.applicationLightForm?.value.operationTypeId?.value
     this.applicationLightDto.note = this.applicationLightForm?.value?.note;
     this.applicationLightDto.agentLogin = this.applicationLightForm?.value?.agentLogin;
     this.applicationLightDto.clientLogin = this.applicationLightForm?.value?.phoneNumber;
@@ -141,6 +143,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         if (data != null) {
           this.findClaims(1);
+          this.clear();
           this.notification.showSuccess('success', 'Успешно сохранено');
         }
       }, err => {
