@@ -56,6 +56,11 @@ export class BoardService {
       .pipe(tap(), catchError(BoardService.handleError));
   }
 
+  confirmCloseDeal(data: any): Observable<any> {
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/kanban/confirmCloseDeal`, data)
+      .pipe(tap(), catchError(BoardService.handleError));
+  }
+
   private static handleError(error: HttpErrorResponse) {
     return throwError(
       error);

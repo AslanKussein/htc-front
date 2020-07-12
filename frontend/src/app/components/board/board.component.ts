@@ -14,6 +14,7 @@ import {filter, pairwise} from "rxjs/operators";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {HttpParams} from "@angular/common/http";
 import {RoleManagerService} from "../../services/roleManager.service";
+import {UploaderService} from "../../services/uploader.service";
 
 @Component({
   selector: 'app-board',
@@ -48,6 +49,10 @@ export class BoardComponent implements OnInit, OnDestroy {
   comment: string;
   isSellTargetApp: boolean;
   roles: any;
+  isClosingDeal: boolean;
+  isConfirmDeal: boolean;
+  isUpload: boolean;
+  percent: number;
   get boardSelect(): Board {
     return this._boardSelect;
   }
@@ -62,7 +67,8 @@ export class BoardComponent implements OnInit, OnDestroy {
               private router: Router,
               private actRoute: ActivatedRoute,
               private userService: UserService,
-              private roleManagerService: RoleManagerService) {
+              private roleManagerService: RoleManagerService,
+              private uploader: UploaderService) {
 
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
       this.activeTab = parseInt(this.actRoute.snapshot.queryParamMap.get('activeTab'));
@@ -128,11 +134,11 @@ export class BoardComponent implements OnInit, OnDestroy {
   getStatusIdsByTab() {
     let ids;
     if (this.activeTab == 3) {
-      ids = [1, 2, 3, 5, 4, 6, 7];
+      ids = [1, 2, 3, 5, 4, 6, 7, 11, 12];
     } else if (this.activeTab == 2) {
-      ids = [1, 2, 3, 4, 5, 6, 7]
+      ids = [1, 2, 3, 4, 5, 6, 7, 11, 12];
     } else if (this.activeTab == 1) {
-      ids = [1, 2, 3, 6, 10, 7]
+      ids = [1, 2, 3, 6, 10, 7, 11, 12];
     }
     return ids;
   }
@@ -195,9 +201,6 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.appStatusesSort.push(m)
     }
     this.getBoardData(tab, ids, this.login);
-    console.log(this.router.url
-
-      )
 
     if (this.router.url.includes("board/close-deal")) {
       this.displayBoardContent = false;
@@ -315,7 +318,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.selectId = item.id;
     let data = {applicationId: item.id, statusId: currentStatusId};
 
-    if (this.activeTab == 1) {// воронка покупателей
+    if (this.activeTab == 1) { // воронка покупателей
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
         this.openInnerPage('board/add-event');
         return;
@@ -379,7 +382,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   openModal2(template, class_, item) {
     this.modalRef2 = this.modalService.show(template, {class: class_});
     if (!item) return;
-    this.isSell = item.operationType?.code === '001002'; // Продать
+    this.isSell = this.isSellTargetApp = item.operationType?.code === '001002'; // Продать
     this.applicationId = item.id;
     this.subscriptions.add(this.boardService.getApplication(this.applicationId).subscribe(res => {
       if (res) {
@@ -392,6 +395,9 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.clearObjectData();
     this.agentFullname = data.agentFullname;
     this.clientFullname = data.clientFullname;
+    this.isClosingDeal = data.status?.code === '002007';
+    this.comment = data.comment;
+    this.isConfirmDeal = data.status?.code === '002011' || data.status?.code === '002012';
     const obj = {
       photoIdList: data.photoIdList,
       address: data.address[this.util.getDicNameByLanguage()],
@@ -459,20 +465,58 @@ export class BoardComponent implements OnInit, OnDestroy {
     }));
   }
 
-  closeDeal(type: boolean) {
+  closeDeal(type: boolean, appId: number = 0) {
     const obj = {
       applicationId: this.applicationId,
       comment: this.comment,
       approve: type,
-      targetApplicationId: 0
+      targetApplicationId: appId
     };
     this.subscriptions.add(this.boardService.forceCloseDeal(obj).subscribe(res => {
-      console.log('result', res);
+      this.notificationService.showSuccess('', 'Успешно сохранено');
+      this.sortStatusesDic(this.activeTab);
+      this.modalRef2.hide();
+    }, err => {
+      this.notificationService.showError('Ошибка', err?.ru);
     }));
   }
 
   clearTargetAppData(): void {
     this.secondId = null;
     this.targetAppData = [];
+  }
+
+  confirmDeal(approveType: boolean): void {
+    const obj = {
+      applicationId: this.applicationId,
+      approve: approveType,
+      guid: this.file?.uuid
+    };
+    this.subscriptions.add(this.boardService.confirmCloseDeal(obj).subscribe(res => {
+      this.notificationService.showSuccess('', 'Успешно сохранено');
+      this.sortStatusesDic(this.activeTab);
+      this.modalRef2.hide();
+    }, err => {
+      this.notificationService.showError('Ошибка', err?.ru);
+    }));
+  }
+
+  onFileChange(event) {
+    this.isUpload = true;
+    if (event.target.files && event.target.files[0]) {
+      const filesAmount = event.target.files.length;
+      for (let i = 0; i < filesAmount; i++) {
+        this.subscriptions.add(this.uploader.uploadData(event.target.files[i])
+          .subscribe(data => {
+            if (data && data.message) {
+              this.percent = data.message;
+            }
+            if (data && data.uuid) {
+              this.file = data;
+              this.isUpload = false;
+            }
+          }));
+      }
+    }
   }
 }

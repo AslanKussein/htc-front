@@ -224,12 +224,28 @@
     </div>
     <div class="row">
       <div class="col-sm">
-        <label style="margin-right: 16px;">Документ подтверждающий завершение сделки</label>
-        <input type="file" multiple [(ngModel)]="file">
+        <label class="btn btn-info btn-sm mr-4">Документ подтверждающий завершение сделки
+          <i class="fa fa-upload"></i>
+          <input type="file" hidden (change)="onFileChange($event)">
+        </label>
+        <a *ngIf="this.file?.uuid" [href]="util.generatorFullUrl(this.file?.uuid)" target="_blank">
+          <i class="fa fa-paperclip" aria-hidden="true"></i>
+          {{this.file?.name}} ({{this.file?.size}} КБ)
+        </a>
+      </div>
+    </div>
+    <div class="progress" *ngIf="isUpload" style="margin-bottom: 16px;">
+      <div
+        class="progress-bar"
+        role="progressbar"
+        [attr.aria-valuenow]="percent"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        [style.width.%]="percent">
       </div>
     </div>
     <div class="row toggle-label" [ngClass]="{active: isActive}">
-      <div class="col-sm" style="cursor: pointer;">
+      <div class="col-sm" style="cursor: pointer;" *ngIf="!isConfirmDeal">
         <h5 (click)="onToggle()">
           Если по успешно реализованная заявка связано со второй заявкой из системы, то укажите вторую заявку
           <i class="fa fa-caret-down" aria-hidden="true"></i>
@@ -254,7 +270,9 @@
         <button type="button" class="btn btn-sm btn-btn btn2 btn-danger" (click)="clearTargetAppData()">Очистить</button>
       </div>
       <div class="col-sm-3">
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-success">Связать заявку</button>
+        <button type="button" class="btn btn-sm btn-btn btn2 btn-success" [disabled]="!targetAppData.length" (click)="closeDeal(true, targetAppData[0].id )">
+          Связать заявку
+        </button>
       </div>
     </div>
     <div class="row content-bundle" [ngClass]="{active: isActive}">
@@ -307,21 +325,22 @@
         </tbody>
       </table>
     </div>
-    <div class="row text-right">
+    <div class="row text-right" *ngIf="!isConfirmDeal">
       <div class="col-sm">
         <button type="button" class="btn btn-sm btn-btn btn2 btn-secondary" (click)="modalRef2.hide()">Отмена</button>
         <button type="button" class="btn btn-sm btn-btn btn2 btn-primary" (click)="closeDeal(false)" [disabled]="!comment">
           Не реализован
         </button>
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-success" (click)="closeDeal(true)" [disabled]="!comment">
+        <button *ngIf="isClosingDeal" type="button" class="btn btn-sm btn-btn btn2 btn-success"
+                (click)="closeDeal(true)">
           Успешно реализован
         </button>
       </div>
     </div>
-    <div class="row text-right" *ngIf="!util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles)">
+    <div class="row text-right" *ngIf="!util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) && isConfirmDeal">
       <div class="col-sm">
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-secondary">Отказать в завершении</button>
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-success">Согласовать завершение</button>
+        <button type="button" class="btn btn-sm btn-btn btn2 btn-secondary" (click)="confirmDeal(false)">Отказать в завершении</button>
+        <button type="button" class="btn btn-sm btn-btn btn2 btn-success" (click)="confirmDeal(true)">Согласовать завершение</button>
       </div>
     </div>
   </div>

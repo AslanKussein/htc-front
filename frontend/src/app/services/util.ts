@@ -333,7 +333,6 @@ export class Util {
     if (!this.isNullOrEmpty(roles)) {
       for (const data of roles) {
         if (data.code === 'AGENT_GROUP') {
-          console.log('asdasd', !data.operations.includes(operation));
           return !data.operations.includes(operation);
         }
       }
