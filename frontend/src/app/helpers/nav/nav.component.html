@@ -1,85 +1,3 @@
-<!--Navbar -->
-
-
-  <!--<div class="row" style="  position: fixed;z-index: 9999999" *ngIf="currentUser">-->
-    <!--<div class="st31">-->
-      <!--<div class="st35 clearfix">-->
-        <!--<img src="../../../assets/images/logo2.png" class="st36">-->
-      <!--</div>-->
-      <!--<div class="st34 clearfix">-->
-        <!--<p class="Vitrina">VITRINA</p>-->
-      <!--</div>-->
-      <!--<div class="clearfix"></div>-->
-      <!--<div class="gst34">-->
-        <!--<ul class="gst34">-->
-          <!--<li class="nav-item" [ngClass]="isActive() ? 'active' : ''">-->
-            <!--<a class="nav-link" (click)="dnHref('objects')">-->
-              <!--<span translate class="gst35">objects.title</span>-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li class="nav-item" style="padding-top: 30px" [ngClass]="isActive() ? 'active' : ''">-->
-            <!--<a class="nav-link" (click)="dnHref('board')">-->
-              <!--<span translate class="gst35">controlPanels.title</span>-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li class="nav-item" style="padding-top: 30px" [ngClass]="isActive() ? 'active' : ''">-->
-            <!--<a (click)="dnHref('claims')" class="nav-link">-->
-              <!--<span translate class="gst35">claim.title</span>-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li class="nav-item" style="padding-top: 30px" [ngClass]="isActive() ? 'active' : ''">-->
-            <!--<a class="nav-link" (click)="dnHref('staffs')">-->
-              <!--<span translate class="gst35">staffs.title</span>-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li class="nav-item" style="padding-top: 30px" [ngClass]="isActive() ? 'active' : ''">-->
-            <!--<a class="nav-link" (click)="dnHref('dic-control')">-->
-              <!--<span translate class="gst35">Управление справочниками</span>-->
-            <!--</a>-->
-          <!--</li>-->
-        <!--</ul>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--<div class="st334">-->
-
-     <!--<p class="st335">Аналитика</p>-->
-      <!--<p class="st336"></p>-->
-      <!--<p class="st337">Новости</p>-->
-      <!--<div class="col-sm"></div>-->
-      <!--&lt;!&ndash;<div class="input-group">&ndash;&gt;-->
-        <!--&lt;!&ndash;<input type="text" class="st3355" placeholder="Поиск">&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="input-group-append">&ndash;&gt;-->
-          <!--&lt;!&ndash;<i class="fa fa-2x fa-search st3377"></i>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--<div class="st3378">-->
-        <!--<ul class="navbar-nav ml-auto nav-flex-icons " >-->
-          <!--<li class="nav-item dropdown">-->
-
-            <!--<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-3333" data-toggle="dropdown"-->
-               <!--aria-haspopup="true" aria-expanded="false"-->
-            <!--style="margin-left: -140px">-->
-              <!--<i class="fa fa-2x fa-user"></i>-->
-              <!--Мой профиль-->
-            <!--</a>-->
-            <!--<div class="dropdown-menu dropdown-menu-right dropdown-default"-->
-                 <!--aria-labelledby="navbarDropdownMenuLink-3333">-->
-              <!--<a class="dropdown-item" (click)="dnHref('profile')" translate>profile.myProfile</a>-->
-              <!--<hr/>-->
-              <!--<a class="dropdown-item" (click)="logout()" translate>profile.exit</a>-->
-            <!--</div>-->
-          <!--</li>-->
-        <!--</ul>-->
-      <!--</div>-->
-
-
-
-    <!--</div>-->
-  <!--</div>-->
-
-
-
-
 <nav class="navbar navbar-expand-lg navbar-dark indigo" *ngIf="currentUser">
   <a class="navbar-brand" href="#">HTC</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
@@ -125,18 +43,7 @@
       </li>
     </ul>
     <ul class="navbar-nav ml-auto nav-flex-icons">
-<!--      <li class="nav-item" [className]="_language.language == 'ru' ? 'active' : ''">-->
-<!--        <a class="nav-link waves-effect waves-light">-->
-<!--          <a (click)="changeLang('ru')">Рус</a>-->
-<!--        </a>-->
-<!--      </li>-->
-<!--      <li class="nav-item" [className]="_language.language == 'kz' ? 'active' : ''">-->
-<!--        <a class="nav-link waves-effect waves-light">-->
-<!--          <a (click)="changeLang('kz')">Қаз</a>-->
-<!--        </a>-->
-<!--      </li>-->
       <li class="nav-item dropdown">
-
         <a class="nav-link dropdown-toggle text-uppercase" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-user"></i> {{currentUser?.surname}} {{currentUser?.name}}
@@ -151,31 +58,3 @@
     </ul>
   </div>
 </nav>
-
-<!--<ul class="nav justify-content-center lighten-4 py-1 nav2" *ngIf="currentUser">-->
-<!--  <li class="nav-item">-->
-<!--    <a class="nav-link" (click)="dnHref('objects')">-->
-<!--      <span translate>objects.title</span>-->
-<!--    </a>-->
-<!--  </li>-->
-<!--  <li class="nav-item">-->
-<!--    <a class="nav-link" (click)="dnHref('board')">-->
-<!--      <span translate>controlPanels.title</span>-->
-<!--    </a>-->
-<!--  </li>-->
-<!--  <li class="nav-item">-->
-<!--    <a (click)="dnHref('claims')" class="nav-link">-->
-<!--      <span translate>claim.title</span>-->
-<!--    </a>-->
-<!--  </li>-->
-<!--  <li class="nav-item">-->
-<!--    <a class="nav-link" (click)="dnHref('staffs')">-->
-<!--      <span translate>staffs.title</span>-->
-<!--    </a>-->
-<!--  </li>-->
-<!--  <li class="nav-item">-->
-<!--    <a class="nav-link" (click)="dnHref('dic-control')">-->
-<!--      <span translate>Управление справочниками</span>-->
-<!--    </a>-->
-<!--  </li>-->
-<!--</ul>-->

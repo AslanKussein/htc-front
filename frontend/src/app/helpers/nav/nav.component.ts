@@ -5,6 +5,7 @@ import {AuthenticationService} from "../../services/authentication.service";
 import {language} from "../../../environments/language";
 import {User} from "../../models/users";
 
+
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -25,6 +26,7 @@ export class NavComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
   dnHref(href) {

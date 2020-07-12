@@ -118,7 +118,6 @@ export class CalendarComponent implements OnInit {
         this.events = [];
 
         obj.data.data.forEach(e => {
-          console.log(startOfDay(new Date(e.eventDate)), ' ', e.eventDate )
           // console.log(subDays(startOfDay(new Date(e.eventDate)), 0))
           let data = {
             start: new Date(e.eventDate),

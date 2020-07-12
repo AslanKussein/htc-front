@@ -1,11 +1,77 @@
-<div class="wrapper">
-  <app-nav></app-nav>
-  <router-outlet>
-    <app-create-claim-btn></app-create-claim-btn>
-  </router-outlet>
-  <br>
-  <br>
-  <toast-messages></toast-messages>
-  <ngx-ui-loader></ngx-ui-loader>
-  <app-footer></app-footer>
+<div class="d-flex" id="wrapper">
+
+  <!-- Sidebar -->
+  <div class="bg-dark border-right" id="sidebar-wrapper" *ngIf="currentUser">
+    <div class="row">
+      <img (click)="util.dnHref('home')" src="assets/images/logo2.png"
+           style="margin: 0 auto; max-width: 151px; max-height: 131px"/>
+    </div>
+
+    <p class="vitrina text-center">VITRINA</p>
+
+    <div class="list-group list-group-flush li-item-side">
+      <a href="#" class="list-group-item list-group-item-action bg-dark" routerLink="/objects" translate>objects.title</a>
+      <a href="#" class="list-group-item list-group-item-action bg-dark" routerLink="/board" translate>controlPanels.title</a>
+      <a href="#" class="list-group-item list-group-item-action bg-dark" routerLink="/claims" translate>claim.title</a>
+      <a href="#" class="list-group-item list-group-item-action bg-dark" routerLink="/staffs" translate>staffs.title</a>
+      <a href="#" class="list-group-item list-group-item-action bg-dark" routerLink="/dic-control" translate>Управление
+        справочниками</a>
+    </div>
+  </div>
+  <div id="page-content-wrapper" class="page-content-wrapper">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom" [hidden]="!currentUser">
+      <button class="btn bg-transparent" id="menu-toggle"><i aria-hidden="true" class="fa fa-bars"></i></button>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav dropdown-menu-lg-left">
+          <li class="nav-item border-right border-dark nav-link-name" [ngClass]="isActive() ? 'active' : ''">
+            <a class="nav-link" (click)="util.dnHref('analytics')">
+              <span translate>analytics.title</span>
+            </a>
+          </li>
+          <li class="nav-item nav-link-name" [ngClass]="isActive() ? 'active' : ''">
+            <a class="nav-link" (click)="util.dnHref('news')">
+              <span translate>news.title</span>
+            </a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link p-0 dropdown-toggle nav-link-name" style="font-size: 14px" href="#" id="navbarDropdown"
+               role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+              <img [src]="getImgUrl(uuid)" class="rounded-circle" style="width: 2.5rem; height: 2.5rem" [alt]=""/>
+              <span>{{currentUser?.surname}} {{currentUser?.name}}</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" (click)="util.dnHref('profile')" translate>profile.myProfile</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" (click)="logout()" translate>profile.exit</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="wrapper">
+        <router-outlet>
+          <app-create-claim-btn></app-create-claim-btn>
+        </router-outlet>
+        <toast-messages></toast-messages>
+        <ngx-ui-loader></ngx-ui-loader>
+        <br>
+        <br>
+        <app-footer></app-footer>
+      </div>
+    </div>
+  </div>
 </div>
+
+

@@ -29,12 +29,12 @@
             ],
             "styles": [
               "node_modules/font-awesome/css/font-awesome.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/angular-bootstrap-md/assets/scss/bootstrap/bootstrap.scss",
               "node_modules/angular-bootstrap-md/assets/scss/mdb.scss",
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
-              "src/styles.scss",
-              "src/assets/css/datatables.min.css"
+              "src/assets/css/simple-sidebar.css",
+              "src/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["./node_modules"]
@@ -46,7 +46,7 @@
               "node_modules/chart.js/dist/Chart.js",
               "node_modules/hammerjs/hammer.min.js",
               "src/assets/js/overrides.js",
-              "src/assets/js/datatables.min.js"
+              "src/assets/js/bootstrap.bundle.min.js"
             ]
           },
           "configurations": {

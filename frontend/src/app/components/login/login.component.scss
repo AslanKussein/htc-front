@@ -5,6 +5,7 @@ html, body, app-root {
 
 .main-block {
   margin-top: -26px;
+  margin-left: -15px;
   position: fixed;
   min-width: 100%;
   min-height: 100%;
@@ -33,7 +34,7 @@ html, body, app-root {
 }
 
 .main-section-block {
-  max-width: 30rem;
+  max-width: 35rem;
   background-color: #ffffff !important;
   z-index: 1;
 }
