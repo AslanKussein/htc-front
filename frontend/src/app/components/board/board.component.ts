@@ -101,6 +101,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   getBoardData(tab: number, ids: number, login) {
+    this.ngxLoader.startBackground()
     let searchFilter = {};
 
     searchFilter['agentLoginList'] = login
@@ -136,6 +137,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.notificationService.showWarning('Информация', 'Техническая ошибка');
       }
     }));
+    this.ngxLoader.stopBackground();
     this.ngxLoader.stop();
   }
 
