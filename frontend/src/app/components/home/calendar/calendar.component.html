@@ -47,7 +47,7 @@
             <td>{{getDicNameByLanguage(ev, 'eventType')}}</td>
             <td>{{getDicNameByLanguage(ev, 'operationType')}}</td>
             <td>
-              <a (click)="close()" [routerLink]="['/create-claim/', ev?.applicationId]">{{ev.applicationId}}</a>
+              <a (click)="close()" [routerLink]="['/create-claim-view/', ev?.applicationId]">{{ev.applicationId}}</a>
             </td>
             <td>{{ev.description}}</td>
             <td>{{ev.comment}}</td>
