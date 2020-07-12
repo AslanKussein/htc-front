@@ -12,6 +12,9 @@ import {NewDicService} from "../../services/new.dic.service";
 import {ActivatedRoute, Router, RoutesRecognized} from "@angular/router";
 import {filter, pairwise} from "rxjs/operators";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
+import {HttpParams} from "@angular/common/http";
+import {RoleManagerService} from "../../services/roleManager.service";
+import {UploaderService} from "../../services/uploader.service";
 
 @Component({
   selector: 'app-board',
@@ -34,6 +37,22 @@ export class BoardComponent implements OnInit, OnDestroy {
   agentList: Dic[];
   login: string = this.util.getCurrentUser().login;
   modalRef2: BsModalRef;
+  objectData: any[] = [];
+  agentFullname: string;
+  clientFullname: string;
+  applicationId: number;
+  isSell: boolean;
+  targetAppData: any[] = [];
+  isActive: boolean = false;
+  secondId: number;
+  file: any;
+  comment: string;
+  isSellTargetApp: boolean;
+  roles: any;
+  isClosingDeal: boolean;
+  isConfirmDeal: boolean;
+  isUpload: boolean;
+  percent: number;
   get boardSelect(): Board {
     return this._boardSelect;
   }
@@ -47,7 +66,9 @@ export class BoardComponent implements OnInit, OnDestroy {
               private newDicService: NewDicService,
               private router: Router,
               private actRoute: ActivatedRoute,
-              private userService: UserService) {
+              private userService: UserService,
+              private roleManagerService: RoleManagerService,
+              private uploader: UploaderService) {
 
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
       this.activeTab = parseInt(this.actRoute.snapshot.queryParamMap.get('activeTab'));
@@ -60,13 +81,24 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.appStatuses = this.util.toSelectArray(res);
       this.sortStatusesDic(this.activeTab);
     }));
-
+    this.getCheckOperationList();
     this.subscriptions.add(this.userService.getAgents().subscribe(obj => {
       this.agentList = obj.data;
     }));
     setTimeout(() => {
       this.height = document.body.scrollHeight;
-    }, 2000)
+    }, 2000);
+  }
+
+  getCheckOperationList() {
+    let params = new HttpParams();
+    params = params.append('groupCodes', String('APPLICATION_GROUP'))
+    params = params.append('groupCodes', String('REAL_PROPERTY_GROUP'))
+    params = params.append('groupCodes', String('CLIENT_GROUP'))
+    params = params.append('groupCodes', String('AGENT_GROUP'))
+    this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
+      this.roles = obj.data;
+    });
   }
 
   getBoardData(tab: number, ids: number, login: string) {
@@ -102,11 +134,11 @@ export class BoardComponent implements OnInit, OnDestroy {
   getStatusIdsByTab() {
     let ids;
     if (this.activeTab == 3) {
-      ids = [1, 2, 3, 5, 4, 6, 7];
+      ids = [1, 2, 3, 5, 4, 6, 7, 11, 12];
     } else if (this.activeTab == 2) {
-      ids = [1, 2, 3, 4, 5, 6, 7]
+      ids = [1, 2, 3, 4, 5, 6, 7, 11, 12];
     } else if (this.activeTab == 1) {
-      ids = [1, 2, 3, 6, 10, 7]
+      ids = [1, 2, 3, 6, 10, 7, 11, 12];
     }
     return ids;
   }
@@ -122,16 +154,18 @@ export class BoardComponent implements OnInit, OnDestroy {
     "id": 8,002008: "Успешно",
     "id": 9,002009: "Завершен",
     "id": 10,002010: "Договор о задатке/авансе",
+    "id": 11,002011: "Согласование успешной реализации заявки",
+    "id": 12,002012: "Согласование не реализованной заявки"
   }
 ]*/
   getStatusCodesByTab() {
     let code;
     if (this.activeTab == 3) {
-      code = ['002001', '002002', '002003', '002005', '002004', '002006', '002010', '002007'];
+      code = ['002001', '002002', '002003', '002005', '002004', '002006', '002010', '002007', '002011', '002012'];
     } else if (this.activeTab == 2) {
-      code = ['002001', '002002', '002003', '002005', '002004', '002006', '002007']
+      code = ['002001', '002002', '002003', '002005', '002004', '002006', '002007', '002011', '002012'];
     } else if (this.activeTab == 1) {
-      code = ['002001', '002002', '002003', '002006', '002010', '002007']
+      code = ['002001', '002002', '002003', '002006', '002010', '002007', '002011', '002012'];
     }
     return code;
   }
@@ -167,9 +201,6 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.appStatusesSort.push(m)
     }
     this.getBoardData(tab, ids, this.login);
-    console.log(this.router.url
-
-      )
 
     if (this.router.url.includes("board/close-deal")) {
       this.displayBoardContent = false;
@@ -269,6 +300,8 @@ export class BoardComponent implements OnInit, OnDestroy {
    "id": 8, Успешно
    "id": 9, Завершен
    "id": 10, Договор о задатке/авансе
+   "id": 11, Согласование успешной реализации заявки
+   "id": 12, Согласование не реализованной заявки
    * @param event
    * @param item
    * @param prevStatusId
@@ -285,7 +318,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.selectId = item.id;
     let data = {applicationId: item.id, statusId: currentStatusId};
 
-    if (this.activeTab == 1) {// воронка покупателей
+    if (this.activeTab == 1) { // воронка покупателей
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
         this.openInnerPage('board/add-event');
         return;
@@ -295,7 +328,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.3. С "Договор на оказание услуг *" на "Показ *"
         this.moveStatus(data);
       } else if (prevStatusId == 6 && currentStatusId == 10) { // 2.4. С "Показ *" на "Договор о задатке/авансе *"
-        this.openModal2(this._modalContentAdvance, '-modal-sm');
+        this.openModal2(this._modalContentAdvance, '-modal-sm', null);
         return;
       }else if (prevStatusId == 6 && currentStatusId == 7) { //NEW С "Показ *" на на "Закрытие сделки *" - обязательный статус
         this.openInnerPage('board/close-deal/' + this.activeTab);
@@ -346,8 +379,50 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  openModal2(template, class_) {
+  openModal2(template, class_, item) {
     this.modalRef2 = this.modalService.show(template, {class: class_});
+    if (!item) return;
+    this.isSell = this.isSellTargetApp = item.operationType?.code === '001002'; // Продать
+    this.applicationId = item.id;
+    this.subscriptions.add(this.boardService.getApplication(this.applicationId).subscribe(res => {
+      if (res) {
+        this.fillObjectData(res);
+      }
+    }));
+  }
+
+  fillObjectData(data: any): void {
+    this.clearObjectData();
+    this.agentFullname = data.agentFullname;
+    this.clientFullname = data.clientFullname;
+    this.isClosingDeal = data.status?.code === '002007';
+    this.comment = data.comment;
+    this.isConfirmDeal = data.status?.code === '002011' || data.status?.code === '002012';
+    const obj = {
+      photoIdList: data.photoIdList,
+      address: data.address[this.util.getDicNameByLanguage()],
+      commission: data.commission,
+      objectPrice: data.objectPrice,
+      status: data.status?.name[this.util.getDicNameByLanguage()],
+      numberOfRooms: data.numberOfRooms,
+      numberOfRoomsPeriod: data.numberOfRoomsPeriod,
+      objectPricePeriod: data.objectPricePeriod,
+      contractGuid: data.contractGuid,
+      depositGuid: data.depositGuid
+    };
+    this.objectData.push(obj);
+  }
+
+  clearObjectData(): void {
+    this.agentFullname = this.clientFullname = null;
+    this.objectData = [];
+  }
+
+  getImgUrl(photoIdList: any) {
+    if (!this.util.isNullOrEmpty(photoIdList) && !this.util.isNullOrEmpty(photoIdList)) {
+      return this.util.generatorPreviewUrl(photoIdList[0]);
+    }
+    return null;
   }
 
   showToAdvance(param) {
@@ -360,5 +435,88 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   closeRequestApplication() {
     console.log(789)
+  }
+
+  onToggle() {
+    this.isActive = !this.isActive;
+  }
+
+  onSearch(): void {
+    this.subscriptions.add(this.boardService.completeTargetApplication(this.secondId).subscribe(res => {
+      this.isSellTargetApp = res.operationType?.code === '001002'; // Продать
+      const data = {
+        id: res.id,
+        operationType: res.operationType?.name[this.util.getDicNameByLanguage()],
+        objectPrice: res.objectPrice,
+        objectPricePeriod: res.objectPricePeriod,
+        numberOfRooms: res.numberOfRooms,
+        numberOfRoomsPeriod: res.numberOfRoomsPeriod,
+        createDate: res.createDate,
+        district: res.district?.name[this.util.getDicNameByLanguage()],
+        totalArea: res.totalArea,
+        totalAreaPeriod: res.totalAreaPeriod,
+        floor: res.floor,
+        floorPeriod: res.floorPeriod,
+        status: res.status?.name[this.util.getDicNameByLanguage()],
+        agentFullname: res.agentFullname,
+        agentPhone: res.agentPhone
+      };
+      this.targetAppData.push(data);
+    }));
+  }
+
+  closeDeal(type: boolean, appId: number = 0) {
+    const obj = {
+      applicationId: this.applicationId,
+      comment: this.comment,
+      approve: type,
+      targetApplicationId: appId
+    };
+    this.subscriptions.add(this.boardService.forceCloseDeal(obj).subscribe(res => {
+      this.notificationService.showSuccess('', 'Успешно сохранено');
+      this.sortStatusesDic(this.activeTab);
+      this.modalRef2.hide();
+    }, err => {
+      this.notificationService.showError('Ошибка', err?.ru);
+    }));
+  }
+
+  clearTargetAppData(): void {
+    this.secondId = null;
+    this.targetAppData = [];
+  }
+
+  confirmDeal(approveType: boolean): void {
+    const obj = {
+      applicationId: this.applicationId,
+      approve: approveType,
+      guid: this.file?.uuid
+    };
+    this.subscriptions.add(this.boardService.confirmCloseDeal(obj).subscribe(res => {
+      this.notificationService.showSuccess('', 'Успешно сохранено');
+      this.sortStatusesDic(this.activeTab);
+      this.modalRef2.hide();
+    }, err => {
+      this.notificationService.showError('Ошибка', err?.ru);
+    }));
+  }
+
+  onFileChange(event) {
+    this.isUpload = true;
+    if (event.target.files && event.target.files[0]) {
+      const filesAmount = event.target.files.length;
+      for (let i = 0; i < filesAmount; i++) {
+        this.subscriptions.add(this.uploader.uploadData(event.target.files[i])
+          .subscribe(data => {
+            if (data && data.message) {
+              this.percent = data.message;
+            }
+            if (data && data.uuid) {
+              this.file = data;
+              this.isUpload = false;
+            }
+          }));
+      }
+    }
   }
 }

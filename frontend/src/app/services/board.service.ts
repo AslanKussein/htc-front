@@ -41,6 +41,26 @@ export class BoardService {
       );
   }
 
+  getApplication(id: number): Observable<any> {
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/kanban/applicationInfo/${id}`, {})
+      .pipe(tap(), catchError(BoardService.handleError));
+  }
+
+  completeTargetApplication(id: number): Observable<any> {
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/kanban/targetApplicationInfo/${id}`, {})
+      .pipe(tap(), catchError(BoardService.handleError));
+  }
+
+  forceCloseDeal(data: any): Observable<any> {
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/kanban/forceCloseDeal`, data)
+      .pipe(tap(), catchError(BoardService.handleError));
+  }
+
+  confirmCloseDeal(data: any): Observable<any> {
+    return this.http.post(`${this.configService.apiDataManagerUrl}/api/kanban/confirmCloseDeal`, data)
+      .pipe(tap(), catchError(BoardService.handleError));
+  }
+
   private static handleError(error: HttpErrorResponse) {
     return throwError(
       error);

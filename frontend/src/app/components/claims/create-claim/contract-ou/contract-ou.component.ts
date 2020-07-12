@@ -101,7 +101,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     this.contractForm.contractNumber = data?.contractNumber;
     this.contractForm.contractSum = data?.contractSum;
     this.contractForm.contractTypeId = data?.contractTypeId;
-    this.contractForm.contractPeriod = new Date(data?.contractPeriod);
+    this.contractForm.contractPeriod = data?.contractPeriod ? new Date(data?.contractPeriod) : null;
     this.contractForm.commission = data?.commission;
   }
 
