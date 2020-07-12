@@ -185,7 +185,7 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   filtredLogin(login: string) {
     if (!this.util.isNullOrEmpty(login)) {
-      this.login = login;
+      this.login = [login];
     } else {
       this.login = [];
       this.agentList.forEach(e => this.login.push(e?.login))
