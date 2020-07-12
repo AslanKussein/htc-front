@@ -9,8 +9,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {UserService} from "../../services/user.service";
 import {Subscription} from "rxjs";
 import {NewDicService} from "../../services/new.dic.service";
-import {ActivatedRoute, Router, RoutesRecognized} from "@angular/router";
-import {filter, pairwise} from "rxjs/operators";
+import {ActivatedRoute, Router} from "@angular/router";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {HttpParams} from "@angular/common/http";
 import {RoleManagerService} from "../../services/roleManager.service";
@@ -34,8 +33,8 @@ export class BoardComponent implements OnInit, OnDestroy {
   activeTab: number = 3;
   selectId: number;
   displayBoardContent: boolean = true;
-  agentList: Dic[];
-  login: string = this.util.getCurrentUser().login;
+  agentList: any;
+  login: any;
   modalRef2: BsModalRef;
   objectData: any[] = [];
   agentFullname: string;
@@ -77,14 +76,14 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.ngxLoader.start();
-    this.subscriptions.add(this.newDicService.getDictionary('ApplicationStatus').subscribe(res => {
-      this.appStatuses = this.util.toSelectArray(res);
-      this.sortStatusesDic(this.activeTab);
-    }));
-    this.getCheckOperationList();
     this.subscriptions.add(this.userService.getAgents().subscribe(obj => {
       this.agentList = obj.data;
+      this.subscriptions.add(this.newDicService.getDictionary('ApplicationStatus').subscribe(res => {
+        this.appStatuses = this.util.toSelectArray(res);
+        this.sortStatusesDic(this.activeTab);
+      }));
     }));
+    this.getCheckOperationList();
     setTimeout(() => {
       this.height = document.body.scrollHeight;
     }, 2000);
@@ -101,10 +100,16 @@ export class BoardComponent implements OnInit, OnDestroy {
     });
   }
 
-  getBoardData(tab: number, ids: number, login: string) {
+  getBoardData(tab: number, ids: number, login) {
     let searchFilter = {};
-    searchFilter['agentLoginList'] = [login];
-    // searchFilter['agentLoginList'] = this.util.getCurrentUser().roles;
+
+    searchFilter['agentLoginList'] = login
+    if (this.util.isNullOrEmpty(searchFilter['agentLoginList'])) {
+      this.login = [];
+      this.agentList.forEach(e=>this.login.push(e?.login))
+      searchFilter['agentLoginList'] = this.login;
+    }
+
     searchFilter['applicationStatusList'] = ids;
     searchFilter['operationTypeId'] = tab == 3 ? null : tab;
     this.subscriptions.add(this.boardService.getBoard(searchFilter).subscribe(res => {
@@ -182,7 +187,8 @@ export class BoardComponent implements OnInit, OnDestroy {
     if (!this.util.isNullOrEmpty(login)) {
       this.login = login;
     } else {
-      this.login = this.util.getCurrentUser().login;
+      this.login = [];
+      this.agentList.forEach(e => this.login.push(e?.login))
     }
     this.sortStatusesDic(this.activeTab);
   }
