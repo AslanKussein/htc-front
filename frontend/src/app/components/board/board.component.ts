@@ -109,6 +109,9 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.agentList.forEach(e=>this.login.push(e?.login))
       searchFilter['agentLoginList'] = this.login;
     }
+    if (this.util.isNullOrEmpty(searchFilter['agentLoginList'])) {
+      searchFilter['agentLoginList'] = [this.util.getCurrentUser().login]
+    }
 
     searchFilter['applicationStatusList'] = ids;
     searchFilter['operationTypeId'] = tab == 3 ? null : tab;
@@ -219,23 +222,6 @@ export class BoardComponent implements OnInit, OnDestroy {
         }
       });
     }
-    // this.router.events
-    //   .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
-    //   .subscribe((events: RoutesRecognized[]) => {
-    //     console.log(events[1].urlAfterRedirects.includes("board/close-deal"))
-    //     if (events[1].urlAfterRedirects.includes("board/close-deal")) {
-    //       console.log(789789)
-    //       this.displayBoardContent = false;
-    //       this.openInnerPage('board/close-deal/' + this.activeTab);
-    //       return
-    //     } else {
-    //       this.router.navigate(['/board'], {
-    //         queryParams: {
-    //           activeTab: tab
-    //         }
-    //       });
-    //     }
-    //   })
   }
 
   getBgColorBySumm(price: number) {
