@@ -104,12 +104,12 @@ export class CloseDealComponent implements OnInit {
     obj["contractGuid"] = this.contract.uuid
     if (this.operationId == 1) {
       if (this.boardSelect.hasDepositContract) {
-        if (this.util.isNullOrEmpty(this.deposit.uuid)) {
+        if (this.util.isNullOrEmpty(this.deposit?.uuid)) {
           this.notificationService.showWarning('Прикрепите скан Договора о авансе/задатке', 'Информация')
           return;
         }
       }
-      obj["depositGuid"] = this.deposit.uuid
+      obj["depositGuid"] = this.deposit?.uuid
     }
     this.subscriptions.add(
       this.boardService.completeDeal(obj).subscribe(res => {
