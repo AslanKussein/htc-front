@@ -74,7 +74,7 @@
                 <div class="card-header">
                   {{item.id}} &nbsp;{{item.operationType?.name[getDicNameByLanguage()]}}
                   <button type="button" class="close"
-                          (click)="this.openModal2(this.closeRequestApplication, 'modal-xl', item)" data-dismiss="modal"
+                          (click)="closeApplication(this.closeRequestApplication, item)" data-dismiss="modal"
                           aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -131,7 +131,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
+  <div class="modal-body" *ngIf="objectData">
     <div class="row">
       <div class="col-sm-3">
         <h4>
@@ -143,20 +143,20 @@
       </div>
       <div class="col-sm-4">
         <fieldset class="scheduler-border col-sm">
-          <legend class="scheduler-border">Агента (ID)</legend>
+          <legend class="scheduler-border">Агента (ID {{objectData?.agentId}})</legend>
           <div class="row">
             <div class="col-sm">
-              <input type="text" class="form-control text-uppercase" readonly [(ngModel)]="agentFullname"/>
+              <input type="text" class="form-control text-uppercase" readonly [value]="objectData?.agentFullname"/>
             </div>
           </div>
         </fieldset>
       </div>
       <div class="col-sm-4">
         <fieldset class="scheduler-border col-sm">
-          <legend class="scheduler-border">Клиента (ID)</legend>
+          <legend class="scheduler-border">Клиента (ID {{ objectData?.clientId }})</legend>
           <div class="row">
             <div class="col-sm">
-              <input type="text" class="form-control text-uppercase" readonly [(ngModel)]="clientFullname"/>
+              <input type="text" class="form-control text-uppercase" readonly [value]="objectData?.clientFullname"/>
             </div>
           </div>
         </fieldset>
@@ -180,33 +180,42 @@
             <th>Комиссия</th>
           </tr>
           </thead>
-          <tbody *ngIf="objectData.length" class="text-center">
-            <tr *ngFor="let item of objectData; let i = index">
+          <tbody class="text-center">
+            <tr>
               <td style="height: 130px; width: 150px" *ngIf="isSell">
-                <img *ngIf="getImgUrl(item.photoIdList)"
-                     [src]="getImgUrl(item.photoIdList)"
+                <img *ngIf="getImgUrl(objectData.photoIdList)"
+                     [src]="getImgUrl(objectData.photoIdList)"
                      alt="First Slide" class="photoList"
                      style="height: 100%; width: 100%">
               </td>
-              <td>{{ item.address }}</td>
-              <td *ngIf="isSell">{{ item.objectPrice | mask : 'separator.2'}} ₸</td>
-              <td *ngIf="!isSell">{{ item.objectPricePeriod?.from | mask : 'separator.2'}} ₸</td>
-              <td *ngIf="!isSell">{{ item.objectPricePeriod?.to | mask : 'separator.2'}} ₸</td>
-              <td *ngIf="isSell">{{ item.numberOfRooms }}</td>
-              <td *ngIf="!isSell">{{ item.numberOfRoomsPeriod?.from }}</td>
-              <td *ngIf="!isSell">{{ item.numberOfRoomsPeriod?.to }}</td>
-              <td>{{ item.status }}</td>
+              <td>{{ objectData.address[this.util.getDicNameByLanguage()] }}</td>
+              <td *ngIf="isSell">{{ objectData.objectPrice | mask : 'separator.2'}} ₸</td>
+              <td *ngIf="!isSell">{{ objectData.objectPricePeriod?.from | mask : 'separator.2'}} ₸</td>
+              <td *ngIf="!isSell">{{ objectData.objectPricePeriod?.to | mask : 'separator.2'}} ₸</td>
+              <td *ngIf="isSell">{{ objectData.numberOfRooms }}</td>
+              <td *ngIf="!isSell">{{ objectData.numberOfRoomsPeriod?.from }}</td>
+              <td *ngIf="!isSell">{{ objectData.numberOfRoomsPeriod?.to }}</td>
+              <td>{{ objectData.status?.name[this.util.getDicNameByLanguage()] }}</td>
               <td>
-                <p *ngIf="item.contractGuid">
-                  Договор ОУ -
-                  <a type="button" [href]="this.util.generatorFullUrl(item.contractGuid)" target="_blank">Документ</a>
+                <p *ngIf="objectData.contractGuid">Договор ОУ -
+                  <a type="button" [href]="this.util.generatorFullUrl(objectData.contractGuid)" target="_blank">
+                    {{ objectData.contractName }}
+                  </a>
                 </p>
-                <p *ngIf="item.depositGuid">
-                  Договор о задатке -
-                  <a type="button" [href]="this.util.generatorFullUrl(item.depositGuid)" target="_blank">Документ</a>
+                <p *ngIf="objectData.depositGuid">Договор о задатке -
+                  <a type="button" [href]="this.util.generatorFullUrl(objectData.depositGuid)" target="_blank">
+                    {{ objectData.depositName }}
+                  </a>
                 </p>
               </td>
-              <td>{{ item.commission | mask : 'separator.2'}} ₸</td>
+              <td>
+                <p *ngIf="objectData.commission">
+                  {{ objectData.commission | mask: 'separator.2'}} ₸
+                </p>
+                <p *ngIf="objectData.depositSum">
+                  {{ objectData.depositSum | mask: 'separator.2' }} ₸
+                </p>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -214,15 +223,17 @@
     </div>
     <div class="row">
       <div class="col-sm">
-        <label>Если Вы хотите принудительно завершить сделку на данном этапе "Статус" то заполните обоснование для принудительного завершения заявки</label>
+        <label>Если Вы хотите принудительно завершить сделку на данном этапе
+          <span>"{{objectData.status?.name[this.util.getDicNameByLanguage()]}}"</span>
+          то заполните обоснование для принудительного завершения заявки</label>
         <textarea
           class="col-sm-12 control" rows="4"
           placeholder="Пояснение принудительного завершения заявки"
-          [(ngModel)]="comment">
+          [(ngModel)]="objectData.comment">
         </textarea>
       </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="!util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)">
       <div class="col-sm">
         <label class="btn btn-info btn-sm mr-4">Документ подтверждающий завершение сделки
           <i class="fa fa-upload"></i>
@@ -247,7 +258,7 @@
     <div class="row toggle-label" [ngClass]="{active: isActive}">
       <div class="col-sm" style="cursor: pointer;" *ngIf="!isConfirmDeal">
         <h5 (click)="onToggle()">
-          Если по успешно реализованная заявка связано со второй заявкой из системы, то укажите вторую заявку
+          Если успешно реализованная заявка связана со второй заявкой из системы, то укажите вторую заявку
           <i class="fa fa-caret-down" aria-hidden="true"></i>
         </h5>
       </div>
@@ -328,7 +339,7 @@
     <div class="row text-right" *ngIf="!isConfirmDeal">
       <div class="col-sm">
         <button type="button" class="btn btn-sm btn-btn btn2 btn-secondary" (click)="modalRef2.hide()">Отмена</button>
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-primary" (click)="closeDeal(false)" [disabled]="!comment">
+        <button type="button" class="btn btn-sm btn-btn btn2 btn-primary" (click)="closeDeal(false)" [disabled]="!objectData.comment">
           Не реализован
         </button>
         <button *ngIf="isClosingDeal" type="button" class="btn btn-sm btn-btn btn2 btn-success"
@@ -337,10 +348,16 @@
         </button>
       </div>
     </div>
-    <div class="row text-right" *ngIf="!util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) && isConfirmDeal">
+    <div class="row text-right"
+         *ngIf="(!util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) ||
+         !util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)) && isConfirmDeal">
       <div class="col-sm">
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-secondary" (click)="confirmDeal(false)">Отказать в завершении</button>
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-success" (click)="confirmDeal(true)">Согласовать завершение</button>
+        <button type="button" class="btn btn-sm btn-btn btn2 btn-secondary" (click)="confirmDeal(false)">
+          Отказать в завершении
+        </button>
+        <button type="button" class="btn btn-sm btn-btn btn2 btn-success" (click)="confirmDeal(true)">
+          Согласовать завершение
+        </button>
       </div>
     </div>
   </div>

@@ -36,16 +36,13 @@ export class BoardComponent implements OnInit, OnDestroy {
   agentList: any;
   login: any;
   modalRef2: BsModalRef;
-  objectData: any[] = [];
-  agentFullname: string;
-  clientFullname: string;
+  objectData: any;
   applicationId: number;
   isSell: boolean;
   targetAppData: any[] = [];
   isActive: boolean = false;
   secondId: number;
   file: any;
-  comment: string;
   isSellTargetApp: boolean;
   roles: any;
   isClosingDeal: boolean;
@@ -322,7 +319,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       } else if (prevStatusId == 3 && currentStatusId == 6) {//  2.3. С "Договор на оказание услуг *" на "Показ *"
         this.moveStatus(data);
       } else if (prevStatusId == 6 && currentStatusId == 10) { // 2.4. С "Показ *" на "Договор о задатке/авансе *"
-        this.openModal2(this._modalContentAdvance, '-modal-sm', null);
+        this.openModal2(this._modalContentAdvance, '-modal-sm');
         return;
       }else if (prevStatusId == 6 && currentStatusId == 7) { //NEW С "Показ *" на на "Закрытие сделки *" - обязательный статус
         this.openInnerPage('board/close-deal/' + this.activeTab);
@@ -373,43 +370,42 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  openModal2(template, class_, item) {
+  openModal2(template, class_) {
     this.modalRef2 = this.modalService.show(template, {class: class_});
-    if (!item) return;
-    this.isSell = this.isSellTargetApp = item.operationType?.code === '001002'; // Продать
-    this.applicationId = item.id;
+  }
+
+  closeApplication(template, data: any): void {
+    this.isSell = this.isSellTargetApp = data.operationType?.code === '001002'; // Продать
+    this.applicationId = data.id;
     this.subscriptions.add(this.boardService.getApplication(this.applicationId).subscribe(res => {
       if (res) {
         this.fillObjectData(res);
       }
     }));
+    this.openModal2(template, 'modal-xl');
   }
 
   fillObjectData(data: any): void {
     this.clearObjectData();
-    this.agentFullname = data.agentFullname;
-    this.clientFullname = data.clientFullname;
     this.isClosingDeal = data.status?.code === '002007';
-    this.comment = data.comment;
     this.isConfirmDeal = data.status?.code === '002011' || data.status?.code === '002012';
-    const obj = {
-      photoIdList: data.photoIdList,
-      address: data.address[this.util.getDicNameByLanguage()],
-      commission: data.commission,
-      objectPrice: data.objectPrice,
-      status: data.status?.name[this.util.getDicNameByLanguage()],
-      numberOfRooms: data.numberOfRooms,
-      numberOfRoomsPeriod: data.numberOfRoomsPeriod,
-      objectPricePeriod: data.objectPricePeriod,
-      contractGuid: data.contractGuid,
-      depositGuid: data.depositGuid
-    };
-    this.objectData.push(obj);
+    this.objectData = data;
+    if (this.objectData.contractGuid) {
+      this.getFileInfo(this.objectData.contractGuid, 'contractName');
+    }
+    if (this.objectData.depositGuid) {
+      this.getFileInfo(this.objectData.depositGuid, 'depositName');
+    }
+  }
+
+  getFileInfo(guid: string, field: string): void {
+    this.subscriptions.add(this.uploader.getFileInfoUsingGET(guid).subscribe(res => {
+      this.objectData[field] = res?.name;
+    }));
   }
 
   clearObjectData(): void {
-    this.agentFullname = this.clientFullname = null;
-    this.objectData = [];
+    this.objectData = null;
   }
 
   getImgUrl(photoIdList: any) {
@@ -456,13 +452,15 @@ export class BoardComponent implements OnInit, OnDestroy {
         agentPhone: res.agentPhone
       };
       this.targetAppData.push(data);
+    }, err => {
+      this.notificationService.showInfo('', err?.ru);
     }));
   }
 
   closeDeal(type: boolean, appId: number = 0) {
     const obj = {
       applicationId: this.applicationId,
-      comment: this.comment,
+      comment: this.objectData?.comment,
       approve: type,
       targetApplicationId: appId
     };
@@ -478,6 +476,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   clearTargetAppData(): void {
     this.secondId = null;
     this.targetAppData = [];
+    this.isSell = this.isSellTargetApp = this.objectData?.operationType?.code === '001002'; // Продать
   }
 
   confirmDeal(approveType: boolean): void {
