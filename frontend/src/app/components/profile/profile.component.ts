@@ -7,9 +7,8 @@ import {ProfileDto} from "../../models/profile/profileDto";
 import {UploaderService} from "../../services/uploader.service";
 import {NotificationService} from "../../services/notification.service";
 import {ComponentCanDeactivate} from "../../helpers/canDeactivate/componentCanDeactivate";
-import {Observable} from "rxjs/index";
+import {Observable, Subscription} from "rxjs";
 import {NgxUiLoaderService} from "ngx-ui-loader";
-import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-profile',
@@ -21,13 +20,13 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate, OnDestr
   selectedFile: File;
   currentUser: User;
   profile: ProfileDto;
-  save: boolean;
+  save: boolean = false;
   photoUuidDel:string;
   loading: boolean;
   agentRoles: boolean;
   rgRoles: boolean;
 
-  constructor(private util: Util,
+  constructor(public util: Util,
               private uploader: UploaderService,
               private notifyService: NotificationService,
               private profileService: ProfileService,
@@ -52,7 +51,6 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate, OnDestr
   }
 
   ngOnInit(): void {
-    // this.ngxLoader.start();
     this.profile = new ProfileDto();
     this.getProfile();
     this.save = false;

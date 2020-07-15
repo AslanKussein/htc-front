@@ -120,7 +120,7 @@ export class CalendarComponent implements OnInit {
         obj.data.data.forEach(e => {
           // console.log(subDays(startOfDay(new Date(e.eventDate)), 0))
           let data = {
-            start: new Date(e.eventDate),
+            start: startOfDay(new Date(e.eventDate)),
             end: new Date(e.eventDate),
             title: e.eventType.name[this.util.getDicNameByLanguage()],
             color: this.getColorsByStatusId(e.eventType.id),

@@ -1,130 +1,163 @@
-<div class="card-body card-bg" ngxUiLoaderBlurred>
-  <div class="card">
-    <div class="card-body">
-      <div class="row">
-        <div class="btn-group btn-breadcrumb">
-          <a href="home" class="btn btn-primary"><i class="fa fa-home"></i></a>
-          <a class="btn btn-primary active">Личный кабинет</a>
+<div class="row py-0"></div>
+<div class="row" ngxUiLoaderBlurred>
+  <div class="col-sm">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <span class="badge-info-id text-center">МОЙ ID: {{util.getCurrentUser().id}}</span>
         </div>
-      </div>
-      <br/>
-      <div class="row">
-        <div class="col-sm">
-          <div style="text-align: right"  *ngIf="profile.photoUuid!=null">
-            <a *ngIf="save" (click)="delImage(profile?.photoUuid)"><i style="color: red" class="fa fa-times fa-2x"></i></a>
+        <div class="row">
+          <div class="col-sm">
+              <img alt="аватар" style="position: inherit" *ngIf="getSrcImg(profile?.photoUuid)" [src]="getSrcImg(profile?.photoUuid)"
+                   class="rounded-circle rounded-circle-ava"/>
+            <label class="text-center fa-2x bg-primary text-white rounded-circle add-ava-btn " *ngIf="save">
+              <i class="fa fa-plus "></i>
+              <input type="file" hidden (change)="onFileChanged($event)">
+            </label>
+            <label class="text-center fa-stack-2x bg-danger text-white rounded-circle add-del-btn" *ngIf="save && profile.photoUuid != null">
+              <a  (click)="delImage(profile?.photoUuid)"><i aria-hidden="true" class="fa fa-times "></i></a>
+            </label>
           </div>
-
-          <img [src]="getSrcImg(profile?.photoUuid)" class="avatar img-circle img-thumbnail"
-               alt="avatar">
-          <a *ngIf="!save" (click)="editProfile()"><i style="color: blue" class="fa fa-edit fa-2x"></i></a>
-          <a *ngIf="save" (click)="saveProfile()"><i style="color: blue" class="fa fa-save fa-2x"></i></a>
-          <br>
-          <br>
-          <label class="btn btn-info btn-sm" translate *ngIf="save">claim.uploadPhoto
-            <i class="fa fa-upload"></i>
-            <input type="file" hidden (change)="onFileChanged($event)">
-          </label>
-        </div>
-        <div class="col-sm-5">
-          <h5>Специалист по недвижимости - RT554</h5>
-          <h4 class="font-weight-bolder text-uppercase">{{currentUser?.surname}} {{currentUser?.name}}</h4>
-          <p class="grey-text">последний раз был (а) 17:00 23 декабря 2019 года</p>
-          <p>Группа продажи - Руководитель группы Асем Аскаровна</p>
-          <p>Рабочее состояние: в отпуске с 1 января - 15 января 2019 года</p>
-
-          <div class="form-group row">
-            <label for="inputEmail3MD" class="col-sm-2 col-form-label">Телефон</label>
-            <div class="col-sm-10">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Телефон" id="inputEmail3MD"
-                       [(ngModel)]="profile.phone" [readOnly]="!save" prefix="+7 " mask="(000) 000 00 00">
-                <div class="input-group-append">
-                  <span class="input-group-text"><i aria-hidden="true" class="fa fa-whatsapp text-success"></i></span>
-                  <span class="input-group-text"><i aria-hidden="true" class="fa fa-telegram text-primary"></i></span>
-                  <span class="input-group-text"><i aria-hidden="true" class="fa fa-skype text-info"></i></span>
-                </div>
+          <div class="col-sm">
+            <div class="row">
+              <span
+                class="fullName-label fullName-label text-uppercase">{{currentUser?.surname}} {{currentUser?.name}}</span>
+              <span class="speciality-label w-100">Специалист по недвижимости</span>
+              <span class="profile-info-label w-100">
+                <i aria-hidden="true" class="fa fa-phone-square profile-icon" *ngIf="!save"></i>
+                <input type="text" class="form-control small" placeholder="Введите ваш номер"
+                       [(ngModel)]="profile.phone" *ngIf="save" prefix="+7 " mask="(000) 000 00 00">
+                <span *ngIf="!save" >{{profile.phone | mask: '0 (000) 000-0000'}}</span>
+              </span>
+              <span class="profile-info-label w-100">
+                <i aria-hidden="true" class="fa fa-envelope profile-icon" *ngIf="!save"></i>
+                <input type="email" class="form-control small" placeholder="Введите ваш e-mail"
+                       [(ngModel)]="profile.email" *ngIf="save">
+                <span *ngIf="!save" >{{profile.email}}</span>
+              </span>
+              <span class="profile-info-label w-100">
+                <i aria-hidden="true" class="fa fa-map-marker profile-icon" *ngIf="!save"></i>
+                <input type="text" class="form-control small" placeholder="Введите ваш адрес"
+                       [(ngModel)]="profile.address" *ngIf="save">
+                <span *ngIf="!save" >{{profile.address}}</span>
+              </span>
+              <span class="profile-info-label w-100 profile-icon-delimiter"></span>
+              <br/>
+              <span class="last-sign-label w-100 clearfix">Последний раз был(-а) <span class="font-weight-bold">в 19:00 11 мая 2020 года</span></span>
+            </div>
+            <div class="row" style="margin-bottom: 0">
+              <div class="col-sm">
+              </div>
+              <div class="col-sm ">
+                <button type="button" *ngIf="!save" (click)="editProfile()"
+                        class="btn color-aqua text-white edit-button float-right ">
+                  Редактировать профиль
+                </button>
+                <button type="button" *ngIf="save" (click)="saveProfile()"
+                        class="btn color-aqua text-white edit-button float-right ">
+                  Сохранить профиль
+                </button>
               </div>
             </div>
           </div>
-          <div class="form-group row">
-            <label for="mail" class="col-sm-2 col-form-label">e-mail:</label>
-            <div class="col-sm-10">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Введите ваш e-mail" id="mail"
-                       [(ngModel)]="profile.email" [readOnly]="!save">
-                <div class="input-group-append">
-                  <span class="input-group-text"><i aria-hidden="true" class="fa fa-google-plus text-info"></i></span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Адрес: </label>
-            <div class="col-sm-10">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Введите ваш адрес"
-                       [(ngModel)]="profile.address" [readOnly]="!save">
-                <div class="input-group-append">
-                  <span class="input-group-text"><i aria-hidden="true" class="fa fa-location-arrow text-info"></i></span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="col-sm-5">
-          <h5><i class="fa fa-arrow-up text-success" aria-hidden="true"></i>&nbsp;<span class="text-primary">Рейтинг риэлтора: 8,7 баллов</span>
-          </h5>
-          <br>
-          <p>Агентские договора: 8,7 баллов</p>
-          <p>Сумма задатков: 8,7 баллов</p>
-          <p>Сумма продаж: 8,7 баллов</p>
-          <div class="row" style="    margin-left: 10px;">
-            <fieldset class="col-md-6">
-              <legend>Транспорт</legend>
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <input mdbInput type="text" [(ngModel)]="profile.transport" [disabled]="!save" class="form-control"
-                         placeholder="Транспорт">
-                </div>
-              </div>
-            </fieldset>
-          </div>
-        </div>
-      </div>
-      <ul class="nav nav-tabs" id="myTab2" role="tablist">
-<!--        <li class="nav-item" *ngIf="fa">-->
-<!--          <a class="nav-link " id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"-->
-<!--             aria-selected="true">Мои клиенты</a>-->
-<!--        </li>-->
-        <li class="nav-item" *ngIf="agentRoles || rgRoles">
-          <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-             aria-selected="false">Мои объекты</a>
-        </li>
-        <li class="nav-item" *ngIf="agentRoles || rgRoles">
-          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
-             aria-selected="false">Мои сделки</a>
-        </li>
-        <li class="nav-item" *ngIf="rgRoles">
-          <a class="nav-link" id="agent-tab" data-toggle="tab" href="#agent" role="tab" aria-controls="contact"
-             aria-selected="false">Мои агенты</a>
-        </li>
-      </ul>
-      <div class="tab-content" id="myTabContent2">
-        <div class="tab-pane fade " id="home" role="tabpanel" aria-labelledby="home-tab" >
-          <app-my-clients></app-my-clients>
-        </div>
-        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab" *ngIf="agentRoles || rgRoles">
-          <app-my-objects></app-my-objects>
-        </div>
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab" *ngIf="agentRoles || rgRoles">
-          <app-my-claims></app-my-claims>
-        </div>
-        <div class="tab-pane fade" id="agent" role="tabpanel" aria-labelledby="agent-tab" *ngIf="agentRoles || rgRoles">
-          <app-my-agents></app-my-agents>
         </div>
       </div>
     </div>
-
+  </div>
+  <div class="col-sm">
+    <div class="card">
+      <div class="card-body">
+        <table style="width:100%;">
+          <tr>
+            <th class="table-column-header">Группа продажи:</th>
+            <td class="table-column-value">Руководитель Рамеева Динара</td>
+          </tr>
+          <tr>
+            <th class="table-column-header">Рабочее состояние:</th>
+            <td class="table-column-value">В отпуске с 4 мая до 1 июня 2020 года</td>
+          </tr>
+          <tr>
+            <th class="table-column-header">Транспорт:</th>
+            <td class="table-column-value">
+              <span *ngIf="!save" >{{profile.transport}}</span>
+              <input type="text" [(ngModel)]="profile.transport" *ngIf="save" class="form-control"
+                     placeholder="Транспорт">
+            </td>
+          </tr>
+        </table>
+        <br/>
+        <div class="rieltor-raiting">
+          <span class="rieltor-raiting-text">Рейтинг риэлтора:</span>
+          <span class="rieltor-raiting-text float-right"><i aria-hidden="true"
+                                                            class="fa fa-star"></i> 9,1 баллов</span>
+        </div>
+        <br/>
+        <table style="width:100%;">
+          <tr>
+            <th class="table-column-header">
+              <i aria-hidden="true" class="fa fa-edit"></i>Агентские договора:
+            </th>
+            <td class="table-blue-value">2 500 000 тг</td>
+          </tr>
+          <tr>
+            <th class="table-column-header">
+              <i class="fa fa-suitcase" aria-hidden="true"></i>
+              Сумма задатков:
+            </th>
+            <td class="table-blue-value">1 000 000 тг</td>
+          </tr>
+          <tr>
+            <th class="table-column-header">
+              <i class="fa fa-money" aria-hidden="true"></i>Сумма продаж:
+            </th>
+            <td class="table-blue-value">70 000 000 тг</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row py-0"></div>
+<div class="row">
+  <div class="col-sm">
+    <ul class="nav nav-tabs" id="myTab2" role="tablist">
+      <li class="nav-item" *ngIf="agentRoles || rgRoles">
+        <a class="nav-link active panel-header" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+           aria-selected="false">Мои объекты</a>
+      </li>
+      <li class="nav-item" *ngIf="agentRoles || rgRoles">
+        <a class="nav-link panel-header" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+           aria-selected="false">Мои сделки</a>
+      </li>
+      <li class="nav-item" *ngIf="rgRoles">
+        <a class="nav-link panel-header" id="agent-tab" data-toggle="tab" href="#agent" role="tab" aria-controls="contact"
+           aria-selected="false">Мои агенты</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent2">
+      <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab"
+           *ngIf="agentRoles || rgRoles">
+        <div class="card">
+          <div class="card-body">
+            <app-my-objects></app-my-objects>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"
+           *ngIf="agentRoles || rgRoles">
+        <div class="card">
+          <div class="card-body">
+            <app-my-claims></app-my-claims>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="agent" role="tabpanel" aria-labelledby="agent-tab" *ngIf="agentRoles || rgRoles">
+        <div class="card">
+          <div class="card-body">
+            <app-my-agents></app-my-agents>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

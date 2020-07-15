@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
     if (!this.util.isNullOrEmpty(obj)) {
       return this.util.generatorPreviewUrl(obj)
     }
-    return null;
+    return 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png';
   }
 
   isActive() {

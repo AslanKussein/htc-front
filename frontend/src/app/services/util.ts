@@ -287,12 +287,17 @@ export class Util {
     return formatDate(date, 'dd.MM.yyyy', 'en-US');
   }
 
-  toLocaleDateString(date: any) {
-    return new Date(date).toLocaleDateString();
+  formatDateTime(date: any) {
+    return formatDate(date, 'dd.MM.yyyy hh:mm:ss', 'en-US');
   }
 
-  formatDateWithTimeZone(date: any) {
-    return new Date(date).toLocaleString("en-US", {timeZone: "Asia/Almaty"});
+  formatDateTimeMoment(date: any) {
+    const moment = require('moment')
+    return moment(date).utc().format('DD.MM.YYYY HH:mm:ss')
+  }
+
+  toLocaleDateString(date: any) {
+    return new Date(date).toLocaleDateString();
   }
 
   nvl(val: any, val2: any) {

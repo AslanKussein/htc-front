@@ -1,17 +1,16 @@
 <div class="row">
   <div class="col-sm">
-    <br/>
-    <div class="input-group w-50">
-      <input type="text" class="form-control" placeholder="Поиск" id="mail" [(ngModel)]="text">
-      <div class="input-group-append">
-        <span class="input-group-text" (click)="findObjects(1)"><i aria-hidden="true"
-                                                                   class="fa fa-search text-info"></i></span>
+    <div class="input-group">
+      <div class="input-group-prepend ">
+        <span class="input-group-text bg-transparent" (click)="findObjects(1)">
+          <i aria-hidden="true" class="fa fa-search text-info"></i></span>
       </div>
+      <input type="text" class="form-control search-input" placeholder="Поиск" id="mail" [(ngModel)]="text">
     </div>
     <br/>
-    <table class="table table-bordered text-center table-sm">
+    <table class="table  text-center table-sm">
       <thead class="text-center">
-      <tr>
+      <tr class="table-main-header">
         <th>№</th>
         <th translate>Фото</th>
         <th translate>Адрес</th>
@@ -26,7 +25,7 @@
       <tbody style="cursor: pointer">
       <tr *ngFor="let object of objectsData;let i = index">
         <td>{{object.realPropertyId}}</td>
-        <td><img [src]="getImgUrl(object)" alt="First Slide" class="photoList" width="100"
+        <td><img *ngIf="getImgUrl(object)" [src]="getImgUrl(object)" alt="First Slide" class="photoList" width="100"
                  height="100"></td>
         <td>{{object.address.nameRu}}</td>
         <td>{{object.objectPrice}}</td>
@@ -36,7 +35,7 @@
         </td>
         <td>{{getName(object.encumbrance)}}</td>
         <td>{{object.priceAnalytics}}</td>
-        <td>{{object.contactsOfAgent}}</td>
+        <td>{{object.contactsOfAgent | mask: '(000) 000-0000'}}</td>
       </tr>
       </tbody>
     </table>
