@@ -1,7 +1,25 @@
 <div class="card-body card-bg" ngxUiLoaderBlurred>
   <div class="card">
     <div class="card-body">
-      <h4 class="mb-4" translate>claim.searchClaim</h4>
+
+      <div class="row">
+        <div class="col-sm-11">
+          <h4 class="mb-4" translate>claim.searchClaim</h4>
+        </div>
+        <div class="col-sm-1">
+          <a routerLink="/compare" *ngIf="this.numeral>0">
+            <div>
+              <img style="min-width: 30px; max-width: 45px;float: left" class="card-img-top"
+                   src="assets/images/claims/libra.png">
+            </div>
+            <div>
+              <p style="color: green;fontWeight:bold">{{this.numeral}}</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+
       <div [formGroup]="applicationSearchForm">
         <div class="row">
           <div class="col-sm">
@@ -148,6 +166,7 @@
               <th translate>Этаж</th>
               <th translate>Статус</th>
               <th translate>Комментарий</th>
+              <th translate></th>
             </tr>
             </thead>
             <tbody style="cursor: pointer">
@@ -170,6 +189,18 @@
               <td>{{claim.floor}}</td>
               <td>{{getDicNameByLanguage(claim, 'status')}}</td>
               <td>{{claim.comment}}</td>
+              <td style="text-align: center;">
+
+                <a (click)="compare(claim)">
+                  <div>
+                  <img style="min-width: 30px; max-width: 45px;float: left" class="card-img-top" src="assets/images/claims/libra.png">
+                  </div>
+                  <div *ngIf="claim.compare" style="position: absolute" >
+                    <i aria-hidden="true" style="color: green;;padding: 17px" class="fa fa-check-circle"></i>
+
+                  </div>
+                </a>
+              </td>
             </tr>
             </tbody>
           </table>
