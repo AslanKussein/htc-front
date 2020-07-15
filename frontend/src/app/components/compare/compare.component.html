@@ -1,0 +1,52 @@
+<div class="card-body card-bg" ngxUiLoaderBlurred>
+  <div class="card">
+    <div class="card-body">
+      <h4 class="mb-4" translate>Сравнение</h4>
+
+      <div class="row">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="open-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open"
+               aria-selected="true" translate>Заявки
+              <span class="badge badge-info ml-2"> 2
+                <!--{{totalItems}}-->
+              </span>
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+        </div>
+        <div class="col-sm">
+          <button type="button" mdbBtn color="success" (click)="compare()"
+                  class="btn btn-sm btn-info float-right btn2"
+                  mdbWavesEffect>
+            <span class="fa fa-search" translate> Показать различия</span>
+          </button>
+          <button type="button" class="btn btn-sm btn-link float-right btn2" (click)="compareClear()"
+                  translate>
+            clear
+          </button>
+        </div>
+
+      </div>
+      <h5 class="mb-5" translate>О сделке</h5>
+
+
+      <div class="row">
+        <div class="col-sm">
+          <table class="table table-bordered table-sm">
+            <thead class="text-center">
+            <tr *ngFor="let value of names ">
+              <th>{{value.value}}</th>
+              <td *ngFor="let data of datas" [ngClass]="getCompareByKey(value.name) ? 'yellow' : ''">
+              {{data[value.name]}}
+              </td>
+            </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+
+
+
+    </div></div></div>

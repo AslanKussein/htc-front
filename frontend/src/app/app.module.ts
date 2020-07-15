@@ -64,6 +64,7 @@ import {MyAgentsComponent} from './components/profile/my-agents/my-agents.compon
 import {NewsComponent} from "./components/news/news.component";
 import {AnalyticsComponent} from "./components/analytics/analytics.component";
 import {AdvanceComponent} from "./components/claims/create-claim/advance/advance.component";
+import { CompareComponent } from './components/compare/compare.component';
 
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
@@ -116,6 +117,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AnalyticsComponent,
     ModalComponent,
     AdvanceComponent,
+    CompareComponent,
   ],
   imports: [
     BrowserModule,

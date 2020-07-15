@@ -41,6 +41,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   totalItems = 0;
   itemsPerPage = 30;
   currentPage = 1;
+  numeral=0;
   empty: boolean = false;
 
   clearForm() {
@@ -130,5 +131,22 @@ export class ClaimsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  compare(claim){
+    if(claim?.compare){
+      claim.compare=!claim.compare;
+      if(claim.compare){
+        this.numeral=this.numeral+1;
+        }else{
+        this.numeral=this.numeral-1;
+
+      }
+    }else{
+      claim.compare=true;
+      this.numeral=this.numeral+1;
+    }
+
+
   }
 }
