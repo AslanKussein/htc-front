@@ -1079,6 +1079,7 @@
                             [items]="dicDynamic"
                             [(ngModel)]="applicationForm.concierge"
                             bindValue="code"
+                            appendTo="body"
                             formControlName="concierge"
                             placeholder="Консьерж">
                           </ng-select>
@@ -1089,6 +1090,7 @@
                             [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
                             [items]="dicDynamic"
                             bindValue="code"
+                            appendTo="body"
                             [(ngModel)]="applicationForm.wheelchair"
                             formControlName="wheelchair"
                             placeholder="Колясочная">
