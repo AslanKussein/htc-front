@@ -1,6 +1,6 @@
 {
   "name": "htc",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config  proxy.conf.json --host htc.dilau.kz --port 80",
@@ -8,8 +8,7 @@
     "build": "ng build --prod --output-path dist/META-INF/resources --aot",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "postinstall": "ngcc"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {

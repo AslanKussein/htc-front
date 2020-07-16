@@ -722,6 +722,7 @@
                           <label class="form-label-v">Материал постройки</label>
                           <ng-select
                             [items]="materials"
+                            appendTo="body"
                             [(ngModel)]="applicationForm.materialOfConstructionId"
                             formControlName="materialOfConstructionId"
                             [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
@@ -779,6 +780,7 @@
                             [(ngModel)]="applicationForm.sewerageId"
                             formControlName="sewerageId"
                             bindValue="value"
+                            appendTo="body"
                             placeholder="Канализация">
                           </ng-select>
                         </div>
@@ -786,6 +788,7 @@
                           <label class="control-labels">Отопление</label>
                           <ng-select
                             [items]="heatingSystems"
+                            appendTo="body"
                             [(ngModel)]="applicationForm.heatingSystemId"
                             formControlName="heatingSystemId"
                             bindValue="value"
