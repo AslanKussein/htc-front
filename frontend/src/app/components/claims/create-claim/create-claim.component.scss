@@ -80,6 +80,7 @@ textarea, textarea:focus {
   position: relative;
   bottom: 280px;
   right: -140px;
+  z-index: 9999;
 }
 
 .photoList {

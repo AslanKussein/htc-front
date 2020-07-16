@@ -31,7 +31,7 @@
       <tbody style="cursor: pointer">
       <tr *ngFor="let claim of claimData;let i = index">
         <td>
-          <a [routerLink]="['/create-claim/', claim?.id]">{{claim.id}}</a>
+          <a [routerLink]="['/create-claim-view/', claim?.id]">{{claim.id}}</a>
         </td>
         <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
         <!--<td>{{formatDate(claim)}}</td>-->
