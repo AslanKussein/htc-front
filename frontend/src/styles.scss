@@ -95,6 +95,11 @@ app-charts {
 .row {
   margin-bottom: 16px;
 }
+
+.disabled-bottom-margin {
+  margin-bottom: 0;
+}
+
 .progress {
   height: .5rem !important;
 }
@@ -108,8 +113,12 @@ app-charts {
   background-color: #00b2a8;
 }
 
-.text-aqua {
+.text-aqua, .text-aqua:active, .text-aqua:focus, .text-aqua:hover {
   color: #00b2a8;
+}
+
+.btn-outline-aqua {
+  border-color: #00b2a8;
 }
 
 fieldset {

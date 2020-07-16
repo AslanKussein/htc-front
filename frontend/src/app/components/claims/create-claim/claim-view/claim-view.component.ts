@@ -214,6 +214,10 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  hasEditApplication() {
+    return true;
+  }
+
   reassignApplication() {
     this.ngxLoader.startBackground();
     let data = {};

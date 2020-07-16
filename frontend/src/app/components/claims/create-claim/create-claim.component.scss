@@ -1,40 +1,59 @@
-.card-bg {
-  background-color: #f0f7fc;
+.operation-type {
+  width: 12.5rem;
+  border-radius: 0.3125rem;
+  border: 1px solid #d0d0d0;
+  margin-right: 0.3125rem;
 }
 
-fieldset {
-  margin: 5px;
-  xmin-width: 0;
-  padding: 10px;
+.form-label-v {
+  height: 1.1875rem;
+  font-size: 1.125rem;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 0.44;
+  letter-spacing: normal;
+  text-align: left;
+  color: #373737;
+}
+
+.gender-border {
+  height: 2.25rem;
+  border-radius: 0.3125rem;
+  border: solid 1px #c4c4c4;
+}
+
+.gender-border .custom-control-label {
+  left: 2.5rem;
+}
+
+.mortgage-div {
+  width: 11.25rem;
+  border-radius: 0.3125rem;
+  border: solid 1px #c4c4c4;
+}
+
+.mortgage-div span {
+  width: 7.8125rem;
+  margin-left: 1.875rem;
+}
+
+input[type='radio']:after {
+  width: 0.9375rem;
+  height: 0.9375rem;
+  border-radius: 0.9375rem;
+  top: -2px;
+  left: -1px;
   position: relative;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  padding-left: 10px !important;
+  background-color: #d1d3d1;
+  content: '';
+  display: inline-block;
+  visibility: visible;
+  border: 2px solid white;
 }
 
-legend {
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 0px;
-  width: 35%;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 5px 5px 5px 10px;
-  background-color: #ffffff;
-}
-
-.photoList {
-  border: 3px solid #000;
-  padding: 0;
-}
-
-.removeItemCarousel {
-  z-index: 100;
-  margin: 5px 0 0 37%
-}
-
-.carousel-indicators {
-  width: 10%
+input[type='radio']:checked:after,input[type='radio']:checked:before {
+  background-color: #00b2a8;
 }
 
 textarea, textarea:focus {
@@ -43,19 +62,94 @@ textarea, textarea:focus {
   border-bottom: 1px solid black;
 }
 
-.contact-accordion {
-  min-height: 312px;
-}
-
 .map {
-  width: 1000px;
-  height: 500px;
-}
-.ya-map-container {
-  width: 300px;
-  height: 200px;
+  min-height: 490px;
 }
 
-.marginleft{
-  margin-left: -25px;
+.upload-btn {
+  font-size: 18px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
 }
+
+.removeItemCarousel {
+  position: relative;
+  bottom: 280px;
+  right: -140px;
+}
+
+.photoList {
+  border: 3px solid #000;
+  padding: 0;
+}
+
+@function aqua($opacity) {
+  @return rgba(0,178,168, $opacity)
+}
+
+.square-t {
+  background: aqua(0.1);
+  margin: 0 -20px;
+  padding: 10px 20px;
+}
+
+//
+//
+//
+//
+//
+//
+//
+//
+//.card-bg {
+//  background-color: #f0f7fc;
+//}
+//
+//fieldset {
+//  margin: 5px;
+//  xmin-width: 0;
+//  padding: 10px;
+//  position: relative;
+//  border-radius: 4px;
+//  border: 1px solid #ddd;
+//  padding-left: 10px !important;
+//}
+//
+//legend {
+//  font-size: 14px;
+//  font-weight: bold;
+//  margin-bottom: 0px;
+//  width: 35%;
+//  border: 1px solid #ddd;
+//  border-radius: 4px;
+//  padding: 5px 5px 5px 10px;
+//  background-color: #ffffff;
+//}
+//
+
+//
+
+//
+//.carousel-indicators {
+//  width: 10%
+//}
+//
+//textarea, textarea:focus {
+//  border: none;
+//  outline: none !important;
+//  border-bottom: 1px solid black;
+//}
+//
+
+//.ya-map-container {
+//  width: 300px;
+//  height: 200px;
+//}
+//
+//.marginleft{
+//  margin-left: -25px;
+//}

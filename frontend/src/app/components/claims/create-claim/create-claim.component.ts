@@ -56,7 +56,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   photoList: any[] = [];
   photoPlanList: any[] = [];
   photo3DList: any[] = [];
-  operationType: Dic[];
+  operationType: any;
   objectType: Dic[];
   city: Dic[];
   kazPost: any;
@@ -79,7 +79,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   possibleReasonForBiddingSort: Dic[];
   applicationForm: any;
   image: any;
-  dicDynamic: Dic[];
+  dicDynamic: any;
   elevatorType: Dic[];
   yardTypes: Dic[];
   readonlyChooseJK: boolean = false;
@@ -1112,31 +1112,21 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.util.dnHref('home');
   }
 
-  showHideHeader(id: number) {
-    if (id == 1) {
-      this.headerDeal = false;
-    } else if (id == 2) {
-      this.headerDeal = true;
+  showHideHeader(id: any) {
+    if (id == 'headerDeal') {
+      this.headerDeal = !this.headerDeal;
     }
-    if (id == 3) {
-      this.clientDeal = false;
-    } else if (id == 4) {
-      this.clientDeal = true;
+    if (id == 'clientDeal') {
+      this.clientDeal = !this.clientDeal;
     }
-    if (id == 5) {
-      this.aboutObject = false;
-    } else if (id == 6) {
-      this.aboutObject = true;
+    if (id == 'aboutObject') {
+      this.aboutObject = !this.aboutObject;
     }
-    if (id == 7) {
-      this.aboutPhoto = false;
-    } else if (id == 8) {
-      this.aboutPhoto = true;
+    if (id == 'aboutPhoto') {
+      this.aboutPhoto = !this.aboutPhoto;
     }
-    if (id == 9) {
-      this.aboutMap = false;
-    } else if (id == 10) {
-      this.aboutMap = true;
+    if (id == 'aboutMap') {
+      this.aboutMap = !this.aboutMap;
     }
   }
 

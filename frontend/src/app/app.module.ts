@@ -65,6 +65,7 @@ import {NewsComponent} from "./components/news/news.component";
 import {AnalyticsComponent} from "./components/analytics/analytics.component";
 import {AdvanceComponent} from "./components/claims/create-claim/advance/advance.component";
 import { CompareComponent } from './components/compare/compare.component';
+import { MaterialModule } from './MaterialModule';
 
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
@@ -149,7 +150,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NgbModule,
     AngularYandexMapsModule,
     MDBBootstrapModule.forRoot(),
-    MDBBootstrapModule.forRoot()
+    MDBBootstrapModule.forRoot(),
+    MaterialModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
