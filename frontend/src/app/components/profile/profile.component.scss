@@ -154,20 +154,52 @@
 }
 
 .panel-header {
-  font-size: 20px;
+  max-font-size: 20px;
   font-weight: bold;
   font-stretch: normal;
   font-style: normal;
   line-height: 1.4;
   letter-spacing: normal;
   text-align: left;
-  color: #00b2a8;
+  color: #656c75;
 }
 
-.panel-header:active,.panel-header:focus,.panel-header:hover,.panel-header:before, .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
-  color: #00b2a8!important;
-  border-bottom: 1px solid #00b2a8;
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+  background-color: transparent;
+  border: none;
 }
+
+.panel-header:active,.panel-header:focus,.panel-header:hover, .nav-tabs .nav-link.active, .nav-item.show .nav-link, .badge:active {
+  color: #00b2a8!important;
+  border-bottom: 2px solid #00b2a8;
+}
+
+table thead {
+  width: 80px;
+  height: 31px;
+  font-size: 16px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-align: center;
+  color: #858b93;
+}
+
+table tbody {
+  width: 149px;
+  height: 35px;
+  font-size: 16px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.13;
+  letter-spacing: normal;
+  text-align: center;
+  color: #767d86;
+}
+
 
 .card-min-height {
   min-height: 372.6px

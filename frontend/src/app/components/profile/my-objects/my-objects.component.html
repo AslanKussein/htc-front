@@ -7,6 +7,10 @@
       </div>
       <input type="text" class="form-control search-input" placeholder="Поиск" id="mail" [(ngModel)]="text">
     </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm">
     <br/>
     <table class="table  text-center table-sm">
       <thead class="text-center">
@@ -22,7 +26,7 @@
         <th translate>Контакты агента</th>
       </tr>
       </thead>
-      <tbody style="cursor: pointer">
+      <tbody class="bg-white">
       <tr *ngFor="let object of objectsData;let i = index">
         <td>{{object.realPropertyId}}</td>
         <td><img *ngIf="getImgUrl(object)" [src]="getImgUrl(object)" alt="First Slide" class="photoList" width="100"

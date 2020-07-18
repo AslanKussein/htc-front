@@ -28,7 +28,7 @@
         <!--<th translate>Комментарий</th>-->
       </tr>
       </thead>
-      <tbody style="cursor: pointer">
+      <tbody class="bg-white">
       <tr *ngFor="let claim of claimData;let i = index">
         <td>
           <a [routerLink]="['/create-claim-view/', claim?.id]">{{claim.id}}</a>

@@ -1,6 +1,6 @@
 <div class="row py-0"></div>
 <div class="row" ngxUiLoaderBlurred>
-  <div class="col-sm" >
+  <div class="col-sm">
     <div class="card card-min-height">
       <div class="card-body">
         <div class="row">
@@ -8,14 +8,16 @@
         </div>
         <div class="row">
           <div class="col-sm">
-              <img alt="аватар" style="position: inherit" *ngIf="getSrcImg(profile?.photoUuid)" [src]="getSrcImg(profile?.photoUuid)"
-                   class="rounded-circle rounded-circle-ava"/>
+            <img alt="аватар" style="position: inherit" *ngIf="getSrcImg(profile?.photoUuid)"
+                 [src]="getSrcImg(profile?.photoUuid)"
+                 class="rounded-circle rounded-circle-ava"/>
             <label class="text-center fa-2x bg-primary text-white rounded-circle add-ava-btn " *ngIf="save">
               <i class="fa fa-plus "></i>
               <input type="file" hidden (change)="onFileChanged($event)">
             </label>
-            <label class="text-center fa-stack-2x bg-danger text-white rounded-circle add-del-btn" *ngIf="save && profile.photoUuid != null">
-              <a  (click)="delImage(profile?.photoUuid)"><i aria-hidden="true" class="fa fa-times "></i></a>
+            <label class="text-center fa-stack-2x bg-danger text-white rounded-circle add-del-btn"
+                   *ngIf="save && profile.photoUuid != null">
+              <a (click)="delImage(profile?.photoUuid)"><i aria-hidden="true" class="fa fa-times "></i></a>
             </label>
           </div>
           <div class="col-sm">
@@ -27,19 +29,19 @@
                 <i aria-hidden="true" class="fa fa-phone-square profile-icon" *ngIf="!save"></i>
                 <input type="text" class="form-control small" placeholder="Введите ваш номер"
                        [(ngModel)]="profile.phone" *ngIf="save" prefix="+7 " mask="(000) 000 00 00">
-                <span *ngIf="!save" >{{profile.phone | mask: '0 (000) 000-0000'}}</span>
+                <span *ngIf="!save">{{profile.phone | mask: '0 (000) 000-0000'}}</span>
               </span>
               <span class="profile-info-label w-100">
                 <i aria-hidden="true" class="fa fa-envelope profile-icon" *ngIf="!save"></i>
                 <input type="email" class="form-control small" placeholder="Введите ваш e-mail"
                        [(ngModel)]="profile.email" *ngIf="save">
-                <span *ngIf="!save" >{{profile.email}}</span>
+                <span *ngIf="!save">{{profile.email}}</span>
               </span>
               <span class="profile-info-label w-100">
                 <i aria-hidden="true" class="fa fa-map-marker profile-icon" *ngIf="!save"></i>
                 <input type="text" class="form-control small" placeholder="Введите ваш адрес"
                        [(ngModel)]="profile.address" *ngIf="save">
-                <span *ngIf="!save" >{{profile.address}}</span>
+                <span *ngIf="!save">{{profile.address}}</span>
               </span>
               <span class="profile-info-label w-100 profile-icon-delimiter"></span>
               <br/>
@@ -64,7 +66,7 @@
       </div>
     </div>
   </div>
-  <div class="col-sm" >
+  <div class="col-sm">
     <div class="card card-min-height">
       <div class="card-body">
         <table style="width:100%;">
@@ -79,7 +81,7 @@
           <tr>
             <th class="table-column-header">Транспорт:</th>
             <td class="table-column-value">
-              <span *ngIf="!save" >{{profile.transport}}</span>
+              <span *ngIf="!save">{{profile.transport}}</span>
               <input type="text" [(ngModel)]="profile.transport" *ngIf="save" class="form-control"
                      placeholder="Транспорт">
             </td>
@@ -122,41 +124,35 @@
   <div class="col-sm">
     <ul class="nav nav-tabs" id="myTab2" role="tablist">
       <li class="nav-item" *ngIf="agentRoles || rgRoles">
-        <a class="nav-link active panel-header" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+        <a class="nav-link active panel-header" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+           aria-controls="profile"
            aria-selected="false">Мои объекты</a>
       </li>
       <li class="nav-item" *ngIf="agentRoles || rgRoles">
-        <a class="nav-link panel-header" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+        <a class="nav-link panel-header" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+           aria-controls="contact"
            aria-selected="false">Мои сделки</a>
       </li>
       <li class="nav-item" *ngIf="rgRoles">
-        <a class="nav-link panel-header" id="agent-tab" data-toggle="tab" href="#agent" role="tab" aria-controls="contact"
+        <a class="nav-link panel-header" id="agent-tab" data-toggle="tab" href="#agent" role="tab"
+           aria-controls="contact"
            aria-selected="false">Мои агенты</a>
       </li>
     </ul>
     <div class="tab-content" id="myTabContent2">
       <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab"
            *ngIf="agentRoles || rgRoles">
-        <div class="card">
-          <div class="card-body">
-            <app-my-objects></app-my-objects>
-          </div>
-        </div>
+        <br/>
+        <app-my-objects></app-my-objects>
       </div>
       <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"
            *ngIf="agentRoles || rgRoles">
-        <div class="card">
-          <div class="card-body">
-            <app-my-claims></app-my-claims>
-          </div>
-        </div>
+        <br/>
+        <app-my-claims></app-my-claims>
       </div>
       <div class="tab-pane fade" id="agent" role="tabpanel" aria-labelledby="agent-tab" *ngIf="agentRoles || rgRoles">
-        <div class="card">
-          <div class="card-body">
-            <app-my-agents></app-my-agents>
-          </div>
-        </div>
+        <br/>
+        <app-my-agents></app-my-agents>
       </div>
     </div>
   </div>
