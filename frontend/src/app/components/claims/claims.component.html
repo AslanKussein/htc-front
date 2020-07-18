@@ -94,14 +94,22 @@
             <span class="found-text">Найдено всего: {{totalItems}} объектов</span>
           </div>
           <div class="col-sm">
-            <button type="button" (click)="findClaims(1)"
-                    class="btn btn-sm color-aqua text-white float-right search-btn">
-              <span class="fa fa-search" translate> Поиск</span>
-            </button>
-            <button type="button" class="btn btn-sm float-right btn-outline-dark clear-btn" (click)="clearForm()"
-                    translate>
-              clear
-            </button>
+            <mat-button-toggle-group class="float-right">
+              <mat-button-toggle class="operation-type" *ngIf="this.numeral > 0" routerLink="/compare"
+                                 [class]="'btn btn-sm btn-outline-dark clear-btn'">
+                <i class="fa fa-balance-scale fa-2x" aria-hidden="true"></i>
+                <span class="badge color-aqua ">{{numeral}}</span>
+              </mat-button-toggle>
+              <mat-button-toggle class="operation-type" (click)="clearForm()"
+                                 [class]="'btn btn-sm btn-outline-dark clear-btn'">
+                Очистить
+              </mat-button-toggle>
+              <mat-button-toggle class="operation-type" (click)="findClaims(1)"
+                                 [class]="'btn btn-sm color-aqua text-white search-btn'">
+                <i aria-hidden="true" class="fa fa-search"></i>
+                Поиск
+              </mat-button-toggle>
+            </mat-button-toggle-group>
           </div>
         </div>
       </div>
@@ -111,46 +119,48 @@
 
 <div class="card">
   <div class="card-body">
-      <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active panel-header" id="open-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open"
-             aria-selected="true" translate>claim.opening
-            <span class="badge badge-info ml-2">{{totalItems}}</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link panel-header" id="open-sell-tab" data-toggle="tab" href="#open-sell" role="tab"
-             aria-controls="open-sell"
-             aria-selected="false" translate>claim.openingSell
-            <span class="badge badge-info ml-2">0</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link panel-header" id="open-buy-tab" data-toggle="tab" href="#open-buy" role="tab"
-             aria-controls="open-buy"
-             aria-selected="false" translate>claim.openingBuy
-            <span class="badge badge-info ml-2">0</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link panel-header" id="closed-tab" data-toggle="tab" href="#closed" role="tab" aria-controls="closed"
-             aria-selected="false" translate>claim.closed
-            <span class="badge badge-info ml-2">0</span>
-          </a>
-        </li>
-      </ul>
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="open" role="tabpanel" aria-labelledby="open-tab">
-        </div>
-        <div class="tab-pane fade" id="open-sell" role="tabpanel" aria-labelledby="open-sell-tab">
-
-        </div>
-        <div class="tab-pane fade" id="open-buy" role="tabpanel" aria-labelledby="open-buy-tab">
-        </div>
-
-        <div class="tab-pane fade" id="closed" role="tabpanel" aria-labelledby="closed-tab">
-        </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active panel-header" id="open-tab" data-toggle="tab" href="#open" role="tab"
+           aria-controls="open"
+           aria-selected="true" translate>claim.opening
+          <span class="badge badge-info ml-2">{{totalItems}}</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link panel-header" id="open-sell-tab" data-toggle="tab" href="#open-sell" role="tab"
+           aria-controls="open-sell"
+           aria-selected="false" translate>claim.openingSell
+          <span class="badge badge-info ml-2">0</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link panel-header" id="open-buy-tab" data-toggle="tab" href="#open-buy" role="tab"
+           aria-controls="open-buy"
+           aria-selected="false" translate>claim.openingBuy
+          <span class="badge badge-info ml-2">0</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link panel-header" id="closed-tab" data-toggle="tab" href="#closed" role="tab"
+           aria-controls="closed"
+           aria-selected="false" translate>claim.closed
+          <span class="badge badge-info ml-2">0</span>
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="open" role="tabpanel" aria-labelledby="open-tab">
       </div>
+      <div class="tab-pane fade" id="open-sell" role="tabpanel" aria-labelledby="open-sell-tab">
+
+      </div>
+      <div class="tab-pane fade" id="open-buy" role="tabpanel" aria-labelledby="open-buy-tab">
+      </div>
+
+      <div class="tab-pane fade" id="closed" role="tabpanel" aria-labelledby="closed-tab">
+      </div>
+    </div>
   </div>
 </div>
 
