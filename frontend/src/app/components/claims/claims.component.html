@@ -117,7 +117,7 @@
   </div>
 </div>
 
-<div class="card">
+<div class="card border-0 hex-blue-color">
   <div class="card-body">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item">
@@ -166,11 +166,11 @@
 
 <div class="row">
   <div class="col-sm">
-    <div class="card">
-      <div class="card-body overflow-auto">
+    <div class="card border-0">
+      <div class="card-body hex-blue-color overflow-auto">
         <table class="table table-sm">
-          <thead class="text-center">
-          <tr>
+          <thead class="text-center border-0 hex-blue-color">
+          <tr style="height: 60px">
             <th>ID</th>
             <th>Операция</th>
             <th translate>claim.crDateFrom</th>
@@ -188,7 +188,8 @@
             <th translate></th>
           </tr>
           </thead>
-          <tbody style="cursor: pointer">
+          <br/>
+          <tbody class="bg-white">
           <tr *ngFor="let claim of claimData;let i = index">
             <td>
               <a [routerLink]="['/create-claim-view/', claim?.id]">{{claim.id}}</a>

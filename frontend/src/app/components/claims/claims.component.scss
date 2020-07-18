@@ -49,12 +49,17 @@
   line-height: 1.4;
   letter-spacing: normal;
   text-align: left;
-  color: #00b2a8;
+  color: #656c75;
 }
 
-.panel-header:active,.panel-header:focus,.panel-header:hover,.panel-header:before, .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+  background-color: transparent;
+  border: none;
+}
+
+.panel-header:active,.panel-header:focus,.panel-header:hover, .nav-tabs .nav-link.active, .nav-item.show .nav-link, .badge:active {
   color: #00b2a8!important;
-  border-bottom: 1px solid #00b2a8;
+  border-bottom: 2px solid #00b2a8;
 }
 
 table thead {

@@ -127,6 +127,10 @@ body {
   border-color: #00b2a8;
 }
 
+.hex-blue-color {
+  background-color: #ebedf0;
+}
+
 fieldset {
   margin: 5px;
   xmin-width: 0;
@@ -146,4 +150,13 @@ legend {
   border-radius: 4px;
   padding: 5px 5px 5px 10px;
   background-color: #ffffff;
+}
+
+table tbody tr td {
+  cursor: pointer;
+  min-height: 46px;
+}
+
+.table thead th, .table thead td {
+  border: none;
 }
