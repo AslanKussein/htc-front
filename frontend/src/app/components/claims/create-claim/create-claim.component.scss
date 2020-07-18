@@ -7,7 +7,7 @@
 
 .form-label-v {
   height: 1.1875rem;
-  font-size: 1.125rem;
+  max-font-size: 1.125rem;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -41,18 +41,17 @@
 input[type='radio']:after {
   width: 0.9375rem;
   height: 0.9375rem;
-  border-radius: 0.9375rem;
-  top: -2px;
-  left: -1px;
+  top: -3px;
+  left: -2px;
   position: relative;
-  background-color: #d1d3d1;
+  background-color: transparent;
   content: '';
   display: inline-block;
   visibility: visible;
-  border: 2px solid white;
 }
 
-input[type='radio']:checked:after,input[type='radio']:checked:before {
+input[type='radio']:checked:after,input[type='radio']:checked:before,
+.custom-control-input:checked ~ .custom-control-label::before {
   background-color: #00b2a8;
 }
 
@@ -96,6 +95,36 @@ textarea, textarea:focus {
   background: aqua(0.1);
   margin: 0 -20px;
   padding: 10px 20px;
+}
+
+@function grey($opacity) {
+  @return rgba(196,196,196, $opacity)
+}
+
+.test {
+  max-width: 12.5rem;
+  min-width: 12.5rem;
+  height: 36px;
+  border-radius: 5px;
+  border: 1px solid #c4c4c4;
+  background: grey(0.111);
+  margin: 0 -2px;
+  padding: 5px 6px;
+}
+
+.atelier {
+  max-width: 13.5rem;
+  min-width: 12.5rem;
+  height: 36px;
+  border-radius: 5px;
+  border: 1px solid #c4c4c4;
+  background: grey(0.111);
+  margin: 0 -2px;
+  padding: 5px 6px;
+}
+
+.row-mx-width {
+  //min-width: 16.875rem;
 }
 
 //

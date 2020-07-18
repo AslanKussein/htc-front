@@ -32,6 +32,8 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {NewDicService} from "../../../services/new.dic.service";
 import {DicService} from "../../../services/dic.service";
+declare var jquery: any;   // not required
+declare var $: any;   // not required
 
 @Injectable({
   providedIn: 'root'
@@ -328,6 +330,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
     window.scrollTo(0, 0);
     this.applicationForm.unification = 'address';
+    $("#wrapper").toggleClass("toggled");
   }
 
   loadResidentialComplexes() {

@@ -82,22 +82,23 @@
                     <div [class.disabled]="!edit">
                       <div class="row">
                         <div class="col-sm"
-                             [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_DEAL_DATA'])">
+                             [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_DEAL_DATA'])"
+                             [class.disabledDev]="hasShowGroup(['UPDATE_DEAL_DATA']) && this.applicationId">
                           <label class="form-label-v">Операция<span class="text-danger">&nbsp;*</span></label>
-                          <div [class.disabledDev]="hasShowGroup(['UPDATE_DEAL_DATA']) && this.applicationId">
-                            <div class="form-group">
-                              <div class="radio-button">
-                                <mat-button-toggle-group [(ngModel)]="applicationForm.operationTypeId" formControlName="operationTypeId">
-                                  <mat-button-toggle class="operation-type" (click)="setApplicationFlagSort()" *ngFor="let item of operationType" [value]="item"
-                                                     [class]="item.value != applicationForm.operationTypeId?.value ? 'bg-white text-dark' : ''"
-                                                     [ngClass]="{ 'color-aqua text-white':item.value === applicationForm.operationTypeId?.value}">
-                                    {{item.label}}
-                                  </mat-button-toggle>
-                                </mat-button-toggle-group>
-                              </div>
-                            </div>
+                          <div>
+                            <mat-button-toggle-group [(ngModel)]="applicationForm.operationTypeId"
+                                                     formControlName="operationTypeId">
+                              <mat-button-toggle class="operation-type" (click)="setApplicationFlagSort()"
+                                                 *ngFor="let item of operationType" [value]="item"
+                                                 [class]="item.value != applicationForm.operationTypeId?.value ? 'bg-white text-dark' : ''"
+                                                 [ngClass]="{ 'color-aqua text-white':item.value === applicationForm.operationTypeId?.value}">
+                                {{item.label}}
+                              </mat-button-toggle>
+                            </mat-button-toggle-group>
                           </div>
-                          <div *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid || !f.operationTypeId.valid" class="text-danger">
+                          <div
+                            *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid || !f.operationTypeId.valid"
+                            class="text-danger">
                             <div *ngIf="f.operationTypeId.errors.required" translate>claim.requiredField</div>
                           </div>
                         </div>
@@ -114,7 +115,7 @@
                             <div *ngIf="f.objectTypeId.errors.required" translate>claim.requiredField</div>
                           </div>
                         </div>
-                        <div class="col-sm-5"
+                        <div class="col-sm"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO',  'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])">
                           <label class="form-label-v">Цена объекта (тг)
                             <span class="text-danger"
@@ -143,84 +144,73 @@
                                  *ngIf="!isSell()"
                                  mask="separator" suffix=" ₸" thousandSeparator=" "
                                  [(ngModel)]="applicationForm.objectPrice" formControlName="objectPrice" min="0">
-                          <div
-                            *ngIf="isBuy() && f.objectPrice.touched && f.objectPrice.invalid"
-                            class="text-danger">
+                          <div *ngIf="isBuy() && f.objectPrice.touched && f.objectPrice.invalid" class="text-danger">
                             <div *ngIf="f.objectPrice.errors.required" translate>claim.requiredField</div>
                           </div>
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-sm-3"
+                        <div class="col-sm row-mx-width"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])"
                              [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
                           <label class="form-label-v">Ипотека</label>
-                          <div class="mortgage-div">
-                            <span *ngFor="let data of dicDynamic;let i = index">
+                          <div class="row test">
+                            <div class="col-sm" *ngFor="let data of dicDynamic;let i = index">
                               <input type="radio" [id]="data.code" [name]="'mortgage'"
                                      [value]="data.code"
                                      [(ngModel)]="applicationForm.mortgage" formControlName="mortgage"/>
-                              <label>{{data.label}}</label>
-                            </span>
+                              <label>&nbsp;{{data.label}}</label>
+                            </div>
                           </div>
                         </div>
-                        <div class="col-sm-3" *ngIf="isBuy()"
+                        <div class="col-sm row-mx-width" *ngIf="isBuy()"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
-                          <div class="col-sm">
-                            <label class="form-label-v">Обмен</label>
-                            <div class="mortgage-div">
-                              <span *ngFor="let data of dicDynamic;let i = index">
-                                <input type="radio" [id]="data.code" [name]="'exchange'"
-                                       [value]="data.code"
-                                       [(ngModel)]="applicationForm.exchange" formControlName="exchange"/>
-                                <label>{{data.label}}</label>
-                              </span>
+                          <label class="form-label-v">Обмен</label>
+                          <div class="row test">
+                            <div class="col-sm" *ngFor="let data of dicDynamic;let i = index">
+                              <input type="radio" [id]="data.code" [name]="'exchange'"
+                                     [value]="data.code"
+                                     [(ngModel)]="applicationForm.exchange" formControlName="exchange"/>
+                              <label>&nbsp;{{data.label}}</label>
                             </div>
                           </div>
                         </div>
-                        <div class="row" *ngIf="isBuy()">
-                          <div class="col-sm">
-                            <label class="form-label-v">Общая долевая собственность</label>
-                            <div class="mortgage-div"
-                                 [class.disabledDev]="hasShowGroup(['UPDATE_SALE_DEAL_INFO'])">
-                              <span *ngFor="let data of dicDynamic;let i = index">
-                                <input type="radio" [id]="data.code" [name]="'sharedOwnershipProperty'"
-                                       [value]="data.code"
-                                       [(ngModel)]="applicationForm.sharedOwnershipProperty"
-                                       formControlName="sharedOwnershipProperty"/>
-                                <label>{{data.label}}</label>
-                              </span>
+                        <div class="col-sm row-mx-width" *ngIf="isBuy()"
+                             [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
+                          <label class="form-label-v">Обременение</label>
+                          <div class="row test" [class.disabledDev]="hasShowGroup(['UPDATE_SALE_DEAL_INFO'])">
+                            <div class="col-sm" *ngFor="let data of dicDynamic;let i = index">
+                              <input type="radio" [id]="data.code" [name]="'encumbrance'"
+                                     [value]="data.code"
+                                     [(ngModel)]="applicationForm.encumbrance"
+                                     formControlName="encumbrance"/>
+                              <label>&nbsp;{{data.label}}</label>
                             </div>
                           </div>
-                          <div class="col-sm-3" *ngIf="isBuy()"
-                               [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
-                            <label class="form-label-v">Обременение</label>
-                            <div class="mortgage-div"
-                                 [class.disabledDev]="hasShowGroup(['UPDATE_SALE_DEAL_INFO'])">
-                              <span *ngFor="let data of dicDynamic;let i = index">
-                                <input type="radio" [id]="data.code" [name]="'encumbrance'"
-                                       [value]="data.code"
-                                       [(ngModel)]="applicationForm.encumbrance"
-                                       formControlName="encumbrance"/>
-                                <label>{{data.label}}</label>
-                              </span>
-                            </div>
-                          </div>
+                        </div>
+                        <div class="col-sm-4" *ngIf="isBuy()">
+                          <label class="form-label-v">Общая долевая собственность</label>
+                          <ng-select
+                            [class.disabledDev]="hasShowGroup(['UPDATE_SALE_DEAL_INFO'])"
+                            [items]="dicDynamic"
+                            bindValue="code"
+                            [(ngModel)]="applicationForm.sharedOwnershipProperty"
+                            formControlName="sharedOwnershipProperty">
+                          </ng-select>
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-sm-3" [class.disabled]="!edit"
+                        <div class="col-sm row-mx-width" [class.disabled]="!edit"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])">
                           <label class="form-label-v">Вероятность торга</label>
-                          <div class="mortgage-div"
-                               [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
-                              <span *ngFor="let data of dicDynamic;let i = index">
+                          <div class="row test" [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
+                              <div class="col-sm" *ngFor="let data of dicDynamic;let i = index">
                                 <input type="radio" [id]="data.code" [name]="'probabilityOfBidding'"
                                        [value]="data.code"
                                        [(ngModel)]="applicationForm.probabilityOfBidding"
                                        formControlName="probabilityOfBidding"/>
-                                <label>{{data.label}}</label>
-                              </span>
+                                <label>&nbsp;{{data.label}}</label>
+                              </div>
                           </div>
                         </div>
                         <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 'true'"
@@ -236,7 +226,7 @@
                                  [readOnly]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])"
                                  formControlName="theSizeOfTrades" min="0"/>
                         </div>
-                        <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 'true'"
+                        <div class="col-sm-4" *ngIf="applicationForm.probabilityOfBidding == 'true'"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])">
                           <label class="form-label-v">Возможные причины торга</label>
                           <ng-select
@@ -307,7 +297,7 @@
                        data-parent="#accordionaboutOwnerOne" [class.disabledDev]="this.applicationId">
                     <div class="card-body accordionAboutObject">
                       <div class="row">
-                        <div class="col-sm"
+                        <div class="col-sm-3"
                              [hidden]="hasShowGroup(['VIEW_CLIENT_DATA', 'UPDATE_CLIENT_DATA'])">
                           <label class="form-label-v" translate>claim.contacts
                             <span class="text-danger" *ngIf="!applicationForm.phoneNumber">&nbsp;*</span>
@@ -351,9 +341,9 @@
                       </div>
                       <div class="row"
                            [hidden]="hasShowGroup(['VIEW_CLIENT_DATA', 'UPDATE_CLIENT_DATA'])">
-                        <div class="col-sm"
+                        <div class="col-sm-3"
                              [hidden]="hasShowGroup(['VIEW_CLIENT_DATA', 'UPDATE_CLIENT_DATA'])">
-                          <label for="patronymic" translate>patronymic</label>
+                          <label class="form-label-v" translate>patronymic</label>
                           <input type="text" class="form-control" id="patronymic" formControlName="patronymic"
                                  placeholder="{{'patronymic' | translate}}"
                                  [readOnly]="hasShowGroup(['UPDATE_CLIENT_DATA'])"
@@ -366,7 +356,7 @@
                               <div class="gender-border">
                                 <input type="radio" id="men" name="gender" value="MALE" class="custom-control-input"
                                        [(ngModel)]="applicationForm.gender" formControlName="gender">
-                                <label class="custom-control-label" for="men" translate>men</label>
+                                <label class="custom-control-label" for="men">Муж.</label>
                               </div>
                             </div>
                             &nbsp;
@@ -375,7 +365,7 @@
                                 <input type="radio" id="women" name="gender" value="FEMALE"
                                        class="custom-control-input"
                                        [(ngModel)]="applicationForm.gender" formControlName="gender">
-                                <label class="custom-control-label" for="women" translate>women</label>
+                                <label class="custom-control-label" for="women">Жен.</label>
                               </div>
                             </div>
                           </div>
@@ -450,7 +440,7 @@
                         </div>
                       </div>
                       <div class="row" *ngIf="isBuy()">
-                        <div class="col-sm-5" [class.disabled]="this.applicationForm.unification != 'address'">
+                        <div class="col-sm-4" [class.disabled]="this.applicationForm.unification != 'address'">
                           <label class="form-label-v">Полный адрес
                             <span class="text-danger" *ngIf="!applicationForm.postcode">&nbsp;*</span>
                           </label>
@@ -1013,25 +1003,23 @@
                             </div>
                           </div>
                           <div class="col-sm" [class.disabled]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                            <label class="form-label-v" translate>claim.studio</label>
-                            <div class="mortgage-div">
-                              <span *ngFor="let data of dicDynamic;let i = index">
-                                <input type="radio" [id]="data.code" [name]="'atelier'"
-                                       [value]="data.code"
-                                       [(ngModel)]="applicationForm.atelier" formControlName="atelier"/>
-                                <label>{{data.label}}</label>
-                              </span>
+                            <label class="form-label-v"> </label>
+                            <div class="row atelier">
+                                <input type="radio" [id]="'true'" [name]="'atelier'"
+                                       [value]="'true'"
+                                       [(ngModel)]="applicationForm.atelier"
+                                       formControlName="atelier"/>
+                                <label>&nbsp;&nbsp;Студия</label>
                             </div>
                           </div>
                           <div class="col-sm" [class.disabled]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                              <label class="form-label-v" translate>claim.separateBathroom</label>
-                            <div class="mortgage-div">
-                              <span *ngFor="let data of dicDynamic;let i = index">
-                                <input type="radio" [id]="data.code" [name]="'separateBathroom'"
-                                       [value]="data.code"
-                                       [(ngModel)]="applicationForm.separateBathroom" formControlName="separateBathroom"/>
-                                <label>{{data.label}}</label>
-                              </span>
+                            <label class="form-label-v"> </label>
+                            <div class="row atelier">
+                              <input type="radio" [id]="'true'" [name]="'separateBathroom'"
+                                     [value]="'true'"
+                                     [(ngModel)]="applicationForm.separateBathroom"
+                                     formControlName="separateBathroom"/>
+                              <label>&nbsp;&nbsp;Санузел раздельный</label>
                             </div>
                           </div>
                         </div>
