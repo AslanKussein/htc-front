@@ -1,35 +1,25 @@
-<div class="card-body card-bg" ngxUiLoaderBlurred>
-  <div class="card">
-    <div class="card-body">
-
-      <div class="row">
-        <div class="col-sm-11">
-          <h4 class="mb-4" translate>claim.searchClaim</h4>
-        </div>
-        <div class="col-sm-1">
-          <a routerLink="/compare" *ngIf="this.numeral>0">
-            <div>
-              <img style="min-width: 30px; max-width: 45px;float: left" class="card-img-top"
-                   src="assets/images/claims/libra.png">
-            </div>
-            <div>
-              <p style="color: green;fontWeight:bold">{{this.numeral}}</p>
-            </div>
-          </a>
-        </div>
+<div class="row w-100"></div>
+<div class="row" [formGroup]="applicationSearchForm">
+  <div class="col-sm">
+    <div class="card">
+      <div class="card-header font-weight-bold bg-dark text-white">
+        Поиск заявки
       </div>
-
-
-      <div [formGroup]="applicationSearchForm">
+      <div class="card-body">
         <div class="row">
           <div class="col-sm">
-            <label translate>claim.claimType</label>
-            <ng-select
-              [items]="operationType"
-              bindValue="value"
-              formControlName="operationTypeId"
-              placeholder="{{ 'claim.claimType' | translate }}">
-            </ng-select>
+            <label class="form-label-v">Операция</label>
+            <div>
+              <mat-button-toggle-group [(ngModel)]="applicationSearchForm.operationTypeId"
+                                       formControlName="operationTypeId">
+                <mat-button-toggle class="operation-type"
+                                   *ngFor="let item of operationType" [value]="item"
+                                   [class]="item.value != applicationSearchForm.operationTypeId?.value ? 'bg-white text-dark' : ''"
+                                   [ngClass]="{ 'color-aqua text-white':item.value === applicationSearchForm.operationTypeId?.value}">
+                  {{item.label}}
+                </mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
           </div>
           <div class="col-sm">
             <label translate>claim.claimStatus</label>
@@ -37,191 +27,211 @@
               [items]="appStatuses"
               [multiple]="true"
               bindValue="value"
-              formControlName="applicationStatusList"
-              placeholder="{{ 'claim.claimStatus' | translate }}">
+              formControlName="applicationStatusList">
             </ng-select>
           </div>
           <div class="col-sm">
-            <label translate>claim.crDateFromR.from</label>
-            <input placeholder="{{'claim.crDateFromR.from' | translate}}" type="text" id="crDateFrom" class="form-control"
-                   bsDatepicker #ru="bsDatepicker" formControlName="crDateFrom">
-          </div>
-          <div class="col-sm">
-            <label translate>claim.crDateFromR.to</label>
-            <input type="text" id="crDateTo" class="form-control" bsDatepicker #ru="bsDatepicker"
-                   formControlName="crDateTo">
-          </div>
-          <div class="col-sm">
-            <label translate>claim.lastModifyDateR.from</label>
-            <input type="text" id="lastModifyDateFrom" class="form-control" formControlName="lastModifyDateFrom"
-                   bsDatepicker #ru="bsDatepicker">
-          </div>
-          <div class="col-sm">
-            <label translate>claim.lastModifyDateR.to</label>
-            <input type="text" id="lastModifyDateTo" class="form-control" formControlName="lastModifyDateTo"
-                   bsDatepicker #ru="bsDatepicker">
+            <label>Дата создания</label>
+            <div class="row">
+              <div class="col-sm">
+                <input type="text" id="crDateFrom" class="form-control" placeholder="c" bsDatepicker #ru="bsDatepicker"
+                       formControlName="crDateFrom">
+              </div>
+              <div class="col-sm">
+                <input type="text" id="crDateTo" class="form-control" placeholder="по" bsDatepicker #ru="bsDatepicker"
+                       formControlName="crDateTo">
+              </div>
+            </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="expanded">
+          <div class="col-sm">
+            <label>Дата последнего изменения</label>
+            <div class="row">
+              <div class="col-sm">
+                <input type="text" id="lastModifyDateFrom" class="form-control" formControlName="lastModifyDateFrom"
+                       bsDatepicker #ru="bsDatepicker" placeholder="c"/>
+              </div>
+              <div class="col-sm">
+                <input type="text" id="lastModifyDateTo" class="form-control" formControlName="lastModifyDateTo"
+                       bsDatepicker #ru="bsDatepicker" placeholder="по"/>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <label>Дата последнего комментирования</label>
+            <div class="row">
+              <div class="col-sm">
+                <input type="text" id="lastCommentDateFrom" class="form-control" formControlName="lastCommentDateFrom"
+                       bsDatepicker #ru="bsDatepicker" placeholder="c"/>
+              </div>
+              <div class="col-sm">
+                <input type="text" id="lastCommentDateTo" class="form-control" formControlName="lastCommentDateTo"
+                       bsDatepicker #ru="bsDatepicker" placeholder="по"/>
+              </div>
+            </div>
+          </div>
           <div class="col-sm-2">
             <label translate>ID заявки</label>
             <input type="text" mask="separator" id="applicationId" class="form-control" formControlName="applicationId">
           </div>
-          <div class="col-sm-3">
-            <label translate>claim.lastCommentDateR.from</label>
-            <input type="text" id="lastCommentDateFrom" class="form-control" formControlName="lastCommentDateFrom"
-                   bsDatepicker #ru="bsDatepicker">
-          </div>
-          <div class="col-sm-3">
-            <label translate>claim.lastCommentDateR.to</label>
-            <input type="text" id="lastCommentDateTo" class="form-control" formControlName="lastCommentDateTo"
-                   bsDatepicker #ru="bsDatepicker">
-          </div>
-          <!--        <div class="col-sm-2">-->
-          <!--          <div class="custom-control custom-checkbox myClaim">-->
-          <!--            <input type="checkbox" class="custom-control-input" id="defaultUnchecked" [(ngModel)]="formData.myClaim">-->
-          <!--            <label class="custom-control-label" for="defaultUnchecked">Мои заявки</label>-->
-          <!--          </div>-->
-          <!--        </div>-->
           <div class="col-sm">
             <label translate>claim.textSearch</label>
             <input type="text" id="form1" class="form-control" formControlName="text">
           </div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm">
-          <button type="button" mdbBtn color="success" (click)="findClaims(1)"
-                  class="btn btn-sm btn-info float-right btn2"
-                  mdbWavesEffect>
-            <span class="fa fa-search" translate> search</span>
-          </button>
-          <button type="button" class="btn btn-sm btn-link float-right btn2" (click)="clearForm()"
-                  translate>
-            clear
-          </button>
-        </div>
-      </div>
-
-      <div class="row">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="open-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open"
-               aria-selected="true" translate>claim.opening
-              <span class="badge badge-info ml-2">{{totalItems}}</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="open-sell-tab" data-toggle="tab" href="#open-sell" role="tab"
-               aria-controls="open-sell"
-               aria-selected="false" translate>claim.openingSell
-              <span class="badge badge-info ml-2">0</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="open-buy-tab" data-toggle="tab" href="#open-buy" role="tab"
-               aria-controls="open-buy"
-               aria-selected="false" translate>claim.openingBuy
-              <span class="badge badge-info ml-2">0</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="closed-tab" data-toggle="tab" href="#closed" role="tab" aria-controls="closed"
-               aria-selected="false" translate>claim.closed
-              <span class="badge badge-info ml-2">0</span>
-            </a>
-          </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="open" role="tabpanel" aria-labelledby="open-tab">
-          </div>
-          <div class="tab-pane fade" id="open-sell" role="tabpanel" aria-labelledby="open-sell-tab">
-
-          </div>
-          <div class="tab-pane fade" id="open-buy" role="tabpanel" aria-labelledby="open-buy-tab">
-          </div>
-
-          <div class="tab-pane fade" id="closed" role="tabpanel" aria-labelledby="closed-tab">
+        <div class="row">
+          <div class="expanded-search" (click)="expandedBlock()">
+            Расширенный поиск
+            <i class="fa fa-angle-down fa-2x" *ngIf="!expanded" aria-hidden="true"></i>
+            <i class="fa fa-angle-up fa-2x" *ngIf="expanded" aria-hidden="true"></i>
           </div>
         </div>
       </div>
-
-      <div class="row">
-        <div class="col-sm">
-          <table class="table table-bordered table-sm">
-            <thead class="text-center">
-            <tr>
-              <th>ID заявки</th>
-              <th>Операция</th>
-              <th translate>claim.crDateFrom</th>
-              <th translate>fio</th>
-              <th width="120px" translate>phone</th>
-              <th translate>e-mail</th>
-              <th translate>Район</th>
-              <th translate>Количество комнат</th>
-              <th translate>Цена</th>
-              <th translate>Вид расчета</th>
-              <th translate>Площадь</th>
-              <th translate>Этаж</th>
-              <th translate>Статус</th>
-              <th translate>Комментарий</th>
-              <th translate></th>
-            </tr>
-            </thead>
-            <tbody style="cursor: pointer">
-            <tr *ngFor="let claim of claimData;let i = index">
-              <td>
-                <a [routerLink]="['/create-claim-view/', claim?.id]">{{claim.id}}</a>
-              </td>
-              <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
-              <td>{{formatDate(claim)}}</td>
-              <td>{{claim.fullNameAgent}}</td>
-              <td width="120px"><span *ngIf="claim.phoneNumberAgent">+7 {{claim.phoneNumberAgent | mask: '(000) 000-0000'}}</span></td>
-              <td>{{claim.emailAgent}}</td>
-              <td>{{getDicNameByLanguage(claim, 'district')}}</td>
-              <td>{{claim.numberOfRooms}}</td>
-              <td>{{claim.price}}</td>
-              <td>
-                <span *ngIf="claim.paymentType">{{claim.paymentType[util.getDicNameByLanguage()]}}</span>
-              </td>
-              <td>{{claim.totalArea}}</td>
-              <td>{{claim.floor}}</td>
-              <td>{{getDicNameByLanguage(claim, 'status')}}</td>
-              <td>{{claim.comment}}</td>
-              <td style="text-align: center;">
-
-                <a (click)="compare(claim)">
-                  <div>
-                  <img style="min-width: 30px; max-width: 45px;float: left" class="card-img-top" src="assets/images/claims/libra.png">
-                  </div>
-                  <div *ngIf="claim.compare" style="position: absolute" >
-                    <i aria-hidden="true" style="color: green;;padding: 17px" class="fa fa-check-circle"></i>
-
-                  </div>
-                </a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-
-          <h3 class="text-center" *ngIf="empty">Нет данных для отображения</h3>
-
-          <pagination [(ngModel)]="currentPage"
-                      [totalItems]="totalItems"
-                      [itemsPerPage]="itemsPerPage"
-                      [maxSize]="10"
-                      [rotate]="true"
-                      [boundaryLinks]="true"
-                      previousText="&lsaquo;"
-                      nextText="&rsaquo;"
-                      firstText="&laquo;"
-                      lastText="&raquo;"
-                      (pageChanged)="pageChanged($event)">
-          </pagination>
+      <div class="card-footer bg-white">
+        <div class="row disabled-bottom-margin">
+          <div class="col-sm font-italic">
+            <span class="found-text">Найдено всего: {{totalItems}} объектов</span>
+          </div>
+          <div class="col-sm">
+            <button type="button" (click)="findClaims(1)"
+                    class="btn btn-sm color-aqua text-white float-right search-btn">
+              <span class="fa fa-search" translate> Поиск</span>
+            </button>
+            <button type="button" class="btn btn-sm float-right btn-outline-dark clear-btn" (click)="clearForm()"
+                    translate>
+              clear
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
+<div class="card">
+  <div class="card-body">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active panel-header" id="open-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open"
+             aria-selected="true" translate>claim.opening
+            <span class="badge badge-info ml-2">{{totalItems}}</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link panel-header" id="open-sell-tab" data-toggle="tab" href="#open-sell" role="tab"
+             aria-controls="open-sell"
+             aria-selected="false" translate>claim.openingSell
+            <span class="badge badge-info ml-2">0</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link panel-header" id="open-buy-tab" data-toggle="tab" href="#open-buy" role="tab"
+             aria-controls="open-buy"
+             aria-selected="false" translate>claim.openingBuy
+            <span class="badge badge-info ml-2">0</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link panel-header" id="closed-tab" data-toggle="tab" href="#closed" role="tab" aria-controls="closed"
+             aria-selected="false" translate>claim.closed
+            <span class="badge badge-info ml-2">0</span>
+          </a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="open" role="tabpanel" aria-labelledby="open-tab">
+        </div>
+        <div class="tab-pane fade" id="open-sell" role="tabpanel" aria-labelledby="open-sell-tab">
+
+        </div>
+        <div class="tab-pane fade" id="open-buy" role="tabpanel" aria-labelledby="open-buy-tab">
+        </div>
+
+        <div class="tab-pane fade" id="closed" role="tabpanel" aria-labelledby="closed-tab">
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm">
+    <div class="card">
+      <div class="card-body overflow-auto">
+        <table class="table table-sm">
+          <thead class="text-center">
+          <tr>
+            <th>ID</th>
+            <th>Операция</th>
+            <th translate>claim.crDateFrom</th>
+            <th translate>fio</th>
+            <th width="120px" translate>phone</th>
+            <th translate>e-mail</th>
+            <th translate>Район</th>
+            <th translate>Количество комнат</th>
+            <th translate>Цена</th>
+            <th translate>Вид расчета</th>
+            <th translate>Площадь</th>
+            <th translate>Этаж</th>
+            <th translate>Статус</th>
+            <th translate>Комментарий</th>
+            <th translate></th>
+          </tr>
+          </thead>
+          <tbody style="cursor: pointer">
+          <tr *ngFor="let claim of claimData;let i = index">
+            <td>
+              <a [routerLink]="['/create-claim-view/', claim?.id]">{{claim.id}}</a>
+            </td>
+            <td class="text-aqua font-weight-bold">{{getDicNameByLanguage(claim, 'operationType')}}</td>
+            <td>{{formatDate(claim)}}</td>
+            <td>{{claim.fullNameAgent}}</td>
+            <td width="120px"><span
+              *ngIf="claim.phoneNumberAgent">+7 {{claim.phoneNumberAgent | mask: '(000) 000-0000'}}</span></td>
+            <td>{{claim.emailAgent}}</td>
+            <td>{{getDicNameByLanguage(claim, 'district')}}</td>
+            <td>{{claim.numberOfRooms}}</td>
+            <td>{{claim.price}}</td>
+            <td>
+              <span *ngIf="claim.paymentType">{{claim.paymentType[util.getDicNameByLanguage()]}}</span>
+            </td>
+            <td>{{claim.totalArea}}</td>
+            <td>{{claim.floor}}</td>
+            <td>{{getDicNameByLanguage(claim, 'status')}}</td>
+            <td>{{claim.comment}}</td>
+            <td style="text-align: center;">
+
+              <a (click)="compare(claim)">
+                <div>
+                  <img style="min-width: 30px; max-width: 45px;float: left" class="card-img-top"
+                       src="assets/images/claims/libra.png">
+                </div>
+                <div *ngIf="claim.compare" style="position: absolute">
+                  <i aria-hidden="true" style="color: green;;padding: 17px" class="fa fa-check-circle"></i>
+
+                </div>
+              </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+        <h3 class="text-center" *ngIf="empty">Нет данных для отображения</h3>
+
+        <pagination [(ngModel)]="currentPage"
+                    [totalItems]="totalItems"
+                    [itemsPerPage]="itemsPerPage"
+                    [maxSize]="10"
+                    [rotate]="true"
+                    [boundaryLinks]="true"
+                    previousText="&lsaquo;"
+                    nextText="&rsaquo;"
+                    firstText="&laquo;"
+                    lastText="&raquo;"
+                    (pageChanged)="pageChanged($event)">
+        </pagination>
+      </div>
+    </div>
+
+  </div>
 </div>

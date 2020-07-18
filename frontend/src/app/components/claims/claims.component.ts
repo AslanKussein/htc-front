@@ -34,7 +34,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   }
 
   applicationSearchForm: any;
-  searchCommon: SearchCommon;
+  expanded: boolean = false;
   operationType: Dic[];
   appStatuses: Dic[];
   claimData = [];
@@ -115,7 +115,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   }
 
   formatDate(claim: any) {
-    return formatDate(claim.creationDate, 'dd.MM.yyyy HH:mm', 'en-US');
+    return formatDate(claim.creationDate, 'dd.MM.yyyy', 'en-US');
   }
 
   searchByLoginAgent(claim) {
@@ -146,7 +146,9 @@ export class ClaimsComponent implements OnInit, OnDestroy {
       claim.compare=true;
       this.numeral=this.numeral+1;
     }
+  }
 
-
+  expandedBlock() {
+    this.expanded = !this.expanded;
   }
 }
