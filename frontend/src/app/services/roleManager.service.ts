@@ -33,6 +33,14 @@ export class RoleManagerService {
     );
   }
 
+  readUser(id: number): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiRoleManagerUrl}/roles/` + id).pipe(
+      tap(data => {
+      }),
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error instanceof ErrorEvent) {
       console.error('An error occurred:', error.message);
