@@ -180,14 +180,9 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   }
 
   addEventShow() {
-    let prevUrl = localStorage.getItem('previousUrl');
+    let prevUrl = '/create-claim/' + localStorage.getItem('applicationId') + '?activeTab=events' + '&eventObjectId=' + this.eventObjectId;
     if (this.eventCall) {
-      if (!this.util.isNullOrEmpty(localStorage.getItem('previousUrl').split('&eventObjectId=')[0])) {
-        prevUrl = localStorage.getItem('previousUrl').split('&eventObjectId=')[0] + '&eventObjectId=' + this.eventObjectId
-      } else {
-        prevUrl = localStorage.getItem('previousUrl') + '&eventObjectId=' + this.eventObjectId
-      }
+      this.util.navigateByUrl(prevUrl);
     }
-    this.util.navigateByUrl(prevUrl);
   }
 }

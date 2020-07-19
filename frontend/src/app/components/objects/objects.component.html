@@ -1,746 +1,310 @@
-<div class="card-body card-bg" >
-  <div class="card">
-    <div class="card-body">
-      <br/>
-      <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" id="pills-contact-tab" data-toggle="pill" (click)="addObjectTypes(null)"  href="#pills-contact" role="tab"
-             aria-controls="pills-contact" aria-selected="false">Все</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link " id="pills-home-tab" (click)="addObjectTypes(1)" data-toggle="pill" href="#pills-home" role="tab"
-             aria-controls="pills-home" aria-selected="true">Квартира</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="pills-profile-tab" data-toggle="pill" (click)="addObjectTypes(2)"  href="#pills-profile" role="tab"
-             aria-controls="pills-profile" aria-selected="false">Дом</a>
-        </li>
-        <li class="nav-item" class="disabled">
-          <a class="nav-link" id="pills-profile-tab-new" data-toggle="pill" (click)="addObjectTypes(3)"  href="#pills-profile" role="tab"
-             aria-controls="pills-profile" aria-selected="false">Новостройки</a>
-        </li>
-        <li class="nav-item"  class="disabled">
-          <a class="nav-link" id="pills-profile-tab-commerc" data-toggle="pill" (click)="addObjectTypes(4)"  href="#pills-profile" role="tab"
-             aria-controls="pills-profile" aria-selected="false">Коммерческое помещение</a>
-        </li>
-
-      </ul>
-
-      <div class="tab-content" id="pills-tabContent">
-        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-
-          <!--<div class="container">-->
-          <div class="col-sm-12 row">
-            <div class="col-sm-4">
-              <form>
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Комнаты</label>
-                  <div class="col-sm">
-                    <div class="custom-control custom-checkbox">
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline12" value="1"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline12">1</label>
-                      </div>
-
-                      <!-- Default inline 2-->
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline22" value="2"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline22">2</label>
-                      </div>
-
-                      <!-- Default inline 3-->
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline42" value="3"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline42">3</label>
-                      </div>
-
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline52" value="4"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline52">4</label>
-                      </div>
-
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline62" value="5"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline62">5</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Район</label>
-                  <div class="col-sm">
-                    <ng-select name="districtsId"
-                               [items]="districts" bindValue="value"
-                               [searchable]="false"
-                               [(ngModel)]="formData.districtsId"
-                               placeholder="{{ 'claim.validator.districtId' | translate }}">
-                    </ng-select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Материал постройки</label>
-                  <div class="col-sm">
-                    <ng-select name="typeHome"
-                               [items]="homeTypes" bindValue="value"
-                               [searchable]="false"
-                               [(ngModel)]="formData.typeHome"
-                               placeholder="Материал постройки">
-                    </ng-select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Жилой комплекс</label>
-                  <div class="col-sm">
-                    <ng-select name="residentialComplexes"
-                               [items]="residentialComplexes" bindValue="value"
-                               [searchable]="false"
-                               [(ngModel)]="formData.residentialComplexes"
-                               placeholder="{{ 'claim.building' | translate }}">
-                    </ng-select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Номер квартиы</label>
-                  <div class="col-sm">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="form-control"
-                           [(ngModel)]="formData.numKvart" [ngModelOptions]="{standalone: true}"
-                           placeholder="Введите номер квартиры">
-                  </div>
-                </div>
-              </form>
-
-
-            </div>
-
-            <div class="col-sm-3">
-              <form>
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Цена</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.priceFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.priceTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Этаж</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Этажей в доме</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorsFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorsTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">В залоге</label>
-                  <div class="col-sm">
-                    <ng-select name="zalog"
-                               [items]="dicDynamic" bindValue="value"
-                               [searchable]="false"
-                               [(ngModel)]="formData.zalog"
-                                placeholder="Выберите состояние объекта">
-                    </ng-select>
-                  </div>
-                </div>
-              </form>
-
-            </div>
-
-            <div class="col-sm-3">
-              <form>
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Общая площадь</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.totalAreaFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.totalAreaTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Жилая площадь</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.livingSpaceFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.livingSpaceTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Площадь кухни</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.kitchenAreaFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.kitchenAreaTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-          <!--<div class="container">-->
-          <div class="col-sm-12 row">
-            <div class="col-sm-4">
-              <form>
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Комнаты</label>
-                  <div class="col-sm">
-                    <div class="custom-control custom-checkbox">
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline1" value="1"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline1">1</label>
-                      </div>
-
-                      <!-- Default inline 2-->
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline2" value="2"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline2">2</label>
-                      </div>
-
-                      <!-- Default inline 3-->
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline4" value="3"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline4">3</label>
-                      </div>
-
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline5" value="4"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline5">4</label>
-                      </div>
-
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline6" value="5"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline6">5</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Район</label>
-                  <div class="col-sm">
-                    <ng-select name="districtsId"
-                               [items]="districts"
-                               [(ngModel)]="formData.districtsId"
-                               bindValue="value"
-                               [searchable]="false"
-                               placeholder="{{ 'claim.validator.districtId' | translate }}">
-                    </ng-select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Материал постройки</label>
-                  <div class="col-sm">
-                    <ng-select
-                      [items]="homeTypes"
-                      bindValue="value"
-                      [(ngModel)]="formData.typeHome"
-                      [ngModelOptions]="{standalone: true}"
-                      [searchable]="false"
-                      placeholder="Материал постройки">
-                    </ng-select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Жилой комплекс</label>
-                  <div class="col-sm">
-                    <ng-select
-                      [items]="residentialComplexes"
-                      bindValue="value"
-                      [(ngModel)]="formData.residentialComplexes"
-                      [ngModelOptions]="{standalone: true}"
-                      [searchable]="false"
-                      placeholder="{{ 'claim.building' | translate }}">
-                    </ng-select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Номер квартиры</label>
-                  <div class="col-sm">
-                    <input type="text" mask="separator" class="form-control"
-                           [(ngModel)]="formData.numKvart" [ngModelOptions]="{standalone: true}"
-                           placeholder="Введите номер квартиры">
-                  </div>
-                </div>
-              </form>
-
-            </div>
-
-            <div class="col-sm-3">
-              <form>
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Цена</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                class="col-sm form-control" [(ngModel)]="formData.priceFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.priceTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Этаж</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Этажей в доме</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorsFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorsTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">В залоге</label>
-                  <div class="col-sm">
-                    <ng-select
-                      [items]="dicDynamic" bindValue="value"
-                      [ngModelOptions]="{standalone: true}"
-                      [(ngModel)]="formData.zalog"
-                      [searchable]="false"
-                      placeholder="Выберите состояние объекта">
-                    </ng-select>
-                  </div>
-                </div>
-              </form>
-
-            </div>
-
-            <div class="col-sm-3">
-              <form>
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Общая площадь</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.totalAreaFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.totalAreaTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Жилая площадь</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.livingSpaceFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.livingSpaceTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Площадь кухни</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.kitchenAreaFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.kitchenAreaTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-
-                  </div>
-                </div>
-
-              </form>
-
-            </div>
-
-          </div>
-        </div>
-
-        <!--</div>-->
-        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-          <div class="col-sm-12 row">
-            <div class="col-sm-4">
-              <form>
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Комнаты</label>
-                  <div class="col-sm">
-                    <div class="custom-control custom-checkbox">
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline13" value="1"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline13">1</label>
-                      </div>
-
-                      <!-- Default inline 2-->
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline23" value="2"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline23">2</label>
-                      </div>
-
-                      <!-- Default inline 3-->
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline43" value="3"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline43">3</label>
-                      </div>
-
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline53" value="4"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline53">4</label>
-                      </div>
-
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="defaultInline63" value="5"
-                               name="inlineDefaultRadiosExample" [(ngModel)]="formData.numberOfRooms">
-                        <label class="custom-control-label" for="defaultInline63">5</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Район</label>
-                  <div class="col-sm">
-                    <ng-select name="districtsId"
-                               [items]="districts" bindValue="value"
-                               [(ngModel)]="formData.districtsId"
-                               [searchable]="false"
-                               placeholder="{{ 'claim.validator.districtId' | translate }}">
-                    </ng-select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Материал постройки</label>
-                  <div class="col-sm">
-                    <ng-select name="typeHome"
-                               [items]="homeTypes" bindValue="value"
-                               [(ngModel)]="formData.typeHome"
-                               [searchable]="false"
-                               placeholder="Материал постройки">
-                    </ng-select>
-                  </div>
-                </div>
-              </form>
-            </div>
-
-            <div class="col-sm-3">
-              <form>
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Цена</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.priceFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.priceTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Этаж</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.floorTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">В залоге</label>
-                  <div class="col-sm">
-                    <ng-select name="zalog"
-                               [items]="dicDynamic" bindValue="value"
-                               [searchable]="false"
-                               [(ngModel)]="formData.zalog"
-                               placeholder="Выберите состояние объекта">
-                    </ng-select>
-                  </div>
-                </div>
-              </form>
-            </div>
-
-            <div class="col-sm-3">
-              <form>
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Общая площадь</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.totalAreaFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.totalAreaTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Жилая площадь</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.livingSpaceFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.livingSpaceTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm col-form-label text-right">Площадь кухни</label>
-                  <div class="col-sm row">
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.kitchenAreaFrom"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.from2' | translate}}">
-                    -
-                    <input type="text" mask="separator"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               class="col-sm form-control" [(ngModel)]="formData.kitchenAreaTo"
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="{{'patterns.to2' | translate}}">
-
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
+<div class="row w-100"></div>
+<div class="row" [formGroup]="objectForm">
+  <div class="col-sm">
+    <div class="card">
+      <div class="card-body">
         <div class="row">
-          <div class="form-group col-sm">
-            <button type="button" mdbBtn color="success"
-                    class="btn btn-sm btn-info float-right btn2"
-                    mdbWavesEffect>
-              <span class="fa fa-map-marker"> Посмотреть на карте</span>
-            </button>
-            <button type="button" mdbBtn color="success" (click)="findObjects(1)"
-                    class="btn btn-sm btn-info float-right btn2"
-                    mdbWavesEffect>
-              <span class="fa fa-search" translate> search</span>
-            </button>
-            <button type="button" mdbBtn class="btn btn-sm btn-link float-right btn2" (click)="clearFilter()"
-                    translate>
-              clear
-            </button>
-            <button type="button" class="btn btn-sm btn2 btn-secondary" (click)="backToPrev()" *ngIf="fromBoard">Назад</button>
-            <button *ngIf="eventCall" type="button" class="btn btn-sm btn2 color-aqua text-white" (click)="addEventShow()">Добавить на показ</button>
+          <div class="col-sm">
+            <mat-button-toggle-group [(ngModel)]="objectForm.objectTypes" formControlName="objectTypes">
+              <mat-button-toggle class="operation-type" (click)="setNullableObjectTypes()"
+                                 [class]="objectForm.objectTypes?.value != null ? 'bg-white text-dark' : ''"
+                                 [ngClass]="{ 'color-aqua text-white':objectForm.objectTypes?.value == null}">
+                Все
+              </mat-button-toggle>
+              <mat-button-toggle class="operation-type"
+                                 *ngFor="let item of objectTypes" [value]="item" [disabled]="[3,4].includes(item.value)"
+                                 [class]="item.value != objectForm.objectTypes?.value ? 'bg-white text-dark' : ''"
+                                 [ngClass]="{ 'color-aqua text-white':item.value === objectForm.objectTypes?.value}">
+                {{item.label}}
+              </mat-button-toggle>
+            </mat-button-toggle-group>
           </div>
         </div>
-      </div>
-      <br>
-      <div class="row">
-        <div class="col-sm-2">Найдено всего/</div>
-        <div class="col-sm-3 float-left">
-          <select [(ngModel)]="objectMyModel" class="form-control" (change)="myObjectChange()">
-            <option *ngFor="let title of objectMy" [value]="title.value">
-              {{title.label}}
-            </option>
-          </select>
-        </div>
-        <div class="col-sm"></div>
-      </div>
-      <br/>
-      <div class="row" *ngIf="fromBoard">
-        <div class="col-sm">
-          <table class="table table-bordered table-striped table-sm">
-            <thead class="text-center">
-            <tr>
-              <th translate>Фото</th>
-              <th translate>Адрес</th>
-              <th translate>Комнатность</th>
-              <th translate>Общая площадь</th>
-              <th translate>Этаж</th>
-              <th translate>Год постройки</th>
-              <th translate>Материал</th>
-              <th translate>Район</th>
-              <th translate>Состояние</th>
-              <th translate></th>
-            </tr>
-            </thead>
-            <tbody style="cursor: pointer">
-            <tr *ngFor="let object of objectsData;let i = index">
-              <td><img *ngIf="getImgUrl(object)" [src]="getImgUrl(object)" alt="First Slide" class="photoList" height="100px"></td>
-              <td>{{object.address?.nameRu}}</td>
-              <td>{{object.numberOfRooms}}</td>
-              <td>{{object.totalArea}}</td>
-              <td>{{object.floor}}</td>
-              <td>{{object.yearOfConstruction}}</td>
-              <td>{{object.materialOfConstruction?.name?.nameRu}}</td>
-              <td>{{object.district?.name?.nameRu}}</td>
-              <td>{{object.houseCondition?.name?.nameRu}}</td>
-              <td>
-                <span class="table-remove">
-                  <button type="button" class="btn btn-mdb-color btn-sm btn-rounded btn-sm my-0"
-                          (click)="openModal(openObjectClaims, 'modal-xl', object)">Заявки по обекту</button>
-                </span>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <div class="row">
-            <div class="col-sm">
-              <pagination [(ngModel)]="currentPage"
-                          [totalItems]="totalItems"
-                          [itemsPerPage]="itemsPerPage"
-                          [maxSize]="10"
-                          [rotate]="true"
-                          [boundaryLinks]="true"
-                          previousText="&lsaquo;"
-                          nextText="&rsaquo;"
-                          firstText="&laquo;"
-                          lastText="&raquo;"
-                          (pageChanged)="pageChanged($event)">
-              </pagination>
+        <div class="row">
+          <div class="col-sm">
+            <label class="form-label-v">Район</label>
+            <ng-select formControlName="districtsId"
+                       [items]="districts"
+                       bindValue="value"
+                       [searchable]="false"
+                       [(ngModel)]="objectForm.districtsId">
+            </ng-select>
+          </div>
+          <div class="col-sm">
+            <label class="form-label-v">Комнаты</label>
+            <mat-button-toggle-group [(ngModel)]="objectForm.numberOfRooms" formControlName="numberOfRooms">
+              <mat-button-toggle class="roomsCount"
+                                 *ngFor="let item of roomsCount" [value]="item"
+                                 [class]="item != objectForm.numberOfRooms ? 'bg-white text-dark' : ''"
+                                 [ngClass]="{ 'color-aqua text-white':item === objectForm.numberOfRooms}">
+                {{item === 5 ? '5+' : item}}
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+          <div class="col-sm">
+            <label class="form-label-v">Цена</label>
+            <div class="row">
+              <div class="col-sm">
+                <input type="text" mask="separator"
+                       class="col-sm form-control"
+                       [(ngModel)]="objectForm.priceFrom"
+                       formControlName="priceFrom"
+                       placeholder="{{'patterns.from2' | translate}}">
+              </div>
+              <div class="col-sm">
+                <input type="text" mask="separator" class="col-sm form-control"
+                       formControlName="priceTo" [(ngModel)]="objectForm.priceTo"
+                       placeholder="{{'patterns.to2' | translate}}">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <label class="form-label-v">Общая площадь</label>
+            <div class="row">
+              <div class="col-sm">
+                <input type="text" mask="separator" class="col-sm form-control" [(ngModel)]="objectForm.totalAreaFrom"
+                       formControlName="totalAreaFrom" placeholder="{{'patterns.from2' | translate}}">
+              </div>
+              <div class="col-sm">
+                <input type="text" mask="separator" class="col-sm form-control" [(ngModel)]="objectForm.totalAreaTo"
+                       formControlName="totalAreaTo" placeholder="{{'patterns.to2' | translate}}">
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="row" *ngIf="!fromBoard">
-        <div class="col-sm">
-          <table class="table table-bordered table-striped table-sm">
-            <thead class="text-center">
-            <tr>
-              <th>№</th>
-              <th translate>Фото</th>
-              <th translate>Адрес</th>
-              <th translate>Цена</th>
-              <th translate>Количество комнат</th>
-              <th translate>Фото</th>
-              <th translate>Обременение</th>
-              <th translate>Аналитика цен</th>
-              <th translate>Контакты агента</th>
-            </tr>
-            </thead>
-            <tbody style="cursor: pointer">
-            <tr *ngFor="let object of objectsData;let i = index">
-              <td>{{object.realPropertyId}}</td>
-              <td><img *ngIf="getImgUrl(object)" [src]="getImgUrl(object)" alt="First Slide" class="photoList" height="100px"></td>
-              <td>{{object.address.nameRu}}</td>
-              <td>{{object.objectPrice}}</td>
-              <td>{{object.numberOfRooms}}</td>
-              <td>
-                {{getCountFoto(object.photos)}}
-              </td>
-              <td>{{object.encumbrance?.nameRu}}</td>
-              <td>{{object.priceAnalytics}}</td>
-              <td>
-                <span *ngIf="object.contactsOfAgent">
-                  +7{{object.contactsOfAgent | mask: ' (000) 000-0000'}}
-                </span>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <div class="row">
-            <div class="col-sm">
-              <pagination [(ngModel)]="currentPage"
-                          [totalItems]="totalItems"
-                          [itemsPerPage]="itemsPerPage"
-                          [maxSize]="10"
-                          [rotate]="true"
-                          [boundaryLinks]="true"
-                          previousText="&lsaquo;"
-                          nextText="&rsaquo;"
-                          firstText="&laquo;"
-                          lastText="&raquo;"
-                          (pageChanged)="pageChanged($event)">
-              </pagination>
+        <div class="row" *ngIf="expanded">
+          <div class="col-sm">
+            <label class="form-label-v">Материал постройки</label>
+            <ng-select formControlName="typeHome"
+                       [items]="homeTypes" bindValue="value"
+                       [searchable]="false"
+                       [(ngModel)]="objectForm.typeHome">
+            </ng-select>
+          </div>
+          <div class="col-sm">
+            <label class="form-label-v">Этаж</label>
+            <div class="row">
+              <div class="col-sm">
+                <input type="text" mask="separator" class="col-sm form-control" [(ngModel)]="objectForm.floorFrom"
+                       formControlName="floorFrom" placeholder="{{'patterns.from2' | translate}}">
+              </div>
+              <div class="col-sm">
+                <input type="text" mask="separator" class="col-sm form-control" [(ngModel)]="objectForm.floorsTo"
+                       formControlName="floorsTo" placeholder="{{'patterns.to2' | translate}}">
+              </div>
             </div>
+          </div>
+          <div class="col-sm">
+            <label class="form-label-v">Жилая площадь</label>
+            <div class="row">
+              <div class="col-sm">
+                <input type="text" mask="separator" class="col-sm form-control" [(ngModel)]="objectForm.livingSpaceFrom"
+                       formControlName="livingSpaceFrom" placeholder="{{'patterns.from2' | translate}}">
+              </div>
+              <div class="col-sm">
+                <input type="text" mask="separator" class="col-sm form-control" [(ngModel)]="objectForm.livingSpaceTo"
+                       formControlName="livingSpaceTo" placeholder="{{'patterns.to2' | translate}}">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm" *ngIf="objectForm.objectTypes?.value != 2">
+            <label class="form-label-v">Этажей в доме</label>
+            <div class="row">
+              <div class="col-sm">
+                <input type="text" mask="separator" class="col-sm form-control" [(ngModel)]="objectForm.floorsFrom"
+                       formControlName="floorsFrom" placeholder="{{'patterns.from2' | translate}}">
+              </div>
+              <div class="col-sm">
+                <input type="text" mask="separator" class="col-sm form-control" [(ngModel)]="objectForm.floorsTo"
+                       formControlName="floorsTo" placeholder="{{'patterns.to2' | translate}}">
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row" *ngIf="expanded">
+          <div class="col-sm">
+            <label class="form-label-v">В залоге</label>
+            <div class="row test">
+              <div class="col-sm" *ngFor="let data of dicDynamic;">
+                <input type="radio" [id]="data.code" [name]="'zalog'"
+                       [value]="data.code" formControlName="zalog"
+                       [(ngModel)]="objectForm.zalog"/>
+                <label>&nbsp;{{data.label}}</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <label class="form-label-v">Площадь кухни</label>
+            <div class="row">
+              <div class="col-sm">
+                <input type="text" mask="separator" class="col-sm form-control" [(ngModel)]="objectForm.kitchenAreaFrom"
+                       formControlName="kitchenAreaFrom" placeholder="{{'patterns.from2' | translate}}">
+              </div>
+              <div class="col-sm">
+                <input type="text" mask="separator" class="col-sm form-control" [(ngModel)]="objectForm.kitchenAreaTo"
+                       formControlName="kitchenAreaTo" placeholder="{{'patterns.to2' | translate}}">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="expanded-search" (click)="expandedBlock()">
+            Расширенный поиск
+            <i class="fa fa-angle-down fa-2x" *ngIf="!expanded" aria-hidden="true"></i>
+            <i class="fa fa-angle-up fa-2x" *ngIf="expanded" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="row">
+          <button type="button" class="btn btn-sm btn2 btn-secondary" (click)="backToPrev()" *ngIf="fromBoard">Назад
+          </button>
+          <button *ngIf="eventCall" type="button" class="btn btn-sm btn2 color-aqua text-white"
+                  (click)="addEventShow()">Добавить на показ
+          </button>
+        </div>
+        <div class="row disabled-bottom-margin">
+          <div class="col-sm">
+            <span class="found-text font-italic">Найдено всего: {{totalItems}} объектов</span>
+          </div>
+          <div class="col-sm">
+            <mat-button-toggle-group class="float-right">
+              <mat-button-toggle class="map-btn text-dark fontw">
+                <i class="fa fa-map-o" aria-hidden="true"></i>
+                Посмотреть на карте
+              </mat-button-toggle>
+
+              <mat-button-toggle class="operation-type bg-white text-dark clear-btn" (click)="objectForm.reset()">
+                Очистить
+              </mat-button-toggle>
+              <mat-button-toggle class="operation-type color-aqua text-white search-btn" (click)="findObjects(1)">
+                <i aria-hidden="true" class="fa fa-search"></i>
+                Поиск
+              </mat-button-toggle>
+            </mat-button-toggle-group>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<div class="row">
+  <div class="col-sm-4">
+    <button type="button" class="btn btn-sm all-objects text-center" *ngFor="let data of objectMy"
+            (click)="myObjectChange(data.value)">{{data.label}}</button>
+  </div>
+  <div class="col-sm"></div>
+  <div class="col-sm"></div>
+</div>
+<div class="row" *ngIf="fromBoard">
+  <div class="col-sm">
+    <table class="table table-sm overflow-auto">
+      <thead class="text-center">
+      <tr>
+        <th translate>Фото</th>
+        <th translate>Адрес</th>
+        <th translate>Комнатность</th>
+        <th translate>Общая площадь</th>
+        <th translate>Этаж</th>
+        <th translate>Год постройки</th>
+        <th translate>Материал</th>
+        <th translate>Район</th>
+        <th translate>Состояние</th>
+        <th translate></th>
+      </tr>
+      </thead>
+      <tbody class="bg-white">
+      <tr *ngFor="let object of objectsData;let i = index">
+        <td><img *ngIf="getImgUrl(object)" [src]="getImgUrl(object)" alt="First Slide" class="photoList" height="100px">
+        </td>
+        <td style="color: #00b2a8">{{object.address?.nameRu}}</td>
+        <td>{{object.numberOfRooms}}</td>
+        <td>{{object.totalArea}}</td>
+        <td>{{object.floor}}</td>
+        <td>{{object.yearOfConstruction}}</td>
+        <td>{{object.materialOfConstruction?.name?.nameRu}}</td>
+        <td>{{object.district?.name?.nameRu}}</td>
+        <td>{{object.houseCondition?.name?.nameRu}}</td>
+        <td>
+          <span class="table-remove">
+            <button type="button" class="btn btn-sm btn-success"
+                    (click)="openModal(openObjectClaims, 'modal-xl', object)">Заявки по обекту</button>
+          </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="card-body">
+      <pagination [(ngModel)]="currentPage"
+                  [totalItems]="totalItems"
+                  [itemsPerPage]="itemsPerPage"
+                  [maxSize]="10"
+                  [rotate]="true"
+                  [boundaryLinks]="true"
+                  previousText="&lsaquo;"
+                  nextText="&rsaquo;"
+                  firstText="&laquo;"
+                  lastText="&raquo;"
+                  (pageChanged)="pageChanged($event)">
+      </pagination>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="!fromBoard">
+  <div class="col-sm">
+    <table class="table table-bordered table-sm overflow-auto">
+      <thead class="text-center">
+      <tr>
+        <th>№</th>
+        <th translate>Фото</th>
+        <th translate>Адрес</th>
+        <th translate>Цена</th>
+        <th translate>Количество комнат</th>
+        <th translate>Фото</th>
+        <th translate>Обременение</th>
+        <th translate>Аналитика цен</th>
+        <th translate>Контакты агента</th>
+      </tr>
+      </thead>
+      <tbody class="bg-white text-center">
+      <tr *ngFor="let object of objectsData;let i = index">
+        <td>{{object.realPropertyId}}</td>
+        <td><img *ngIf="getImgUrl(object)" [src]="getImgUrl(object)" alt="First Slide" class="photoList"
+                 height="150px" width="220px"></td>
+        <td style="color: #00b2a8">{{object.address.nameRu}}</td>
+        <td>{{object.objectPrice}}</td>
+        <td>{{object.numberOfRooms}}</td>
+        <td>
+          {{getCountFoto(object.photos)}}
+        </td>
+        <td>{{object.encumbrance?.nameRu}}</td>
+        <td>{{object.priceAnalytics}}</td>
+        <td>
+                <span *ngIf="object.contactsOfAgent">
+                  +7{{object.contactsOfAgent | mask: ' (000) 000-0000'}}
+                </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="card-body">
+      <pagination [(ngModel)]="currentPage"
+                  [totalItems]="totalItems"
+                  [itemsPerPage]="itemsPerPage"
+                  [maxSize]="10"
+                  [rotate]="true"
+                  [boundaryLinks]="true"
+                  previousText="&lsaquo;"
+                  nextText="&rsaquo;"
+                  firstText="&laquo;"
+                  lastText="&raquo;"
+                  (pageChanged)="pageChanged($event)">
+      </pagination>
+    </div>
+  </div>
+</div>
+
 <ng-template #openObjectClaims let-close="close">
   <div class="modal-header">
     Заявки по объекту
@@ -771,7 +335,7 @@
           <tr *ngFor="let object of selectObject.applicationList;let i = index">
             <td>
               <div class="custom-control custom-checkbox">
-                <input type="checkbox"  [(ngModel)]="object.check" (change)="checkedObjects(object, $event)">
+                <input type="checkbox" [(ngModel)]="object.check" (change)="checkedObjects(object, $event)">
               </div>
             </td>
             <td>{{object.applicationId}}</td>

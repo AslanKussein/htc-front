@@ -15,6 +15,7 @@ import {ObjectFilterDto} from "../../models/objectFilterDto";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {filter, pairwise} from "rxjs/operators";
 import {AdvanceComponent} from "../claims/create-claim/advance/advance.component";
+import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-objects',
@@ -28,7 +29,7 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   residentialComplexes: Dic[];
   dicDynamic: Dic[];
   homeTypes: Dic[];
-  objectTypes: Dic[];
+  objectTypes: any;
   myObject: boolean;
   objectMy: any;
   eventCall: any = false;
@@ -39,7 +40,9 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   empty: boolean = false;
   fromBoard: boolean = false;
   eventObjectId = [];
-
+  roomsCount: any;
+  expanded: boolean = false;
+  objectForm: any;
   @ViewChild('openObjectClaims', {static: true}) openObjectClaims: TemplateRef<any>;
 
   constructor(private router: Router,
@@ -49,6 +52,7 @@ export class ObjectsComponent implements OnInit, OnDestroy {
               public util: Util,
               private actRoute: ActivatedRoute,
               private modalService: BsModalService,
+              private formBuilder: FormBuilder,
               private newDicService: NewDicService,
               private dicService: DicService,
               private uploaderService: UploaderService,
@@ -70,32 +74,6 @@ export class ObjectsComponent implements OnInit, OnDestroy {
       })
   }
 
-  formData = {
-    numberOfRooms: null,
-    districtsId: null,
-    residentialComplexes: null,
-    zalog: null,
-    typeHome: null,
-    numKvart: '',
-    priceFrom: null,
-    priceTo: null,
-    floorFrom: null,
-    floorTo: null,
-    floorsFrom: null,
-    floorsTo: null,
-    totalAreaFrom: null,
-    totalAreaTo: null,
-    livingSpaceFrom: null,
-    livingSpaceTo: null,
-    kitchenAreaFrom: null,
-    kitchenAreaTo: null,
-    distance: '',
-    garage: '',
-    attic: '',
-    my: null,
-    objectTypes: null
-  };
-
   ngOnInit(): void {
     this.ngxLoader.start();
     this.findObjects(1);
@@ -106,14 +84,44 @@ export class ObjectsComponent implements OnInit, OnDestroy {
       {label: 'Все объекты', value: 1},
       {label: 'Мои объекты', value: 2},
     ];
+    this.roomsCount = []
+    for (let i = 1; i < 6; i++) {
+      this.roomsCount.push(i);
+    }
+    this.objectForm = this.formBuilder.group({
+      objectTypes: [null, Validators.nullValidator],
+      my: [null, Validators.nullValidator],
+      attic: [null, Validators.nullValidator],
+      garage: [null, Validators.nullValidator],
+      distance: [null, Validators.nullValidator],
+      kitchenAreaTo: [null, Validators.nullValidator],
+      kitchenAreaFrom: [null, Validators.nullValidator],
+      livingSpaceFrom: [null, Validators.nullValidator],
+      livingSpaceTo: [null, Validators.nullValidator],
+      totalAreaFrom: [null, Validators.nullValidator],
+      totalAreaTo: [null, Validators.nullValidator],
+      floorsFrom: [null, Validators.nullValidator],
+      floorsTo: [null, Validators.nullValidator],
+      floorFrom: [null, Validators.nullValidator],
+      floorTo: [null, Validators.nullValidator],
+      priceFrom: [null, Validators.nullValidator],
+      priceTo: [null, Validators.nullValidator],
+      numKvart: [null, Validators.nullValidator],
+      typeHome: [null, Validators.nullValidator],
+      zalog: [null, Validators.nullValidator],
+      residentialComplexes: [null, Validators.nullValidator],
+      districtsId: [null, Validators.nullValidator],
+      numberOfRooms: [null, Validators.nullValidator],
+    });
   }
 
-  myObjectChange() {
+  myObjectChange(id: number) {
+    this.objectMyModel = id;
     if (this.objectMyModel == 1) {
-      this.formData.my = false;
+      this.objectForm.my = false;
       this.findObjects(1);
     } else if (this.objectMyModel == 2) {
-      this.formData.my = true;
+      this.objectForm.my = true;
       this.findObjects(1);
     }
   }
@@ -131,81 +139,53 @@ export class ObjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  clearFilter() {
-    this.formData = {
-      numberOfRooms: null,
-      districtsId: null,
-      residentialComplexes: null,
-      zalog: null,
-      typeHome: null,
-      numKvart: '',
-      priceFrom: null,
-      priceTo: null,
-      floorFrom: null,
-      floorTo: null,
-      floorsFrom: null,
-      floorsTo: null,
-      totalAreaFrom: null,
-      totalAreaTo: null,
-      livingSpaceFrom: null,
-      livingSpaceTo: null,
-      kitchenAreaFrom: null,
-      kitchenAreaTo: null,
-      distance: '',
-      garage: '',
-      attic: '',
-      my: null,
-      objectTypes: 1
-    };
-  }
-
   findObjects(pageNo: number) {
     this.ngxLoader.start();
     this.objectFilterDto = new ObjectFilterDto();
     this.objectFilterDto.pageNumber = pageNo - 1;
     this.objectFilterDto.pageSize = 10;
-    if (!this.util.isNullOrEmpty(this.formData.districtsId)) {
-      this.objectFilterDto.districtId = parseInt(this.formData.districtsId);
+    if (!this.util.isNullOrEmpty(this.objectForm?.districtsId)) {
+      this.objectFilterDto.districtId = parseInt(this.objectForm?.districtsId);
     }
-    if (!this.util.isNullOrEmpty(this.formData.typeHome)) {
-      this.objectFilterDto.materialOfConstructionId = parseInt(this.formData.typeHome);
+    if (!this.util.isNullOrEmpty(this.objectForm?.typeHome)) {
+      this.objectFilterDto.materialOfConstructionId = parseInt(this.objectForm?.typeHome);
     }
-    if (!this.util.isNullOrEmpty(this.formData.residentialComplexes)) {
-      this.objectFilterDto.residentialComplexId = parseInt(this.formData.residentialComplexes);
+    if (!this.util.isNullOrEmpty(this.objectForm?.residentialComplexes)) {
+      this.objectFilterDto.residentialComplexId = parseInt(this.objectForm?.residentialComplexes);
     }
-    if (!this.util.isNullOrEmpty(this.formData.objectTypes)) {
-      this.objectFilterDto.objectTypeId = this.formData.objectTypes;
+    if (!this.util.isNullOrEmpty(this.objectForm?.objectTypes)) {
+      this.objectFilterDto.objectTypeId = this.objectForm?.objectTypes.value;
     }
-    if (!this.util.isNullOrEmpty(this.formData.numKvart)) {
-      this.objectFilterDto.apartmentNumber = parseInt(this.formData.numKvart);
+    if (!this.util.isNullOrEmpty(this.objectForm?.numKvart)) {
+      this.objectFilterDto.apartmentNumber = parseInt(this.objectForm?.numKvart);
     }
-    if (!this.util.isNullOrEmpty(this.formData.zalog)) {
-      this.objectFilterDto.encumbrance = parseInt(this.formData.zalog) == 1 ? true : false;
+    if (!this.util.isNullOrEmpty(this.objectForm?.zalog)) {
+      this.objectFilterDto.encumbrance = this.objectForm?.zalog;
     }
-    if (!this.util.isEmptyObject(new Period(this.formData.priceFrom, this.formData.priceTo))) {
-      this.objectFilterDto.price = new Period(this.formData.priceFrom, this.formData.priceTo);
+    if (!this.util.isEmptyObject(new Period(this.objectForm?.priceFrom, this.objectForm?.priceTo))) {
+      this.objectFilterDto.price = new Period(this.objectForm?.priceFrom, this.objectForm?.priceTo);
     }
-    if (!this.util.isEmptyObject(new Period(this.formData.floorFrom, this.formData.floorTo))) {
-      this.objectFilterDto.floor = new Period(this.formData.floorFrom, this.formData.floorTo);
+    if (!this.util.isEmptyObject(new Period(this.objectForm?.floorFrom, this.objectForm?.floorTo))) {
+      this.objectFilterDto.floor = new Period(this.objectForm?.floorFrom, this.objectForm?.floorTo);
     }
-    if (!this.util.isEmptyObject(new Period(this.formData.floorsFrom, this.formData.floorsTo))) {
-      this.objectFilterDto.floorInTheHouse = new Period(this.formData.floorsFrom, this.formData.floorsTo);
+    if (!this.util.isEmptyObject(new Period(this.objectForm?.floorsFrom, this.objectForm?.floorsTo))) {
+      this.objectFilterDto.floorInTheHouse = new Period(this.objectForm?.floorsFrom, this.objectForm?.floorsTo);
     }
-    if (!this.util.isEmptyObject(new Period(this.formData.totalAreaFrom, this.formData.totalAreaTo))) {
-      this.objectFilterDto.totalArea = new Period(this.formData.totalAreaFrom, this.formData.totalAreaTo);
+    if (!this.util.isEmptyObject(new Period(this.objectForm?.totalAreaFrom, this.objectForm?.totalAreaTo))) {
+      this.objectFilterDto.totalArea = new Period(this.objectForm?.totalAreaFrom, this.objectForm?.totalAreaTo);
     }
-    if (!this.util.isEmptyObject(new Period(this.formData.livingSpaceFrom, this.formData.livingSpaceTo))) {
-      this.objectFilterDto.livingArea = new Period(this.formData.livingSpaceFrom, this.formData.livingSpaceTo);
+    if (!this.util.isEmptyObject(new Period(this.objectForm?.livingSpaceFrom, this.objectForm?.livingSpaceTo))) {
+      this.objectFilterDto.livingArea = new Period(this.objectForm?.livingSpaceFrom, this.objectForm?.livingSpaceTo);
     }
-    if (!this.util.isEmptyObject(new Period(this.formData.kitchenAreaFrom, this.formData.kitchenAreaTo))) {
-      this.objectFilterDto.kitchenArea = new Period(this.formData.kitchenAreaFrom, this.formData.kitchenAreaTo);
+    if (!this.util.isEmptyObject(new Period(this.objectForm?.kitchenAreaFrom, this.objectForm?.kitchenAreaTo))) {
+      this.objectFilterDto.kitchenArea = new Period(this.objectForm?.kitchenAreaFrom, this.objectForm?.kitchenAreaTo);
     }
 
-    if (!this.util.isNullOrEmpty(this.formData.numberOfRooms)) {
-      this.objectFilterDto.numberOfRooms = parseInt(this.formData.numberOfRooms);
+    if (!this.util.isNullOrEmpty(this.objectForm?.numberOfRooms)) {
+      this.objectFilterDto.numberOfRooms = parseInt(this.objectForm?.numberOfRooms);
     }
-    if (!this.util.isNullOrEmpty(this.formData.my)) {
-      this.objectFilterDto.my = this.formData.my;
+    if (!this.util.isNullOrEmpty(this.objectForm?.my)) {
+      this.objectFilterDto.my = this.objectForm?.my;
     }
     if (this.fromBoard) {
       this.subscriptions.add(this.objectService.getRealPropertyWithAppList(this.objectFilterDto).subscribe(res => {
@@ -286,8 +266,8 @@ export class ObjectsComponent implements OnInit, OnDestroy {
     }));
   }
 
-  addObjectTypes(id) {
-    this.formData.objectTypes = id;
+  setNullableObjectTypes() {
+    this.objectForm.objectTypes = null;
   }
 
   ngOnDestroy() {
@@ -307,8 +287,9 @@ export class ObjectsComponent implements OnInit, OnDestroy {
     if (this.eventCall) {
       if ($event.target.checked) {
         object.check = true;
-        if (this.eventObjectId.length >= 1) {
-          // this.notification.showWarning("Добавление событий ограничено! Вы превысили лимит добавления событий к данной заявке", "Инфомарция")
+        if (this.eventObjectId.length >= 15) {
+          this.notifyService.showWarning("Добавление событий ограничено! Вы превысили лимит добавления событий к данной заявке", "Инфомарция")
+          return;
         }
         this.eventObjectId.push(object.applicationId);
       } else {
@@ -323,9 +304,9 @@ export class ObjectsComponent implements OnInit, OnDestroy {
         let prevUrl = localStorage.getItem('previousUrl');
         if (!this.util.isNullOrEmpty(prevUrl)) {
           if (!this.util.isNullOrEmpty(localStorage.getItem('previousUrl').split('&sellApplicationId=')[0])) {
-            prevUrl = localStorage.getItem('previousUrl').split('&sellApplicationId=')[0] + '&sellApplicationId=' + object.applicationId
+            prevUrl = prevUrl.split('&sellApplicationId=')[0] + '&sellApplicationId=' + object.applicationId
           } else {
-            prevUrl = localStorage.getItem('previousUrl') + '&sellApplicationId=' + object.applicationId
+            prevUrl = prevUrl + '&sellApplicationId=' + object.applicationId
           }
         }
         this.util.navigateByUrl(prevUrl);
@@ -337,15 +318,12 @@ export class ObjectsComponent implements OnInit, OnDestroy {
 
   addEventShow() {
     if (this.eventCall) {
-      let prevUrl = localStorage.getItem('previousUrl');
-
-      if (!this.util.isNullOrEmpty(localStorage.getItem('previousUrl').split('&eventObjectId=')[0])) {
-        prevUrl = prevUrl.split('&eventObjectId=')[0] + '&eventObjectId=' + this.eventObjectId
-      } else {
-        prevUrl = prevUrl + '&eventObjectId=' + this.eventObjectId
-      }
-
+      let prevUrl = '/create-claim/' + localStorage.getItem('applicationId') + '?activeTab=events' + '&eventObjectId=' + this.eventObjectId;
       this.util.navigateByUrl(prevUrl);
     }
+  }
+
+  expandedBlock() {
+    this.expanded = !this.expanded;
   }
 }
