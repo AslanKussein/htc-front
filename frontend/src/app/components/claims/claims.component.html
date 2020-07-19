@@ -100,6 +100,10 @@
                 <i class="fa fa-balance-scale fa-2x" aria-hidden="true"></i>
                 <span class="badge color-aqua ">{{numeral}}</span>
               </mat-button-toggle>
+              <mat-button-toggle class="operation-type" (click)="addEventShow()" *ngIf="this.eventObjectId.length > 0"
+                                 [class]="'btn btn-sm btn-outline-dark clear-btn'" [disabled]="this.eventObjectId?.length>15">
+                Добавить на показ {{this.eventObjectId?.length}}
+              </mat-button-toggle>
               <mat-button-toggle class="operation-type" (click)="clearForm()"
                                  [class]="'btn btn-sm btn-outline-dark clear-btn'">
                 Очистить
@@ -171,6 +175,7 @@
         <table class="table table-sm">
           <thead class="text-center border-0 hex-blue-color">
           <tr style="height: 60px">
+            <th></th>
             <th>ID</th>
             <th>Операция</th>
             <th translate>claim.crDateFrom</th>
@@ -191,6 +196,11 @@
           <br/>
           <tbody class="bg-white">
           <tr *ngFor="let claim of claimData;let i = index">
+            <td *ngIf="eventCall">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="claim.check" (change)="checkedObjects(claim, $event)">
+              </div>
+            </td>
             <td>
               <a [routerLink]="['/create-claim-view/', claim?.id]">{{claim.id}}</a>
             </td>

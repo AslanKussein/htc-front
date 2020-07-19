@@ -31,12 +31,14 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   objectTypes: Dic[];
   myObject: boolean;
   objectMy: any;
+  eventCall: any = false;
   objectMyModel: number;
   subscriptions: Subscription = new Subscription();
   objectFilterDto: ObjectFilterDto;
   modalRef: BsModalRef;
   empty: boolean = false;
   fromBoard: boolean = false;
+  eventObjectId = [];
 
   @ViewChild('openObjectClaims', {static: true}) openObjectClaims: TemplateRef<any>;
 
@@ -54,6 +56,12 @@ export class ObjectsComponent implements OnInit, OnDestroy {
 
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('fromBoard'))) {
       this.fromBoard = this.actRoute.snapshot.queryParamMap.get('fromBoard') == 'true';
+    }
+    if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('event'))) {
+      if (this.actRoute.snapshot.queryParamMap.get('event') == 'call') {
+        this.fromBoard = true;
+        this.eventCall = true;
+      }
     }
     this.router.events
       .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
@@ -296,18 +304,48 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   }
 
   checkedObjects(object: any, $event: any) {
-    if ($event.target.checked) {
-      let prevUrl = localStorage.getItem('previousUrl');
-      if (!this.util.isNullOrEmpty(prevUrl)) {
-        if (!this.util.isNullOrEmpty(localStorage.getItem('previousUrl').split('&sellApplicationId=')[0])) {
-          prevUrl = localStorage.getItem('previousUrl').split('&sellApplicationId=')[0] + '&sellApplicationId=' + object.applicationId
-        } else {
-          prevUrl = localStorage.getItem('previousUrl') + '&sellApplicationId=' + object.applicationId
+    if (this.eventCall) {
+      if ($event.target.checked) {
+        object.check = true;
+        if (this.eventObjectId.length >= 1) {
+          // this.notification.showWarning("Добавление событий ограничено! Вы превысили лимит добавления событий к данной заявке", "Инфомарция")
+        }
+        this.eventObjectId.push(object.applicationId);
+      } else {
+        object.check = false;
+        const index = this.eventObjectId.indexOf(object.applicationId);
+        if (index > -1) {
+          this.eventObjectId.splice(index, 1);
         }
       }
+    } else {
+      if ($event.target.checked) {
+        let prevUrl = localStorage.getItem('previousUrl');
+        if (!this.util.isNullOrEmpty(prevUrl)) {
+          if (!this.util.isNullOrEmpty(localStorage.getItem('previousUrl').split('&sellApplicationId=')[0])) {
+            prevUrl = localStorage.getItem('previousUrl').split('&sellApplicationId=')[0] + '&sellApplicationId=' + object.applicationId
+          } else {
+            prevUrl = localStorage.getItem('previousUrl') + '&sellApplicationId=' + object.applicationId
+          }
+        }
+        this.util.navigateByUrl(prevUrl);
+        this.modalRef.hide();
+        return;
+      }
+    }
+  }
+
+  addEventShow() {
+    if (this.eventCall) {
+      let prevUrl = localStorage.getItem('previousUrl');
+
+      if (!this.util.isNullOrEmpty(localStorage.getItem('previousUrl').split('&eventObjectId=')[0])) {
+        prevUrl = prevUrl.split('&eventObjectId=')[0] + '&eventObjectId=' + this.eventObjectId
+      } else {
+        prevUrl = prevUrl + '&eventObjectId=' + this.eventObjectId
+      }
+
       this.util.navigateByUrl(prevUrl);
-      this.modalRef.hide();
-      return;
     }
   }
 }

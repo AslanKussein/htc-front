@@ -8,6 +8,8 @@ import {NotificationService} from "../../../../services/notification.service";
 import {EventsDTO} from "../../../../models/eventsDTO";
 import {Subscription} from "rxjs";
 import {NewDicService} from "../../../../services/new.dic.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {ClaimService} from "../../../../services/claim.service";
 
 @Component({
   selector: 'app-claim-events',
@@ -31,10 +33,14 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
   eventsDTO: EventsDTO;
   commentDev: boolean = true;
   today = new Date();
+  applicationInfo: string;
 
   constructor(private util: Util,
               private formBuilder: FormBuilder,
+              private router: Router,
+              private actRoute: ActivatedRoute,
               private createClaimComponent: CreateClaimComponent,
+              private claimService: ClaimService,
               private eventsService: EventsService,
               private newDicService: NewDicService,
               private notificationService: NotificationService) {
@@ -53,6 +59,11 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
     });
     this.getEventsByApplicationId(1);
     this.sortStatus();
+
+    if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('eventObjectId'))) {
+      console.log(this.actRoute.snapshot.queryParamMap.get('eventObjectId'));
+      this.eventsForm.eventTypeId = 1;
+    }
   }
 
   sortStatus() {
@@ -179,5 +190,33 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  setShowEvent() {
+    if (this.eventsForm.value.eventTypeId == 1) {
+      this.subscriptions.add(
+        this.claimService.getClaimById(this.applicationId).subscribe(res => {
+          let info = res.operationTypeId == 1 ? 'Купить' : 'Продать';
+          info += res.objectTypeId == 1 ? ' квартиру ' : ' дом ';
+
+          this.applicationInfo = info;
+          console.log()
+        })
+      )
+
+
+      // this.subscriptions.add(
+      //   this.eventsService.getContractsInfo(this.applicationId).subscribe(res => {
+      //       if (res.hasDepositContract) {
+      //
+      //       }
+      //       if (res.contractStatus) {
+      //
+      //       }
+      //       // this.router.navigate(['objects'], {queryParams: {event: 'call'}})
+      //       this.router.navigate(['claims'], {queryParams: {event: 'call'}})
+      //   })
+      // )
+    }
   }
 }

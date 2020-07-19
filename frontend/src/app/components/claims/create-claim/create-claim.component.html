@@ -1227,16 +1227,21 @@
                     </div>
                     <div class="card-footer" *ngIf="edit">
                       <div class="row">
-                        <label class="col-sm btn upload-btn btn-dark">Загрузить фото
-                          <input type="file" multiple="" hidden (change)="onFileChange($event, 1)">
-                        </label>
-
-                        <label class="col-sm btn upload-btn btn-dark">Загрузить план
-                          <input type="file" multiple="" hidden (change)="onFileChange($event, 2)">
-                        </label>
-                        <label class="col-sm btn upload-btn btn-dark" translate>Загрузить 3D тур
-                          <input type="file" multiple="" hidden (change)="onFileChange($event, 3)">
-                        </label>
+                        <div class="col-sm">
+                          <label class="btn upload-btn btn-dark">Загрузить фото
+                            <input type="file" multiple="" hidden (change)="onFileChange($event, 1)">
+                          </label>
+                        </div>
+                        <div class="col-sm">
+                          <label class="btn upload-btn btn-dark">Загрузить план
+                            <input type="file" multiple="" hidden (change)="onFileChange($event, 2)">
+                          </label>
+                        </div>
+                        <div class="col-sm">
+                          <label class="btn upload-btn btn-dark" translate>Загрузить 3D тур
+                            <input type="file" multiple="" hidden (change)="onFileChange($event, 3)">
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </div>

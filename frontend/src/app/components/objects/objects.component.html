@@ -612,6 +612,7 @@
               clear
             </button>
             <button type="button" class="btn btn-sm btn2 btn-secondary" (click)="backToPrev()" *ngIf="fromBoard">Назад</button>
+            <button *ngIf="eventCall" type="button" class="btn btn-sm btn2 color-aqua text-white" (click)="addEventShow()">Добавить на показ</button>
           </div>
         </div>
       </div>
@@ -659,7 +660,7 @@
               <td>
                 <span class="table-remove">
                   <button type="button" class="btn btn-mdb-color btn-sm btn-rounded btn-sm my-0"
-                          (click)="openModal(openObjectClaims, 'modal-lg', object)">Заявки по обекту</button>
+                          (click)="openModal(openObjectClaims, 'modal-xl', object)">Заявки по обекту</button>
                 </span>
               </td>
             </tr>
@@ -770,8 +771,7 @@
           <tr *ngFor="let object of selectObject.applicationList;let i = index">
             <td>
               <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="tableDefaultCheck1" (change)="checkedObjects(object, $event)">
-                <label class="custom-control-label" for="tableDefaultCheck1"></label>
+                <input type="checkbox"  [(ngModel)]="object.check" (change)="checkedObjects(object, $event)">
               </div>
             </td>
             <td>{{object.applicationId}}</td>

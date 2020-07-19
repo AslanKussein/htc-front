@@ -61,4 +61,8 @@ export class EventsService {
   putCommentEvent(id: number, comment: string) {
     return this.http.put<any>(`${this.configService.apiDataManagerUrl}/api/events/` + id + `/comment`, comment)
   }
+
+  getContractsInfo(id: number) {
+    return this.http.get<any>(`${this.configService.apiDataManagerUrl}/api/events/getContractsInfo/` + id);
+  }
 }

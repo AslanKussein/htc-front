@@ -7,6 +7,8 @@
           <ng-select
             [items]="appStatusesSort"
             formControlName="eventTypeId"
+            [(ngModel)]="eventsForm.eventTypeId"
+            (ngModelChange)="setShowEvent()"
             bindValue="value"
             placeholder="{{ 'patterns.chooseElement' | translate }}">
           </ng-select>
@@ -17,12 +19,12 @@
           <i aria-hidden="true" *ngIf="eventsForm.value.eventTypeId == 3" class="fa fa-handshake-o fa-2x">Встреча</i>
         </div>
         <div class="col-sm">
-          <label for="form7">Описание события</label>
+          <label>Описание события</label>
           <textarea class="col-sm-12 control" rows="1" formControlName="description"></textarea>
         </div>
         <div class="col-sm" *ngIf="eventsForm.value.eventTypeId == 1">
-          <label for="form7">ID заявки - {{this.applicationId}}</label>
-          <textarea id="form7" class="col-sm-12 control" rows="1" readonly></textarea>
+          <label>ID заявки - {{this.applicationId}}</label>
+          <textarea [value]="this.applicationInfo" class="col-sm-12 control" rows="1" readonly></textarea>
         </div>
         <div class="col-sm-1"></div>
       </div>
