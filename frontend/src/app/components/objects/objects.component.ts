@@ -75,7 +75,7 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.ngxLoader.start();
+    this.ngxLoader.startBackground();
     this.findObjects(1);
     this.loadDictionary();
     this.myObject = true;
@@ -140,7 +140,7 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   }
 
   findObjects(pageNo: number) {
-    this.ngxLoader.start();
+    this.ngxLoader.startBackground();
     this.objectFilterDto = new ObjectFilterDto();
     this.objectFilterDto.pageNumber = pageNo - 1;
     this.objectFilterDto.pageSize = 10;
@@ -206,7 +206,7 @@ export class ObjectsComponent implements OnInit, OnDestroy {
         }
       }));
     }
-    this.ngxLoader.stop();
+    this.ngxLoader.stopBackground();
   }
 
   isEmpty(obj: any): boolean {
