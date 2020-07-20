@@ -10,7 +10,8 @@
                 <input type="text" class="form-control" [value]="applicationId"
                        aria-describedby="basic-addon2" readonly>
                 <div class="input-group-append" *ngIf="hasUpdateRole() && hasEditApplication()">
-                  <button type="button" class="btn btn-sm btn-outline-primary m-0 px-3 py-2 z-depth-0 waves-effect" (click)="editApplication()">
+                  <button type="button" class="btn btn-sm btn-outline-primary m-0 px-3 py-2 z-depth-0 waves-effect"
+                          (click)="editApplication()">
                     <i class="fa fa-edit" aria-hidden="true"></i>
                   </button>
                 </div>
@@ -46,7 +47,9 @@
       </div>
       <div class="col-sm" [hidden]="hasShowGroup(['VIEW_CLIENT_DATA'])">
         <fieldset class="scheduler-border col-sm">
-          <legend class="scheduler-border">ID клиента</legend>
+          <legend class="scheduler-border">ID клиента <a *ngIf="this.clientId"
+                                                         [routerLink]="'/client-card/'+this.clientLogin">{{this.clientId}}</a>
+          </legend>
           <div class="row">
             <div class="col-sm">
               <input type="text" class="form-control text-uppercase" readonly [value]="clientFullName"/>
@@ -232,13 +235,15 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-sm" *ngIf="claimViewDto.isSell" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                      <div class="col-sm" *ngIf="claimViewDto.isSell"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
                         <label>Город</label>
                         <input type="text" class="form-control" readonly
                                [value]="getDicNameByLanguage(claimViewDto, 'city')"/>
                       </div>
 
-                      <div class="col-sm" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                      <div class="col-sm"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
                         <label>Количество комнат</label>
                         <div class="input-group" *ngIf="claimViewDto.isSell"
                              [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
@@ -251,7 +256,8 @@
                                [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"
                                [(ngModel)]="claimViewDto.numberOfRooms"/>
                       </div>
-                      <div class="col-sm" *ngIf="!claimViewDto.isFlat" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                      <div class="col-sm" *ngIf="!claimViewDto.isFlat"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
                         <label>Площадь участка</label>
                         <div class="input-group" *ngIf="claimViewDto.isSell"
                              [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
@@ -264,7 +270,8 @@
                                [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"
                                [(ngModel)]="claimViewDto.landArea"/>
                       </div>
-                      <div class="col-sm" *ngIf="claimViewDto.isFlat" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                      <div class="col-sm" *ngIf="claimViewDto.isFlat"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
                         <label>Этаж</label>
                         <div class="input-group" *ngIf="claimViewDto.isSell"
                              [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
@@ -372,7 +379,8 @@
                                    [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"/>
                           </div>
                         </div>
-                        <div class="row" *ngIf="claimViewDto.isFlat" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                        <div class="row" *ngIf="claimViewDto.isFlat"
+                             [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
                           <div class="col-sm">
                             <div class="col-sm text-center">
                               <input type="checkbox" [(ngModel)]="claimViewDto.atelier" class="custom-control-input"/>
@@ -403,14 +411,17 @@
                       <fieldset class="scheduler-border col-sm">
                         <legend class="scheduler-border">Характеристики дома</legend>
                         <div class="row">
-                          <div class="col-sm" [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])">
+                          <div class="col-sm"
+                               [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])">
                             <label>Район</label>
                             <input type="text" class="form-control" readonly
                                    [value]="getDicNameByLanguage(claimViewDto, 'district')"/>
                           </div>
-                          <div class="col-sm" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                          <div class="col-sm"
+                               [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
                             <label>Этажность дома</label>
-                            <div class="input-group" *ngIf="claimViewDto.isSell" [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
+                            <div class="input-group" *ngIf="claimViewDto.isSell"
+                                 [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
                               <input type="text" class="form-control"
                                      [(ngModel)]="claimViewDto.numberOfFloorsPeriod.from"
                                      mask="separator" thousandSeparator=" " readonly/>
@@ -422,7 +433,8 @@
                                    [(ngModel)]="claimViewDto.numberOfFloors"
                                    [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"/>
                           </div>
-                          <div class="col-sm" *ngIf="claimViewDto.isFlat" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                          <div class="col-sm" *ngIf="claimViewDto.isFlat"
+                               [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
                             <label>Кв. на площадке</label>
                             <div class="input-group" *ngIf="claimViewDto.isSell"
                                  [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
@@ -439,12 +451,14 @@
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col-sm" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                          <div class="col-sm"
+                               [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
                             <label>Материал</label>
                             <input type="text" class="form-control" readonly
                                    [value]="getDicNameByLanguage(claimViewDto, 'materialOfConstruction')"/>
                           </div>
-                          <div class="col-sm" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                          <div class="col-sm"
+                               [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
                             <label>Год постройки</label>
                             <div class="input-group" *ngIf="claimViewDto.isSell"
                                  [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
@@ -459,7 +473,8 @@
                                    [(ngModel)]="claimViewDto.yearOfConstruction"
                                    [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"/>
                           </div>
-                          <div class="col-sm" *ngIf="claimViewDto.isFlat" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                          <div class="col-sm" *ngIf="claimViewDto.isFlat"
+                               [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
                             <label>Лифт</label>
                             <div class="row" style="margin: 0"
                                  *ngFor="let data of claimViewDto.typeOfElevatorList;let i = index ">
@@ -468,27 +483,29 @@
                             </div>
                           </div>
                         </div>
-                        <div class="row" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
-                            <div class="col-sm" *ngIf="!claimViewDto.isSell">
-                              <label>Состояние</label>
-                              <input type="text" class="form-control" readonly
-                                     [value]="getDicNameByLanguage(claimViewDto, 'houseCondition')"/>
-                            </div>
-                            <div class="col-sm" *ngIf="!claimViewDto.isFlat">
-                              <label>Канализация</label>
-                              <input type="text" class="form-control" readonly
-                                     [value]="getDicNameByLanguage(claimViewDto, 'sewerage')"/>
-                            </div>
-                            <div class="col-sm" *ngIf="!claimViewDto.isFlat">
-                              <label>Отопление</label>
-                              <input type="text" class="form-control" readonly
-                                     [value]="getDicNameByLanguage(claimViewDto, 'heatingSystem')"/>
-                            </div>
+                        <div class="row"
+                             [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                          <div class="col-sm" *ngIf="!claimViewDto.isSell">
+                            <label>Состояние</label>
+                            <input type="text" class="form-control" readonly
+                                   [value]="getDicNameByLanguage(claimViewDto, 'houseCondition')"/>
+                          </div>
+                          <div class="col-sm" *ngIf="!claimViewDto.isFlat">
+                            <label>Канализация</label>
+                            <input type="text" class="form-control" readonly
+                                   [value]="getDicNameByLanguage(claimViewDto, 'sewerage')"/>
+                          </div>
+                          <div class="col-sm" *ngIf="!claimViewDto.isFlat">
+                            <label>Отопление</label>
+                            <input type="text" class="form-control" readonly
+                                   [value]="getDicNameByLanguage(claimViewDto, 'heatingSystem')"/>
+                          </div>
                         </div>
                       </fieldset>
                     </div>
                     <div class="row" *ngIf="claimViewDto.isFlat">
-                      <fieldset class="scheduler-border col-sm" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                      <fieldset class="scheduler-border col-sm"
+                                [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
                         <legend class="scheduler-border">Подъезд</legend>
                         <div class="row">
                           <div class="col-sm">
@@ -513,7 +530,8 @@
                       </fieldset>
                     </div>
                     <div class="row" *ngIf="claimViewDto.isFlat">
-                      <fieldset class="scheduler-border col-sm" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                      <fieldset class="scheduler-border col-sm"
+                                [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
                         <legend class="scheduler-border">Территория</legend>
                         <div class="row">
                           <div class="col-sm">
