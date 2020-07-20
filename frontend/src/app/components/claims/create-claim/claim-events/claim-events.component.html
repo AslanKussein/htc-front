@@ -85,8 +85,8 @@
               <textarea class="col-sm-12 control" rows="2" [(ngModel)]="events.description"></textarea>
             </div>
             <div class="col-sm" *ngIf="events?.eventType?.id == 1" [class.disabledDev]="events.disabledDev">
-              <label for="form7">ID заявки - {{this.applicationId}}</label>
-              <textarea class="col-sm-12 control" rows="2" readonly></textarea>
+              <label for="form7">ID заявки - {{events?.targetApplicationId}}</label>
+              <textarea class="col-sm-12 control" [value]="events?.info" rows="2" readonly></textarea>
             </div>
             <div class="col-sm-2">
               <div class="row">

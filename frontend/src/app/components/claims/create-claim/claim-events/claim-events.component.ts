@@ -106,6 +106,7 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
         for (const argument of res.data.data.data) {
           let obj = {};
           obj['applicationId'] = argument.applicationId;
+          obj['targetApplicationId'] = argument.targetApplicationId;
           obj['comment'] = argument.comment;
           obj['description'] = argument.description;
           obj['eventId'] = argument.eventId;
@@ -117,6 +118,15 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
           obj['eventType'] = argument.eventType
           obj['disabledDev'] = true
           obj['disabledDevComment'] = true
+          if (argument.eventId.id == 1) {
+            this.subscriptions.add(
+                this.claimService.getClaimById(argument.targetApplicationId).subscribe(res => {
+                  let info = res.operationTypeId == 1 ? 'Купить' : 'Продать';
+                  info += res.objectTypeId == 1 ? ' квартиру ' : ' дом ';
+                  obj['info'] = info
+                })
+            )
+          }
           this.eventsData.push(obj)
         }
         this.totalItems = res.data.total;
