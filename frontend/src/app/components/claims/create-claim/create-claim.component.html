@@ -13,7 +13,7 @@
                aria-controls="contractOU" (click)="changeTab('ou')"
                aria-selected="false" >Договор ОУ</a>
           </li>
-          <li class="nav-item" *ngIf="this.applicationId">
+          <li class="nav-item" *ngIf="this.applicationId && isSell()">
             <a class="nav-link" [ngClass]="{ 'active':activeTab === 'advanceAgreement' || activeTab === 'depositAgreement'}" id="advanceAgreement-tab" data-toggle="tab" href="#advanceAgreement" role="tab"
                aria-controls="advanceAgreement" (click)="openModal2(modalContentAdvance);"
                aria-selected="false" >Соглашение {{activeTab === 'advanceAgreement' ? 'Аванса' : ''}} {{activeTab === 'depositAgreement' ? 'Задатка':''}}</a>
@@ -1316,8 +1316,8 @@
                   </button>
                   <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                     <a class="dropdown-item" (click)="changeTab('ou');">Соглашение ОУ</a>
-                    <a class="dropdown-item" (click)="changeTab('advanceAgreement');">Соглашение аванса</a>
-                    <a class="dropdown-item" (click)="changeTab('depositAgreement');">Соглашение задатка</a>
+                    <a class="dropdown-item" *ngIf="isSell()" (click)="changeTab('advanceAgreement');">Соглашение аванса</a>
+                    <a class="dropdown-item" *ngIf="isSell()" (click)="changeTab('depositAgreement');">Соглашение задатка</a>
                   </div>
                 </div>
                 <button type="button" class="btn text-white font-weight-bold color-aqua btn-sm btn2 " (click)="submit()" *ngIf="edit"
