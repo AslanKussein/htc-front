@@ -19,7 +19,6 @@ import {Period} from "../../../models/common/period";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {RoleManagerService} from "../../../services/roleManager.service";
-import {HttpParams} from "@angular/common/http";
 import {UserService} from "../../../services/user.service";
 import {YandexMapComponent} from "./yandex-map/yandex-map.component";
 import {KazPostService} from 'src/app/services/kaz.post.service';
