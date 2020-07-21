@@ -907,7 +907,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.playground,
       this.applicationForm.propertyDeveloperId,
       this.applicationForm.typeOfElevatorList,
-      this.applicationForm.yearOfConstruction
+      this.applicationForm.yearOfConstruction,
+      this.applicationForm.wheelchair,
+      this.applicationForm.yardTypeId,
     )
   }
 
