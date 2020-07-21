@@ -135,7 +135,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
               private configService: ConfigService,
               private cdRef: ChangeDetectorRef,
               private modalService: BsModalService,
-              private actRoute: ActivatedRoute,
+              public actRoute: ActivatedRoute,
               private ngxLoader: NgxUiLoaderService,
               private roleManagerService: RoleManagerService,
               private userService: UserService,

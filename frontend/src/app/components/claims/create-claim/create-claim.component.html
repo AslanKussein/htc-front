@@ -1364,7 +1364,7 @@
 
 <ng-template #modalContentAdvance let-close="close">
   <div class="modal-header">
-    <button type="button" class="close" (click)="modalRef2.hide()">
+    <button type="button" class="close" (click)="modalRef2.hide(); this.activeTab = 'depositAgreement'">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
