@@ -17,7 +17,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
   roles: Dic[];
   groups: Dic[];
   organizations: Dic[];
-  actions: string;
+  isEdit: boolean = false;
   subscriptions: Subscription = new Subscription();
 
   constructor(private modalService: BsModalService,
@@ -44,12 +44,14 @@ export class StaffsComponent implements OnInit, OnDestroy {
     passNew: '',
     passNew2: '',
     name: '',
-    surname: ''
+    surname: '',
+    phone: '',
+    email: ''
   };
 
 
   ngOnInit(): void {
-    this.ngxLoader.start();
+    this.ngxLoader.startBackground();
     this.loadDictionary();
     this.findObjects(1);
   }
@@ -68,7 +70,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
 
 
   getGroup(){
-    this.ngxLoader.start();
+    this.ngxLoader.startBackground();
     let obj={
       roles:7
     };
@@ -77,22 +79,22 @@ export class StaffsComponent implements OnInit, OnDestroy {
         this.groups = this.util.toSelectArrayGroup(res);
       }
     });
-    this.ngxLoader.stop();
+    this.ngxLoader.stopBackground();
   }
 
 
   getUserInfo() {
-    this.ngxLoader.start();
+    this.ngxLoader.startBackground();
     this.subscriptions.add(this.staffService.getUserInfo(this.filter).subscribe(res => {
       if (res != null) {
         this.users = res.data;
       }
     }));
-    this.ngxLoader.stop();
+    this.ngxLoader.stopBackground();
   }
 
   findObjects(pageNo: number) {
-    this.ngxLoader.start();
+    this.ngxLoader.startBackground();
     let searchFilter = {};
 
     this.loading = true;
@@ -105,7 +107,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
       }
     }));
     this.loading = false;
-    this.ngxLoader.stop();
+    this.ngxLoader.stopBackground();
   }
 
   openModal(template: TemplateRef<any>) {
@@ -126,8 +128,8 @@ export class StaffsComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    this.ngxLoader.start();
-    if (this.actions == 'EDIT') {
+    this.ngxLoader.startBackground();
+    if (this.isEdit) {
 
       this.subscriptions.add(this.staffService.updateUserGroupById(this.formData)
         .subscribe(data => {
@@ -194,7 +196,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
 
 
     }
-    if (this.actions == 'ADD') {
+    if (!this.isEdit) {
       this.subscriptions.add(this.staffService.createUser(this.formData)
         .subscribe(data => {
           if (data != null) {
@@ -215,11 +217,11 @@ export class StaffsComponent implements OnInit, OnDestroy {
           this.modalRef.hide();
         }));
     }
-    this.ngxLoader.stop();
+    this.ngxLoader.stopBackground();
   }
 
   editData(user: any) {
-    this.actions = 'EDIT';
+    this.isEdit = true;
     this.staffService.getUserById(user)
       .subscribe(data => {
         this.formData = data;
@@ -228,7 +230,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
   }
 
   addUser() {
-    this.actions = 'ADD';
+    this.isEdit = false;
     this.formData = {
       residentialComplexes: null,
       roles: null,
@@ -240,7 +242,9 @@ export class StaffsComponent implements OnInit, OnDestroy {
       passNew: '',
       passNew2: '',
       name: '',
-      surname: ''
+      surname: '',
+      phone: '',
+      email: ''
     };
   }
 

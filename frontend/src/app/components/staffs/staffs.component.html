@@ -99,8 +99,8 @@
 
 <ng-template #template>
   <div class="modal-header">
-    <h4 class="modal-title pull-left" *ngIf="actions=='ADD'">Add user</h4>
-    <h4 class="modal-title pull-left" *ngIf="actions=='EDIT'">Edit user</h4>
+    <h4 class="modal-title pull-left" *ngIf="!isEdit">Add user</h4>
+    <h4 class="modal-title pull-left" *ngIf="isEdit">Edit user</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -108,35 +108,46 @@
   <div class="modal-body">
     <div class="col-sm">
       <label class="col-sm col-form-label">Login<span class="text-danger">&nbsp;*</span></label>
-      <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="Username"
+      <input type="text" [disabled]="isEdit" class="col-sm form-control" name="Username"
              [(ngModel)]="formData.login">
     </div>
-    <div class="col-sm" *ngIf="actions=='ADD'">
+    <div class="col-sm" *ngIf="!isEdit">
       <label class="col-sm col-form-label">Пароль<span class="text-danger">&nbsp;*</span></label>
       <input type="password" class="col-sm form-control" name="password"
              [(ngModel)]="formData.pass">
     </div>
-    <div class="col-sm" *ngIf="actions=='EDIT'">
+    <div class="col-sm" *ngIf="isEdit">
       <label class="col-sm col-form-label">Новый пароль<span class="text-danger">&nbsp;*</span></label>
       <input type="password" class="col-sm form-control" name="passNew" [(ngModel)]="formData.passNew">
     </div>
-    <div class="col-sm" *ngIf="actions=='EDIT'">
+    <div class="col-sm" *ngIf="isEdit">
       <label class="col-sm col-form-label">Подтверждения пароль<span
         class="text-danger">&nbsp;*</span></label>
       <input type="password" class="col-sm form-control" name="passNew2" [(ngModel)]="formData.passNew2">
     </div>
     <div class="col-sm">
       <label class="col-sm col-form-label">Имя<span class="text-danger">&nbsp;*</span></label>
-      <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="First"
+      <input type="text" [disabled]="isEdit" class="col-sm form-control" name="First"
              [(ngModel)]="formData.name">
     </div>
     <div class="col-sm">
       <label class="col-sm col-form-label">Фамилия<span class="text-danger">&nbsp;*</span></label>
-      <input type="text" [disabled]="actions=='EDIT'" class="col-sm form-control" name="Last"
+      <input type="text" [disabled]="isEdit" class="col-sm form-control" name="Last"
              [(ngModel)]="formData.surname">
     </div>
     <div class="col-sm">
-      <label class="col-sm col-form-label">Активность {{formData.isActive}}<span
+      <label class="col-sm col-form-label">Контакты<span class="text-danger">&nbsp;*</span></label>
+      <input type="text" [disabled]="isEdit" class="col-sm form-control" name="phone"
+             prefix="+7" mask=' (000) 000-0000' [showMaskTyped]="true" placeHolderCharacter="0"
+             [(ngModel)]="formData.phone">
+    </div>
+    <div class="col-sm">
+      <label class="col-sm col-form-label">Почта<span class="text-danger">&nbsp;*</span></label>
+      <input type="email" [disabled]="isEdit" class="col-sm form-control" name="email"
+             [(ngModel)]="formData.email">
+    </div>
+    <div class="col-sm">
+      <label class="col-sm col-form-label">Активность <span
         class="text-danger">&nbsp;*</span></label>
       <div class="custom-control custom-checkbox">
         <div class="custom-control custom-radio">
