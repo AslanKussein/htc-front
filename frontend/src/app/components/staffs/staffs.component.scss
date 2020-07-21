@@ -59,8 +59,8 @@ table thead {
 }
 
 table tbody tr td {
-  width: 1440px;
-  height: 80px;
+  //min-width: 1440px;
+  min-height: 80px;
   background-color: #ffffff;
   text-align: center;
   padding-top: 28px;
@@ -109,4 +109,15 @@ input::placeholder, input .fa, .ng-input::placeholder {
   text-align: center;
   color: #ffffff;
   margin: 0.5px;
+}
+
+.contact-info {
+  font-size: 16px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.75;
+  letter-spacing: normal;
+  text-align: left;
+  color: #656c75;
 }

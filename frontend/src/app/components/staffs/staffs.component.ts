@@ -84,10 +84,29 @@ export class StaffsComponent implements OnInit, OnDestroy {
 
 
   getUserInfo() {
+    this.users = [];
     this.ngxLoader.startBackground();
     this.subscriptions.add(this.staffService.getUserInfo(this.filter).subscribe(res => {
       if (res != null) {
-        this.users = res.data;
+        res.data.forEach(u=> {
+          let obj = {};
+          if (!this.util.isNullOrEmpty(u.photoUuid)) {
+            obj['ava'] = this.util.generatorPreviewUrl(u.photoUuid);
+          } else {
+            obj['info'] = u.name.substr(0, 1) + ' ' + u.surname.substr(0, 1);
+          }
+          obj['id'] = u.id;
+          obj['phone'] = u.phone;
+          obj['email'] = u.email;
+          obj['roles'] = u.roles;
+          obj['group'] = u.group;
+          obj['isActive'] = u.isActive;
+          obj['login'] = u.login;
+          obj['name'] = u.name;
+          obj['organizationId'] = u.organizationId;
+          obj['surname'] = u.surname;
+          this.users.push(obj);
+        });
       }
     }));
     this.ngxLoader.stopBackground();
@@ -101,9 +120,26 @@ export class StaffsComponent implements OnInit, OnDestroy {
     searchFilter['pageNumber'] = pageNo;
     searchFilter['pageSize'] = this.itemsPerPage;
     this.subscriptions.add(this.staffService.getUserList().subscribe(res => {
-
       if (res != null) {
-        this.users = res.data;
+        res.data.forEach(u=> {
+          let obj = {};
+          if (!this.util.isNullOrEmpty(u.photoUuid)) {
+            obj['ava'] = this.util.generatorPreviewUrl(u.photoUuid);
+          } else {
+            obj['info'] = u.name.substr(0, 1) + ' ' + u.surname.substr(0, 1);
+          }
+          obj['id'] = u.id;
+          obj['phone'] = u.phone;
+          obj['email'] = u.email;
+          obj['roles'] = u.roles;
+          obj['group'] = u.group;
+          obj['isActive'] = u.isActive;
+          obj['login'] = u.login;
+          obj['name'] = u.name;
+          obj['organizationId'] = u.organizationId;
+          obj['surname'] = u.surname;
+          this.users.push(obj);
+        });
       }
     }));
     this.loading = false;
@@ -222,11 +258,12 @@ export class StaffsComponent implements OnInit, OnDestroy {
 
   editData(user: any) {
     this.isEdit = true;
-    this.staffService.getUserById(user)
+    this.subscriptions.add(this.staffService.getUserById(user)
       .subscribe(data => {
         this.formData = data;
         this.formData.isActive = data.isActive.toString();
-      });
+      })
+    );
   }
 
   addUser() {

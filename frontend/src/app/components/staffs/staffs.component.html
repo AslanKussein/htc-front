@@ -51,12 +51,13 @@
 </div>
 <div class="row shadow">
   <div class="col-sm">
-    <table class="table  table-sm">
+    <table class="table table-sm">
       <thead class="text-center">
       <tr>
         <th>ID</th>
-        <th>Логин</th>
-        <th>ФИО</th>
+        <th></th>
+        <th class="text-left">Фамилия/Имя</th>
+        <th>Контакы</th>
         <th>Роль</th>
         <th>Группа</th>
         <th>Действия</th>
@@ -65,9 +66,17 @@
       <tbody class="bg-white">
       <tr *ngFor="let user of users;let i = index">
         <td>{{user.id}}</td>
-        <td>{{user.login}}</td>
-        <td style="color: #00b2a8">{{user.name}} {{user.surname}}</td>
         <td>
+          <span *ngIf="user.info">{{user.info}}</span>
+          <img *ngIf="user.ava" [src]="user.ava" class="rounded-circle" style="width: 45px; height: 45px" [alt]=""/>
+        </td>
+        <td style="color: #00b2a8" class="text-left">{{user.name}} {{user.surname}}</td>
+        <td class="contact-info">
+          <span *ngIf="user.phone">+7 {{user.phone | mask: '(000) 000-0000'}}</span>
+          <br/>
+          <span class="font-weight-bolder">{{user.email}}</span>
+        </td>
+        <td style="max-width: 160px;">
           <div *ngFor="let data of user.roles">
             <div class="role" [style]="data == 'Агент' ? 'background-color: #6dc27d' : data == 'Administrator resursa' ? 'background-color: #4b79bb' : 'background-color: #e8ac4b'">
               {{data}}
@@ -76,8 +85,7 @@
         </td>
         <td>{{user.group}}</td>
         <td class="edit-action" (click)="editData(user);openModal(template)">
-          <i aria-hidden="true" class="fa fa-pencil"></i>
-            Редактировать
+          <i aria-hidden="true" class="fa fa-pencil"> Редактировать</i>
         </td>
       </tr>
       </tbody>
