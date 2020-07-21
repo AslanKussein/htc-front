@@ -86,10 +86,10 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   pbThickness: 5 // progress bar thickness
 };
 
-const mapConfig: IConfigYandex = {
-  apikey: '0d07c1d4-e2f0-4eb1-ba8b-8e7d0fbc53ab',
-  lang: 'ru_RU',
-};
+// const mapConfig: IConfigYandex = {
+//   // apikey: '0d07c1d4-e2f0-4eb1-ba8b-8e7d0fbc53ab',
+//   // lang: 'ru_RU',
+// };
 
 @NgModule({
   declarations: [
@@ -146,7 +146,7 @@ const mapConfig: IConfigYandex = {
     DragDropModule,
     ToastrModule.forRoot(),
     NgxMaskModule.forRoot(options),
-    AngularYandexMapsModule.forRoot(mapConfig),
+    // AngularYandexMapsModule.forRoot(mapConfig),
       CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
