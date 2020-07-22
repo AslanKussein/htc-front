@@ -25,11 +25,17 @@ export class StaffService {
   getUserById(obj): Observable<any> {
     return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/users/` + obj.id);
   }
+  getOrganizationById(obj): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/organizations/` + obj.id);
+  }
 
   getUserInfo(obj): Observable<any> {
     let params = new HttpParams();
     if (!this.util.isNullOrEmpty(obj.group)) {
       params = params.append('groupId', obj.group);
+    }
+    if (!this.util.isNullOrEmpty(obj.organizationId)) {
+      params = params.append('organizationId', obj.organizationId);
     }
     params = params.append('locale', String(language.language));
     if (!this.util.isNullOrEmpty(obj.roles)) {
@@ -64,8 +70,28 @@ export class StaffService {
       );
   }
 
+  public createOrganization(obj): Observable<any> {
+    return this.http.post(`${this.configService.apiUserManagerUrl}/api/organizations`, obj)
+      .pipe(
+        tap(),
+      );
+  }
+
   public updateUserActiveById(obj): Observable<any> {
     return this.http.put(`${this.configService.apiUserManagerUrl}/api/users/` + obj.id + `/active`, {isActive: obj.isActive})
+      .pipe(
+        tap(),
+      );
+  }
+  public updateOrganization(obj): Observable<any> {
+    return this.http.put(`${this.configService.apiUserManagerUrl}/api/organizations/` + obj.id, obj)
+      .pipe(
+        tap(),
+      );
+  }
+
+  public deleteOrganization(id): Observable<any> {
+    return this.http.delete<any>(`${this.configService.apiUserManagerUrl}/api/organizations/` + id, {})
       .pipe(
         tap(),
       );

@@ -66,6 +66,7 @@ import {AnalyticsComponent} from "./components/analytics/analytics.component";
 import {AdvanceComponent} from "./components/claims/create-claim/advance/advance.component";
 import { CompareComponent } from './components/compare/compare.component';
 import { MaterialModule } from './MaterialModule';
+import { OrganizationComponent } from './components/organization/organization.component';
 
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
@@ -124,6 +125,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     ModalComponent,
     AdvanceComponent,
     CompareComponent,
+    OrganizationComponent,
   ],
   imports: [
     BrowserModule,

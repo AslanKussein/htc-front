@@ -1,0 +1,229 @@
+<div class="card-body card-bg" ngxUiLoaderBlurred>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-6">
+          <label>Поиск</label>
+          <input class="form-control" type="text" [(ngModel)]="filter.search" placeholder="Search"
+                 aria-label="Search">
+        </div>
+        <div class="col-sm">
+          <button type="button" class="btn btn-primary float-right btn2" (click)="openModal(template); addOrg()">
+            Создать
+            организацию
+          </button>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <ng-template #template>
+          <div class="modal-header">
+            <h4 class="modal-title pull-left" *ngIf="actions=='ADD'">Создание организации</h4>
+            <h4 class="modal-title pull-left" *ngIf="actions=='EDIT'">Редактирование организации</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Наименование KZ<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" class="col-sm form-control" name="nameKk"
+                     [(ngModel)]="formData.nameKk">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Наименование RU<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" class="col-sm form-control" name="nameRu"
+                     [(ngModel)]="formData.nameRu">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Наименование EN<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formData.nameEn">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">ИИН/БИН<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" class="col-sm form-control" name="bin" [(ngModel)]="formData.bin">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Адрес KZ<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" class="col-sm form-control" name="addressKk" [(ngModel)]="formData.addressKk">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Адрес RU<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" class="col-sm form-control" name="addressRu" [(ngModel)]="formData.addressRu">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Адрес EN<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" class="col-sm form-control" name="addressEn" [(ngModel)]="formData.addressEn">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Телефон<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" class="col-sm form-control" name="phoneNumber" [(ngModel)]="formData.phoneNumber">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">E-mail<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" class="col-sm form-control" name="email" [(ngModel)]="formData.email">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">  Наименование банка, филиала<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" class="col-sm form-control" name="name" [(ngModel)]="formData.requisiteDto.name">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">  Расчетный счет	<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" class="col-sm form-control" name="account" [(ngModel)]="formData.requisiteDto.account">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">  БИН банка	<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" class="col-sm form-control" name="bin" [(ngModel)]="formData.requisiteDto.bin">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">  БИК банка	<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" class="col-sm form-control" name="bik" [(ngModel)]="formData.requisiteDto.bik">
+            </div>
+            <div class="col-sm">
+              <label class="col-sm col-form-label">Дополнительно<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" class="col-sm form-control" name="additionally" [(ngModel)]="formData.requisiteDto.additionally">
+            </div>
+            <div class="col-sm text-right">
+              <button type="button" class="btn btn-primary" (click)="submit()" style="margin: 10px">
+                Сохранить
+              </button>
+              <button type="button" class="btn btn-light" (click)="modalRef.hide()" style="margin: 10px">
+                Отмена
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+
+
+      <div class="row" >
+        <ng-template #template2 >
+          <div class="modal-header">
+            <h4 class="modal-title">Подтверждение действия</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h6 class="modal-title">Действительно хотите удалить организацию?</h6>
+            <h6 class="modal-title" *ngIf="users">Определите сотрудников этой организации в другую организацию?</h6>
+
+
+
+            <div class="row">
+              <div class="col-sm" *ngIf="users">
+                <table class="table table-bordered table-sm">
+                  <thead class="text-center">
+                  <tr>
+                    <th>ID</th>
+                    <th translate>ФИО</th>
+                    <th translate>Роль</th>
+                    <th translate>Группа</th>
+                    <th translate>Организация</th>
+                  </tr>
+                  </thead>
+                  <tbody style="cursor: pointer">
+                  <tr *ngFor="let obj of users;let i = index">
+                    <td>{{obj.id}}</td>
+                    <td>{{obj.name}} {{obj.surname}}</td>
+                    <td>{{obj.roles}}</td>
+                    <td>{{obj.group}}</td>
+                    <td>
+                      <div class="col-sm">
+                      <label class="col-sm col-form-label">Организация<span class="text-danger">&nbsp;*</span></label>
+                      <ng-select name="residentialComplexes"
+                                 placeholder="Организация"
+                                 [items]="organizationsDic"
+                                 bindValue="value"
+                                 [(ngModel)]="obj.organizationId">
+                      </ng-select>
+                    </div></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+
+
+            <div class="col-sm text-right">
+              <button type="button" class="btn btn-primary" (click)="deleteOrg(users)" style="margin: 10px">
+                Подтвердить
+              </button>
+              <button type="button" class="btn btn-light" (click)="modalRef.hide()" style="margin: 10px">
+                Отменить
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="row">
+        <div class="col-sm">
+          <table class="table table-bordered table-sm">
+            <thead class="text-center">
+            <tr>
+              <th>ID</th>
+              <th translate>Наименование KZ</th>
+              <th translate>Наименование RU</th>
+              <th translate>Наименование EN</th>
+              <th translate>ИИН/БИН</th>
+              <th translate>Адрес KZ</th>
+              <th translate>Адрес RU</th>
+              <th translate>Адрес EN</th>
+              <th translate>Телефон</th>
+              <th translate>E-mail</th>
+              <th translate>Реквизиты</th>
+              <th translate>Действия</th>
+            </tr>
+            </thead>
+            <tbody style="cursor: pointer">
+            <tr *ngFor="let org of organizations;let i = index">
+              <td>{{org.id}}</td>
+              <td>{{org.nameKk}}</td>
+              <td>{{org.nameRu}}</td>
+              <td>{{org.nameEn}}</td>
+              <td>{{org.bin}}</td>
+              <td>{{org.addressKk}}</td>
+              <td>{{org.addressRu}}</td>
+              <td>{{org.addressEn}}</td>
+              <td>{{org.phoneNumber}}</td>
+              <td>{{org.email}}</td>
+              <td>{{org.requisiteDto?.name}} {{org.requisiteDto?.account}} {{org.requisiteDto?.bin}}</td>
+              <td>
+                <button type="button" class="btn btn-sm btn-light"
+                                  (click)="editData(org);openModal(template)">
+                Редактировать
+              </button>
+                <button type="button" class="btn btn-sm btn-danger"
+                   (click)="delData(org);openModal2(template2)"
+                >
+                Удалить
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="row">
+            <div class="col-sm">
+              <pagination [(ngModel)]="currentPage"
+                          [totalItems]="totalItems"
+                          [itemsPerPage]="itemsPerPage"
+                          [maxSize]="10"
+                          [rotate]="true"
+                          [boundaryLinks]="true"
+                          previousText="&lsaquo;"
+                          nextText="&rsaquo;"
+                          firstText="&laquo;"
+                          lastText="&raquo;"
+                          (pageChanged)="pageChanged($event)">
+              </pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

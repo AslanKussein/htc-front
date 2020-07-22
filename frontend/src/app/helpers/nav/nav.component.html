@@ -38,7 +38,12 @@
       </li>
       <li class="nav-item" [ngClass]="isActive() ? 'active' : ''">
         <a class="nav-link" (click)="dnHref('dic-control')">
-          <span translate>Управление справочниками</span>
+          <span translate>Управление спправочниками</span>
+        </a>
+      </li>
+      <li class="nav-item" [ngClass]="isActive() ? 'active' : ''">
+        <a class="nav-link" (click)="dnHref('organizations')">
+          <span translate>Управление организациям и</span>
         </a>
       </li>
     </ul>
