@@ -115,7 +115,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
           this.claimViewDto = res;
 
           this.fillIsEmpty();
-          this.searchByPhone(res.clientLogin);
+          this.searchByPhone(res.clientLogin, this.applicationId);
           this.searchByLoginAgent(res.agent);
           if (this.util.getCurrentUser().login == res.agent) {
             this.isAuthor = true;
@@ -169,9 +169,9 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
     }))
   }
 
-  searchByPhone(login: string) {
+  searchByPhone(login: string, id: number) {
     if (this.util.isNullOrEmpty(login)) return;
-    this.subscriptions.add(this.ownerService.searchByPhone(login)
+    this.subscriptions.add(this.ownerService.findByLoginAndAppId(login, id)
       .subscribe(res => {
           this.clientId = res.id;
           this.clientLogin = login;
