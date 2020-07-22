@@ -1,5 +1,5 @@
 <div class="row w-100"></div>
-<div class="row" [formGroup]="applicationSearchForm" id="searchClaim">
+<div class="row disabled-bottom-margin" [formGroup]="applicationSearchForm" id="searchClaim">
   <div class="col-sm">
     <div class="card">
       <div class="card-header font-weight-bold bg-dark text-white">
@@ -100,13 +100,17 @@
                 <i class="fa fa-balance-scale fa-2x" aria-hidden="true"></i>
                 <span class="badge color-aqua ">{{numeral}}</span>
               </mat-button-toggle>
-              <mat-button-toggle id="addToShow" class="btn btn-sm btn-outline-dark clear-btn operation-type" (click)="addEventShow()" *ngIf="this.eventObjectId.length > 0" [disabled]="this.eventObjectId?.length>15">
+              <mat-button-toggle id="addToShow" class="btn btn-sm btn-outline-dark clear-btn operation-type"
+                                 (click)="addEventShow()" *ngIf="this.eventObjectId.length > 0"
+                                 [disabled]="this.eventObjectId?.length>15">
                 Добавить на показ {{this.eventObjectId?.length}}
               </mat-button-toggle>
-              <mat-button-toggle id="clearBtn" class="btn btn-sm btn-outline-dark clear-btn operation-type" (click)="clearForm()">
+              <mat-button-toggle id="clearBtn" class="btn btn-sm btn-outline-dark clear-btn operation-type"
+                                 (click)="clearForm()">
                 Очистить
               </mat-button-toggle>
-              <mat-button-toggle id="searchBtn" class="btn btn-sm color-aqua text-white search-btn operation-type" (click)="findClaims(1)">
+              <mat-button-toggle id="searchBtn" class="btn btn-sm color-aqua text-white search-btn operation-type"
+                                 (click)="findClaims(1)">
                 <i aria-hidden="true" class="fa fa-search"></i>
                 Поиск
               </mat-button-toggle>
@@ -118,138 +122,86 @@
   </div>
 </div>
 
-<div class="card border-0 hex-blue-color">
-  <div class="card-body">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-      <li class="nav-item">
-        <a class="nav-link active panel-header" id="open-tab" data-toggle="tab" href="#open" role="tab"
-           aria-controls="open"
-           aria-selected="true" translate>claim.opening
-          <span class="badge badge-info ml-2">{{totalItems}}</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link panel-header" id="open-sell-tab" data-toggle="tab" href="#open-sell" role="tab"
-           aria-controls="open-sell"
-           aria-selected="false" translate>claim.openingSell
-          <span class="badge badge-info ml-2">0</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link panel-header" id="open-buy-tab" data-toggle="tab" href="#open-buy" role="tab"
-           aria-controls="open-buy"
-           aria-selected="false" translate>claim.openingBuy
-          <span class="badge badge-info ml-2">0</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link panel-header" id="closed-tab" data-toggle="tab" href="#closed" role="tab"
-           aria-controls="closed"
-           aria-selected="false" translate>claim.closed
-          <span class="badge badge-info ml-2">0</span>
-        </a>
-      </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" id="open" role="tabpanel" aria-labelledby="open-tab">
-      </div>
-      <div class="tab-pane fade" id="open-sell" role="tabpanel" aria-labelledby="open-sell-tab">
-
-      </div>
-      <div class="tab-pane fade" id="open-buy" role="tabpanel" aria-labelledby="open-buy-tab">
-      </div>
-
-      <div class="tab-pane fade" id="closed" role="tabpanel" aria-labelledby="closed-tab">
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="row">
-  <div class="col-sm">
-    <div class="card border-0">
-      <div class="card-body hex-blue-color overflow-auto">
-        <table class="table table-sm">
-          <thead class="text-center border-0 hex-blue-color">
-          <tr style="height: 60px">
-            <th *ngIf="eventCall"></th>
-            <th>ID</th>
-            <th>Операция</th>
-            <th translate>claim.crDateFrom</th>
-            <th translate>fio</th>
-            <th width="120px" translate>Контакты</th>
-            <th translate>Район</th>
-            <th translate>Количество комнат</th>
-            <th translate>Цена</th>
-            <th translate>Вид расчета</th>
-            <th translate>Площадь</th>
-            <th translate>Этаж</th>
-            <th translate>Статус</th>
-            <th translate>Комментарий</th>
-            <th translate></th>
-          </tr>
-          </thead>
+  <div class="col-sm overflow-auto">
+    <table class="table table-sm">
+      <thead class="text-center border-0 hex-blue-color">
+      <tr style="height: 60px">
+        <th *ngIf="eventCall"></th>
+        <th>ID</th>
+        <th>Операция</th>
+        <th translate>claim.crDateFrom</th>
+        <th translate>fio</th>
+        <th width="120px" translate>Контакты</th>
+        <th translate>Район</th>
+        <th translate>Количество комнат</th>
+        <th translate>Цена</th>
+        <th translate>Вид расчета</th>
+        <th translate>Площадь</th>
+        <th translate>Этаж</th>
+        <th translate>Статус</th>
+        <th translate>Комментарий</th>
+        <th translate></th>
+      </tr>
+      </thead>
+      <br/>
+      <tbody class="bg-white">
+      <tr *ngFor="let claim of claimData;let i = index">
+        <td *ngIf="eventCall">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" [(ngModel)]="claim.check" (change)="checkedObjects(claim, $event)">
+          </div>
+        </td>
+        <td>
+          <a [routerLink]="['/create-claim-view/', claim?.id]">{{claim.id}}</a>
+        </td>
+        <td class="font-weight-bold" style="color: #00b2a8">{{getDicNameByLanguage(claim, 'operationType')}}</td>
+        <td>{{formatDate(claim)}}</td>
+        <td>{{claim.fullNameAgent}}</td>
+        <td>
+          <span *ngIf="claim.phoneNumberAgent">+7 {{claim.phoneNumberAgent | mask: '(000) 000-0000'}}</span>
           <br/>
-          <tbody class="bg-white">
-          <tr *ngFor="let claim of claimData;let i = index">
-            <td *ngIf="eventCall">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" [(ngModel)]="claim.check" (change)="checkedObjects(claim, $event)">
-              </div>
-            </td>
-            <td>
-              <a [routerLink]="['/create-claim-view/', claim?.id]">{{claim.id}}</a>
-            </td>
-            <td class="font-weight-bold" style="color: #00b2a8">{{getDicNameByLanguage(claim, 'operationType')}}</td>
-            <td>{{formatDate(claim)}}</td>
-            <td>{{claim.fullNameAgent}}</td>
-            <td>
-              <span *ngIf="claim.phoneNumberAgent">+7 {{claim.phoneNumberAgent | mask: '(000) 000-0000'}}</span>
-              <br/>
-              <span class="font-weight-bolder">{{claim.emailAgent}}</span>
-            </td>
-            <td>{{getDicNameByLanguage(claim, 'district')}}</td>
-            <td>{{claim.numberOfRooms}}</td>
-            <td>{{claim.price}}</td>
-            <td>
-              <span *ngIf="claim.paymentType">{{claim.paymentType[util.getDicNameByLanguage()]}}</span>
-            </td>
-            <td>{{claim.totalArea}}</td>
-            <td>{{claim.floor}}</td>
-            <td>{{getDicNameByLanguage(claim, 'status')}}</td>
-            <td>{{claim.comment}}</td>
-            <td class="text-center">
-              <a (click)="compare(claim)">
-                <div>
-                  <img style="min-width: 30px; max-width: 45px;" class="card-img-top float-left"
-                       src="assets/images/claims/libra.png">
-                </div>
-                <div *ngIf="claim.compare" style="position: absolute">
-                  <i aria-hidden="true" style="color: green;;padding: 17px" class="fa fa-check-circle"></i>
+          <span class="font-weight-bolder">{{claim.emailAgent}}</span>
+        </td>
+        <td>{{getDicNameByLanguage(claim, 'district')}}</td>
+        <td>{{claim.numberOfRooms}}</td>
+        <td>{{claim.price}}</td>
+        <td>
+          <span *ngIf="claim.paymentType">{{claim.paymentType[util.getDicNameByLanguage()]}}</span>
+        </td>
+        <td>{{claim.totalArea}}</td>
+        <td>{{claim.floor}}</td>
+        <td>{{getDicNameByLanguage(claim, 'status')}}</td>
+        <td>{{claim.comment}}</td>
+        <td class="text-center">
+          <a (click)="compare(claim)">
+            <div>
+              <img style="min-width: 30px; max-width: 45px;" class="card-img-top float-left"
+                   src="assets/images/claims/libra.png">
+            </div>
+            <div *ngIf="claim.compare" style="position: absolute">
+              <i aria-hidden="true" style="color: green;;padding: 17px" class="fa fa-check-circle"></i>
 
-                </div>
-              </a>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+            </div>
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
-        <h3 class="text-center" *ngIf="empty">Нет данных для отображения</h3>
+    <h3 class="text-center" *ngIf="empty">Нет данных для отображения</h3>
 
-        <pagination [(ngModel)]="currentPage"
-                    [totalItems]="totalItems"
-                    [itemsPerPage]="itemsPerPage"
-                    [maxSize]="10"
-                    [rotate]="true"
-                    [boundaryLinks]="true"
-                    previousText="&lsaquo;"
-                    nextText="&rsaquo;"
-                    firstText="&laquo;"
-                    lastText="&raquo;"
-                    (pageChanged)="pageChanged($event)">
-        </pagination>
-      </div>
-    </div>
-
+    <pagination [(ngModel)]="currentPage"
+                [totalItems]="totalItems"
+                [itemsPerPage]="itemsPerPage"
+                [maxSize]="10"
+                [rotate]="true"
+                [boundaryLinks]="true"
+                previousText="&lsaquo;"
+                nextText="&rsaquo;"
+                firstText="&laquo;"
+                lastText="&raquo;"
+                (pageChanged)="pageChanged($event)">
+    </pagination>
   </div>
 </div>
