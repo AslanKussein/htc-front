@@ -1043,6 +1043,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         .subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('', 'Успешно обновлено');
+            this.util.navigateByUrl(`/create-claim-view/` + this.applicationId)
           }
         }, err => {
           this.ngxLoader.stopBackground();
@@ -1053,7 +1054,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         .subscribe(data => {
           if (data != null) {
             this.saved = true;
-            this.util.dnHref('claims');
+            this.util.navigateByUrl(`/create-claim-view/` + data)
             this.notifyService.showSuccess('', 'Успешно сохранено');
           }
         }, err => {
