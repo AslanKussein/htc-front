@@ -149,10 +149,14 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
       this.getEventsByApplicationId(1);
       this.eventObjects.splice(eventsDTO, 1);
       if (this.eventObjects.length == 0) {
-        this.eventObjects = [new EventsDTO(null, null, null, new Date(), null, this.applicationId, null, null, null)];
+        this.clearForm();
       }
 
     }, e => this.notificationService.showInfo(e.ru, 'Информация')))
+  }
+
+  clearForm() {
+    this.eventObjects = [new EventsDTO(null, null, null, new Date(), null, this.applicationId, null, null, null)];
   }
 
   update(events: any) {

@@ -218,11 +218,10 @@
             <td>{{claim.floor}}</td>
             <td>{{getDicNameByLanguage(claim, 'status')}}</td>
             <td>{{claim.comment}}</td>
-            <td style="text-align: center;">
-
+            <td class="text-center">
               <a (click)="compare(claim)">
                 <div>
-                  <img style="min-width: 30px; max-width: 45px;float: left" class="card-img-top"
+                  <img style="min-width: 30px; max-width: 45px;" class="card-img-top float-left"
                        src="assets/images/claims/libra.png">
                 </div>
                 <div *ngIf="claim.compare" style="position: absolute">
