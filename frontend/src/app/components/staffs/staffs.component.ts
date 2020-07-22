@@ -17,7 +17,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
   roles: Dic[];
   groups: Dic[];
   organizations: Dic[];
-  actions: string;
+  isEdit: boolean = false;
   subscriptions: Subscription = new Subscription();
 
   constructor(private modalService: BsModalService,
@@ -45,12 +45,14 @@ export class StaffsComponent implements OnInit, OnDestroy {
     passNew: '',
     passNew2: '',
     name: '',
-    surname: ''
+    surname: '',
+    phone: '',
+    email: ''
   };
 
 
   ngOnInit(): void {
-    this.ngxLoader.start();
+    this.ngxLoader.startBackground();
     this.loadDictionary();
     this.findObjects(1);
   }
@@ -69,7 +71,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
 
 
   getGroup(){
-    this.ngxLoader.start();
+    this.ngxLoader.startBackground();
     let obj={
       roles:7
     };
@@ -78,39 +80,75 @@ export class StaffsComponent implements OnInit, OnDestroy {
         this.groups = this.util.toSelectArrayGroup(res);
       }
     });
-    this.ngxLoader.stop();
+    this.ngxLoader.stopBackground();
   }
 
 
   getUserInfo() {
-    this.ngxLoader.start();
+    this.users = [];
+    this.ngxLoader.startBackground();
     this.subscriptions.add(this.staffService.getUserInfo(this.filter).subscribe(res => {
       if (res != null) {
-        this.users = res.data;
+        res.data.forEach(u=> {
+          let obj = {};
+          if (!this.util.isNullOrEmpty(u.photoUuid)) {
+            obj['ava'] = this.util.generatorPreviewUrl(u.photoUuid);
+          } else {
+            obj['info'] = u.name.substr(0, 1) + ' ' + u.surname.substr(0, 1);
+          }
+          obj['id'] = u.id;
+          obj['phone'] = u.phone;
+          obj['email'] = u.email;
+          obj['roles'] = u.roles;
+          obj['group'] = u.group;
+          obj['isActive'] = u.isActive;
+          obj['login'] = u.login;
+          obj['name'] = u.name;
+          obj['organizationId'] = u.organizationId;
+          obj['surname'] = u.surname;
+          this.users.push(obj);
+        });
       }
     }));
-    this.ngxLoader.stop();
+    this.ngxLoader.stopBackground();
   }
 
   findObjects(pageNo: number) {
-    this.ngxLoader.start();
+    this.ngxLoader.startBackground();
     let searchFilter = {};
 
     this.loading = true;
     searchFilter['pageNumber'] = pageNo;
     searchFilter['pageSize'] = this.itemsPerPage;
     this.subscriptions.add(this.staffService.getUserList().subscribe(res => {
-
       if (res != null) {
-        this.users = res.data;
+        res.data.forEach(u=> {
+          let obj = {};
+          if (!this.util.isNullOrEmpty(u.photoUuid)) {
+            obj['ava'] = this.util.generatorPreviewUrl(u.photoUuid);
+          } else {
+            obj['info'] = u.name.substr(0, 1) + ' ' + u.surname.substr(0, 1);
+          }
+          obj['id'] = u.id;
+          obj['phone'] = u.phone;
+          obj['email'] = u.email;
+          obj['roles'] = u.roles;
+          obj['group'] = u.group;
+          obj['isActive'] = u.isActive;
+          obj['login'] = u.login;
+          obj['name'] = u.name;
+          obj['organizationId'] = u.organizationId;
+          obj['surname'] = u.surname;
+          this.users.push(obj);
+        });
       }
     }));
     this.loading = false;
-    this.ngxLoader.stop();
+    this.ngxLoader.stopBackground();
   }
 
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
+    this.modalRef = this.modalService.show(template, {backdrop: 'static', keyboard: false});
   }
 
   loadDictionary() {
@@ -126,8 +164,8 @@ export class StaffsComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    this.ngxLoader.start();
-    if (this.actions == 'EDIT') {
+    this.ngxLoader.startBackground();
+    if (this.isEdit) {
 
       this.subscriptions.add(this.staffService.updateUserGroupById(this.formData)
         .subscribe(data => {
@@ -194,7 +232,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
 
 
     }
-    if (this.actions == 'ADD') {
+    if (!this.isEdit) {
       this.subscriptions.add(this.staffService.createUser(this.formData)
         .subscribe(data => {
           if (data != null) {
@@ -215,20 +253,21 @@ export class StaffsComponent implements OnInit, OnDestroy {
           this.modalRef.hide();
         }));
     }
-    this.ngxLoader.stop();
+    this.ngxLoader.stopBackground();
   }
 
   editData(user: any) {
-    this.actions = 'EDIT';
-    this.staffService.getUserById(user)
+    this.isEdit = true;
+    this.subscriptions.add(this.staffService.getUserById(user)
       .subscribe(data => {
         this.formData = data;
         this.formData.isActive = data.isActive.toString();
-      });
+      })
+    );
   }
 
   addUser() {
-    this.actions = 'ADD';
+    this.isEdit = false;
     this.formData = {
       residentialComplexes: null,
       roles: null,
@@ -240,7 +279,9 @@ export class StaffsComponent implements OnInit, OnDestroy {
       passNew: '',
       passNew2: '',
       name: '',
-      surname: ''
+      surname: '',
+      phone: '',
+      email: ''
     };
   }
 

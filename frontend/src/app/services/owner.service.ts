@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, tap} from "rxjs/operators";
+import {language} from "../../environments/language";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,20 @@ export class OwnerService {
 
   searchByPhone(login: string): Observable<any> {
     return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/profile-client/` + login)
+      .pipe(
+        tap(data => {
+        }),
+        catchError(OwnerService.handleError)
+      );
+  }
+
+  findByLoginAndAppId(login: string, appId: number): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('login', login);
+    if (appId != null) {
+      params = params.append('appId', String(appId));
+    }
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/profile-client/findByLoginAndAppId`, {params})
       .pipe(
         tap(data => {
         }),

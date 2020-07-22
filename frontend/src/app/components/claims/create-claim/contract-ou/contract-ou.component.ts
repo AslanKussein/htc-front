@@ -75,7 +75,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     if(this.applicationId) {
       this.subscriptions.add(this.claimService.getClaimById(this.applicationId)
         .subscribe(res => {
-          const operationType = this.util.getDictionaryValueById(this.operationType, res?.operationTypeId);
+          const operationType = this.util.getDictionaryValueById(this?.operationType, res?.operationTypeId);
           this.isBuy = operationType?.code === '001002';
           if (res && res.contractDto && res.contractDto?.applicationId) {
             this.fillContractForm(res.contractDto);

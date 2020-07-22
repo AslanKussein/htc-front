@@ -16,7 +16,7 @@ export class MyClaimsComponent implements OnInit, OnDestroy {
 
   constructor(private claimService: ClaimService,
               private notifyService: NotificationService,
-              private util: Util) {
+              public util: Util) {
   }
 
   claimData = [];

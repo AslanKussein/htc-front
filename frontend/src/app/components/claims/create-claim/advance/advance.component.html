@@ -1,4 +1,5 @@
-<div class="card">
+<div class="card"
+     *ngIf="this.actRoute.snapshot.queryParamMap.get('activeTab') == 'advanceAgreement' || this.actRoute.snapshot.queryParamMap.get('activeTab') == 'depositAgreement' ">
   <div class="card-body">
     <div class="contract-form" [formGroup]="contractForm">
       <div class="row">
@@ -9,7 +10,7 @@
                    aria-describedby="button-addon2" [(ngModel)]="contractForm.sellApplicationId">
           </div>
           <div class="row">
-            <button class="btn btn-purple btn-sm btn2" (click)="searchApplication()" type="button" id="button-addon2">
+            <button class="btn btn-outline-aqua btn-sm btn2" (click)="searchApplication()" type="button" id="button-addon2">
               <i class="fa fa-search" aria-hidden="true"></i> Поиск заявки по объекту
             </button>
           </div>
@@ -31,18 +32,16 @@
         <div class="col-sm-2">
           <div class="row">
             <button type="button" *ngIf="!isShowPdf" [disabled]="!this.contractForm.valid" (click)="generateContract()"
-                    class="btn btn-purple btn2 btn-sm">
+                    class="btn btn-outline-aqua btn2 btn-sm">
               Сформировать договор
             </button>
           </div>
           <div class="row" *ngIf="isShowPdf">
             <a type="button" [href]="this.util.generatorFullUrl(this.uuid)" target="_blank"
-               class="btn btn-deep-purple btn2 btn-sm">Распечатка</a>
+               class="btn btn-success btn2 btn-sm">Скачать</a>
           </div>
           <div class="row">
-            <button type="button" class="btn btn-indigo btn2 btn-sm" *ngIf="!fromBoard">Отменить</button>
-            <button type="button" class="btn btn-indigo btn2 btn-sm" (click)="backToPrev()" *ngIf="fromBoard">Назад
-            </button>
+            <button type="button" class="btn btn-primary btn2 btn-sm" (click)="backToPrev()" *ngIf="fromBoard">Назад</button>
           </div>
         </div>
       </div>

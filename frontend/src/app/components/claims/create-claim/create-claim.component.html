@@ -13,7 +13,7 @@
                aria-controls="contractOU" (click)="changeTab('ou')"
                aria-selected="false" >Договор ОУ</a>
           </li>
-          <li class="nav-item" *ngIf="this.applicationId">
+          <li class="nav-item" *ngIf="this.applicationId && isSell()">
             <a class="nav-link" [ngClass]="{ 'active':activeTab === 'advanceAgreement' || activeTab === 'depositAgreement'}" id="advanceAgreement-tab" data-toggle="tab" href="#advanceAgreement" role="tab"
                aria-controls="advanceAgreement" (click)="openModal2(modalContentAdvance);"
                aria-selected="false" >Соглашение {{activeTab === 'advanceAgreement' ? 'Аванса' : ''}} {{activeTab === 'depositAgreement' ? 'Задатка':''}}</a>
@@ -85,7 +85,7 @@
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_DEAL_DATA'])"
                              [class.disabledDev]="hasShowGroup(['UPDATE_DEAL_DATA']) && this.applicationId">
                           <label class="form-label-v">Операция<span class="text-danger">&nbsp;*</span></label>
-                          <div>
+                          <div [class.disabledDev]="this.applicationId">
                             <mat-button-toggle-group [(ngModel)]="applicationForm.operationTypeId"
                                                      formControlName="operationTypeId">
                               <mat-button-toggle class="operation-type" (click)="setApplicationFlagSort()"
@@ -105,7 +105,8 @@
                         <div class="col-sm"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_DEAL_DATA'])">
                           <label class="form-label-v">Тип объекта<span class="text-danger">&nbsp;*</span></label>
-                          <ng-select [class.disabledDev]="hasShowGroup(['UPDATE_DEAL_DATA'])"
+                          <ng-select [hidden]="hasShowGroup(['UPDATE_DEAL_DATA'])"
+                                     [class.disabledDev]="this.applicationId"
                                      [items]="objectType"
                                      [(ngModel)]="applicationForm.objectTypeId"
                                      (ngModelChange)="setHouseOrApartmentsForMaterials()"
@@ -1227,16 +1228,21 @@
                     </div>
                     <div class="card-footer" *ngIf="edit">
                       <div class="row">
-                        <label class="col-sm btn upload-btn btn-dark">Загрузить фото
-                          <input type="file" multiple="" hidden (change)="onFileChange($event, 1)">
-                        </label>
-
-                        <label class="col-sm btn upload-btn btn-dark">Загрузить план
-                          <input type="file" multiple="" hidden (change)="onFileChange($event, 2)">
-                        </label>
-                        <label class="col-sm btn upload-btn btn-dark" translate>Загрузить 3D тур
-                          <input type="file" multiple="" hidden (change)="onFileChange($event, 3)">
-                        </label>
+                        <div class="col-sm">
+                          <label class="btn upload-btn btn-dark">Загрузить фото
+                            <input type="file" multiple="" hidden (change)="onFileChange($event, 1)">
+                          </label>
+                        </div>
+                        <div class="col-sm">
+                          <label class="btn upload-btn btn-dark">Загрузить план
+                            <input type="file" multiple="" hidden (change)="onFileChange($event, 2)">
+                          </label>
+                        </div>
+                        <div class="col-sm">
+                          <label class="btn upload-btn btn-dark" translate>Загрузить 3D тур
+                            <input type="file" multiple="" hidden (change)="onFileChange($event, 3)">
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1311,8 +1317,8 @@
                   </button>
                   <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                     <a class="dropdown-item" (click)="changeTab('ou');">Соглашение ОУ</a>
-                    <a class="dropdown-item" (click)="changeTab('advanceAgreement');">Соглашение аванса</a>
-                    <a class="dropdown-item" (click)="changeTab('depositAgreement');">Соглашение задатка</a>
+                    <a class="dropdown-item" *ngIf="isSell()" (click)="changeTab('advanceAgreement');">Соглашение аванса</a>
+                    <a class="dropdown-item" *ngIf="isSell()" (click)="changeTab('depositAgreement');">Соглашение задатка</a>
                   </div>
                 </div>
                 <button type="button" class="btn text-white font-weight-bold color-aqua btn-sm btn2 " (click)="submit()" *ngIf="edit"
@@ -1328,7 +1334,7 @@
         <app-contract-ou></app-contract-ou>
       </div>
       <div class="tab-pane fade" id="advanceAgreement" *ngIf="isSell()" [ngClass]="(activeTab === 'advanceAgreement' || activeTab === 'depositAgreement') ? 'active show' : ''" role="tabpanel" aria-labelledby="advanceAgreement-tab">
-        <app-advance ></app-advance>
+        <app-advance [act]="activeTab"></app-advance>
       </div>
       <div class="tab-pane fade" id="impressions" [ngClass]="activeTab == 'events' ? 'active show' : ''" role="tabpanel" aria-labelledby="impressions-tab">
         <app-claim-events></app-claim-events>
@@ -1359,7 +1365,7 @@
 
 <ng-template #modalContentAdvance let-close="close">
   <div class="modal-header">
-    <button type="button" class="close" (click)="modalRef2.hide()">
+    <button type="button" class="close" (click)="modalRef2.hide(); this.activeTab = 'depositAgreement'">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>

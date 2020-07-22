@@ -1,0 +1,123 @@
+.operation-type {
+  border-radius: 0.3125rem;
+  margin-right: 0.3125rem;
+  font-size: 18px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+}
+
+.all-users {
+  border-radius: 0.3125rem;
+  margin-right: 0.3125rem;
+  border: 2px solid #00b2a8;
+  font-size: 18px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  text-align: left;
+  color: #00b2a8;
+}
+
+.create-user {
+  border-radius: 0.3125rem;
+  margin-right: 0.3125rem;
+  border: 2px solid black;
+  background-color: #3b3b3b;
+  font-size: 18px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+}
+
+table thead {
+  height: 40px;
+  background-color: #efefef;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.75;
+  letter-spacing: normal;
+  text-align: left;
+  color: #6a7079;
+  border-color: #efefef;
+}
+
+.shadow {
+  box-shadow: 0 0 2.9px 0.1px rgba(0, 0, 0, 0.25);
+}
+
+table tbody tr td {
+  //min-width: 1440px;
+  min-height: 80px;
+  background-color: #ffffff;
+  text-align: center;
+  padding-top: 28px;
+  font-size: 16px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.75;
+  letter-spacing: normal;
+  color: #767d86;
+}
+
+input::placeholder, input .fa, .ng-input::placeholder {
+    font-size: 18px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.56;
+    letter-spacing: normal;
+    text-align: left;
+    color: #aeb5bf;
+}
+
+.edit-action {
+  width: 130px;
+  height: 17px;
+  font-size: 16px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.75;
+  letter-spacing: normal;
+  text-align: left;
+  color: #656c75;
+}
+
+.role {
+  height: 30px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.75;
+  letter-spacing: normal;
+  text-align: center;
+  color: #ffffff;
+  margin: 0.5px;
+}
+
+.contact-info {
+  font-size: 16px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.75;
+  letter-spacing: normal;
+  text-align: left;
+  color: #656c75;
+}

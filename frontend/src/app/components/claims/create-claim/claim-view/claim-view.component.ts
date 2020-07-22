@@ -23,6 +23,8 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   claimViewDto: ClaimViewDto;
   subscriptions: Subscription = new Subscription();
   clientFullName: string = "";
+  clientId: number;
+  clientLogin: string;
   agentFullName: string = "";
   photoList: any[] = [];
   photoPlanList: any[] = [];
@@ -169,9 +171,11 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
 
   searchByPhone(login: string) {
     if (this.util.isNullOrEmpty(login)) return;
-    this.subscriptions.add(this.ownerService.searchByPhone(login)
+    this.subscriptions.add(this.ownerService.findByLoginAndAppId(login, this.applicationId)
       .subscribe(res => {
-          this.clientFullName = res.id + ' (' + res.surname + ' ' + res.firstName + ' ' + (res.patronymic ? res.patronymic : ' ') + ')';
+          this.clientId = res.id;
+          this.clientLogin = login;
+          this.clientFullName = res.surname + ' ' + res.firstName + ' ' + (res.patronymic ? res.patronymic : ' ');
         }
       ));
   }

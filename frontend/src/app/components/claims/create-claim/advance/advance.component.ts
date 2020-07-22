@@ -41,7 +41,7 @@ export class AdvanceComponent implements OnInit, OnDestroy {
   // 4 - Договор задатка
   // 5 - аванс
   constructor(public util: Util,
-              private actRoute: ActivatedRoute,
+              public actRoute: ActivatedRoute,
               private router: Router,
               private formBuilder: FormBuilder,
               private ngxLoader: NgxUiLoaderService,

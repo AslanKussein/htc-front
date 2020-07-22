@@ -16,8 +16,7 @@
         <th>Операция</th>
         <!--<th translate>claim.crDateFrom</th>-->
         <th translate>fio</th>
-        <th translate>phone</th>
-        <th translate>e-mail</th>
+        <th>Контакты</th>
         <th translate>Район</th>
         <th translate>Количество комнат</th>
         <th translate>Цена</th>
@@ -33,15 +32,19 @@
         <td>
           <a [routerLink]="['/create-claim-view/', claim?.id]">{{claim.id}}</a>
         </td>
-        <td>{{getDicNameByLanguage(claim, 'operationType')}}</td>
-        <!--<td>{{formatDate(claim)}}</td>-->
+        <td class="font-weight-bold" style="color: #00b2a8">{{getDicNameByLanguage(claim, 'operationType')}}</td>
         <td>{{claim.fullname}}</td>
-        <td><span>+7{{claim.phone | mask: ' (000) 000-0000'}}</span></td>
-        <td>{{claim.email}}</td>
+        <td>
+          <span *ngIf="claim.phone">+7 {{claim.phone | mask: '(000) 000-0000'}}</span>
+          <br/>
+          <span class="font-weight-bolder">{{claim.email}}</span>
+        </td>
         <td>{{getDicNameByLanguage(claim, 'district')}}</td>
         <td>{{claim.numberOfRooms}}</td>
         <td>{{claim.price}}</td>
-        <td></td>
+        <td>
+          <span *ngIf="claim.paymentType">{{claim.paymentType[util.getDicNameByLanguage()]}}</span>
+        </td>
         <td>{{claim.totalArea}}</td>
         <!--<td>{{claim.floor}}</td>-->
         <td>{{getDicNameByLanguage(claim, 'status')}}</td>

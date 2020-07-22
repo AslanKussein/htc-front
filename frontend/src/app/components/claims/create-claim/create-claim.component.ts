@@ -19,7 +19,6 @@ import {Period} from "../../../models/common/period";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {RoleManagerService} from "../../../services/roleManager.service";
-import {HttpParams} from "@angular/common/http";
 import {UserService} from "../../../services/user.service";
 import {YandexMapComponent} from "./yandex-map/yandex-map.component";
 import {KazPostService} from 'src/app/services/kaz.post.service';
@@ -136,7 +135,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
               private configService: ConfigService,
               private cdRef: ChangeDetectorRef,
               private modalService: BsModalService,
-              private actRoute: ActivatedRoute,
+              public actRoute: ActivatedRoute,
               private ngxLoader: NgxUiLoaderService,
               private roleManagerService: RoleManagerService,
               private userService: UserService,
@@ -573,7 +572,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   searchByPhone(login: string) {
     if (this.util.isNullOrEmpty(login)) return;
-    this.subscriptions.add(this.ownerService.searchByPhone(login)
+    this.subscriptions.add(this.ownerService.findByLoginAndAppId(login, this.applicationId)
       .subscribe(res => {
         this.fillApplicationFormClientData(res);
         this.existsClient = true;
@@ -907,7 +906,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.playground,
       this.applicationForm.propertyDeveloperId,
       this.applicationForm.typeOfElevatorList,
-      this.applicationForm.yearOfConstruction
+      this.applicationForm.yearOfConstruction,
+      this.applicationForm.wheelchair,
+      this.applicationForm.yardTypeId,
     )
   }
 
@@ -986,7 +987,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   createClientIfNotPresent() {
     if (!this.applicationId) {
       if (this.util.isNullOrEmpty(this.applicationForm.phoneNumber)) return;
-      this.subscriptions.add(this.ownerService.searchByPhone(this.applicationForm.phoneNumber)
+      this.subscriptions.add(this.ownerService.findByLoginAndAppId(this.applicationForm.phoneNumber, null)
         .subscribe(res => {
         }, () => this.createClient()));
 
@@ -1042,6 +1043,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         .subscribe(data => {
           if (data != null) {
             this.notifyService.showSuccess('', 'Успешно обновлено');
+            this.util.navigateByUrl(`/create-claim-view/` + this.applicationId)
           }
         }, err => {
           this.ngxLoader.stopBackground();
@@ -1052,7 +1054,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         .subscribe(data => {
           if (data != null) {
             this.saved = true;
-            this.util.dnHref('claims');
+            this.util.navigateByUrl(`/create-claim-view/` + data)
             this.notifyService.showSuccess('', 'Успешно сохранено');
           }
         }, err => {

@@ -75,21 +75,21 @@
           <p class="h5 font-weight-bold">Заметка</p>
           <div class="row">
             <input type="text" class="form-controls" id="surName" placeholder="Фамилия"
-                   formControlName="surName" required/>
+                   formControlName="surName" required [(ngModel)]="applicationLightForm.surName"/>
             <div *ngIf="f.surName.touched && f.surName.invalid" class="text-danger">
               <div *ngIf="f.surName.errors.required" translate>claim.requiredField</div>
             </div>
           </div>
           <div class="row">
             <input type="text" class="form-controls" placeholder="Имя"
-                   formControlName="name"/>
+                   formControlName="name" [(ngModel)]="applicationLightForm.name"/>
             <div *ngIf="f.name.touched && f.name.invalid" class="text-danger">
               <div *ngIf="f.name.errors.required" translate>claim.requiredField</div>
             </div>
           </div>
           <div class="row">
             <input type="text" class="form-controls" id="patronymic" placeholder="Отчество"
-                   formControlName="patronymic">
+                   formControlName="patronymic" [(ngModel)]="applicationLightForm.patronymic">
           </div>
           <div class="row">
             <input type="text" id="phoneNumber" class="form-controls"

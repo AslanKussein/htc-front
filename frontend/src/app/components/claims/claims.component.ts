@@ -13,6 +13,7 @@ import {Period} from "../../models/common/period";
 import {OwnerService} from "../../services/owner.service";
 import {NewDicService} from "../../services/new.dic.service";
 import {UserService} from "../../services/user.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-claims',
@@ -22,6 +23,7 @@ import {UserService} from "../../services/user.service";
 export class ClaimsComponent implements OnInit, OnDestroy {
   env = language;
   subscriptions: Subscription = new Subscription();
+  eventCall: boolean = false;
 
   constructor(private claimService: ClaimService,
               public util: Util,
@@ -29,8 +31,14 @@ export class ClaimsComponent implements OnInit, OnDestroy {
               private userService: UserService,
               private ownerService: OwnerService,
               private notification: NotificationService,
+              private actRoute: ActivatedRoute,
               private newDicService: NewDicService,
               private ngxLoader: NgxUiLoaderService) {
+    if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('event'))) {
+      if (this.actRoute.snapshot.queryParamMap.get('event') == 'call') {
+        this.eventCall = true;
+      }
+    }
   }
 
   applicationSearchForm: any;
@@ -38,6 +46,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   operationType: Dic[];
   appStatuses: Dic[];
   claimData = [];
+  eventObjectId = [];
   totalItems = 0;
   itemsPerPage = 30;
   currentPage = 1;
@@ -82,10 +91,11 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   findClaims(pageNo: number) {
     this.ngxLoader.startBackground();
     let searchFilter = {};
+    this.empty = false;
     searchFilter['createDate'] = new Period(this.applicationSearchForm.value.crDateFrom, this.applicationSearchForm.value.crDateTo);
     searchFilter['changeDate'] = new Period(this.applicationSearchForm.value.lastModifyDateFrom, this.applicationSearchForm.value.lastModifyDateTo);
     searchFilter['commentDate'] = new Period(this.applicationSearchForm.value.lastCommentDateFrom, this.applicationSearchForm.value.lastCommentDateTo);
-    searchFilter['operationTypeId'] = this.applicationSearchForm.value.operationTypeId;
+    searchFilter['operationTypeId'] = this.eventCall ? 1 : this.applicationSearchForm.value.operationTypeId?.value;
     searchFilter['applicationStatusList'] = this.applicationSearchForm.value.applicationStatusList;
     searchFilter['text'] = this.applicationSearchForm.value.text;
     searchFilter['applicationId'] = this.applicationSearchForm.value.applicationId;
@@ -150,5 +160,30 @@ export class ClaimsComponent implements OnInit, OnDestroy {
 
   expandedBlock() {
     this.expanded = !this.expanded;
+  }
+
+  checkedObjects(object: any, $event: any) {
+    if ($event.target.checked) {
+      if (this.eventObjectId.length >= 15) {
+        object.check = false;
+        this.notification.error("Добавление событий ограничено! Вы превысили лимит добавления событий к данной заявке", "Инфомарция");
+        return
+      }
+      object.check = true;
+      this.eventObjectId.push(object.id);
+    } else {
+      const index = this.eventObjectId.indexOf(object.id);
+      if (index > -1) {
+        this.eventObjectId.splice(index, 1);
+        object.check = false;
+      }
+    }
+  }
+
+  addEventShow() {
+    let prevUrl = '/create-claim/' + localStorage.getItem('applicationId') + '?activeTab=events' + '&eventObjectId=' + this.eventObjectId;
+    if (this.eventCall) {
+      this.util.navigateByUrl(prevUrl);
+    }
   }
 }

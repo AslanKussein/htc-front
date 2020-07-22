@@ -5,6 +5,8 @@ import {ConfigService} from "./config.service";
 import {isArray} from "rxjs/internal-compatibility";
 import {formatDate} from '@angular/common';
 
+const moment = require('moment')
+
 @Injectable({
   providedIn: 'root'
 })
@@ -291,8 +293,11 @@ export class Util {
     return formatDate(date, 'dd.MM.yyyy hh:mm:ss', 'en-US');
   }
 
+  formatDateMoment(date: any, separator) {
+    return moment(date).format(separator)
+  }
+
   formatDateTimeMoment(date: any) {
-    const moment = require('moment')
     return moment(date).utc().format('DD.MM.YYYY HH:mm:ss')
   }
 

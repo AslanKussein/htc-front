@@ -57,7 +57,7 @@
   border: none;
 }
 
-.panel-header:active,.panel-header:focus,.panel-header:hover, .nav-tabs .nav-link.active, .nav-item.show .nav-link, .badge:active {
+.panel-header:active,.panel-header:focus, .nav-tabs .nav-link.active, .nav-item.show .nav-link, .badge:active {
   color: #00b2a8!important;
   border-bottom: 2px solid #00b2a8;
 }
@@ -75,10 +75,9 @@ table thead {
   color: #858b93;
 }
 
-table tbody {
-  width: 149px;
-  height: 35px;
-  font-size: 16px;
+table tbody tr td {
+  height: 70px;
+  font-size: 14px;
   font-weight: 500;
   font-stretch: normal;
   font-style: normal;
