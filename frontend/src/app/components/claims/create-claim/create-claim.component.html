@@ -85,7 +85,7 @@
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_DEAL_DATA'])"
                              [class.disabledDev]="hasShowGroup(['UPDATE_DEAL_DATA']) && this.applicationId">
                           <label class="form-label-v">Операция<span class="text-danger">&nbsp;*</span></label>
-                          <div>
+                          <div [class.disabledDev]="this.applicationId">
                             <mat-button-toggle-group [(ngModel)]="applicationForm.operationTypeId"
                                                      formControlName="operationTypeId">
                               <mat-button-toggle class="operation-type" (click)="setApplicationFlagSort()"
@@ -105,7 +105,8 @@
                         <div class="col-sm"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_DEAL_DATA'])">
                           <label class="form-label-v">Тип объекта<span class="text-danger">&nbsp;*</span></label>
-                          <ng-select [class.disabledDev]="hasShowGroup(['UPDATE_DEAL_DATA'])"
+                          <ng-select [hidden]="hasShowGroup(['UPDATE_DEAL_DATA'])"
+                                     [class.disabledDev]="this.applicationId"
                                      [items]="objectType"
                                      [(ngModel)]="applicationForm.objectTypeId"
                                      (ngModelChange)="setHouseOrApartmentsForMaterials()"

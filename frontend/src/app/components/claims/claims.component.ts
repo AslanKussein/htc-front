@@ -95,7 +95,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
     searchFilter['createDate'] = new Period(this.applicationSearchForm.value.crDateFrom, this.applicationSearchForm.value.crDateTo);
     searchFilter['changeDate'] = new Period(this.applicationSearchForm.value.lastModifyDateFrom, this.applicationSearchForm.value.lastModifyDateTo);
     searchFilter['commentDate'] = new Period(this.applicationSearchForm.value.lastCommentDateFrom, this.applicationSearchForm.value.lastCommentDateTo);
-    searchFilter['operationTypeId'] = this.applicationSearchForm.value.operationTypeId?.value;
+    searchFilter['operationTypeId'] = this.eventCall ? 2 : this.applicationSearchForm.value.operationTypeId?.value;
     searchFilter['applicationStatusList'] = this.applicationSearchForm.value.applicationStatusList;
     searchFilter['text'] = this.applicationSearchForm.value.text;
     searchFilter['applicationId'] = this.applicationSearchForm.value.applicationId;

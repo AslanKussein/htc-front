@@ -154,7 +154,7 @@ export class ObjectsComponent implements OnInit, OnDestroy {
       this.objectFilterDto.residentialComplexId = parseInt(this.objectForm?.residentialComplexes);
     }
     if (!this.util.isNullOrEmpty(this.objectForm?.objectTypes)) {
-      this.objectFilterDto.objectTypeId = this.objectForm?.objectTypes.value;
+      this.objectFilterDto.objectTypeId = this.eventCall ? 2 : this.objectForm?.objectTypes.value;
     }
     if (!this.util.isNullOrEmpty(this.objectForm?.numKvart)) {
       this.objectFilterDto.apartmentNumber = parseInt(this.objectForm?.numKvart);
