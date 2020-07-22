@@ -30,7 +30,8 @@ export class StaffsComponent implements OnInit, OnDestroy {
   filter = {
     search: '',
     roles: null,
-    group: null
+    group: null,
+    organizationId:null
   }
 
   formData = {
@@ -119,7 +120,6 @@ export class StaffsComponent implements OnInit, OnDestroy {
     });
     this.staffService.getOrganizationList().subscribe(data => {
       this.organizations = this.util.toSelectArrayOrganization(data);
-      console.log(this.organizations)
     });
 
     this.getGroup();
