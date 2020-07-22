@@ -257,14 +257,15 @@
       <thead class="text-center">
       <tr>
         <th>№</th>
-        <th translate>Фото</th>
-        <th translate>Адрес</th>
-        <th translate>Цена</th>
-        <th translate>Количество комнат</th>
-        <th translate>Фото</th>
-        <th translate>Обременение</th>
-        <th translate>Аналитика цен</th>
-        <th translate>Контакты агента</th>
+        <th>Фото</th>
+        <th>Тип объекта</th>
+        <th>Адрес</th>
+        <th>Цена</th>
+        <th>Количество комнат</th>
+        <th>Фото</th>
+        <th>Обременение</th>
+        <th>Аналитика цен</th>
+        <th>Контакты агента</th>
       </tr>
       </thead>
       <tbody class="bg-white text-center">
@@ -272,6 +273,7 @@
         <td>{{object.realPropertyId}}</td>
         <td><img *ngIf="getImgUrl(object)" [src]="getImgUrl(object)" alt="First Slide" class="photoList"
                  height="150px" width="220px"></td>
+        <td>{{getDicNameByLanguage(object, 'objectTypeId')}}</td>
         <td style="color: #00b2a8">{{object.address.nameRu}}</td>
         <td>{{object.objectPrice}}</td>
         <td>{{object.numberOfRooms}}</td>
@@ -281,9 +283,9 @@
         <td>{{object.encumbrance?.nameRu}}</td>
         <td>{{object.priceAnalytics}}</td>
         <td>
-                <span *ngIf="object.contactsOfAgent">
-                  +7{{object.contactsOfAgent | mask: ' (000) 000-0000'}}
-                </span>
+            <span *ngIf="object.contactsOfAgent">
+              +7{{object.contactsOfAgent | mask: ' (000) 000-0000'}}
+            </span>
         </td>
       </tr>
       </tbody>

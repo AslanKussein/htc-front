@@ -218,6 +218,14 @@ export class ObjectsComponent implements OnInit, OnDestroy {
     return true;
   }
 
+  getDicNameByLanguage(claim: any, column: string) {
+    let x = this.util.getDicNameByLanguage();
+    if (!this.util.isNullOrEmpty(claim[column]?.name)) {
+      return claim[column]?.name[x];
+    }
+    return null;
+  }
+
   getImgUrl(obj: any) {
     if (!this.util.isNullOrEmpty(obj.photos)&&!this.util.isNullOrEmpty(obj.photos.PHOTO)) {
       return this.util.generatorPreviewUrl(obj.photos.PHOTO[0])
