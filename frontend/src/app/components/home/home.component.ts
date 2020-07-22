@@ -114,7 +114,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   searchByPhone() {
     if (this.applicationLightForm.value.phoneNumber != null && this.applicationLightForm.value.phoneNumber.length == 10) {
-      this.subscriptions.add(this.ownerService.searchByPhone(this.applicationLightForm.value.phoneNumber)
+      this.subscriptions.add(this.ownerService.findByLoginAndAppId(this.applicationLightForm.value.phoneNumber, null)
         .subscribe(res => {
           this.applicationLightForm.name = !this.util.isNullOrEmpty(res.firstName) ? res.firstName : null;
           this.applicationLightForm.surName = !this.util.isNullOrEmpty(res.surname) ? res.surname : null;

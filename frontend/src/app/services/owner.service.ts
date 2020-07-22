@@ -23,9 +23,10 @@ export class OwnerService {
       );
   }
 
-  findByLoginAndAppId(login: string): Observable<any> {
+  findByLoginAndAppId(login: string, appId: number): Observable<any> {
     let params = new HttpParams();
     params = params.append('login', login);
+    params = params.append('appId', String(appId));
     return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/profile-client/findByLoginAndAppId`, {params})
       .pipe(
         tap(data => {

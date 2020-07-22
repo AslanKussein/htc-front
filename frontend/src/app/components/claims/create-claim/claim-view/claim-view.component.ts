@@ -171,7 +171,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
 
   searchByPhone(login: string) {
     if (this.util.isNullOrEmpty(login)) return;
-    this.subscriptions.add(this.ownerService.searchByPhone(login)
+    this.subscriptions.add(this.ownerService.findByLoginAndAppId(login, this.applicationId)
       .subscribe(res => {
           this.clientId = res.id;
           this.clientLogin = login;
