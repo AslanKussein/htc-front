@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NewDicService} from "./services/new.dic.service";
 import {DicService} from "./services/dic.service";
 import {BsLocaleService} from "ngx-bootstrap/datepicker";
@@ -11,6 +11,7 @@ import {User} from "./models/users";
 import {Router} from "@angular/router";
 import {UploaderService} from "./services/uploader.service";
 import {ProfileService} from "./services/profile.service";
+import {Subscription} from "rxjs";
 
 declare var jquery: any;   // not required
 declare var $: any;   // not required
@@ -20,11 +21,12 @@ declare var $: any;   // not required
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'htc';
   _language = language;
   currentUser: User;
-  uuid: any;
+  photo: string = 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png';
+  subscriptions: Subscription = new Subscription();
 
   constructor(private newDicService: NewDicService,
               private dicService: DicService,
@@ -52,18 +54,11 @@ export class AppComponent implements OnInit {
   }
 
   loadAva() {
-    this.profileService.getProfile().subscribe(res => {
+    this.subscriptions.add(this.profileService.getProfile().subscribe(res => {
       if (!this.util.isNullOrEmpty(res.photoUuid)) {
-        this.uuid = res.photoUuid;
+        this.photo = this.util.generatorPreviewUrl(res.photoUuid);
       }
-    })
-  }
-
-  getImgUrl(obj: any) {
-    if (!this.util.isNullOrEmpty(obj)) {
-      return this.util.generatorPreviewUrl(obj)
-    }
-    return 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png';
+    }));
   }
 
   isActive() {
@@ -72,5 +67,9 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.authenticationService.logout();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

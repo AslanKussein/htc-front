@@ -9,6 +9,7 @@ import {NotificationService} from "../../services/notification.service";
 import {ComponentCanDeactivate} from "../../helpers/canDeactivate/componentCanDeactivate";
 import {Observable, Subscription} from "rxjs";
 import {NgxUiLoaderService} from "ngx-ui-loader";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-profile',
@@ -25,9 +26,11 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate, OnDestr
   loading: boolean;
   agentRoles: boolean;
   rgRoles: boolean;
+  rgName: string = '';
 
   constructor(public util: Util,
               private uploader: UploaderService,
+              private userService: UserService,
               private notifyService: NotificationService,
               private profileService: ProfileService,
               private authenticationService: AuthenticationService,
@@ -53,6 +56,7 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate, OnDestr
   ngOnInit(): void {
     this.profile = new ProfileDto();
     this.getProfile();
+    this.findAgentByLogin();
     this.save = false;
     this.ngxLoader.stop();
   }
@@ -115,8 +119,7 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate, OnDestr
 
   canDeactivate(): boolean | Observable<boolean> {
     if (this.save) {
-      let result = confirm("Внесенные данные не сохранены, данные будут потеряны. Покинуть страницу?");
-      return result;
+      return confirm("Внесенные данные не сохранены, данные будут потеряны. Покинуть страницу?");
     } else {
       return true;
     }
@@ -124,5 +127,13 @@ export class ProfileComponent implements OnInit, ComponentCanDeactivate, OnDestr
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  findAgentByLogin() {
+    this.subscriptions.add(
+      this.userService.findAgentByLogin(this.util.getCurrentUser().login).subscribe(res=>{
+        this.rgName = res.group;
+      })
+    );
   }
 }

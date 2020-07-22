@@ -47,7 +47,7 @@
             <a class="nav-link p-0 dropdown-toggle nav-link-name" style="font-size: 14px" href="#" id="navbarDropdown"
                role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
-              <img *ngIf="getImgUrl(uuid)" [src]="getImgUrl(uuid)" class="rounded-circle" style="width: 2.5rem; height: 2.5rem" [alt]=""/>
+              <img [src]="photo" class="rounded-circle" style="width: 2.5rem; height: 2.5rem" [alt]=""/>
               <span>{{currentUser?.surname}} {{currentUser?.name}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
