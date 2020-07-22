@@ -86,7 +86,7 @@ export class CalendarComponent implements OnInit {
   }
 
   format2(date: any) {
-    return new Date(date).toLocaleString();
+    return this.util.formatDateMoment(new Date(date), 'DD.MM.YYYY HH:mm');
   }
 
   getDicNameByLanguage(data: any, column: string) {
