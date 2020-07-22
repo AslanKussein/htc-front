@@ -314,7 +314,7 @@
                             <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>
                           </div>
                         </div>
-                        <div class="col-sm">
+                        <div class="col-sm" [hidden]="hasShowGroup(['VIEW_CLIENT_DATA', 'UPDATE_CLIENT_DATA'])">
                           <label class="form-label-v" translate>name
                             <span class="text-danger" *ngIf="!applicationForm.firstName">&nbsp;*</span>
                           </label>
