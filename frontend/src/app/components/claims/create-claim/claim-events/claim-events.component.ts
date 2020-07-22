@@ -118,7 +118,7 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
           obj['eventType'] = argument.eventType
           obj['disabledDev'] = true
           obj['disabledDevComment'] = true
-          if (argument.eventId.id == 1) {
+          if (argument.eventType.id == 1) {
             this.subscriptions.add(
                 this.claimService.getClaimById(argument.targetApplicationId).subscribe(res => {
                   let info = res.operationTypeId == 1 ? 'Купить' : 'Продать';
@@ -207,6 +207,11 @@ export class ClaimEventsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  openShowEvent(id: number) {
+    return `/create-claim/` + id;
+    // return `/create-claim/` + id + String(`?activeTab=events`);
   }
 
   setShowEvent(eventsDTO: EventsDTO) {
