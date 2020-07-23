@@ -21,6 +21,8 @@
             {{this.contract?.name}} ({{this.contract?.size}} КБ)</a>
         </div>
       </div>
+      <p class="text-danger" *ngIf="!this.contract?.uuid">Для закрытия сделки необходимо прикрепить сканированный документ</p>
+      <p class="text-info" *ngIf="this.contract?.uuid">Документ загружен</p>
     </fieldset>
     <fieldset class="scheduler-border col-sm" *ngIf="operationId == 1">
       <legend class="scheduler-border">Договор о авансе/задатке</legend>
@@ -42,12 +44,13 @@
             {{this.deposit?.name}} ({{this.deposit?.size}} КБ)</a>
         </div>
       </div>
-
+      <p class="text-danger" *ngIf="this.operationId == 1 && this.boardSelect.hasDepositContract && !this.deposit?.uuid">Для закрытия сделки необходимо прикрепить сканированный документ</p>
+      <p class="text-info" *ngIf="this.deposit?.uuid">Документ загружен</p>
     </fieldset>
   </div>
   <div class="card-footer">
     <button type="button" class="btn btn-secondary btn-sm btn2" (click)="cancel()">Отмена</button>
-    <button type="button" class="btn btn-success btn-sm btn2" [disabled]="this.contractStatus != 1" (click)="completeDeal()">Закрыть сделку</button>
+    <button type="button" class="btn btn-success btn-sm btn2" [class.disabledDev]="!!btnEnabled()" (click)="completeDeal()">Закрыть сделку</button>
   </div>
 
 </div>
