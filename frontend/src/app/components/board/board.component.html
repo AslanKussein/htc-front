@@ -221,7 +221,7 @@
         </table>
       </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)">
       <div class="col-sm">
         <label>Если Вы хотите принудительно завершить сделку на данном этапе
           <span>"{{objectData.status?.name[this.util.getDicNameByLanguage()]}}"</span>
@@ -256,7 +256,7 @@
         [style.width.%]="percent">
       </div>
     </div>
-    <div class="row toggle-label" [ngClass]="{active: isActive}">
+    <div class="row toggle-label" [ngClass]="{active: isActive}" *ngIf="util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)">
       <div class="col-sm" style="cursor: pointer;" *ngIf="isConfirmDeal || isClosingDeal">
         <h5 (click)="onToggle()">
           Если успешно реализованная заявка связана со второй заявкой из системы, то укажите вторую заявку
@@ -350,8 +350,7 @@
       </div>
     </div>
     <div class="row text-right"
-         *ngIf="(!util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) ||
-         !util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)) && isConfirmDeal">
+         *ngIf="(!util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) || (!util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)) && objectData?.status?.code === '002012') && isConfirmDeal">
       <div class="col-sm">
         <button type="button" class="btn btn-sm btn-btn btn2 btn-secondary" (click)="confirmDeal(false)">
           Отказать в завершении
