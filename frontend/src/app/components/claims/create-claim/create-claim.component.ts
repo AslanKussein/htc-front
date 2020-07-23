@@ -1078,6 +1078,17 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     return true
   }
 
+  hasUpdateRole() {
+    if (!this.util.isNullOrEmpty(this.operationList)) {
+      for (const operation of this.operationList) {
+        if (operation.includes("UPDATE_")) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   reassignApplication() {
     this.ngxLoader.startBackground();
     let data = {};

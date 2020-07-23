@@ -25,7 +25,7 @@
           <legend class="scheduler-border">ID агента</legend>
 
           <div class="row">
-            <div class="col-sm" [hidden]="hasShowGroup(['CHOOSE_GROUP_AGENT', 'CHOOSE_ANY_AGENT'])">
+            <div class="col-sm" [hidden]="hasUpdateRole() && hasShowGroup(['CHOOSE_GROUP_AGENT', 'CHOOSE_ANY_AGENT'])">
               <ng-select
                 [items]="agentList"
                 [(ngModel)]="claimViewDto.agent"
@@ -33,7 +33,7 @@
                 placeholder="{{ 'patterns.chooseElement' | translate }}">
               </ng-select>
             </div>
-            <div class="col-sm" [hidden]="hasShowGroup(['CHOOSE_GROUP_AGENT', 'CHOOSE_ANY_AGENT'])">
+            <div class="col-sm" [hidden]="hasUpdateRole() && hasShowGroup(['CHOOSE_GROUP_AGENT', 'CHOOSE_ANY_AGENT'])">
               <button type="button" (click)="reassignApplication()" class="btn-sm btn btn-outline-primary">OK</button>
             </div>
           </div>
