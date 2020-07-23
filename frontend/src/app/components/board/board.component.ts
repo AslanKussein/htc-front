@@ -458,7 +458,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     }));
   }
 
-  closeDeal(type: boolean, appId: any) {
+  closeDeal(type: boolean, appId: any = null) {
     const obj = {
       applicationId: this.applicationId,
       comment: this.objectData?.comment,
