@@ -93,6 +93,17 @@ export class CloseDealComponent implements OnInit {
     }
   }
 
+  fileDeleted(uuid, id) {
+    this.uploader.removePhotoById(uuid).subscribe(res=> {
+      if (id == 1) {
+        this.contract = null;
+      }
+      if (id == 2) {
+        this.deposit = null;
+      }
+    })
+  }
+
   btnEnabled () {
     return !(this.contract != null && (this.operationId == 1 && this.boardSelect.hasDepositContract && this.deposit?.uuid) != null);
   }
