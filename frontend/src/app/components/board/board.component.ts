@@ -375,6 +375,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   closeApplication(template, data: any): void {
+   this.clearTargetAppData();
     this.isSell = this.isSellTargetApp = data.operationType?.code === '001002'; // Продать
     this.applicationId = data.id;
     this.subscriptions.add(this.boardService.getApplication(this.applicationId).subscribe(res => {
@@ -457,7 +458,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     }));
   }
 
-  closeDeal(type: boolean, appId: number = 0) {
+  closeDeal(type: boolean, appId: any) {
     const obj = {
       applicationId: this.applicationId,
       comment: this.objectData?.comment,
@@ -468,6 +469,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.notificationService.showSuccess('', 'Успешно сохранено');
       this.sortStatusesDic(this.activeTab);
       this.modalRef2.hide();
+      this.clearTargetAppData();
     }, err => {
       this.notificationService.showError('Ошибка', err?.ru);
     }));
@@ -485,13 +487,26 @@ export class BoardComponent implements OnInit, OnDestroy {
       approve: approveType,
       guid: this.file?.uuid
     };
-    this.subscriptions.add(this.boardService.confirmCloseDeal(obj).subscribe(res => {
-      this.notificationService.showSuccess('', 'Успешно сохранено');
-      this.sortStatusesDic(this.activeTab);
-      this.modalRef2.hide();
-    }, err => {
-      this.notificationService.showError('Ошибка', err?.ru);
-    }));
+    if (!this.util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', this.roles)) {
+      this.subscriptions.add(this.boardService.confirmCloseDeal(obj).subscribe(res => {
+        this.notificationService.showSuccess('', 'Успешно сохранено');
+        this.sortStatusesDic(this.activeTab);
+        this.modalRef2.hide();
+      }, err => {
+        this.notificationService.showError('Ошибка', err?.ru);
+      }));
+    }
+
+    if(!this.util.hasShowApplicationGroup('CLOSE_APPLICATION', this.roles)) {
+      this.subscriptions.add(this.boardService.confirmComplete(obj).subscribe(res => {
+        this.notificationService.showSuccess('', 'Успешно сохранено');
+        this.sortStatusesDic(this.activeTab);
+        this.modalRef2.hide();
+      }, err => {
+        this.notificationService.showError('Ошибка', err?.ru);
+      }));
+    }
+
   }
 
   onFileChange(event) {
