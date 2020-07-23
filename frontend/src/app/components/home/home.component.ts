@@ -35,7 +35,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   applicationLightDto: ApplicationLightDto;
   existsClient: boolean = false;
   roles: any;
-  operationTypeId: any;
   jpg2: string = '../../../assets/images/home/2.jpg';
   jpg3: string = '../../../assets/images/home/3.jpg';
   jpg1: string = '../../../assets/images/home/1.jpg';
@@ -48,6 +47,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               private translate: TranslateService,
               private ownerService: OwnerService,
               private ngxLoader: NgxUiLoaderService,
+              private notifyService: NotificationService,
               private newDicService: NewDicService,
               private roleManagerService: RoleManagerService,
               private cdRef: ChangeDetectorRef) {
@@ -99,7 +99,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   fillApplicationLightDTO() {
     this.applicationLightDto = new ApplicationLightDto();
-    this.applicationLightDto.operationTypeId = this.operationTypeId;
+    this.applicationLightDto.operationTypeId = this.applicationLightForm.operationTypeId;
     // this.applicationLightDto.operationTypeId = this.applicationLightForm?.value.operationTypeId?.value
     this.applicationLightDto.note = this.applicationLightForm?.value?.note;
     this.applicationLightDto.agentLogin = this.applicationLightForm?.value?.agentLogin;
@@ -137,7 +137,32 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.userService.createUserClient(dto).subscribe());
   }
 
+  validate() {
+    if (this.util.hasShowAgentGroup('CHOOSE_ANY_AGENT', this.roles)) {
+      this.applicationLightForm.controls['agentLogin'].setValidators(Validators.required);
+      this.applicationLightForm.controls['agentLogin'].updateValueAndValidity();
+    } else {
+      this.applicationLightForm.controls['agentLogin'].setValidators(Validators.nullValidator);
+      this.applicationLightForm.controls['agentLogin'].updateValueAndValidity();
+    }
+  }
+
   onSave() {
+    this.validate();
+    console.log(this.applicationLightForm.valid)
+    if (this.applicationLightForm.validate) {
+      return
+    }
+    const controls = this.applicationLightForm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        console.log(name)
+        this.subscriptions.add(this.translate.get('claim.validator.' + name).subscribe((text: string) => {
+          this.notifyService.showInfo("Ошибка", "Поле " + text + " не заполнено!!!");
+        }));
+        return;
+      }
+    }
     if (!this.existsClient) {
       this.createClient()
     }
