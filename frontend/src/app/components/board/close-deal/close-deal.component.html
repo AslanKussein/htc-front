@@ -47,7 +47,7 @@
   </div>
   <div class="card-footer">
     <button type="button" class="btn btn-secondary btn-sm btn2" (click)="cancel()">Отмена</button>
-    <button type="button" class="btn btn-success btn-sm btn2" (click)="completeDeal()">Закрыть сделку</button>
+    <button type="button" class="btn btn-success btn-sm btn2" [disabled]="this.contractStatus != 1" (click)="completeDeal()">Закрыть сделку</button>
   </div>
 
 </div>
