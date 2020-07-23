@@ -31,6 +31,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {NewDicService} from "../../../services/new.dic.service";
 import {DicService} from "../../../services/dic.service";
+import {HttpParams} from "@angular/common/http";
 declare var jquery: any;   // not required
 declare var $: any;   // not required
 
@@ -314,13 +315,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.ngxLoader.stopBackground();
     }
 
-    if (!this.applicationId) {
-      this.subscriptions.add(
-        this.roleManagerService.readUser(3).subscribe(obj => {
-          this.roles = obj.operations;
-        })
-      )
-    }
+    let params = new HttpParams();
+    params = params.append('groupCodes', String('AGENT_GROUP'))
+    this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
+      this.roles = obj.data
+    });
 
     window.scrollTo(0, 0);
     this.applicationForm.unification = 'address';
@@ -1064,15 +1063,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   hasShowGroup(operation: any) {
     if (this.util.isNullOrEmpty(this.applicationId)) {
-      if (!this.util.isNullOrEmpty(this.roles)) {
-        for (const data of this.roles) {
-          if (!this.util.isNullOrEmpty(data)) {
-            if (operation.includes(data)) {
-              return false;
-            }
-          }
-        }
-      }
+      return false;
     } else {
       if (!this.util.isNullOrEmpty(this.operationList)) {
         for (const data of this.operationList) {
@@ -1371,7 +1362,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.yardTypeId = generalCharacteristicsDto.yardTypeId;
       this.applicationForm.yearOfConstruction = generalCharacteristicsDto.yearOfConstruction;
     }
-
   }
 
   customSearchFn(term: string, item) {
