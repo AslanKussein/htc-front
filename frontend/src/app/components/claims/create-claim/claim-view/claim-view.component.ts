@@ -175,7 +175,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
       .subscribe(res => {
           this.clientId = res.id;
           this.clientLogin = login;
-          this.clientFullName = res.surname + ' ' + res.firstName + ' ' + (res.patronymic ? res.patronymic : ' ');
+          this.clientFullName = (res.surname ? res.surname : '') + ' ' + (res.firstName ? res.firstName : '') + ' ' + (res.patronymic ? res.patronymic : ' ');
         }
       ));
   }
