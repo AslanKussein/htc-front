@@ -68,7 +68,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm" [hidden]="hasShowGroup(['CHOOSE_GROUP_AGENT', 'CHOOSE_ANY_AGENT'])" *ngIf="applicationId">
+                      <div class="col-sm" [hidden]="hasUpdateRole() && hasShowGroup(['CHOOSE_GROUP_AGENT', 'CHOOSE_ANY_AGENT'])" *ngIf="applicationId">
                         <label class="form-label-v">Выберите агента</label>
                         <ng-select
                           [items]="agentList"
