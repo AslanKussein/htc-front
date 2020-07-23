@@ -92,7 +92,23 @@ table tbody tr td {
   min-height: 0px;
   border-radius: 0;
 }
+
 .ng-select.custom .ng-select-container  {
   min-height: 0px;
   border-radius: 0;
+}
+
+.all-objects {
+  width: 180px;
+  height: 40px;
+  border-radius: 5px;
+  border: solid 0.5px #d0d0d0;
+  background-color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  color: #656c75;
 }

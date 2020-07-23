@@ -1,5 +1,5 @@
 <div class="row w-100"></div>
-<div class="row disabled-bottom-margin" [formGroup]="applicationSearchForm" id="searchClaim">
+<div class="row" [formGroup]="applicationSearchForm" id="searchClaim">
   <div class="col-sm">
     <div class="card">
       <div class="card-header font-weight-bold bg-dark text-white">
@@ -121,7 +121,19 @@
     </div>
   </div>
 </div>
-
+<div class="row disabled-bottom-margin">
+  <div class="col-sm-4 py-1">
+    <mat-button-toggle-group [(ngModel)]="myClaims">
+      <mat-button-toggle class="operation-type" (click)="filterBtnChange(item.value)"
+                         *ngFor="let item of objectMy" [value]="item" [id]="item.code"
+                         [class]="item.value != myClaims ? 'bg-white text-dark' : ''"
+                         [ngClass]="{ 'color-aqua text-white':item.value === myClaims}">
+        {{item.label}}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <div class="col-sm"></div>
+</div>
 <div class="row">
   <div class="col-sm overflow-auto">
     <table class="table table-sm">

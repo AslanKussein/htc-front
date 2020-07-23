@@ -24,6 +24,22 @@ export class ClaimsComponent implements OnInit, OnDestroy {
   env = language;
   subscriptions: Subscription = new Subscription();
   eventCall: boolean = false;
+  objectMy: any = [
+    {label: 'Все заявки', value: false},
+    {label: 'Мои заявки', value: true},
+  ];
+  applicationSearchForm: any;
+  expanded: boolean = false;
+  operationType: Dic[];
+  appStatuses: Dic[];
+  claimData = [];
+  eventObjectId = [];
+  totalItems = 0;
+  itemsPerPage = 30;
+  currentPage = 1;
+  numeral = 0;
+  empty: boolean = false;
+  myClaims: boolean = false;
 
   constructor(private claimService: ClaimService,
               public util: Util,
@@ -40,18 +56,6 @@ export class ClaimsComponent implements OnInit, OnDestroy {
       }
     }
   }
-
-  applicationSearchForm: any;
-  expanded: boolean = false;
-  operationType: Dic[];
-  appStatuses: Dic[];
-  claimData = [];
-  eventObjectId = [];
-  totalItems = 0;
-  itemsPerPage = 30;
-  currentPage = 1;
-  numeral=0;
-  empty: boolean = false;
 
   clearForm() {
     this.applicationSearchForm.reset();
@@ -88,6 +92,11 @@ export class ClaimsComponent implements OnInit, OnDestroy {
     }
   }
 
+  filterBtnChange(value) {
+    this.myClaims = value;
+    this.findClaims(1);
+  }
+
   findClaims(pageNo: number) {
     this.ngxLoader.startBackground();
     let searchFilter = {};
@@ -99,6 +108,7 @@ export class ClaimsComponent implements OnInit, OnDestroy {
     searchFilter['applicationStatusList'] = this.applicationSearchForm.value.applicationStatusList;
     searchFilter['text'] = this.applicationSearchForm.value.text;
     searchFilter['applicationId'] = this.applicationSearchForm.value.applicationId;
+    searchFilter['my'] = this.myClaims;
     searchFilter['direction'] = 'DESC';
     searchFilter['sortBy'] = 'id';
     searchFilter['pageNumber'] = pageNo - 1;
@@ -143,18 +153,18 @@ export class ClaimsComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  compare(claim){
-    if(claim?.compare){
-      claim.compare=!claim.compare;
-      if(claim.compare){
-        this.numeral=this.numeral+1;
-        }else{
-        this.numeral=this.numeral-1;
+  compare(claim) {
+    if (claim?.compare) {
+      claim.compare = !claim.compare;
+      if (claim.compare) {
+        this.numeral = this.numeral + 1;
+      } else {
+        this.numeral = this.numeral - 1;
 
       }
-    }else{
-      claim.compare=true;
-      this.numeral=this.numeral+1;
+    } else {
+      claim.compare = true;
+      this.numeral = this.numeral + 1;
     }
   }
 
