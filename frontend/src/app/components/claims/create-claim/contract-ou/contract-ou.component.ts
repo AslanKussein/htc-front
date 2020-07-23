@@ -42,7 +42,6 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     private claimService: ClaimService,
     private ngxLoader: NgxUiLoaderService,
     private newDicService: NewDicService,
-    private router: Router,
     private uploaderService: UploaderService
   ) {
     this.applicationId = Number(this.actRoute.snapshot.params.id);
@@ -50,11 +49,6 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('fromBoard'))) {
       this.fromBoard = this.actRoute.snapshot.queryParamMap.get('fromBoard') == 'true';
     }
-    this.router.events
-      .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
-      .subscribe((events: RoutesRecognized[]) => {
-        localStorage.setItem('previousUrl', events[0].urlAfterRedirects)
-      })
   }
 
   ngOnInit(): void {
@@ -173,7 +167,11 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     this.fillContractDto();
     this.subscriptions.add(this.contractService.missContract(this.contractFormDto)
       .subscribe(res => {
-        this.util.dnHref(localStorage.getItem('url'));
+        if (this.fromBoard) {
+          this.backToPrev();
+        } else {
+          this.util.dnHref(localStorage.getItem('url'));
+        }
       })
     );
   }
@@ -185,7 +183,9 @@ export class ContractOuComponent implements OnInit, OnDestroy {
   }
 
   backToPrev() {
-    this.util.navigateByUrl(localStorage.getItem('previousUrl'));
+    if(this.canDeactivate()) {
+      this.util.navigateByUrl(localStorage.getItem('backUrl'));
+    }
   }
 
   canDeactivate(): boolean | Observable<boolean> {

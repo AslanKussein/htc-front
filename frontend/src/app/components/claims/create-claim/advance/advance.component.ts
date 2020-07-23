@@ -110,7 +110,7 @@ export class AdvanceComponent implements OnInit, OnDestroy {
 
   backToPrev() {
     if (this.fromBoard) {
-      this.util.dnHref('board');
+      this.util.navigateByUrl(localStorage.getItem('backUrl'));
     }
   }
 

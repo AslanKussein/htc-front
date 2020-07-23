@@ -65,9 +65,8 @@ export class CloseDealComponent implements OnInit {
   }
 
   cancel() {
-    // this.board.displayBoardContent = true;
-    this.location.replaceState('board');
-    this.util.refresh()
+    this.board.displayBoardContent = true;
+    this.util.navigateByUrl(localStorage.getItem('backUrl'));
     // this.board.sortStatusesDic(this.board.activeTab);
   }
 
