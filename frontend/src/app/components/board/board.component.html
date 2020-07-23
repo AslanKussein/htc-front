@@ -72,7 +72,7 @@
                  [class]="item.style" (cdkDragDropped)="changeStatus($event,item, data.value)">
               <div class="card" style="font-size: 14px;">
                 <div class="card-header">
-                  {{item.id}} &nbsp;{{item.operationType?.name[getDicNameByLanguage()]}}
+                  <a routerLink="/create-claim-view/{{item.id}}">{{item.id}}</a> &nbsp;{{item.operationType?.name[getDicNameByLanguage()]}}
                   <button type="button" class="close"
                           (click)="closeApplication(this.closeRequestApplication, item)" data-dismiss="modal"
                           aria-label="Close">
