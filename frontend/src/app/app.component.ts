@@ -55,7 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   loadAva() {
-    this.photo = this.util.generatorPreviewUrl(this.util.getCurrentUser().photoUuid);
+    this.photo = this.util.generatorPreviewUrl(this.util.getCurrentUser()?.photoUuid);
   }
 
   isActive() {

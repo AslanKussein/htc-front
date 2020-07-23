@@ -124,6 +124,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   isUpload = false;
   percent: number;
   roles: any;
+  contractDto: ContractDto;
 
   constructor(public util: Util,
               private notifyService: NotificationService,
@@ -312,20 +313,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     } else {
       this.ngxLoader.stopBackground();
     }
-    // let params = new HttpParams();
-    // params = params.append('groupCodes', String('APPLICATION_GROUP'))
-    // params = params.append('groupCodes', String('REAL_PROPERTY_GROUP'))
-    // params = params.append('groupCodes', String('CLIENT_GROUP'))
-    // params = params.append('groupCodes', String('AGENT_GROUP'))
-    // this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
-    //   let operation = [];
-    //   for (const role of obj.data) {
-    //     if (!this.util.isNullOrEmpty(role.operations)) {
-    //       operation = operation.concat(role.operations);
-    //     }
-    //   }
-    //   this.roles = operation;
-    // });
+
     if (!this.applicationId) {
       this.subscriptions.add(
         this.roleManagerService.readUser(3).subscribe(obj => {
@@ -457,6 +445,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.ngxLoader.stopBackground();
         this.setApplicationFlagSort();
         this.operationList = data?.operationList;
+        if (data.contractDto) {
+          this.contractDto = data.contractDto;
+        }
       }
     }));
   }
@@ -1445,6 +1436,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       );
     }
     this.cdRef.detectChanges();
+  }
+
+  isShowAdvanceAgreement() {
+    return this.util.isNullOrEmpty(this.contractDto?.contractNumber);
   }
 
   ngOnDestroy() {
