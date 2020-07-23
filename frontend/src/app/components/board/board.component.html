@@ -49,6 +49,7 @@
       <br>
       <div class="row" cdkDropListGroup [class.disabledDev]="this.activeTab == 3">
         <div class="col-sm"
+             style="max-width: 300px;"
              *ngFor="let data of appStatusesData;let i = index"
              [hidden]="!this.util.hasShowApplicationGroup('CLOSE_APPLICATION', roles) && data.code != '002011'">
           <div class="row">
@@ -190,7 +191,7 @@
                      alt="First Slide" class="photoList"
                      style="height: 100%; width: 100%">
               </td>
-              <td>{{ objectData.address[this.util.getDicNameByLanguage()] }}</td>
+              <td>{{ objectData.address ? objectData.address[this.util.getDicNameByLanguage()] : '' }}</td>
               <td *ngIf="isSell">{{ objectData.objectPrice | mask : 'separator.2'}} ₸</td>
               <td *ngIf="!isSell">{{ objectData.objectPricePeriod?.from | mask : 'separator.2'}} ₸</td>
               <td *ngIf="!isSell">{{ objectData.objectPricePeriod?.to | mask : 'separator.2'}} ₸</td>
@@ -259,7 +260,7 @@
       </div>
     </div>
     <div *ngIf="util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)">
-      <div *ngIf="!isConfirmDeal || isClosingDeal || isTargetApplicationId">
+      <div *ngIf="objectData?.status?.code === '002007' || isTargetApplicationId">
         <div class="row toggle-label" [ngClass]="{active: isActive}" >
           <div class="col-sm" style="cursor: pointer;">
             <h5 (click)="onToggle()">
