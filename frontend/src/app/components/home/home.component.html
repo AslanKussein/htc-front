@@ -75,10 +75,7 @@
           <p class="h5 font-weight-bold">Заметка</p>
           <div class="row">
             <input type="text" class="form-controls" id="surName" placeholder="Фамилия"
-                   formControlName="surName" required [(ngModel)]="applicationLightForm.surName"/>
-            <div *ngIf="f.surName.touched && f.surName.invalid" class="text-danger">
-              <div *ngIf="f.surName.errors.required" translate>claim.requiredField</div>
-            </div>
+                   formControlName="surName" [(ngModel)]="applicationLightForm.surName"/>
           </div>
           <div class="row">
             <input type="text" class="form-controls" placeholder="Имя"

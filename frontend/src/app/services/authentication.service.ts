@@ -9,6 +9,7 @@ import {UserService} from "./user.service";
 import {NotificationService} from "./notification.service";
 import {ActivatedRoute} from "@angular/router";
 import {BsModalService} from "ngx-bootstrap/modal";
+import {ProfileService} from "./profile.service";
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService implements OnDestroy {
@@ -29,6 +30,7 @@ export class AuthenticationService implements OnDestroy {
               private util: Util,
               private activatedRoute: ActivatedRoute,
               private userService: UserService,
+              private profileService: ProfileService,
               private notifyService: NotificationService) {
     this.currentUserSubject = new BehaviorSubject<User>(this.util.getCurrentUser());
     this.currentUser = this.currentUserSubject.asObservable();
@@ -48,7 +50,12 @@ export class AuthenticationService implements OnDestroy {
       .pipe(first())
       .subscribe(
         param_ => {
-          this.userService.findUserByLogin().subscribe(data => {
+          this.subscriptions.add(this.profileService.getProfile().subscribe(res => {
+            if (!this.util.isNullOrEmpty(res.photoUuid)) {
+              param_.photo = res.photoUuid;
+            }
+          }));
+          this.subscriptions.add(this.userService.findUserByLogin().subscribe(data => {
             if (data != null) {
               param_.name = data.name
               param_.surname = data.surname
@@ -58,7 +65,7 @@ export class AuthenticationService implements OnDestroy {
               param_.id = data.id
               localStorage.setItem('currentUser', JSON.stringify(param_));
             }
-          });
+          }));
           if (id == 1) {
             this.util.dnHref('/')
           }

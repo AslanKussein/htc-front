@@ -55,11 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   loadAva() {
-    this.subscriptions.add(this.profileService.getProfile().subscribe(res => {
-      if (!this.util.isNullOrEmpty(res.photoUuid)) {
-        this.photo = this.util.generatorPreviewUrl(res.photoUuid);
-      }
-    }));
+    this.photo = this.util.generatorPreviewUrl(this.util.getCurrentUser().photo);
   }
 
   isActive() {

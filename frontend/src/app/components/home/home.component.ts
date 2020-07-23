@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       id: [null, Validators.nullValidator],
       clientId: [null, Validators.nullValidator],
       operationTypeId: [null, Validators.required],
-      surName: [null, Validators.required],
+      surName: [null, Validators.nullValidator],
       name: [null, Validators.required],
       patronymic: [null, Validators.nullValidator],
       phoneNumber: [null, Validators.required],
@@ -67,19 +67,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       objectTypeId: [null, Validators.required],
     });
 
-    let params = new HttpParams();
-    params = params.append('groupCodes', String('APPLICATION_GROUP'))
-    params = params.append('groupCodes', String('REAL_PROPERTY_GROUP'))
-    params = params.append('groupCodes', String('CLIENT_GROUP'))
-    params = params.append('groupCodes', String('AGENT_GROUP'))
-    this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
-      if (!this.util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', obj.data) &&
-        this.util.hasShowAgentGroup('CHOOSE_ANY_AGENT', obj.data)) {
-        this.applicationLightForm.controls['agentLogin'].setValidators([Validators.required]);
-        this.applicationLightForm.controls["agentLogin"].updateValueAndValidity();
-      }
-      this.roles = obj.data
-    });
+    this.subscriptions.add(
+      this.roleManagerService.readUser(3).subscribe(obj => {
+        this.roles = obj.operations;
+      })
+    )
 
     this.cdRef.detectChanges()
 
