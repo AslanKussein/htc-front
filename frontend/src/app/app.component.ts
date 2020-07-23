@@ -26,6 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
   _language = language;
   currentUser: User;
   photo: string = 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png';
+  logo: string = '../../../assets/images/home/Лого.png';
   subscriptions: Subscription = new Subscription();
 
   constructor(private newDicService: NewDicService,

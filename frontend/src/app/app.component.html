@@ -4,7 +4,7 @@
   <div class="bg-dark border-right" id="sidebar-wrapper" *ngIf="currentUser">
     <div class="mb-5"></div>
     <div class="row">
-      <img (click)="util.dnHref('home')" src="assets/images/home/Лого.png"
+      <img (click)="util.dnHref('home')" [src]="logo"
            style="margin: 0 auto; max-width: 200px; max-height: 180px"/>
     </div>
 

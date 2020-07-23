@@ -23,7 +23,7 @@ import {CompareComponent} from "./components/compare/compare.component";
 // определение дочерних маршрутов
 const itemRoutes: Routes = [
   {path: 'close-deal/:operationId', component: CloseDealComponent, canActivate: [AuthGuard]},
-  {path: 'add-event', component: AddEventComponent, canActivate: [AuthGuard]},
+  {path: 'add-event', component: AddEventComponent, canActivate: [AuthGuard]}
 ];
 
 const routes: Routes = [
@@ -43,8 +43,7 @@ const routes: Routes = [
   {path: 'create-claim-view/:id', component: ClaimViewComponent, canActivate: [AuthGuard]},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate]},
   {path: 'client-card/:id', component: ClientCardComponent, canActivate: [AuthGuard]},
-  {path: 'compare', component: CompareComponent, canActivate: [AuthGuard]},
-
+  {path: 'compare', component: CompareComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({

@@ -6,6 +6,7 @@ import {Util} from "../services/util";
 
 @Injectable({providedIn: 'root'})
 export class AuthGuard implements CanActivate {
+
   constructor(private router: Router,
               private util: Util,
               private activatedRoute: ActivatedRoute,
@@ -14,20 +15,20 @@ export class AuthGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const currentUser = this.authenticationService.currentUserValue;
+    const currentUser = this.authenticationService.currentUserValue
     if (currentUser) {
-      return true;
+      return true
     } else {
       if (localStorage.length == 0) {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login'])
         return;
       }
       if (localStorage.getItem('action') != 'logout') {
-        this.errorInterceptor.showAuthModal();
+        this.errorInterceptor.showAuthModal()
       } else {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login'])
       }
-      return false;
+      return false
     }
   }
 }

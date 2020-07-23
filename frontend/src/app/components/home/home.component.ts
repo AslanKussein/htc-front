@@ -36,6 +36,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   existsClient: boolean = false;
   roles: any;
   operationTypeId: any;
+  jpg2: string = '../../../assets/images/home/2.jpg';
+  jpg3: string = '../../../assets/images/home/3.jpg';
+  jpg1: string = '../../../assets/images/home/1.jpg';
 
   constructor(private formBuilder: FormBuilder,
               public util: Util,

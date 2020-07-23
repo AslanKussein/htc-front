@@ -175,13 +175,11 @@
         <td>{{claim.comment}}</td>
         <td class="text-center">
           <a (click)="compare(claim)">
-            <div>
-              <img style="min-width: 30px; max-width: 45px;" class="card-img-top float-left"
-                   src="assets/images/claims/libra.png">
+            <div class="card-img-top float-left">
+              <i class="fa fa-balance-scale fa-2x" aria-hidden="true"></i>
             </div>
             <div *ngIf="claim.compare" style="position: absolute">
-              <i aria-hidden="true" style="color: green;;padding: 17px" class="fa fa-check-circle"></i>
-
+              <i aria-hidden="true" style="color: green;padding: 17px" class="fa fa-check-circle"></i>
             </div>
           </a>
         </td>

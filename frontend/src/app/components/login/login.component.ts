@@ -13,7 +13,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 export class LoginComponent implements OnInit {
   loginForm: any;
   submitted = false;
-
+  logo2: string = '../../../assets/images/logo2.png';
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               private authenticationService: AuthenticationService,

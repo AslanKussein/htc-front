@@ -70,11 +70,11 @@ import { MaterialModule } from './MaterialModule';
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
 
-export function HttpLoaderFactory(httpClient: HttpClient) {
+export function HttpLoaderFactory(httpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
 
-export let options: Partial<IConfig> | (() => Partial<IConfig>);
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: 'indigo',
