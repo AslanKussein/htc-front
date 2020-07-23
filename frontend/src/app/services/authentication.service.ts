@@ -58,6 +58,7 @@ export class AuthenticationService implements OnDestroy {
               param_.roles = data.roles
               param_.group = data.group
               param_.id = data.id
+              param_.organizationDto = data.organizationDto
               localStorage.setItem('currentUser', JSON.stringify(param_));
             }
           }));

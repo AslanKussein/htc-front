@@ -71,6 +71,10 @@
       <div class="card-body">
         <table style="width:100%;">
           <tr>
+            <th class="table-column-header">Организация:</th>
+            <td class="table-column-value text-uppercase">{{util.getCurrentUser().organizationDto?.nameRu}}</td>
+          </tr>
+          <tr>
             <th class="table-column-header">Группа продажи:</th>
             <td class="table-column-value text-uppercase">{{rgName}}</td>
           </tr>
