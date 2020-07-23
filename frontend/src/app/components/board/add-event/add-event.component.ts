@@ -76,9 +76,8 @@ export class AddEventComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    this.util.dnHref('board');
     this.board.displayBoardContent = true;
-    this.board.sortStatusesDic(this.board.activeTab);
+    this.util.navigateByUrl(localStorage.getItem('backUrl'));
   }
 
   ngOnDestroy() {
