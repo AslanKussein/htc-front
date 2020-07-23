@@ -146,6 +146,7 @@ export class CalendarComponent implements OnInit {
             end: new Date(e.eventDate),
             title: e.eventType.name[this.util.getDicNameByLanguage()],
             color: this.getColorsByStatusId(e.eventType.id),
+            cssClass: 'arrow',
             allDay: true,
           }
           this.refresh.next();
