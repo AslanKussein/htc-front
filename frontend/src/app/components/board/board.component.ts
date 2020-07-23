@@ -309,7 +309,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     this._boardSelect = item;
     this.selectId = item.id;
     let data = {applicationId: item.id, statusId: currentStatusId};
-
+    localStorage.setItem('backUrl', '/board?activeTab=' + this.activeTab);
     if (this.activeTab == 1) { // воронка покупателей
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
         this.openInnerPage('board/add-event');
@@ -450,10 +450,6 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   refresh(): void {
     window.location.reload();
-  }
-
-  closeRequestApplication() {
-    console.log(789)
   }
 
   onToggle() {

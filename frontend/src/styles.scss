@@ -174,3 +174,8 @@ table tbody tr td {
 .table thead th, .table thead td {
   border: none;
 }
+
+.pagination .page-item.active .page-link {
+  background-color: #00b2a8;
+  color: white;
+}
