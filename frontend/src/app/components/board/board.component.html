@@ -228,6 +228,7 @@
           то заполните обоснование для принудительного завершения заявки</label>
         <textarea
           class="col-sm-12 control" rows="4"
+          [disabled]="isConfirmDeal"
           placeholder="Пояснение принудительного завершения заявки"
           [(ngModel)]="objectData.comment">
         </textarea>
