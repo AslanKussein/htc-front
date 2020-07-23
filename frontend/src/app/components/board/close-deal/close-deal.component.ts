@@ -94,6 +94,10 @@ export class CloseDealComponent implements OnInit {
     }
   }
 
+  btnEnabled () {
+    return !(this.contract != null && (this.operationId == 1 && this.boardSelect.hasDepositContract && this.deposit?.uuid) != null);
+  }
+
   completeDeal() {
     let obj = {};
     obj["applicationId"] = this.boardSelect.id;
