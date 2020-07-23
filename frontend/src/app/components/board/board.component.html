@@ -256,7 +256,7 @@
       </div>
     </div>
     <div class="row toggle-label" [ngClass]="{active: isActive}">
-      <div class="col-sm" style="cursor: pointer;" *ngIf="!isConfirmDeal">
+      <div class="col-sm" style="cursor: pointer;" *ngIf="isConfirmDeal || isClosingDeal">
         <h5 (click)="onToggle()">
           Если успешно реализованная заявка связана со второй заявкой из системы, то укажите вторую заявку
           <i class="fa fa-caret-down" aria-hidden="true"></i>
