@@ -221,7 +221,7 @@
         </table>
       </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)">
       <div class="col-sm">
         <label>Если Вы хотите принудительно завершить сделку на данном этапе
           <span>"{{objectData.status?.name[this.util.getDicNameByLanguage()]}}"</span>
@@ -234,7 +234,7 @@
         </textarea>
       </div>
     </div>
-    <div class="row" *ngIf="!util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)">
+    <div class="row" *ngIf="!util.hasShowApplicationGroup('CLOSE_APPLICATION', roles) && objectData?.status?.code === '002011'">
       <div class="col-sm">
         <label class="btn btn-info btn-sm mr-4">Документ подтверждающий завершение сделки
           <i class="fa fa-upload"></i>
@@ -256,86 +256,90 @@
         [style.width.%]="percent">
       </div>
     </div>
-    <div class="row toggle-label" [ngClass]="{active: isActive}">
-      <div class="col-sm" style="cursor: pointer;" *ngIf="isConfirmDeal || isClosingDeal">
-        <h5 (click)="onToggle()">
-          Если успешно реализованная заявка связана со второй заявкой из системы, то укажите вторую заявку
-          <i class="fa fa-caret-down" aria-hidden="true"></i>
-        </h5>
-      </div>
-    </div>
-    <div class="row content-bundle" [ngClass]="{active: isActive}">
-      <div class="col-sm-4">
-        <div class="form-group row">
-          <label class="col-sm-5 col-form-label">ID второй заявки</label>
-          <div class="col-sm-7">
-            <input
-              type="number"
-              class="form-control"
-              placeholder="Введите ID заявки"
-              [(ngModel)]="secondId"/>
+    <div *ngIf="util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)">
+      <div *ngIf="isConfirmDeal || isClosingDeal || isTargetApplicationId">
+        <div class="row toggle-label" [ngClass]="{active: isActive}" >
+          <div class="col-sm" style="cursor: pointer;">
+            <h5 (click)="onToggle()">
+              Если успешно реализованная заявка связана со второй заявкой из системы, то укажите вторую заявку
+              <i class="fa fa-caret-down" aria-hidden="true"></i>
+            </h5>
           </div>
         </div>
+        <div class="row content-bundle" [ngClass]="{active: isActive}">
+          <div class="col-sm-4">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">ID второй заявки</label>
+              <div class="col-sm-7">
+                <input
+                  type="number"
+                  class="form-control"
+                  placeholder="Введите ID заявки"
+                  [(ngModel)]="secondId"/>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-5">
+            <button type="button" class="btn btn-sm btn-btn btn2 btn-primary" [disabled]="isTargetApplicationId" (click)="onSearch()">Поиск</button>
+            <button type="button" class="btn btn-sm btn-btn btn2 btn-danger" [disabled]="isTargetApplicationId" (click)="clearTargetAppData()">Очистить</button>
+          </div>
+          <div class="col-sm-3">
+            <button type="button" class="btn btn-sm btn-btn btn2 btn-success" [disabled]="!targetAppData.length || isTargetApplicationId" (click)="closeDeal(true, targetAppData[0].id )">
+              Связать заявку
+            </button>
+          </div>
+        </div>
+        <div class="row content-bundle overflow-auto" [ngClass]="{active: isActive}" >
+          <table class="table table-bordered table-sm ">
+            <thead class="text-center">
+            <tr>
+              <th>ID заявки</th>
+              <th>Операция</th>
+              <th>Дата создания</th>
+              <th>Район</th>
+              <th *ngIf="isSellTargetApp">Комнатность</th>
+              <th *ngIf="!isSellTargetApp">Комнатность, от</th>
+              <th *ngIf="!isSellTargetApp">Комнатность, до</th>
+              <th *ngIf="isSellTargetApp">Цена</th>
+              <th *ngIf="!isSellTargetApp">Цена, тг от</th>
+              <th *ngIf="!isSellTargetApp">Цена, тг до</th>
+              <th *ngIf="isSellTargetApp">Площадь</th>
+              <th *ngIf="!isSellTargetApp">Площадь, от</th>
+              <th *ngIf="!isSellTargetApp">Площадь, до</th>
+              <th *ngIf="isSellTargetApp">Этаж</th>
+              <th *ngIf="!isSellTargetApp">Этажность, от</th>
+              <th *ngIf="!isSellTargetApp">Этажность, до</th>
+              <th>Статус</th>
+              <th>Агент</th>
+              <th>Телефон</th>
+            </tr>
+            </thead>
+            <tbody class="text-center" *ngIf="targetAppData.length">
+            <tr *ngFor="let item of targetAppData; let index = index;" g>
+              <td>{{ item.id }}</td>
+              <td>{{ item.operationType }}</td>
+              <td>{{ item.createDate | date: 'dd.MM.yyyy' }}</td>
+              <td>{{ item.district }}</td>
+              <td *ngIf="isSellTargetApp">{{ item.numberOfRooms }}</td>
+              <td *ngIf="!isSellTargetApp">{{ item.numberOfRoomsPeriod?.from }}</td>
+              <td *ngIf="!isSellTargetApp">{{ item.numberOfRoomsPeriod?.to }}</td>
+              <td *ngIf="isSellTargetApp">{{ item.objectPrice }}</td>
+              <td *ngIf="!isSellTargetApp">{{ item.objectPricePeriod?.from }}</td>
+              <td *ngIf="!isSellTargetApp">{{ item.objectPricePeriod?.to }}</td>
+              <td *ngIf="isSellTargetApp">{{ item.totalArea }}</td>
+              <td *ngIf="!isSellTargetApp">{{ item.totalAreaPeriod?.from }}</td>
+              <td *ngIf="!isSellTargetApp">{{ item.totalAreaPeriod?.to }}</td>
+              <td *ngIf="isSellTargetApp">{{ item.floor }}</td>
+              <td *ngIf="!isSellTargetApp">{{ item.floorPeriod?.from }}</td>
+              <td *ngIf="!isSellTargetApp">{{ item.floorPeriod?.to }}</td>
+              <td>{{ item.status }}</td>
+              <td>{{ item.agentFullname }}</td>
+              <td>{{ item.agentPhone }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div class="col-sm-5">
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-primary" (click)="onSearch()">Поиск</button>
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-danger" (click)="clearTargetAppData()">Очистить</button>
-      </div>
-      <div class="col-sm-3">
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-success" [disabled]="!targetAppData.length" (click)="closeDeal(true, targetAppData[0].id )">
-          Связать заявку
-        </button>
-      </div>
-    </div>
-    <div class="row content-bundle overflow-auto" [ngClass]="{active: isActive}" >
-      <table class="table table-bordered table-sm ">
-        <thead class="text-center">
-          <tr>
-            <th>ID заявки</th>
-            <th>Операция</th>
-            <th>Дата создания</th>
-            <th>Район</th>
-            <th *ngIf="isSellTargetApp">Комнатность</th>
-            <th *ngIf="!isSellTargetApp">Комнатность, от</th>
-            <th *ngIf="!isSellTargetApp">Комнатность, до</th>
-            <th *ngIf="isSellTargetApp">Цена</th>
-            <th *ngIf="!isSellTargetApp">Цена, тг от</th>
-            <th *ngIf="!isSellTargetApp">Цена, тг до</th>
-            <th *ngIf="isSellTargetApp">Площадь</th>
-            <th *ngIf="!isSellTargetApp">Площадь, от</th>
-            <th *ngIf="!isSellTargetApp">Площадь, до</th>
-            <th *ngIf="isSellTargetApp">Этаж</th>
-            <th *ngIf="!isSellTargetApp">Этажность, от</th>
-            <th *ngIf="!isSellTargetApp">Этажность, до</th>
-            <th>Статус</th>
-            <th>Агент</th>
-            <th>Телефон</th>
-          </tr>
-        </thead>
-        <tbody class="text-center" *ngIf="targetAppData.length">
-          <tr *ngFor="let item of targetAppData; let index = index;" g>
-            <td>{{ item.id }}</td>
-            <td>{{ item.operationType }}</td>
-            <td>{{ item.createDate | date: 'dd.MM.yyyy' }}</td>
-            <td>{{ item.district }}</td>
-            <td *ngIf="isSellTargetApp">{{ item.numberOfRooms }}</td>
-            <td *ngIf="!isSellTargetApp">{{ item.numberOfRoomsPeriod?.from }}</td>
-            <td *ngIf="!isSellTargetApp">{{ item.numberOfRoomsPeriod?.to }}</td>
-            <td *ngIf="isSellTargetApp">{{ item.objectPrice }}</td>
-            <td *ngIf="!isSellTargetApp">{{ item.objectPricePeriod?.from }}</td>
-            <td *ngIf="!isSellTargetApp">{{ item.objectPricePeriod?.to }}</td>
-            <td *ngIf="isSellTargetApp">{{ item.totalArea }}</td>
-            <td *ngIf="!isSellTargetApp">{{ item.totalAreaPeriod?.from }}</td>
-            <td *ngIf="!isSellTargetApp">{{ item.totalAreaPeriod?.to }}</td>
-            <td *ngIf="isSellTargetApp">{{ item.floor }}</td>
-            <td *ngIf="!isSellTargetApp">{{ item.floorPeriod?.from }}</td>
-            <td *ngIf="!isSellTargetApp">{{ item.floorPeriod?.to }}</td>
-            <td>{{ item.status }}</td>
-            <td>{{ item.agentFullname }}</td>
-            <td>{{ item.agentPhone }}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
     <div class="row text-right" *ngIf="!isConfirmDeal">
       <div class="col-sm">
@@ -350,8 +354,7 @@
       </div>
     </div>
     <div class="row text-right"
-         *ngIf="(!util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) ||
-         !util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)) && isConfirmDeal">
+         *ngIf="(!util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) || (!util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)) && objectData?.status?.code === '002011') && isConfirmDeal">
       <div class="col-sm">
         <button type="button" class="btn btn-sm btn-btn btn2 btn-secondary" (click)="confirmDeal(false)">
           Отказать в завершении
