@@ -127,7 +127,7 @@ export class BoardComponent implements OnInit, OnDestroy {
             argument['boardData'] = this.board;
           }
 
-          this.appStatusesData.push(argument)
+          this.appStatusesData.push(argument);
         }
         this.applicationCount = res?.data.applicationCount
         this.totalCommission = res?.data.totalCommission
@@ -386,6 +386,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     }));
     this.subscriptions.add(this.boardService.getTargetApplication(this.applicationId).subscribe(res => {
       if(res) {
+        this.isActive = true;
         this.isTargetApplicationId = true;
         this.secondId = res.id;
         this.isSellTargetApp = res.operationType?.code === '001002'; // Продать

@@ -48,7 +48,9 @@
       </div>
       <br>
       <div class="row" cdkDropListGroup [class.disabledDev]="this.activeTab == 3">
-        <div class="col-sm" *ngFor="let data of appStatusesData;let i = index">
+        <div class="col-sm"
+             *ngFor="let data of appStatusesData;let i = index"
+             [hidden]="!this.util.hasShowApplicationGroup('CLOSE_APPLICATION', roles) && data.code != '002011'">
           <div class="row">
             <div class="col-sm text-center">
               Комиссия: <br> {{data.boardData.commission ? data.boardData.commission : 0 | mask : 'separator.2'}} ₸
@@ -221,7 +223,7 @@
         </table>
       </div>
     </div>
-    <div class="row" *ngIf="util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)">
+    <div class="row" *ngIf="util.hasShowApplicationGroup('CLOSE_APPLICATION', roles) && objectData?.status?.code !== '002011'">
       <div class="col-sm">
         <label>Если Вы хотите принудительно завершить сделку на данном этапе
           <span>"{{objectData.status?.name[this.util.getDicNameByLanguage()]}}"</span>
@@ -257,7 +259,7 @@
       </div>
     </div>
     <div *ngIf="util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)">
-      <div *ngIf="isConfirmDeal || isClosingDeal || isTargetApplicationId">
+      <div *ngIf="!isConfirmDeal || isClosingDeal || isTargetApplicationId">
         <div class="row toggle-label" [ngClass]="{active: isActive}" >
           <div class="col-sm" style="cursor: pointer;">
             <h5 (click)="onToggle()">
@@ -354,7 +356,7 @@
       </div>
     </div>
     <div class="row text-right"
-         *ngIf="(!util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) || (!util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)) && objectData?.status?.code === '002011') && isConfirmDeal">
+         *ngIf="(!util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) && objectData?.status?.code === '002012') || (!util.hasShowApplicationGroup('CLOSE_APPLICATION', roles) && objectData?.status?.code === '002011')">
       <div class="col-sm">
         <button type="button" class="btn btn-sm btn-btn btn2 btn-secondary" (click)="confirmDeal(false)">
           Отказать в завершении
