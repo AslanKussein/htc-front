@@ -90,8 +90,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.operationType = this.util.toSelectArray(res);
     }));
 
-    this.subscriptions.add(this.userService.getAgents().subscribe(obj => {
-      this.agentList = this.util.toSelectArrayRoles(obj, 'login');
+    this.subscriptions.add(this.userService.getAgentsToAssign().subscribe(obj => {
+      this.agentList = this.util.toSelectArrayRoles(obj.data, 'login');
     }));
 
     this.findClaims(1);
