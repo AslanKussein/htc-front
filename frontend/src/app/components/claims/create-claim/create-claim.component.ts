@@ -981,6 +981,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       if (this.util.isNullOrEmpty(this.applicationForm.phoneNumber)) return;
       this.subscriptions.add(this.ownerService.findByLoginAndAppId(this.applicationForm.phoneNumber, null)
         .subscribe(res => {
+          this.existsClient = true;
         }, () => this.createClient()));
 
     }
@@ -995,7 +996,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     dto.email = this.applicationForm.email;
     dto.gender = this.applicationForm.gender;
     dto.phoneNumber = this.applicationForm.phoneNumber;
-    this.subscriptions.add(this.userService.createUserClient(dto).subscribe());
+    this.subscriptions.add(this.userService.createUserClient(dto).subscribe(res=>{
+      this.existsClient = true;
+    }, () => this.notifyService.error('Ошибка', 'Повторите позже')));
   }
 
   submit() {
@@ -1042,21 +1045,25 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
           this.notifyService.showWarning('', err?.ru);
         }));
     } else {
-      this.subscriptions.add(this.claimService.saveClaim(this.application)
-        .subscribe(data => {
-          if (data != null) {
-            this.saved = true;
-            this.util.navigateByUrl(`/create-claim-view/` + data)
-            this.notifyService.showSuccess('', 'Успешно сохранено');
-          }
-        }, err => {
-          this.ngxLoader.stopBackground();
-          if (err?.ru.includes('На апартаменты')) {
-            this.modal.open(this.modalContent, {size: 'sm'});
-          } else {
-            this.notifyService.showWarning('', err?.ru);
-          }
-        }));
+      if (this.existsClient) {
+        setTimeout(()=> {
+          this.subscriptions.add(this.claimService.saveClaim(this.application)
+            .subscribe(data => {
+              if (data != null) {
+                this.saved = true;
+                this.util.navigateByUrl(`/create-claim-view/` + data)
+                this.notifyService.showSuccess('', 'Успешно сохранено');
+              }
+            }, err => {
+              this.ngxLoader.stopBackground();
+              if (err?.ru.includes('На апартаменты')) {
+                this.modal.open(this.modalContent, {size: 'sm'});
+              } else {
+                this.notifyService.showWarning('', err?.ru);
+              }
+            }));
+        }, 1000)
+      }
     }
     this.ngxLoader.stopBackground();
   }

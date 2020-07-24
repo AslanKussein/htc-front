@@ -1025,8 +1025,7 @@
                            [class.disabled]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
                         <label class="form-label-v"> </label>
                         <div class="row atelier">
-                          <input type="radio" [id]="'true'" [name]="'atelier'"
-                                 [value]="'true'"
+                          <input type="radio" class="custom-radio"
                                  [(ngModel)]="applicationForm.atelier"
                                  formControlName="atelier"/>
                           <label>&nbsp;&nbsp;Студия</label>

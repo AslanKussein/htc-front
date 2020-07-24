@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-sm">
     <div class="row">
-      <div class="col-sm">
+      <div class="col-sm card-agent-col-sm">
         <div class="card card-agent">
           <div class="view overlay">
             <img class="card-img-top" [src]="jpg2"
@@ -14,7 +14,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm">
+      <div class="col-sm card-agent-col-sm">
         <div class="card card-agent">
           <div class="view overlay">
             <img class="card-img-top" [src]="jpg3"
@@ -78,8 +78,14 @@
       <div class="card-body">
         <p class="h5 input-info font-weight-bold">Заметка</p>
         <div class="row input-info">
-          <input type="text" class="form-controls" id="surName" placeholder="Фамилия"
-                 formControlName="surName" [(ngModel)]="applicationLightForm.surName"/>
+          <input type="text" id="phoneNumber" class="form-controls"
+                 name="phoneNumber" placeholder="Телефон"
+                 [formControl]="applicationLightForm.controls['phoneNumber']"
+                 prefix="+7" mask=' (000) 000-0000'
+                 placeHolderCharacter="0" (change)="searchByPhone()"/>
+          <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
+            <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>
+          </div>
         </div>
         <div class="row input-info">
           <input type="text" class="form-controls" placeholder="Имя"
@@ -89,18 +95,12 @@
           </div>
         </div>
         <div class="row input-info">
-          <input type="text" class="form-controls" id="patronymic" placeholder="Отчество"
-                 formControlName="patronymic" [(ngModel)]="applicationLightForm.patronymic">
+          <input type="text" class="form-controls" id="surName" placeholder="Фамилия"
+                 formControlName="surName" [(ngModel)]="applicationLightForm.surName"/>
         </div>
         <div class="row input-info">
-          <input type="text" id="phoneNumber" class="form-controls"
-                 name="phoneNumber" placeholder="Телефон"
-                 [formControl]="applicationLightForm.controls['phoneNumber']"
-                 prefix="+7" mask=' (000) 000-0000'
-                 placeHolderCharacter="0" (change)="searchByPhone()"/>
-          <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="text-danger">
-            <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>
-          </div>
+          <input type="text" class="form-controls" id="patronymic" placeholder="Отчество"
+                 formControlName="patronymic" [(ngModel)]="applicationLightForm.patronymic">
         </div>
         <div class="row input-info">
           <textarea class="col-sm-12 form-controls" formControlName="note" placeholder="Комментарий"></textarea>

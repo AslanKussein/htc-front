@@ -111,7 +111,12 @@ table tbody tr td {
   font-size: 1rem;
   min-height: 18.125rem;
   max-height: 18.125rem;
-  max-width: 181px;
+  width: 100%;
+  padding-right: 5px;
+}
+
+.card-agent-col-sm {
+  padding-right: 0px!important;
 }
 
 .operation-type {
