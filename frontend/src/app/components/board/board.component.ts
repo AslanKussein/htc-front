@@ -555,4 +555,9 @@ export class BoardComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  deleteFile(): void {
+    this.subscriptions.add(this.uploader.removePhotoById(this.file.uuid).subscribe());
+    this.file = null;
+  }
 }
