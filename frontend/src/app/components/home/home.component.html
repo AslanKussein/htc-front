@@ -57,7 +57,8 @@
                     <span class="badge-txt">Гущина Любовь</span>
                   </div>
                   <div class="col-sm">
-                    <span class="badge badge-pill color-aqua text-white badge-txt">{{'99999999' | mask: 'separator':','}}
+                    <span
+                      class="badge badge-pill color-aqua text-white badge-txt">{{'99999999' | mask: 'separator':','}}
                       млн</span>
                   </div>
                   <div class="col-sm-2">
@@ -118,16 +119,18 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-sm">
-            <div class="radio">
-              <label style="padding-left: 41px" *ngFor="let type of operationType;let i = index">
-                <input type="radio" [(ngModel)]="applicationLightForm.operationTypeId" [value]="type.value" formControlName="operationTypeId">
-                <span class="cr sell-buy-text text-aqua"><i class="cr-icon fa fa-circle"></i></span>
-                {{type.label}}
-              </label>
+          <div class="col-sm pad-left41">
+            <mat-button-toggle-group [(ngModel)]="applicationLightForm.operationTypeId"
+                                     formControlName="operationTypeId" class="width-100">
+              <mat-button-toggle class="operation-type width-100"
+                                 *ngFor="let item of operationType" [value]="item" [id]="item.code"
+                                 [class]="item.value != applicationLightForm.operationTypeId?.value ? 'bg-white text-dark' : ''"
+                                 [ngClass]="{ 'color-aqua text-white':item.value === applicationLightForm.operationTypeId?.value}">
+                {{item.label}}
+              </mat-button-toggle>
+            </mat-button-toggle-group>
           </div>
-          </div>
-          <div class="col-sm input-info" [hidden]="util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) &&
+          <div class="col-sm pad-right41" [class.disabledDev]="util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) &&
                                          util.hasShowAgentGroup('CHOOSE_ANY_AGENT', roles)">
             <ng-select
               [items]="agentList"
@@ -140,12 +143,13 @@
             </div>
           </div>
         </div>
-        <div class="row input-info">
-          <mat-button-toggle-group>
-            <mat-button-toggle class="operation-type bg-white text-dark float-right" (click)="clear()">
+        <div class="row">
+          <mat-button-toggle-group class="width-100 pad-left41 pad-right41">
+            <mat-button-toggle class="operation-type bg-white text-dark width-100" (click)="clear()">
+              <i aria-hidden="true" class="fa fa-times text-dark"></i>
               Очистить
             </mat-button-toggle>
-            <mat-button-toggle class="operation-type color-aqua text-white float-right" (click)="onSave()"
+            <mat-button-toggle class="operation-type color-aqua text-white width-100" style="margin-right: 0" (click)="onSave()"
                                [disabled]="!this.applicationLightForm.valid">
               Сохранить
             </mat-button-toggle>
