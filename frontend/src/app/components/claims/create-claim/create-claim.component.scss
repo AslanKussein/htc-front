@@ -128,59 +128,23 @@ textarea, textarea:focus {
   //min-width: 16.875rem;
 }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//.card-bg {
-//  background-color: #f0f7fc;
-//}
-//
-//fieldset {
-//  margin: 5px;
-//  xmin-width: 0;
-//  padding: 10px;
-//  position: relative;
-//  border-radius: 4px;
-//  border: 1px solid #ddd;
-//  padding-left: 10px !important;
-//}
-//
-//legend {
-//  font-size: 14px;
-//  font-weight: bold;
-//  margin-bottom: 0px;
-//  width: 35%;
-//  border: 1px solid #ddd;
-//  border-radius: 4px;
-//  padding: 5px 5px 5px 10px;
-//  background-color: #ffffff;
-//}
-//
+.panel-header {
+  max-font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #656c75;
+}
 
-//
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+  background-color: transparent;
+  border: none;
+}
 
-//
-//.carousel-indicators {
-//  width: 10%
-//}
-//
-//textarea, textarea:focus {
-//  border: none;
-//  outline: none !important;
-//  border-bottom: 1px solid black;
-//}
-//
-
-//.ya-map-container {
-//  width: 300px;
-//  height: 200px;
-//}
-//
-//.marginleft{
-//  margin-left: -25px;
-//}
+.panel-header:active,.panel-header:focus, .nav-tabs .nav-link.active, .nav-item.show .nav-link, .badge:active {
+  color: #00b2a8!important;
+  border-bottom: 2px solid #00b2a8;
+}
