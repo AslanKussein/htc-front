@@ -243,9 +243,9 @@
           <i class="fa fa-upload"></i>
           <input type="file" hidden (change)="onFileChange($event)">
         </label>
-        <a *ngIf="this.file?.uuid" [href]="util.generatorFullUrl(this.file?.uuid)" target="_blank">
+        <a *ngIf="file?.uuid" [href]="util.generatorFullUrl(file?.uuid)" target="_blank">
           <i class="fa fa-paperclip" aria-hidden="true"></i>
-          {{this.file?.name}} ({{this.file?.size}} КБ)
+          {{file?.name}} ({{file?.size}} КБ)
         </a>
       </div>
     </div>
@@ -362,7 +362,11 @@
         <button type="button" class="btn btn-sm btn-btn btn2 btn-secondary" (click)="confirmDeal(false)">
           Отказать в завершении
         </button>
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-success" (click)="confirmDeal(true)">
+        <button
+          type="button"
+          class="btn btn-sm btn-btn btn2 btn-success"
+          (click)="confirmDeal(true)"
+          [disabled]="!util.hasShowApplicationGroup('CLOSE_APPLICATION', roles) && !file">
           Согласовать завершение
         </button>
       </div>
