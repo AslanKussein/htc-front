@@ -247,6 +247,10 @@
           <i class="fa fa-paperclip" aria-hidden="true"></i>
           {{file?.name}} ({{file?.size}} КБ)
         </a>
+
+        <button *ngIf="file?.uuid" type="button" class="btn btn-danger btn-sm" (click)="deleteFile()">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
       </div>
     </div>
     <div class="progress" *ngIf="isUpload" style="margin-bottom: 16px;">
