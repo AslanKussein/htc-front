@@ -41,8 +41,8 @@
       <div ngxUiLoaderBlurred>
         <mwl-calendar-month-view
           (beforeViewRender)="applyDateSelectionPolicy($event)"
-          class="bg-primary"
           [viewDate]="viewDate"
+          [ngClass]="'calActive'"
           [refresh]="refresh"
           [events]="events"
           [locale]="locale"
@@ -57,9 +57,7 @@
   <div class="col-sm-4 card to-do-month" style="border: none!important">
     <div class="card-body">
       <p class="to-do-title">Выполнить</p>
-      <div class="row">
-        {{getUTCDay(date)}} {{viewDate | calendarDate:(view + 'ViewTitle'):'ru'}}
-      </div>
+      <p class="to-do-title py-3">{{getUTCDay(date)}} {{viewDate | calendarDate:(view + 'ViewTitle'):'ru'}}</p>
       <div class="row  overflow-auto">
         <table class="table table-sm">
           <thead class="text-center">
