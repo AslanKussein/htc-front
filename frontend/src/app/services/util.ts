@@ -269,6 +269,10 @@ export class Util {
     return data?.toString();
   }
 
+  toBoolean(data: any) {
+    return Boolean(data);
+  }
+
   generatorPreviewUrl(uuid: string) {
     return `${this.configService.apiFileManagerUrl}` + '/open-api/download/' + uuid + '/preview';
   }

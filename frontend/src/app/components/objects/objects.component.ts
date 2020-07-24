@@ -32,8 +32,8 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   objectTypes: any;
   myObject: boolean;
   objectMy: any = [
-    {label: 'Все заявки', value: false},
-    {label: 'Мои заявки', value: true},
+    {label: 'Все объекты', value: false},
+    {label: 'Мои объекты', value: true},
   ];
   eventCall: any = false;
   subscriptions: Subscription = new Subscription();

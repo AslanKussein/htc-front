@@ -25,7 +25,6 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'htc';
   _language = language;
   currentUser: User;
-  photo: string = 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png';
   logo: string = '../../../assets/images/home/Лого.png';
   subscriptions: Subscription = new Subscription();
 
@@ -51,11 +50,6 @@ export class AppComponent implements OnInit, OnDestroy {
       e.preventDefault();
       $("#wrapper").toggleClass("toggled");
     });
-    this.loadAva();
-  }
-
-  loadAva() {
-    this.photo = this.util.generatorPreviewUrl(this.util.getCurrentUser()?.photoUuid);
   }
 
   isActive() {

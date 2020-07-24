@@ -15,12 +15,14 @@
 body {
   height: 100%;
   font-family: 'Montserrat', sans-serif;
-  background-color: #ebedf0!important
+  background-color: #ebedf0 !important
 }
+
 .wrapper {
-  height:auto !important;
-  min-height:100%;
+  height: auto !important;
+  min-height: 100%;
 }
+
 .navbar {
   font-weight: bolder;
   font-size: 18px;
@@ -77,7 +79,7 @@ body {
 }
 
 .btn2 {
-  width: 200px!important;
+  width: 200px !important;
   margin: 5px;
 }
 
@@ -85,18 +87,24 @@ body {
   pointer-events: none !important;
   opacity: 0.6 !important;
 }
+
 .disabled {
   pointer-events: none !important;
   opacity: 0.6 !important;
+}
+
+.pointer-events {
+  pointer-events: none !important;
 }
 
 .accordion-header {
   height: 50px;
 }
 
-.card-body.accordionAboutObject{
+.card-body.accordionAboutObject {
   //min-height: 790px!important;
 }
+
 .row {
   margin-bottom: 16px;
 }
@@ -110,8 +118,8 @@ body {
 }
 
 .close:focus {
-  border: none!important;
-  outline: none!important;
+  border: none !important;
+  outline: none !important;
 }
 
 .color-aqua {
