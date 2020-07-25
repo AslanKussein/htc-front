@@ -102,7 +102,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   postcode2: any;
   dicName: string;
   activeTab = 'claim';
-
+  expandBlock: boolean = false;
   public parameters = {
     options: {
       provider: 'yandex#search'
@@ -1085,6 +1085,15 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     return true
   }
 
+  toStringCompare(data: any) {
+    if (this.util.isNullOrEmpty(data)) {
+      if (this.applicationId) {
+        return 'false';
+      }
+    }
+    return data?.toString();
+  }
+
   hasUpdateRole() {
     if (!this.util.isNullOrEmpty(this.operationList)) {
       for (const operation of this.operationList) {
@@ -1577,5 +1586,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         }, 300);
       }));
     }
+  }
+
+  expandedBlock() {
+    this.expandBlock = !this.expandBlock;
   }
 }

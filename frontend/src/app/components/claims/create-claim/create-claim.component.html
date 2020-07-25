@@ -34,251 +34,6 @@
        id="fillClaims"
        role="tabpanel" aria-labelledby="fillClaims-tab">
     <div class="card-body">
-
-      <div class="row">
-        <div class="accordion col-sm" id="accordionaboutDeal">
-          <div class="card z-depth-0 bordered">
-            <div class="card-header bg-dark text-white accordion-header" id="aboutDeal">
-              <div class="font-weight-bold" data-toggle="collapse"
-                   data-target="#collapseaboutDeal"
-                   (click)="showHideHeader('headerDeal')"
-                   aria-expanded="true" aria-controls="collapseaboutDeal" translate>
-                claim.aboutDeal
-                <span class="float-right show-accordion" *ngIf="headerDeal"
-                      data-toggle="collapse"
-                      data-target="#collapseaboutDeal"
-                      aria-expanded="true" aria-controls="collapseaboutDeal">
-                      <i class="fa fa-angle-down fa-2x" aria-hidden="true"></i>
-                    </span>
-                <span class="float-right hide-accordion" *ngIf="!headerDeal"
-                      data-toggle="collapse"
-                      data-target="#collapseaboutDeal"
-                      aria-expanded="true" aria-controls="collapseaboutDeal">
-                      <i class="fa fa-angle-up fa-2x" aria-hidden="true"></i>
-                    </span>
-              </div>
-            </div>
-            <div id="collapseaboutDeal" class="collapse show" aria-labelledby="headingOne"
-                 data-parent="#accordionaboutDeal">
-              <div class="card-body accordionAboutObject">
-                <div class="row">
-                  <div class="col-sm" *ngIf="this.applicationId">
-                    <label class="form-label-v">ID</label>
-                    <div class="input-group mb-3">
-                      <input type="text" class="form-control" readonly [value]="this.applicationId"/>
-                      <div class="input-group-append" *ngIf="!edit">
-                        <a class="input-group-text btn-primary text-white" (click)="onEdit()"><i
-                          aria-hidden="true" class="fa fa-edit">Редактировать</i></a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm"
-                       [hidden]="hasUpdateRole() && hasShowGroup(['CHOOSE_GROUP_AGENT', 'CHOOSE_ANY_AGENT'])"
-                       *ngIf="applicationId">
-                    <label class="form-label-v">Выберите агента</label>
-                    <ng-select
-                      [items]="agentList"
-                      (change)="reassignApplication()"
-                      [(ngModel)]="applicationForm.agent"
-                      formControlName="agent"
-                      bindValue="value">
-                    </ng-select>
-                  </div>
-                </div>
-                <div [class.disabled]="!edit">
-                  <div class="row">
-                    <div class="col-sm"
-                         [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_DEAL_DATA'])"
-                         [class.disabledDev]="hasShowGroup(['UPDATE_DEAL_DATA']) && this.applicationId">
-                      <label class="form-label-v">Операция<span class="text-danger">&nbsp;*</span></label>
-                      <div [class.disabledDev]="this.applicationId">
-                        <mat-button-toggle-group [(ngModel)]="applicationForm.operationTypeId"
-                                                 formControlName="operationTypeId">
-                          <mat-button-toggle class="operation-type" (click)="setApplicationFlagSort()"
-                                             *ngFor="let item of operationType" [value]="item"
-                                             [class]="item.value != applicationForm.operationTypeId?.value ? 'bg-white text-dark' : ''"
-                                             [ngClass]="{ 'color-aqua text-white':item.value === applicationForm.operationTypeId?.value}">
-                            {{item.label}}
-                          </mat-button-toggle>
-                        </mat-button-toggle-group>
-                      </div>
-                      <div
-                        *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid || !f.operationTypeId.valid"
-                        class="text-danger">
-                        <div *ngIf="f.operationTypeId.errors.required" translate>claim.requiredField</div>
-                      </div>
-                    </div>
-                    <div class="col-sm"
-                         [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_DEAL_DATA'])">
-                      <label class="form-label-v">Тип объекта<span class="text-danger">&nbsp;*</span></label>
-                      <ng-select [hidden]="hasShowGroup(['UPDATE_DEAL_DATA'])"
-                                 [class.disabledDev]="this.applicationId"
-                                 [items]="objectType"
-                                 [(ngModel)]="applicationForm.objectTypeId"
-                                 (ngModelChange)="setHouseOrApartmentsForMaterials()"
-                                 formControlName="objectTypeId">
-                      </ng-select>
-                      <div *ngIf="f.objectTypeId.touched && f.objectTypeId.invalid || !f.operationTypeId.valid"
-                           class="text-danger">
-                        <div *ngIf="f.objectTypeId.errors.required" translate>claim.requiredField</div>
-                      </div>
-                    </div>
-                    <div class="col-sm"
-                         [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO',  'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])">
-                      <label class="form-label-v">Цена объекта (тг)
-                        <span class="text-danger"
-                              *ngIf="(isBuy() && !applicationForm.objectPrice)">&nbsp;*</span>
-                      </label>
-                      <div class="input-group" *ngIf="isSell()">
-                        <input type="text" min="0" max="20" class="form-control"
-                               [readOnly]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO'])"
-                               placeholder="{{'patterns.from' | translate}}" maxlength="20"
-                               mask="separator" thousandSeparator=" "
-                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                               (keypress)="util.keyPress($event)"
-                               [(ngModel)]="applicationForm.objectPriceFrom" formControlName="objectPriceFrom"/>
-                        <input type="text" min="0" max="20" class="form-control"
-                               mask="separator" thousandSeparator=" "
-                               [readOnly]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO'])"
-                               placeholder="{{'patterns.to' | translate}}" maxlength="20"
-                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                               (keypress)="util.keyPress($event)"
-                               [(ngModel)]="applicationForm.objectPriceTo" formControlName="objectPriceTo"/>
-                      </div>
-                      <input type="text" id="form1" class="form-control" maxlength="20"
-                             [readOnly]="hasShowGroup(['UPDATE_SALE_DEAL_INFO'])"
-                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                             (keypress)="util.keyPress($event)"
-                             *ngIf="!isSell()"
-                             mask="separator" suffix=" ₸" thousandSeparator=" "
-                             [(ngModel)]="applicationForm.objectPrice" formControlName="objectPrice" min="0">
-                      <div *ngIf="isBuy() && f.objectPrice.touched && f.objectPrice.invalid" class="text-danger">
-                        <div *ngIf="f.objectPrice.errors.required" translate>claim.requiredField</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm row-mx-width"
-                         [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])"
-                         [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
-                      <label class="form-label-v">Ипотека</label>
-                      <div class="row test">
-                        <div class="col-sm" *ngFor="let data of dicDynamic;let i = index">
-                          <input type="radio" [id]="data.code" [name]="'mortgage'"
-                                 [value]="data.code"
-                                 [(ngModel)]="applicationForm.mortgage" formControlName="mortgage"/>
-                          <label>&nbsp;{{data.label}}</label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm row-mx-width" *ngIf="isBuy()"
-                         [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
-                      <label class="form-label-v">Обмен</label>
-                      <div class="row test">
-                        <div class="col-sm" *ngFor="let data of dicDynamic;let i = index">
-                          <input type="radio" [id]="data.code" [name]="'exchange'"
-                                 [value]="data.code"
-                                 [(ngModel)]="applicationForm.exchange" formControlName="exchange"/>
-                          <label>&nbsp;{{data.label}}</label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm row-mx-width" *ngIf="isBuy()"
-                         [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
-                      <label class="form-label-v">Обременение</label>
-                      <div class="row test" [class.disabledDev]="hasShowGroup(['UPDATE_SALE_DEAL_INFO'])">
-                        <div class="col-sm" *ngFor="let data of dicDynamic;let i = index">
-                          <input type="radio" [id]="data.code" [name]="'encumbrance'"
-                                 [value]="data.code"
-                                 [(ngModel)]="applicationForm.encumbrance"
-                                 formControlName="encumbrance"/>
-                          <label>&nbsp;{{data.label}}</label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-4" *ngIf="isBuy()">
-                      <label class="form-label-v">Общая долевая собственность</label>
-                      <ng-select
-                        [class.disabledDev]="hasShowGroup(['UPDATE_SALE_DEAL_INFO'])"
-                        [items]="dicDynamic"
-                        bindValue="code"
-                        [(ngModel)]="applicationForm.sharedOwnershipProperty"
-                        formControlName="sharedOwnershipProperty">
-                      </ng-select>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm row-mx-width" [class.disabled]="!edit"
-                         [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])">
-                      <label class="form-label-v">Вероятность торга</label>
-                      <div class="row test"
-                           [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
-                        <div class="col-sm" *ngFor="let data of dicDynamic;let i = index">
-                          <input type="radio" [id]="data.code" [name]="'probabilityOfBidding'"
-                                 [value]="data.code"
-                                 [(ngModel)]="applicationForm.probabilityOfBidding"
-                                 formControlName="probabilityOfBidding"/>
-                          <label>&nbsp;{{data.label}}</label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 'true'"
-                         [class.disabled]="!edit"
-                         [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])">
-                      <label class="form-label-v">Размер торга</label>
-                      <input type="text" class="form-control" maxlength="20"
-                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                             [(ngModel)]="applicationForm.theSizeOfTrades"
-                             mask="separator.2" thousandSeparator=" "
-                             (keypress)="util.keyPress($event)"
-                             placeholder="{{'claim.bidAmount' | translate}}"
-                             [readOnly]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])"
-                             formControlName="theSizeOfTrades" min="0"/>
-                    </div>
-                    <div class="col-sm-4" *ngIf="applicationForm.probabilityOfBidding == 'true'"
-                         [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])">
-                      <label class="form-label-v">Возможные причины торга</label>
-                      <ng-select
-                        [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])"
-                        [multiple]="true"
-                        bindValue="value"
-                        (click)="setPossibleReasonForBidding()"
-                        [items]="possibleReasonForBiddingSort"
-                        appendTo="body"
-                        [(ngModel)]="applicationForm.possibleReasonForBiddingIdList"
-                        formControlName="possibleReasonForBiddingIdList"
-                        placeholder="Возможные причины торга">
-                      </ng-select>
-                    </div>
-                  </div>
-                  <div class="row"
-                       [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
-                    <div class="col-sm">
-                      <label class="form-label-v">Комментарий</label>
-                      <textarea rows="1" class="col-sm-12 control"
-                                [(ngModel)]="applicationForm.note" formControlName="note"
-                                maxlength="1000"></textarea>
-                    </div>
-                    <div class="col-sm">
-                      <label class="form-label-v">Признак</label>
-                      <ng-select
-                        [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])"
-                        [multiple]="true"
-                        appendTo="body"
-                        bindValue="value"
-                        [items]="applicationFlagSort"
-                        [(ngModel)]="applicationForm.applicationFlagIdList"
-                        formControlName="applicationFlagIdList"
-                        placeholder="Признак">
-                      </ng-select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="row">
         <div class="col-sm">
           <div class="accordion" id="accordionaboutOwnerOne">
@@ -405,6 +160,296 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="accordion col-sm" id="accordionaboutDeal">
+          <div class="card z-depth-0 bordered">
+            <div class="card-header bg-dark text-white accordion-header" id="aboutDeal">
+              <div class="font-weight-bold" data-toggle="collapse"
+                   data-target="#collapseaboutDeal"
+                   (click)="showHideHeader('headerDeal')"
+                   aria-expanded="true" aria-controls="collapseaboutDeal" translate>
+                claim.aboutDeal
+                <span class="float-right show-accordion" *ngIf="headerDeal"
+                      data-toggle="collapse"
+                      data-target="#collapseaboutDeal"
+                      aria-expanded="true" aria-controls="collapseaboutDeal">
+                      <i class="fa fa-angle-down fa-2x" aria-hidden="true"></i>
+                    </span>
+                <span class="float-right hide-accordion" *ngIf="!headerDeal"
+                      data-toggle="collapse"
+                      data-target="#collapseaboutDeal"
+                      aria-expanded="true" aria-controls="collapseaboutDeal">
+                      <i class="fa fa-angle-up fa-2x" aria-hidden="true"></i>
+                    </span>
+              </div>
+            </div>
+            <div id="collapseaboutDeal" class="collapse show" aria-labelledby="headingOne"
+                 data-parent="#accordionaboutDeal">
+              <div class="card-body accordionAboutObject">
+                <div class="row">
+                  <div class="col-sm" *ngIf="this.applicationId">
+                    <label class="form-label-v">ID</label>
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" readonly [value]="this.applicationId"/>
+                      <div class="input-group-append" *ngIf="!edit">
+                        <a class="input-group-text btn-primary text-white" (click)="onEdit()"><i
+                          aria-hidden="true" class="fa fa-edit">Редактировать</i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm"
+                       [hidden]="hasUpdateRole() && hasShowGroup(['CHOOSE_GROUP_AGENT', 'CHOOSE_ANY_AGENT'])"
+                       *ngIf="applicationId">
+                    <label class="form-label-v">Выберите агента</label>
+                    <ng-select
+                      [items]="agentList"
+                      (change)="reassignApplication()"
+                      [(ngModel)]="applicationForm.agent"
+                      formControlName="agent"
+                      bindValue="value">
+                    </ng-select>
+                  </div>
+                </div>
+                <div [class.disabled]="!edit">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="row">
+                        <div class="col-sm"
+                             [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_DEAL_DATA'])"
+                             [class.disabledDev]="hasShowGroup(['UPDATE_DEAL_DATA']) && this.applicationId">
+                          <label class="form-label-v">Операция<span class="text-danger">&nbsp;*</span></label>
+                          <div [class.disabledDev]="this.applicationId">
+                            <mat-button-toggle-group [(ngModel)]="applicationForm.operationTypeId"
+                                                     formControlName="operationTypeId">
+                              <mat-button-toggle class="operation-type" (click)="setApplicationFlagSort()"
+                                                 *ngFor="let item of operationType" [value]="item"
+                                                 [class]="item.value != applicationForm.operationTypeId?.value ? 'bg-white text-dark' : ''"
+                                                 [ngClass]="{ 'color-aqua text-white':item.value === applicationForm.operationTypeId?.value}">
+                                {{item.label}}
+                              </mat-button-toggle>
+                            </mat-button-toggle-group>
+                          </div>
+                          <div
+                            *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid || !f.operationTypeId.valid"
+                            class="text-danger">
+                            <div *ngIf="f.operationTypeId.errors.required" translate>claim.requiredField</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm"
+                             [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_DEAL_DATA'])">
+                          <label class="form-label-v">Тип объекта<span class="text-danger">&nbsp;*</span></label>
+                          <ng-select [disabled]="hasShowGroup(['UPDATE_DEAL_DATA'])"
+                                     [class.disabledDev]="this.applicationId"
+                                     [items]="objectType"
+                                     [(ngModel)]="applicationForm.objectTypeId"
+                                     (ngModelChange)="setHouseOrApartmentsForMaterials()"
+                                     formControlName="objectTypeId">
+                          </ng-select>
+                          <div *ngIf="f.objectTypeId.touched && f.objectTypeId.invalid || !f.operationTypeId.valid"
+                               class="text-danger">
+                            <div *ngIf="f.objectTypeId.errors.required" translate>claim.requiredField</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm"
+                             [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO',  'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])">
+                          <label class="form-label-v">Цена объекта (тг)
+                            <span class="text-danger"
+                                  *ngIf="(isBuy() && !applicationForm.objectPrice)">&nbsp;*</span>
+                          </label>
+                          <div class="input-group" *ngIf="isSell()">
+                            <input type="text" min="0" max="20" class="form-control"
+                                   [readOnly]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO'])"
+                                   placeholder="{{'patterns.from' | translate}}" maxlength="20"
+                                   mask="separator" thousandSeparator=" "
+                                   oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                   (keypress)="util.keyPress($event)"
+                                   [(ngModel)]="applicationForm.objectPriceFrom" formControlName="objectPriceFrom"/>
+                            <input type="text" min="0" max="20" class="form-control"
+                                   mask="separator" thousandSeparator=" "
+                                   [readOnly]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO'])"
+                                   placeholder="{{'patterns.to' | translate}}" maxlength="20"
+                                   oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                   (keypress)="util.keyPress($event)"
+                                   [(ngModel)]="applicationForm.objectPriceTo" formControlName="objectPriceTo"/>
+                          </div>
+                          <input type="text" id="form1" class="form-control" maxlength="20"
+                                 [readOnly]="hasShowGroup(['UPDATE_SALE_DEAL_INFO'])"
+                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                 (keypress)="util.keyPress($event)"
+                                 *ngIf="!isSell()"
+                                 mask="separator" suffix=" ₸" thousandSeparator=" "
+                                 [(ngModel)]="applicationForm.objectPrice" formControlName="objectPrice" min="0">
+                          <div *ngIf="isBuy() && f.objectPrice.touched && f.objectPrice.invalid" class="text-danger">
+                            <div *ngIf="f.objectPrice.errors.required" translate>claim.requiredField</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm">
+                          <label class="form-label-v">Признак</label>
+                          <ng-select
+                            [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])"
+                            [multiple]="true"
+                            appendTo="body"
+                            bindValue="value"
+                            [items]="applicationFlagSort"
+                            [(ngModel)]="applicationForm.applicationFlagIdList"
+                            formControlName="applicationFlagIdList"
+                            placeholder="Признак">
+                          </ng-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="row">
+                        <div class="col-sm"
+                             [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])"
+                             [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
+                          <label class="form-label-v">Ипотека</label>
+                          <div class="row disabled-bottom-margin"
+                               [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
+                            <mat-button-toggle-group [(ngModel)]="applicationForm.mortgage" formControlName="mortgage">
+                              <mat-button-toggle class="operation-type-btn"
+                                                 *ngFor="let item of dicDynamic"
+                                                 [value]="item.code"
+                                                 [class]="toStringCompare(item.code) != toStringCompare(applicationForm.mortgage) ? 'bg-white text-dark' : ''"
+                                                 [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.mortgage)}">
+                                {{item.label}}
+                              </mat-button-toggle>
+                            </mat-button-toggle-group>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="isBuy()">
+                        <div class="col-sm"
+                             [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
+                          <label class="form-label-v">Обмен</label>
+                          <div class="row disabled-bottom-margin">
+                            <mat-button-toggle-group [(ngModel)]="applicationForm.exchange" formControlName="exchange">
+                              <mat-button-toggle class="operation-type-btn"
+                                                 *ngFor="let item of dicDynamic"
+                                                 [value]="item.code"
+                                                 [class]="toStringCompare(item.code) != toStringCompare(applicationForm.exchange) ? 'bg-white text-dark' : ''"
+                                                 [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.exchange)}">
+                                {{item.label}}
+                              </mat-button-toggle>
+                            </mat-button-toggle-group>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="isBuy()">
+                        <div class="col-sm"
+                             [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
+                          <label class="form-label-v">Обременение</label>
+                          <div class="row disabled-bottom-margin" [class.disabledDev]="hasShowGroup(['UPDATE_SALE_DEAL_INFO'])">
+                            <mat-button-toggle-group [(ngModel)]="applicationForm.encumbrance"
+                                                     formControlName="encumbrance">
+                              <mat-button-toggle class="operation-type-btn"
+                                                 *ngFor="let item of dicDynamic"
+                                                 [value]="item.code"
+                                                 [class]="toStringCompare(item.code) != toStringCompare(applicationForm.encumbrance) ? 'bg-white text-dark' : ''"
+                                                 [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.encumbrance)}">
+                                {{item.label}}
+                              </mat-button-toggle>
+                            </mat-button-toggle-group>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="isBuy()">
+                        <div class="col-sm"
+                             [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
+                          <label class="form-label-v">Общая долевая собственность</label>
+                          <div class="row disabled-bottom-margin" [class.disabledDev]="hasShowGroup(['UPDATE_SALE_DEAL_INFO'])">
+                            <mat-button-toggle-group [(ngModel)]="applicationForm.sharedOwnershipProperty"
+                                                     formControlName="sharedOwnershipProperty">
+                              <mat-button-toggle class="operation-type-btn"
+                                                 *ngFor="let item of dicDynamic"
+                                                 [value]="item.code"
+                                                 [class]="toStringCompare(item.code) != toStringCompare(applicationForm.sharedOwnershipProperty) ? 'bg-white text-dark' : ''"
+                                                 [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.sharedOwnershipProperty)}">
+                                {{item.label}}
+                              </mat-button-toggle>
+                            </mat-button-toggle-group>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row">
+                        <div class="col-sm" [class.disabled]="!edit"
+                             [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])">
+                          <label class="form-label-v">Вероятность торга</label>
+                          <div class="row disabled-bottom-margin"
+                               [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
+                            <div class="col-sm">
+                              <mat-button-toggle-group [(ngModel)]="applicationForm.probabilityOfBidding"
+                                                       formControlName="probabilityOfBidding">
+                                <mat-button-toggle class="operation-type-btn"
+                                                   *ngFor="let item of dicDynamic"
+                                                   [value]="item.code"
+                                                   [class]="toStringCompare(item.code) != toStringCompare(applicationForm.probabilityOfBidding) ? 'bg-white text-dark' : ''"
+                                                   [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.probabilityOfBidding)}">
+                                  {{item.label}}
+                                </mat-button-toggle>
+                              </mat-button-toggle-group>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 'true'"
+                             [class.disabled]="!edit"
+                             [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])">
+                          <label class="form-label-v">Размер торга</label>
+                          <input type="text" class="form-control" maxlength="20"
+                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                 [(ngModel)]="applicationForm.theSizeOfTrades"
+                                 mask="separator.2" thousandSeparator=" "
+                                 (keypress)="util.keyPress($event)"
+                                 placeholder="{{'claim.bidAmount' | translate}}"
+                                 [readOnly]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])"
+                                 formControlName="theSizeOfTrades" min="0"/>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 'true'"
+                             [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])">
+                          <label class="form-label-v">Возможные причины торга</label>
+                          <ng-select
+                            [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])"
+                            [multiple]="true"
+                            bindValue="value"
+                            (click)="setPossibleReasonForBidding()"
+                            [items]="possibleReasonForBiddingSort"
+                            appendTo="body"
+                            [(ngModel)]="applicationForm.possibleReasonForBiddingIdList"
+                            formControlName="possibleReasonForBiddingIdList"
+                            placeholder="Возможные причины торга">
+                          </ng-select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row"
+                       [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
+                    <div class="col-sm">
+                      <label class="form-label-v">Комментарий</label>
+                      <textarea rows="1" class="col-sm-12 control"
+                                [(ngModel)]="applicationForm.note" formControlName="note"
+                                maxlength="1000"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="row" *ngIf="applicationForm.operationTypeId && applicationForm.objectTypeId">
         <div class="col-sm">
           <div class="accordion" id="accordionAboutObject">
@@ -432,26 +477,26 @@
                    data-parent="#accordionAboutObject">
                 <div class="card-body" [class.disabled]="!edit">
                   <div class="row" *ngIf="isBuy()">
-                    <div class="form-group">
-                      <div class="radio-button">
-                        <mat-button-toggle-group [(ngModel)]="applicationForm.unification"
-                                                 formControlName="unification">
-                          <mat-button-toggle class="operation-type" [value]="'address'"
-                                             [class]="'address' != applicationForm.unification ? 'bg-white text-dark' : ''"
-                                             [ngClass]="{ 'color-aqua text-white': 'address' === applicationForm.unification}">
-                            По полному адресу
-                          </mat-button-toggle>
-                          <mat-button-toggle class="operation-type" [value]="'residence'" *ngIf="this.isApartment()"
-                                             [class]="'residence' != applicationForm.unification ? 'bg-white text-dark' : ''"
-                                             [ngClass]="{ 'color-aqua text-white': 'residence' === applicationForm.unification}">
-                            ЖК
-                          </mat-button-toggle>
-                        </mat-button-toggle-group>
-                      </div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm-4">
+                      <mat-button-toggle-group [(ngModel)]="applicationForm.unification"
+                                               formControlName="unification">
+                        <mat-button-toggle class="operation-type" [value]="'address'"
+                                           [class]="'address' != applicationForm.unification ? 'bg-white text-dark' : ''"
+                                           [ngClass]="{ 'color-aqua text-white': 'address' === applicationForm.unification}">
+                          По полному адресу
+                        </mat-button-toggle>
+                        <mat-button-toggle class="operation-type" [value]="'residence'" *ngIf="this.isApartment()"
+                                           [class]="'residence' != applicationForm.unification ? 'bg-white text-dark' : ''"
+                                           [ngClass]="{ 'color-aqua text-white': 'residence' === applicationForm.unification}">
+                          ЖК
+                        </mat-button-toggle>
+                      </mat-button-toggle-group>
                     </div>
+                    <div class="col-sm"></div>
                   </div>
                   <div class="row" *ngIf="isBuy()">
-                    <div class="col-sm-4" [class.disabled]="this.applicationForm.unification != 'address'">
+                    <div class="col-sm" [class.disabled]="this.applicationForm.unification != 'address'">
                       <label class="form-label-v">Полный адрес
                         <span class="text-danger" *ngIf="!applicationForm.postcode">&nbsp;*</span>
                       </label>
@@ -470,7 +515,7 @@
                          [class.disabled]="this.applicationForm.unification != 'residence'"
                          [hidden]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])"
                          *ngIf="isApartment() && isBuy()">
-                      <label class="form-label-v" translate>claim.building</label>
+                      <label class="form-label-v" translate>ЖК</label>
                       <div class="row">
                         <div class="col-sm-10">
                           <ng-select
@@ -489,65 +534,8 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-sm">
-                      <label class="form-label-v" translate>claim.numberHouse
-                        <span class="text-danger" *ngIf="!applicationForm.houseNumber">&nbsp;*</span>
-                      </label>
-                      <div class="input-group">
-                        <input type="text" min="0" class="form-control"
-                               [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])"
-                               placeholder="{{'claim.numberHouse' | translate}}"
-                               [(ngModel)]="applicationForm.houseNumber" maxlength="10"
-                               (ngModelChange)="getMap()"
-
-                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                               (keypress)="util.keyPress($event)"
-                               [readOnly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
-                               formControlName="houseNumber"
-                        />
-                      </div>
-                      <div *ngIf="f.houseNumber.touched && f.houseNumber.invalid" class="text-danger">
-                        <div *ngIf="f.houseNumber.errors.required" translate>claim.requiredField</div>
-                      </div>
-                    </div>
-                    <div class="col-sm"
-                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])">
-                      <div *ngIf="isApartment()">
-                        <label class="form-label-v" translate>Номер квартиры
-                          <span class="text-danger" *ngIf="!applicationForm.apartmentNumber">&nbsp;*</span>
-                        </label>
-                        <div class="input-group">
-                          <input type="number" min="1" class="form-control"
-                                 placeholder="Номер квартиры" maxlength="20"
-                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                 [(ngModel)]="applicationForm.apartmentNumber"
-                                 (change)="showModalChooseClaim()"
-                                 formControlName="apartmentNumber"/>
-                        </div>
-                        <div *ngIf="f.apartmentNumber.touched && f.apartmentNumber.invalid" class="text-danger">
-                          <div *ngIf="f.apartmentNumber.errors.required" translate>claim.requiredField</div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                   <div class="row">
-                    <div class="col-sm" *ngIf="isSell()"
-                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                      <label class="form-label-v" translate>Город
-                        <span class="text-danger" *ngIf="!applicationForm.cityId">&nbsp;*</span>
-                      </label>
-                      <ng-select
-                        [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])"
-                        [items]="city"
-                        [(ngModel)]="applicationForm.cityId"
-                        formControlName="cityId"
-                        bindValue="value"
-                        placeholder="Город">
-                      </ng-select>
-                      <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">
-                        <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>
-                      </div>
-                    </div>
                     <div class="col-sm"
                          [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
                       <label class="form-label-v">Район
@@ -565,244 +553,63 @@
                         <div *ngIf="f.districtId.errors.required" translate>claim.requiredField</div>
                       </div>
                     </div>
-                    <div class="col-sm" *ngIf="isSell()"
-                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                      <label class="form-label-v" translate>claim.roomCount </label>
-                      <div class="input-group"
-                           [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
-                        <input type="number" min="0" class="form-control" maxlength="10"
-                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                               placeholder="{{'patterns.from2' | translate}}"
-                               (keypress)="util.keyPress($event)"
-                               [(ngModel)]="applicationForm.numberOfRoomsFrom"
-                               formControlName="numberOfRoomsFrom"/>
-                        <input type="number" min="0" class="form-control" maxlength="10"
-                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                               placeholder="{{'patterns.to2' | translate}}"
-                               [(ngModel)]="applicationForm.numberOfRoomsTo"
-                               (keypress)="util.keyPress($event)"
-                               formControlName="numberOfRoomsTo"/>
+                    <div class="row" *ngIf="isBuy()">
+                      <div class="col-sm">
+                        <label class="form-label-v" translate>claim.numberHouse
+                          <span class="text-danger" *ngIf="!applicationForm.houseNumber">&nbsp;*</span>
+                        </label>
+                        <div class="input-group">
+                          <input type="text" min="0" class="form-control"
+                                 [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])"
+                                 placeholder="{{'claim.numberHouse' | translate}}"
+                                 [(ngModel)]="applicationForm.houseNumber" maxlength="10"
+                                 (ngModelChange)="getMap()"
+
+                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                 (keypress)="util.keyPress($event)"
+                                 [readOnly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
+                                 formControlName="houseNumber"
+                          />
+                        </div>
+                        <div *ngIf="f.houseNumber.touched && f.houseNumber.invalid" class="text-danger">
+                          <div *ngIf="f.houseNumber.errors.required" translate>claim.requiredField</div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="col-sm"
-                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
-                         *ngIf="!isSell()">
-                      <label class="form-label-v" translate>claim.roomCount
-                        <span class="text-danger" *ngIf="!applicationForm.numberOfRooms">&nbsp;*</span>
-                      </label>
-                      <input type="number" min="1" class="form-control"
-                             placeholder="Количество комнат" maxlength="2"
-                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                             [(ngModel)]="applicationForm.numberOfRooms"
-                             (keypress)="util.keyPress($event)"
-                             formControlName="numberOfRooms"/>
-                      <div *ngIf="f.numberOfRooms.touched && f.numberOfRooms.invalid" class="text-danger">
-                        <div *ngIf="f.numberOfRooms.errors.required" translate>claim.requiredField</div>
-                      </div>
-                    </div>
-                    <div class="col-sm" *ngIf="isApartment()"
-                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                      <label class="form-label-v">Этаж</label>
-                      <div class="input-group" *ngIf="isSell()"
-                           [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
-                        <input type="text" min="0" class="form-control" maxlength="10"
-                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                               placeholder="{{'patterns.from2' | translate}}"
-                               mask="separator.2" thousandSeparator=" "
-                               (keypress)="util.keyPress($event)"
-                               [(ngModel)]="applicationForm.floorFrom" formControlName="floorFrom"/>
-                        <input type="text" min="0" class="form-control"
-                               placeholder="{{'patterns.to2' | translate}}" maxlength="10"
-                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                               mask="separator.2" thousandSeparator=" "
-                               (keypress)="util.keyPress($event)"
-                               [(ngModel)]="applicationForm.floorTo" formControlName="floorTo"/>
-                      </div>
-                      <div *ngIf="!isSell()"
-                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                        <input type="text" min="0" class="form-control"
-                               placeholder="Этаж" maxlength="10"
-                               [readonly]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
-                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                               [(ngModel)]="applicationForm.floor"
-                               (keypress)="util.keyPress($event)"
-                               mask="separator.2" thousandSeparator=" "
-                               formControlName="floor"/>
-                      </div>
-                    </div>
-                    <div class="col-sm" [hidden]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])"
-                         *ngIf="isApartment() && isBuy()">
-                      <label class="form-label-v">Застройщик</label>
-                      <ng-select
-                        [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
-                        [items]="propertyDevelopers"
-                        [(ngModel)]="applicationForm.propertyDeveloperId"
-                        formControlName="propertyDeveloperId"
-                        bindValue="value"
-                        placeholder="Застройщик">
-                      </ng-select>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm" *ngIf="isBuy()"
-                         [hidden]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])">
-                      <label class="form-label-v">Состояние</label>
-                      <ng-select
-                        [items]="houseCondition"
-                        [(ngModel)]="applicationForm.houseConditionId"
-                        formControlName="houseConditionId"
-                        bindValue="value"
-                        placeholder="Состояние">
-                      </ng-select>
-                    </div>
-                    <div class="col-sm"
-                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                      <label class="form-label-v" translate>claim.flatHouse</label>
-                      <div class="input-group" *ngIf="isSell()"
-                           [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
-                        <input type="number" min="0" class="form-control"
-                               placeholder="{{'patterns.from2' | translate}}"
-                               [(ngModel)]="applicationForm.numberOfFloorsFrom"
-                               (keypress)="util.keyPress($event)"
-                               formControlName="numberOfFloorsFrom"/>
-                        <input type="number" min="0" class="form-control"
-                               placeholder="{{'patterns.to2' | translate}}"
-                               [(ngModel)]="applicationForm.numberOfFloorsTo"
-                               (keypress)="util.keyPress($event)"
-                               formControlName="numberOfFloorsTo"/>
-                      </div>
-                      <div *ngIf="!isSell()">
-                        <input type="number" id="numberOfFloors" class="form-control"
-                               [(ngModel)]="applicationForm.numberOfFloors"
-                               placeholder="{{'claim.flatHouse' | translate}}"
-                               [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
-                               formControlName="numberOfFloors" min="0" maxlength="10"
-                               (keypress)="util.keyPress($event)"
-                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
-                        <div *ngIf="f.numberOfFloors.touched && f.numberOfFloors.invalid"
-                             class="text-danger">
-                          <div *ngIf="f.numberOfFloors.errors.required" translate>claim.requiredField
+                      <div class="col-sm"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])">
+                        <div *ngIf="isApartment()">
+                          <label class="form-label-v" translate>Номер квартиры
+                            <span class="text-danger" *ngIf="!applicationForm.apartmentNumber">&nbsp;*</span>
+                          </label>
+                          <div class="input-group">
+                            <input type="number" min="1" class="form-control"
+                                   placeholder="Номер квартиры" maxlength="20"
+                                   oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                   [(ngModel)]="applicationForm.apartmentNumber"
+                                   (change)="showModalChooseClaim()"
+                                   formControlName="apartmentNumber"/>
+                          </div>
+                          <div *ngIf="f.apartmentNumber.touched && f.apartmentNumber.invalid" class="text-danger">
+                            <div *ngIf="f.apartmentNumber.errors.required" translate>claim.requiredField</div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="col-sm" *ngIf="isApartment()"
-                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                      <label class="form-label-v">Кв. на площадке</label>
-                      <input type="number" id="apartmentsOnTheSite" class="form-control" *ngIf="isBuy()"
-                             [(ngModel)]="applicationForm.apartmentsOnTheSite"
-                             placeholder="{{'claim.appInFlat' | translate}}"
-                             (keypress)="util.keyPress($event)"
-                             formControlName="apartmentsOnTheSite" min="1" maxlength="10"
-                             [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
-                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
-                      <div class="input-group" *ngIf="isSell()">
-                        <input type="text" class="form-control" maxlength="10"
-                               placeholder="{{'patterns.from' | translate}}"
+                      <div class="col-sm"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
+                           *ngIf="!isSell()">
+                        <label class="form-label-v" translate>claim.roomCount
+                          <span class="text-danger" *ngIf="!applicationForm.numberOfRooms">&nbsp;*</span>
+                        </label>
+                        <input type="number" min="1" class="form-control"
+                               placeholder="Количество комнат" maxlength="2"
                                oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                               [(ngModel)]="applicationForm.numberOfRooms"
                                (keypress)="util.keyPress($event)"
-                               [(ngModel)]="applicationForm.apartmentsOnTheSiteFrom"
-                               formControlName="apartmentsOnTheSiteFrom"/>
-                        <input type="text" class="form-control" maxlength="10"
-                               placeholder="{{'patterns.to' | translate}}"
-                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                               (keypress)="util.keyPress($event)"
-                               [(ngModel)]="applicationForm.apartmentsOnTheSiteTo"
-                               formControlName="apartmentsOnTheSiteTo"/>
+                               formControlName="numberOfRooms"/>
+                        <div *ngIf="f.numberOfRooms.touched && f.numberOfRooms.invalid" class="text-danger">
+                          <div *ngIf="f.numberOfRooms.errors.required" translate>claim.requiredField</div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="col-sm" [hidden]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])"
-                         *ngIf="isApartment() && isBuy()">
-                      <label class="form-label-v">Кол-во кв</label>
-                      <input type="number" id="numberOfApartments" class="form-control"
-                             [(ngModel)]="applicationForm.numberOfApartments"
-                             placeholder="Кол-во кв"
-                             (keypress)="util.keyPress($event)"
-                             [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
-                             formControlName="numberOfApartments" min="1" maxlength="10"
-                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm"
-                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                      <label class="form-label-v">Материал постройки</label>
-                      <ng-select
-                        [items]="materials"
-                        appendTo="body"
-                        [(ngModel)]="applicationForm.materialOfConstructionId"
-                        formControlName="materialOfConstructionId"
-                        [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
-                        bindValue="value"
-                        placeholder="Материал постройки">
-                      </ng-select>
-                    </div>
-                    <div class="col-sm"
-                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                      <label class="form-label-v" translate>claim.buildYear</label>
-                      <input type="text" *ngIf="isBuy()" id="yearOfConstruction" class="form-control"
-                             [(ngModel)]="applicationForm.yearOfConstruction"
-                             mask="0000" placeholder="{{'claim.buildYear' | translate}}"
-                             [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
-                             formControlName="yearOfConstruction"/>
-                      <div class="input-group" *ngIf="isSell()">
-                        <input type="text" class="form-control"
-                               placeholder="{{'patterns.from' | translate}}"
-                               mask="0000"
-                               [(ngModel)]="applicationForm.yearOfConstructionFrom"
-                               formControlName="yearOfConstructionFrom"/>
-                        <input type="text" class="form-control"
-                               placeholder="{{'patterns.to' | translate}}"
-                               mask="0000"
-                               [(ngModel)]="applicationForm.yearOfConstructionTo"
-                               formControlName="yearOfConstructionTo"/>
-                      </div>
-                    </div>
-                    <div class="col-sm" *ngIf="isApartment()"
-                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                      <label class="form-label-v" translate>claim.lift</label>
-                      <ng-select
-                        [items]="elevatorType"
-                        [(ngModel)]="applicationForm.typeOfElevatorList"
-                        [multiple]="true"
-                        [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
-                        formControlName="typeOfElevatorList"
-                        bindValue="value"
-                        placeholder="Лифт">
-                      </ng-select>
-                    </div>
-                    <div class="col-sm" [hidden]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])"
-                         *ngIf="isApartment() && isBuy()">
-                      <label class="form-label-v">Класс жилья</label>
-                      <input type="text" id="housingClass" class="form-control" maxlength="20"
-                             [(ngModel)]="applicationForm.housingClass"
-                             placeholder="{{'Класс жилья' | translate}}"
-                             [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
-                             formControlName="housingClass"/>
-                    </div>
-                  </div>
-                  <div class="row" *ngIf="isHouse()">
-                    <div class="col-sm">
-                      <label class="control-labels">Канализация</label>
-                      <ng-select
-                        [items]="sewerageSystems"
-                        [(ngModel)]="applicationForm.sewerageId"
-                        formControlName="sewerageId"
-                        bindValue="value"
-                        appendTo="body"
-                        placeholder="Канализация">
-                      </ng-select>
-                    </div>
-                    <div class="col-sm" *ngIf="isHouse()">
-                      <label class="control-labels">Отопление</label>
-                      <ng-select
-                        [items]="heatingSystems"
-                        appendTo="body"
-                        [(ngModel)]="applicationForm.heatingSystemId"
-                        formControlName="heatingSystemId"
-                        bindValue="value"
-                        placeholder="Отопление">
-                      </ng-select>
                     </div>
                   </div>
                   <div class="square-t"
@@ -954,36 +761,6 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm"
-                           *ngIf="isSell() && isApartment()">
-                        <label class="form-label-v" translate>claim.heightWall</label>
-                        <div class="input-group"
-                             [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
-                          <input type="text" min="0" class="form-control" maxlength="10"
-                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                 placeholder="{{'patterns.from2' | translate}}"
-                                 mask="separator.2" thousandSeparator=" "
-                                 [(ngModel)]="applicationForm.ceilingHeightFrom"
-                                 formControlName="ceilingHeightFrom"/>
-                          <input type="text" min="0" class="form-control" maxlength="10"
-                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                 placeholder="{{'patterns.to2' | translate}}"
-                                 mask="separator.2" thousandSeparator=" "
-                                 [(ngModel)]="applicationForm.ceilingHeightTo"
-                                 formControlName="ceilingHeightTo"/>
-                        </div>
-                      </div>
-                      <div class="col-sm"
-                           *ngIf="!isSell() && isApartment()">
-                        <label class="form-label-v" translate>claim.heightWall</label>
-                        <input type="text" id="ceilingHeight" class="form-control"
-                               [(ngModel)]="applicationForm.ceilingHeight" maxlength="10"
-                               mask="separator.2" thousandSeparator=" "
-                               placeholder="{{'claim.heightWall' | translate}}"
-                               [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
-                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                               formControlName="ceilingHeight" min="0"/>
-                      </div>
                     </div>
                     <div class="row" *ngIf="isApartment()">
                       <div class="col-sm" *ngIf="isSell()">
@@ -1023,97 +800,395 @@
                       </div>
                       <div class="col-sm"
                            [class.disabled]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                        <label class="form-label-v"> </label>
-                        <div class="row atelier">
-                          <input type="radio" class="custom-radio"
-                                 [(ngModel)]="applicationForm.atelier"
-                                 formControlName="atelier"/>
-                          <label>&nbsp;&nbsp;Студия</label>
+                        <label class="form-label-v">Студия</label>
+                        <div class="row disabled-bottom-margin">
+                          <mat-button-toggle-group [(ngModel)]="applicationForm.atelier" formControlName="atelier">
+                            <mat-button-toggle class="operation-type-btn"
+                                               *ngFor="let item of dicDynamic"
+                                               [value]="item.code"
+                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.atelier) ? 'bg-white text-dark' : ''"
+                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.atelier)}">
+                              {{item.label}}
+                            </mat-button-toggle>
+                          </mat-button-toggle-group>
                         </div>
                       </div>
                       <div class="col-sm"
                            [class.disabled]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                        <label class="form-label-v"> </label>
-                        <div class="row atelier">
-                          <input type="radio" [id]="'true'" [name]="'separateBathroom'"
-                                 [value]="'true'"
-                                 [(ngModel)]="applicationForm.separateBathroom"
-                                 formControlName="separateBathroom"/>
-                          <label>&nbsp;&nbsp;Санузел раздельный</label>
+                        <label class="form-label-v">Санузел раздельный</label>
+                        <div class="row disabled-bottom-margin">
+                          <mat-button-toggle-group [(ngModel)]="applicationForm.separateBathroom" formControlName="separateBathroom">
+                            <mat-button-toggle class="operation-type-btn"
+                                               *ngFor="let item of dicDynamic"
+                                               [value]="item.code"
+                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.separateBathroom) ? 'bg-white text-dark' : ''"
+                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.separateBathroom)}">
+                              {{item.label}}
+                            </mat-button-toggle>
+                          </mat-button-toggle-group>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="row" *ngIf="isApartment()">
-                    <div class="col-sm">
-                      <label class="form-label-v" translate>claim.parking</label>
-                      <ng-select
-                        [items]="parkingTypes"
-                        [multiple]="true"
-                        appendTo="body"
-                        [(ngModel)]="applicationForm.parkingTypeIds"
-                        [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
-                        bindValue="value"
-                        formControlName="parkingTypeIds"
-                        placeholder="Парковка">
-                      </ng-select>
-                    </div>
-                    <div class="col-sm">
-                      <label class="form-label-v" translate>claim.yard</label>
-                      <ng-select
-                        [items]="yardTypes"
-                        bindValue="value"
-                        appendTo="body"
-                        [(ngModel)]="applicationForm.yardTypeId"
-                        [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
-                        formControlName="yardTypeId">
-                      </ng-select>
-                    </div>
-                    <div class="col-sm">
-                      <label class="form-label-v" translate>claim.childYard</label>
-                      <ng-select
-                        [items]="dicDynamic"
-                        bindValue="code"
-                        appendTo="body"
-                        [(ngModel)]="applicationForm.playground"
-                        [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
-                        formControlName="playground"
-                        placeholder="Детская площадка">
-                      </ng-select>
+                  <div class="row font-weight-bold">
+                    <div class="col-sm expanded-search" (click)="expandedBlock()">
+                       <span *ngIf="!expandBlock">Показать детали</span>
+                       <span *ngIf="expandBlock">Скрыть детали</span>
+                      <i class="fa fa-angle-down fa-2x" *ngIf="!expandBlock" aria-hidden="true"></i>
+                      <i class="fa fa-angle-up fa-2x" *ngIf="expandBlock" aria-hidden="true"></i>
                     </div>
                   </div>
-                  <div class="row" *ngIf="isApartment()"
-                       [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                    <div class="col-sm">
-                      <label class="form-label-v" translate>claim.concierge</label>
-                      <ng-select
-                        [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
-                        [items]="dicDynamic"
-                        [(ngModel)]="applicationForm.concierge"
-                        bindValue="code"
-                        appendTo="body"
-                        formControlName="concierge"
-                        placeholder="Консьерж">
-                      </ng-select>
+                  <div class="row w-100"></div>
+                  <div *ngIf="expandBlock">
+                    <div class="row w-100">
+                      <div class="col-sm" *ngIf="isSell()"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                        <label class="form-label-v" translate>Город
+                          <span class="text-danger" *ngIf="!applicationForm.cityId">&nbsp;*</span>
+                        </label>
+                        <ng-select
+                          [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])"
+                          [items]="city"
+                          [(ngModel)]="applicationForm.cityId"
+                          formControlName="cityId"
+                          bindValue="value"
+                          placeholder="Город">
+                        </ng-select>
+                        <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">
+                          <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>
+                        </div>
+                      </div>
+                      <div class="col-sm" *ngIf="isSell()"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                        <label class="form-label-v" translate>claim.roomCount </label>
+                        <div class="input-group"
+                             [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
+                          <input type="number" min="0" class="form-control" maxlength="10"
+                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                 placeholder="{{'patterns.from2' | translate}}"
+                                 (keypress)="util.keyPress($event)"
+                                 [(ngModel)]="applicationForm.numberOfRoomsFrom"
+                                 formControlName="numberOfRoomsFrom"/>
+                          <input type="number" min="0" class="form-control" maxlength="10"
+                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                 placeholder="{{'patterns.to2' | translate}}"
+                                 [(ngModel)]="applicationForm.numberOfRoomsTo"
+                                 (keypress)="util.keyPress($event)"
+                                 formControlName="numberOfRoomsTo"/>
+                        </div>
+                      </div>
+                      <div class="col-sm" *ngIf="isApartment()"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                        <label class="form-label-v">Этаж</label>
+                        <div class="input-group" *ngIf="isSell()"
+                             [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
+                          <input type="text" min="0" class="form-control" maxlength="10"
+                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                 placeholder="{{'patterns.from2' | translate}}"
+                                 mask="separator.2" thousandSeparator=" "
+                                 (keypress)="util.keyPress($event)"
+                                 [(ngModel)]="applicationForm.floorFrom" formControlName="floorFrom"/>
+                          <input type="text" min="0" class="form-control"
+                                 placeholder="{{'patterns.to2' | translate}}" maxlength="10"
+                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                 mask="separator.2" thousandSeparator=" "
+                                 (keypress)="util.keyPress($event)"
+                                 [(ngModel)]="applicationForm.floorTo" formControlName="floorTo"/>
+                        </div>
+                        <div *ngIf="!isSell()"
+                             [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                          <input type="text" min="0" class="form-control"
+                                 placeholder="Этаж" maxlength="10"
+                                 [readonly]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
+                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                 [(ngModel)]="applicationForm.floor"
+                                 (keypress)="util.keyPress($event)"
+                                 mask="separator.2" thousandSeparator=" "
+                                 formControlName="floor"/>
+                        </div>
+                      </div>
+                      <div class="col-sm"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                        <label class="form-label-v">Этажность дома</label>
+                        <div class="input-group" *ngIf="isSell()"
+                             [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
+                          <input type="number" min="0" class="form-control"
+                                 placeholder="{{'patterns.from2' | translate}}"
+                                 [(ngModel)]="applicationForm.numberOfFloorsFrom"
+                                 (keypress)="util.keyPress($event)"
+                                 formControlName="numberOfFloorsFrom"/>
+                          <input type="number" min="0" class="form-control"
+                                 placeholder="{{'patterns.to2' | translate}}"
+                                 [(ngModel)]="applicationForm.numberOfFloorsTo"
+                                 (keypress)="util.keyPress($event)"
+                                 formControlName="numberOfFloorsTo"/>
+                        </div>
+                        <div *ngIf="!isSell()">
+                          <input type="number" id="numberOfFloors" class="form-control"
+                                 [(ngModel)]="applicationForm.numberOfFloors"
+                                 placeholder="{{'claim.flatHouse' | translate}}"
+                                 [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
+                                 formControlName="numberOfFloors" min="0" maxlength="10"
+                                 (keypress)="util.keyPress($event)"
+                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
+                          <div *ngIf="f.numberOfFloors.touched && f.numberOfFloors.invalid"
+                               class="text-danger">
+                            <div *ngIf="f.numberOfFloors.errors.required" translate>claim.requiredField
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm" *ngIf="isSell() && isApartment()">
+                        <label class="form-label-v">Выс. потолков</label>
+                        <div class="input-group" [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
+                          <input type="text" min="0" class="form-control" maxlength="10"
+                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                 placeholder="{{'patterns.from2' | translate}}"
+                                 mask="separator.2" thousandSeparator=" "
+                                 [(ngModel)]="applicationForm.ceilingHeightFrom"
+                                 formControlName="ceilingHeightFrom"/>
+                          <input type="text" min="0" class="form-control" maxlength="10"
+                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                 placeholder="{{'patterns.to2' | translate}}"
+                                 mask="separator.2" thousandSeparator=" "
+                                 [(ngModel)]="applicationForm.ceilingHeightTo"
+                                 formControlName="ceilingHeightTo"/>
+                        </div>
+                      </div>
+                      <div class="col-sm"
+                           *ngIf="!isSell() && isApartment()">
+                        <label class="form-label-v" translate>claim.heightWall</label>
+                        <input type="text" id="ceilingHeight" class="form-control"
+                               [(ngModel)]="applicationForm.ceilingHeight" maxlength="10"
+                               mask="separator.2" thousandSeparator=" "
+                               placeholder="{{'claim.heightWall' | translate}}"
+                               [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
+                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                               formControlName="ceilingHeight" min="0"/>
+                      </div>
+                      <div class="col-sm" [hidden]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])"
+                           *ngIf="isApartment() && isBuy()">
+                        <label class="form-label-v">Застройщик</label>
+                        <ng-select
+                          [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
+                          [items]="propertyDevelopers"
+                          [(ngModel)]="applicationForm.propertyDeveloperId"
+                          formControlName="propertyDeveloperId"
+                          bindValue="value"
+                          placeholder="Застройщик">
+                        </ng-select>
+                      </div>
                     </div>
-                    <div class="col-sm">
-                      <label class="form-label-v" translate>claim.stroller</label>
-                      <ng-select
-                        [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
-                        [items]="dicDynamic"
-                        bindValue="code"
-                        appendTo="body"
-                        [(ngModel)]="applicationForm.wheelchair"
-                        formControlName="wheelchair"
-                        placeholder="Колясочная">
-                      </ng-select>
+                    <div class="row">
+                      <div class="col-sm" *ngIf="isBuy()"
+                           [hidden]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])">
+                        <label class="form-label-v">Состояние</label>
+                        <ng-select
+                          [items]="houseCondition"
+                          [(ngModel)]="applicationForm.houseConditionId"
+                          formControlName="houseConditionId"
+                          bindValue="value"
+                          placeholder="Состояние">
+                        </ng-select>
+                      </div>
+                      <div class="col-sm" [hidden]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])"
+                           *ngIf="isApartment() && isBuy()">
+                        <label class="form-label-v">Класс жилья</label>
+                        <input type="text" id="housingClass" class="form-control" maxlength="20"
+                               [(ngModel)]="applicationForm.housingClass"
+                               placeholder="{{'Класс жилья' | translate}}"
+                               [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
+                               formControlName="housingClass"/>
+                      </div>
+                      <div class="col-sm" *ngIf="isApartment()"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                        <label class="form-label-v">Кв. на площадке</label>
+                        <input type="number" id="apartmentsOnTheSite" class="form-control" *ngIf="isBuy()"
+                               [(ngModel)]="applicationForm.apartmentsOnTheSite"
+                               placeholder="{{'claim.appInFlat' | translate}}"
+                               (keypress)="util.keyPress($event)"
+                               formControlName="apartmentsOnTheSite" min="1" maxlength="10"
+                               [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
+                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
+                        <div class="input-group" *ngIf="isSell()">
+                          <input type="text" class="form-control" maxlength="10"
+                                 placeholder="{{'patterns.from' | translate}}"
+                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                 (keypress)="util.keyPress($event)"
+                                 [(ngModel)]="applicationForm.apartmentsOnTheSiteFrom"
+                                 formControlName="apartmentsOnTheSiteFrom"/>
+                          <input type="text" class="form-control" maxlength="10"
+                                 placeholder="{{'patterns.to' | translate}}"
+                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                 (keypress)="util.keyPress($event)"
+                                 [(ngModel)]="applicationForm.apartmentsOnTheSiteTo"
+                                 formControlName="apartmentsOnTheSiteTo"/>
+                        </div>
+                      </div>
+                      <div class="col-sm" [hidden]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])"
+                           *ngIf="isApartment() && isBuy()">
+                        <label class="form-label-v">Кол-во кв</label>
+                        <input type="number" id="numberOfApartments" class="form-control"
+                               [(ngModel)]="applicationForm.numberOfApartments"
+                               placeholder="Кол-во кв"
+                               (keypress)="util.keyPress($event)"
+                               [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
+                               formControlName="numberOfApartments" min="1" maxlength="10"
+                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
+                      </div>
                     </div>
-                    <div class="col-sm-6" *ngIf="isBuy()"
-                         [class.disabledDev]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])">
-                      <label class="form-label-v">Описание</label>
-                      <textarea rows="1" class="col-sm-12 control"
-                                [(ngModel)]="applicationForm.description" formControlName="description"
-                                maxlength="1000"></textarea>
+                    <div class="row" *ngIf="isHouse()">
+                      <div class="col-sm">
+                        <label class="control-labels">Канализация</label>
+                        <ng-select
+                          [items]="sewerageSystems"
+                          [(ngModel)]="applicationForm.sewerageId"
+                          formControlName="sewerageId"
+                          bindValue="value"
+                          appendTo="body"
+                          placeholder="Канализация">
+                        </ng-select>
+                      </div>
+                      <div class="col-sm" *ngIf="isHouse()">
+                        <label class="control-labels">Отопление</label>
+                        <ng-select
+                          [items]="heatingSystems"
+                          appendTo="body"
+                          [(ngModel)]="applicationForm.heatingSystemId"
+                          formControlName="heatingSystemId"
+                          bindValue="value"
+                          placeholder="Отопление">
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="isApartment()">
+                      <div class="col-sm"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                        <label class="form-label-v">Материал постройки</label>
+                        <ng-select
+                          [items]="materials"
+                          appendTo="body"
+                          [(ngModel)]="applicationForm.materialOfConstructionId"
+                          formControlName="materialOfConstructionId"
+                          [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
+                          bindValue="value"
+                          placeholder="Материал постройки">
+                        </ng-select>
+                      </div>
+                      <div class="col-sm"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                        <label class="form-label-v" translate>claim.buildYear</label>
+                        <input type="text" *ngIf="isBuy()" id="yearOfConstruction" class="form-control"
+                               [(ngModel)]="applicationForm.yearOfConstruction"
+                               mask="0000" placeholder="{{'claim.buildYear' | translate}}"
+                               [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
+                               formControlName="yearOfConstruction"/>
+                        <div class="input-group" *ngIf="isSell()">
+                          <input type="text" class="form-control"
+                                 placeholder="{{'patterns.from' | translate}}"
+                                 mask="0000"
+                                 [(ngModel)]="applicationForm.yearOfConstructionFrom"
+                                 formControlName="yearOfConstructionFrom"/>
+                          <input type="text" class="form-control"
+                                 placeholder="{{'patterns.to' | translate}}"
+                                 mask="0000"
+                                 [(ngModel)]="applicationForm.yearOfConstructionTo"
+                                 formControlName="yearOfConstructionTo"/>
+                        </div>
+                      </div>
+                      <div class="col-sm"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                        <label class="form-label-v">Лифт</label>
+                        <ng-select
+                          [items]="elevatorType"
+                          [(ngModel)]="applicationForm.typeOfElevatorList"
+                          [multiple]="true"
+                          [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
+                          formControlName="typeOfElevatorList"
+                          bindValue="value"
+                          placeholder="Лифт">
+                        </ng-select>
+                      </div>
+                      <div class="col-sm">
+                        <label class="form-label-v" translate>claim.parking</label>
+                        <ng-select
+                          [items]="parkingTypes"
+                          [multiple]="true"
+                          appendTo="body"
+                          [(ngModel)]="applicationForm.parkingTypeIds"
+                          [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
+                          bindValue="value"
+                          formControlName="parkingTypeIds"
+                          placeholder="Парковка">
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="isApartment()"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                      <div class="col-sm">
+                        <label class="form-label-v">Двор</label>
+                        <ng-select
+                          [items]="yardTypes"
+                          bindValue="value"
+                          appendTo="body"
+                          [(ngModel)]="applicationForm.yardTypeId"
+                          [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
+                          formControlName="yardTypeId">
+                        </ng-select>
+                      </div>
+                      <div class="col-sm">
+                        <label class="form-label-v" translate>claim.concierge</label>
+                        <div class="row disabled-bottom-margin"
+                             [class.disabledDev]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                          <mat-button-toggle-group [(ngModel)]="applicationForm.concierge" formControlName="concierge">
+                            <mat-button-toggle class="operation-type-btn"
+                                               *ngFor="let item of dicDynamic"
+                                               [value]="item.code"
+                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.concierge) ? 'bg-white text-dark' : ''"
+                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.concierge)}">
+                              {{item.label}}
+                            </mat-button-toggle>
+                          </mat-button-toggle-group>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <label class="form-label-v" translate>claim.stroller</label>
+                        <div class="row disabled-bottom-margin"
+                             [class.disabledDev]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                          <mat-button-toggle-group [(ngModel)]="applicationForm.wheelchair" formControlName="wheelchair">
+                            <mat-button-toggle class="operation-type-btn"
+                                               *ngFor="let item of dicDynamic"
+                                               [value]="item.code"
+                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.wheelchair) ? 'bg-white text-dark' : ''"
+                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.wheelchair)}">
+                              {{item.label}}
+                            </mat-button-toggle>
+                          </mat-button-toggle-group>
+                        </div>
+                      </div>
+                      <div class="col-sm">
+                        <label class="form-label-v">Детская площадка</label>
+                        <div class="row disabled-bottom-margin"
+                             [class.disabledDev]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                          <mat-button-toggle-group [(ngModel)]="applicationForm.playground" formControlName="playground">
+                            <mat-button-toggle class="operation-type-btn"
+                                               *ngFor="let item of dicDynamic"
+                                               [value]="item.code"
+                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.playground) ? 'bg-white text-dark' : ''"
+                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.playground)}">
+                              {{item.label}}
+                            </mat-button-toggle>
+                          </mat-button-toggle-group>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="isBuy()">
+                      <div class="col-sm" [class.disabledDev]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])">
+                        <label class="form-label-v">Описание</label>
+                        <textarea rows="1" class="col-sm-12 control"
+                                  [(ngModel)]="applicationForm.description" formControlName="description"
+                                  maxlength="1000"></textarea>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1123,7 +1198,7 @@
         </div>
       </div>
       <div class="row " *ngIf="isBuy()">
-        <div class="col-sm-8">
+        <div class="col-sm">
           <div class="accordion" id="accordionPhoto">
             <div class="card z-depth-0 bordered">
               <div class="card-header accordion-header text-white bg-dark" id="headingPhoto">
@@ -1155,12 +1230,12 @@
                           <span class="badge badge-danger ml-2">{{photoList.length}}</span>
                         </legend>
                         <div id="photoCarousel" class="carousel slide" data-ride="carousel"
-                             style="width: 180px;">
+                             style="width: 240px;">
                           <div class="carousel-inner" style="position: static">
                             <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                  *ngFor="let photo of photoList;let i = index">
                               <img [src]="photo.image" alt="First Slide" class="photoList"
-                                   width="178" height="278"
+                                   width="250" height="300"
                                    (click)="showPhotoFull(photo.fullImage)">
                               <button class="btn btn-sm btn-danger removeItemCarousel"
                                       *ngIf="edit && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
@@ -1189,7 +1264,7 @@
                             <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                  *ngFor="let plan of photoPlanList;let i = index">
                               <img [src]="plan.image" alt="First Slide" class="photoList"
-                                   width="200" height="278"
+                                   width="250" height="300"
                                    (click)="showPhotoFull(plan.fullImage)">
                               <button class="btn btn-sm btn-danger removeItemCarousel"
                                       *ngIf="edit && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
@@ -1206,7 +1281,6 @@
                         </div>
                       </fieldset>
                     </div>
-
                     <div class="col-sm" *ngIf="photo3DList.length > 0">
                       <fieldset class="scheduler-border col-sm">
                         <legend class="scheduler-border" style="font-size: 12px; width: 80%">3D тур
@@ -1218,7 +1292,7 @@
                             <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                  *ngFor="let plan of photo3DList;let i = index">
                               <img [src]="plan.image" alt="First Slide" class="photoList"
-                                   width="200" height="278"
+                                   width="250" height="300"
                                    (click)="showPhotoFull(plan.fullImage)">
                               <button class="btn btn-sm btn-danger removeItemCarousel"
                                       *ngIf="edit && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
@@ -1249,6 +1323,7 @@
                 </div>
                 <div class="card-footer" *ngIf="edit">
                   <div class="row">
+                    <div class="col-sm-5"></div>
                     <div class="col-sm">
                       <label class="btn upload-btn btn-dark">Загрузить фото
                         <input type="file" multiple="" hidden (change)="onFileChange($event, 1)">
@@ -1270,6 +1345,9 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="row" *ngIf="isBuy()">
         <div class="col-sm">
           <div class="accordion" id="accordionMap">
             <div class="card z-depth-0 bordered">

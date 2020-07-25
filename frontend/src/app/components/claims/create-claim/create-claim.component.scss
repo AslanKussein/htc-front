@@ -102,17 +102,6 @@ textarea, textarea:focus {
   @return rgba(196,196,196, $opacity)
 }
 
-.test {
-  max-width: 12.5rem;
-  min-width: 12.5rem;
-  height: 36px;
-  border-radius: 5px;
-  border: 1px solid #c4c4c4;
-  background: grey(0.111);
-  margin: 0 -2px;
-  padding: 5px 6px;
-}
-
 .atelier {
   max-width: 13.5rem;
   min-width: 12.5rem;
@@ -122,10 +111,6 @@ textarea, textarea:focus {
   background: grey(0.111);
   margin: 0 -2px;
   padding: 5px 6px;
-}
-
-.row-mx-width {
-  //min-width: 16.875rem;
 }
 
 .panel-header {
@@ -147,4 +132,25 @@ textarea, textarea:focus {
 .panel-header:active,.panel-header:focus, .nav-tabs .nav-link.active, .nav-item.show .nav-link, .badge:active {
   color: #00b2a8!important;
   border-bottom: 2px solid #00b2a8;
+}
+
+.operation-type-btn {
+  width: 8.5rem;
+  height: 36.2px;
+  border-radius: 0.3125rem;
+  border: 1px solid #d0d0d0;
+  margin-right: 0.3125rem;
+}
+
+.expanded-search {
+  width: 263px;
+  height: 21px;
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 0.9;
+  letter-spacing: normal;
+  text-align: center;
+  color: #373737;
 }
