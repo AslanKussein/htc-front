@@ -22,17 +22,16 @@ declare var jquery: any;   // not required
 declare var $: any;   // not required
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-    title = 'htc';
-    _language = language;
-    currentUser: User;
-    photo: string = 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png';
-    logo: string = '../../../assets/images/home/Лого.png';
-    subscriptions: Subscription = new Subscription();
+  title = 'htc';
+  _language = language;
+  currentUser: User;
+  logo: string = '../../../assets/images/home/Лого.png';
+  subscriptions: Subscription = new Subscription();
     private stompClient = null;
     webSocketConnection: boolean = false;
 
@@ -60,14 +59,10 @@ export class AppComponent implements OnInit, OnDestroy {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
-        this.loadAva();
         this.webSocketConnect()
 
     }
 
-    loadAva() {
-        this.photo = this.util.generatorPreviewUrl(this.util.getCurrentUser()?.photoUuid);
-    }
 
     isActive() {
         return '/' + localStorage.getItem('url') == this.router.url;

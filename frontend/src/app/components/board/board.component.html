@@ -48,7 +48,10 @@
       </div>
       <br>
       <div class="row" cdkDropListGroup [class.disabledDev]="this.activeTab == 3">
-        <div class="col-sm" *ngFor="let data of appStatusesData;let i = index">
+        <div class="col-sm"
+             style="max-width: 300px;"
+             *ngFor="let data of appStatusesData;let i = index"
+             [hidden]="!this.util.hasShowApplicationGroup('CLOSE_APPLICATION', roles) && data.code != '002011'">
           <div class="row">
             <div class="col-sm text-center">
               Комиссия: <br> {{data.boardData.commission ? data.boardData.commission : 0 | mask : 'separator.2'}} ₸
@@ -188,7 +191,7 @@
                      alt="First Slide" class="photoList"
                      style="height: 100%; width: 100%">
               </td>
-              <td>{{ objectData.address[this.util.getDicNameByLanguage()] }}</td>
+              <td>{{ objectData.address ? objectData.address[this.util.getDicNameByLanguage()] : '' }}</td>
               <td *ngIf="isSell">{{ objectData.objectPrice | mask : 'separator.2'}} ₸</td>
               <td *ngIf="!isSell">{{ objectData.objectPricePeriod?.from | mask : 'separator.2'}} ₸</td>
               <td *ngIf="!isSell">{{ objectData.objectPricePeriod?.to | mask : 'separator.2'}} ₸</td>
@@ -221,7 +224,7 @@
         </table>
       </div>
     </div>
-    <div class="row" *ngIf="util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)">
+    <div class="row" *ngIf="util.hasShowApplicationGroup('CLOSE_APPLICATION', roles) && objectData?.status?.code !== '002011'">
       <div class="col-sm">
         <label>Если Вы хотите принудительно завершить сделку на данном этапе
           <span>"{{objectData.status?.name[this.util.getDicNameByLanguage()]}}"</span>
@@ -240,10 +243,14 @@
           <i class="fa fa-upload"></i>
           <input type="file" hidden (change)="onFileChange($event)">
         </label>
-        <a *ngIf="this.file?.uuid" [href]="util.generatorFullUrl(this.file?.uuid)" target="_blank">
+        <a *ngIf="file?.uuid" [href]="util.generatorFullUrl(file?.uuid)" target="_blank">
           <i class="fa fa-paperclip" aria-hidden="true"></i>
-          {{this.file?.name}} ({{this.file?.size}} КБ)
+          {{file?.name}} ({{file?.size}} КБ)
         </a>
+
+        <button *ngIf="file?.uuid" type="button" class="btn btn-danger btn-sm" (click)="deleteFile()">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
       </div>
     </div>
     <div class="progress" *ngIf="isUpload" style="margin-bottom: 16px;">
@@ -256,40 +263,42 @@
         [style.width.%]="percent">
       </div>
     </div>
-    <div class="row toggle-label" [ngClass]="{active: isActive}" *ngIf="util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)">
-      <div class="col-sm" style="cursor: pointer;" *ngIf="isConfirmDeal || isClosingDeal">
-        <h5 (click)="onToggle()">
-          Если успешно реализованная заявка связана со второй заявкой из системы, то укажите вторую заявку
-          <i class="fa fa-caret-down" aria-hidden="true"></i>
-        </h5>
-      </div>
-    </div>
-    <div class="row content-bundle" [ngClass]="{active: isActive}">
-      <div class="col-sm-4">
-        <div class="form-group row">
-          <label class="col-sm-5 col-form-label">ID второй заявки</label>
-          <div class="col-sm-7">
-            <input
-              type="number"
-              class="form-control"
-              placeholder="Введите ID заявки"
-              [(ngModel)]="secondId"/>
-          </div>
+    <div *ngIf="objectData?.status?.code === '002007' || isTargetApplicationId">
+      <div class="row toggle-label" [ngClass]="{active: isActive}" >
+        <div class="col-sm" style="cursor: pointer;">
+          <h5 (click)="onToggle()">
+            Если успешно реализованная заявка связана со второй заявкой из системы, то укажите вторую заявку
+            <i class="fa fa-caret-down" aria-hidden="true"></i>
+          </h5>
         </div>
       </div>
-      <div class="col-sm-5">
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-primary" (click)="onSearch()">Поиск</button>
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-danger" (click)="clearTargetAppData()">Очистить</button>
+      <div class="row content-bundle" [ngClass]="{active: isActive}">
+        <div class="col-sm-4">
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">ID второй заявки</label>
+            <div class="col-sm-7">
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Введите ID заявки"
+                [(ngModel)]="secondId"
+                [disabled]="isTargetApplicationId"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <button type="button" class="btn btn-sm btn-btn btn2 btn-primary" [disabled]="isTargetApplicationId" (click)="onSearch()">Поиск</button>
+          <button type="button" class="btn btn-sm btn-btn btn2 btn-danger" [disabled]="isTargetApplicationId" (click)="clearTargetAppData()">Очистить</button>
+        </div>
+        <div class="col-sm-3">
+          <button type="button" class="btn btn-sm btn-btn btn2 btn-success" [disabled]="!targetAppData.length || isTargetApplicationId" (click)="closeDeal(true, targetAppData[0].id )">
+            Связать заявку
+          </button>
+        </div>
       </div>
-      <div class="col-sm-3">
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-success" [disabled]="!targetAppData.length" (click)="closeDeal(true, targetAppData[0].id )">
-          Связать заявку
-        </button>
-      </div>
-    </div>
-    <div class="row content-bundle overflow-auto" [ngClass]="{active: isActive}" >
-      <table class="table table-bordered table-sm ">
-        <thead class="text-center">
+      <div class="row content-bundle overflow-auto" [ngClass]="{active: isActive}" >
+        <table class="table table-bordered table-sm ">
+          <thead class="text-center">
           <tr>
             <th>ID заявки</th>
             <th>Операция</th>
@@ -311,8 +320,8 @@
             <th>Агент</th>
             <th>Телефон</th>
           </tr>
-        </thead>
-        <tbody class="text-center" *ngIf="targetAppData.length">
+          </thead>
+          <tbody class="text-center" *ngIf="targetAppData.length">
           <tr *ngFor="let item of targetAppData; let index = index;" g>
             <td>{{ item.id }}</td>
             <td>{{ item.operationType }}</td>
@@ -334,8 +343,9 @@
             <td>{{ item.agentFullname }}</td>
             <td>{{ item.agentPhone }}</td>
           </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="row text-right" *ngIf="!isConfirmDeal">
       <div class="col-sm">
@@ -350,12 +360,16 @@
       </div>
     </div>
     <div class="row text-right"
-         *ngIf="(!util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) || (!util.hasShowApplicationGroup('CLOSE_APPLICATION', roles)) && objectData?.status?.code === '002011') && isConfirmDeal">
+         *ngIf="(!util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', roles) && objectData?.status?.code === '002012') || (!util.hasShowApplicationGroup('CLOSE_APPLICATION', roles) && objectData?.status?.code === '002011')">
       <div class="col-sm">
         <button type="button" class="btn btn-sm btn-btn btn2 btn-secondary" (click)="confirmDeal(false)">
           Отказать в завершении
         </button>
-        <button type="button" class="btn btn-sm btn-btn btn2 btn-success" (click)="confirmDeal(true)">
+        <button
+          type="button"
+          class="btn btn-sm btn-btn btn2 btn-success"
+          (click)="confirmDeal(true)"
+          [disabled]="!util.hasShowApplicationGroup('CLOSE_APPLICATION', roles) && !file">
           Согласовать завершение
         </button>
       </div>

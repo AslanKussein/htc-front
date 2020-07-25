@@ -55,7 +55,9 @@
       "objectTypeId": "Тип объекта",
       "contractTypeId": "Тип договора",
       "contractSum": "Сумма по договору",
-      "commission": "Размер комиссии"
+      "commission": "Размер комиссии",
+      "name": "Имя",
+      "agentLogin": "Агент"
     },
     "title": "Заявки",
     "step": "Шаг",

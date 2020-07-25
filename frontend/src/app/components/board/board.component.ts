@@ -49,6 +49,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   isConfirmDeal: boolean;
   isUpload: boolean;
   percent: number;
+  isTargetApplicationId: boolean;
   get boardSelect(): Board {
     return this._boardSelect;
   }
@@ -126,7 +127,7 @@ export class BoardComponent implements OnInit, OnDestroy {
             argument['boardData'] = this.board;
           }
 
-          this.appStatusesData.push(argument)
+          this.appStatusesData.push(argument);
         }
         this.applicationCount = res?.data.applicationCount
         this.totalCommission = res?.data.totalCommission
@@ -308,7 +309,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     this._boardSelect = item;
     this.selectId = item.id;
     let data = {applicationId: item.id, statusId: currentStatusId};
-
+    localStorage.setItem('backUrl', '/board?activeTab=' + this.activeTab);
     if (this.activeTab == 1) { // воронка покупателей
       if (prevStatusId == 1 && currentStatusId == 2) {//  2.1. С "Первичный контакт *" на "Встреча *"
         this.openInnerPage('board/add-event');
@@ -375,7 +376,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   closeApplication(template, data: any): void {
-   this.clearTargetAppData();
+    this.clearTargetAppData();
     this.isSell = this.isSellTargetApp = data.operationType?.code === '001002'; // Продать
     this.applicationId = data.id;
     this.subscriptions.add(this.boardService.getApplication(this.applicationId).subscribe(res => {
@@ -383,6 +384,33 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.fillObjectData(res);
       }
     }));
+    this.subscriptions.add(this.boardService.getTargetApplication(this.applicationId).subscribe(res => {
+      if(res) {
+        this.isActive = true;
+        this.isTargetApplicationId = true;
+        this.secondId = res.id;
+        this.isSellTargetApp = res.operationType?.code === '001002'; // Продать
+        const data = {
+          id: res.id,
+          operationType: res.operationType?.name[this.util.getDicNameByLanguage()],
+          objectPrice: res.objectPrice,
+          objectPricePeriod: res.objectPricePeriod,
+          numberOfRooms: res.numberOfRooms,
+          numberOfRoomsPeriod: res.numberOfRoomsPeriod,
+          createDate: res.createDate,
+          district: res.district?.name[this.util.getDicNameByLanguage()],
+          totalArea: res.totalArea,
+          totalAreaPeriod: res.totalAreaPeriod,
+          floor: res.floor,
+          floorPeriod: res.floorPeriod,
+          status: res.status?.name[this.util.getDicNameByLanguage()],
+          agentFullname: res.agentFullname,
+          agentPhone: res.agentPhone
+        };
+        this.targetAppData.push(data);
+      }
+    }));
+
     this.openModal2(template, 'modal-xl');
   }
 
@@ -424,15 +452,12 @@ export class BoardComponent implements OnInit, OnDestroy {
     window.location.reload();
   }
 
-  closeRequestApplication() {
-    console.log(789)
-  }
-
   onToggle() {
     this.isActive = !this.isActive;
   }
 
   onSearch(): void {
+    this.targetAppData = [];
     this.subscriptions.add(this.boardService.completeTargetApplication(this.secondId).subscribe(res => {
       this.isSellTargetApp = res.operationType?.code === '001002'; // Продать
       const data = {
@@ -478,6 +503,9 @@ export class BoardComponent implements OnInit, OnDestroy {
   clearTargetAppData(): void {
     this.secondId = null;
     this.targetAppData = [];
+    this.file = null;
+    this.isActive = false;
+    this.isTargetApplicationId = false;
     this.isSell = this.isSellTargetApp = this.objectData?.operationType?.code === '001002'; // Продать
   }
 
@@ -526,5 +554,10 @@ export class BoardComponent implements OnInit, OnDestroy {
           }));
       }
     }
+  }
+
+  deleteFile(): void {
+    this.subscriptions.add(this.uploader.removePhotoById(this.file.uuid).subscribe());
+    this.file = null;
   }
 }

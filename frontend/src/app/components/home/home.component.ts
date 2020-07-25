@@ -35,7 +35,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   applicationLightDto: ApplicationLightDto;
   existsClient: boolean = false;
   roles: any;
-  operationTypeId: any;
   jpg2: string = '../../../assets/images/home/2.jpg';
   jpg3: string = '../../../assets/images/home/3.jpg';
   jpg1: string = '../../../assets/images/home/1.jpg';
@@ -48,6 +47,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               private translate: TranslateService,
               private ownerService: OwnerService,
               private ngxLoader: NgxUiLoaderService,
+              private notifyService: NotificationService,
               private newDicService: NewDicService,
               private roleManagerService: RoleManagerService,
               private cdRef: ChangeDetectorRef) {
@@ -73,11 +73,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     params = params.append('groupCodes', String('CLIENT_GROUP'))
     params = params.append('groupCodes', String('AGENT_GROUP'))
     this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
-      if (!this.util.hasShowAgentGroup('CHOOSE_GROUP_AGENT', obj.data) &&
-        this.util.hasShowAgentGroup('CHOOSE_ANY_AGENT', obj.data)) {
-        this.applicationLightForm.controls['agentLogin'].setValidators([Validators.required]);
-        this.applicationLightForm.controls["agentLogin"].updateValueAndValidity();
-      }
       this.roles = obj.data
     });
 
@@ -90,8 +85,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.operationType = this.util.toSelectArray(res);
     }));
 
-    this.subscriptions.add(this.userService.getAgents().subscribe(obj => {
-      this.agentList = this.util.toSelectArrayRoles(obj, 'login');
+    this.subscriptions.add(this.userService.getAgentsToAssign().subscribe(obj => {
+      this.agentList = this.util.toSelectArrayRoles(obj.data, 'login');
     }));
 
     this.findClaims(1);
@@ -99,7 +94,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   fillApplicationLightDTO() {
     this.applicationLightDto = new ApplicationLightDto();
-    this.applicationLightDto.operationTypeId = this.operationTypeId;
+    this.applicationLightDto.operationTypeId = this.applicationLightForm.operationTypeId?.value;
     // this.applicationLightDto.operationTypeId = this.applicationLightForm?.value.operationTypeId?.value
     this.applicationLightDto.note = this.applicationLightForm?.value?.note;
     this.applicationLightDto.agentLogin = this.applicationLightForm?.value?.agentLogin;
@@ -134,24 +129,53 @@ export class HomeComponent implements OnInit, OnDestroy {
     dto.surname = this.applicationLightForm.value.surName;
     dto.patronymic = this.applicationLightForm.value.patronymic;
     dto.phoneNumber = this.applicationLightForm.value.phoneNumber;
-    this.subscriptions.add(this.userService.createUserClient(dto).subscribe());
+    this.subscriptions.add(this.userService.createUserClient(dto).subscribe(res => {
+      this.existsClient = true;
+    }, () => this.notifyService.error('Ошибка', 'Повторите позже')));
+  }
+
+  validate() {
+    if (!this.util.hasShowAgentGroup('CHOOSE_ANY_AGENT', this.roles)) {
+      this.applicationLightForm.controls['agentLogin'].setValidators(Validators.required);
+      this.applicationLightForm.controls['agentLogin'].updateValueAndValidity();
+    } else {
+      this.applicationLightForm.controls['agentLogin'].setValidators(Validators.nullValidator);
+      this.applicationLightForm.controls['agentLogin'].updateValueAndValidity();
+    }
   }
 
   onSave() {
+    this.ngxLoader.startBackground()
+    this.validate();
+
+    const controls = this.applicationLightForm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.subscriptions.add(this.translate.get('claim.validator.' + name).subscribe((text: string) => {
+          this.notifyService.showInfo("Ошибка", "Поле " + text + " не заполнено!!!");
+        }));
+        return;
+      }
+    }
     if (!this.existsClient) {
       this.createClient()
     }
-    this.fillApplicationLightDTO();
-    this.subscriptions.add(this.claimService.saveLightApplication(this.applicationLightDto)
-      .subscribe(data => {
-        if (data != null) {
-          this.findClaims(1);
-          this.clear();
-          this.notification.showSuccess('success', 'Успешно сохранено');
-        }
-      }, err => {
-        this.notification.showWarning('warning', err);
-      }));
+    setTimeout(() => {
+      if (this.existsClient) {
+        this.fillApplicationLightDTO();
+        this.subscriptions.add(this.claimService.saveLightApplication(this.applicationLightDto)
+          .subscribe(data => {
+            if (data != null) {
+              this.findClaims(1);
+              this.clear();
+              this.notification.showSuccess('success', 'Успешно сохранено');
+            }
+          }, err => {
+            this.notification.showWarning('warning', err);
+          }));
+        this.ngxLoader.stopBackground()
+      }
+    }, 1500)
   }
 
   pageChanged(event: any): void {

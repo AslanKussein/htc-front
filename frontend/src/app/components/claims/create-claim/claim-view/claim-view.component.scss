@@ -1,3 +1,30 @@
+.input-group-append {
+  height: 36px;
+}
+
+.form-label-v {
+  height: 1.1875rem;
+  max-font-size: 1.125rem;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 0.44;
+  letter-spacing: normal;
+  text-align: left;
+  color: #373737;
+}
+
+.operation-type {
+  border-radius: 0.3125rem;
+  border: 1px solid #d0d0d0;
+  margin-right: 0.3125rem;
+}
+
+.operation-type-btn {
+  max-width: 120px;
+  min-width: 100px;
+}
+
 textarea, textarea:focus {
   border: none;
   outline: none !important;

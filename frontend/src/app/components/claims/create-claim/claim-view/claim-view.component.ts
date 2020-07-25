@@ -12,6 +12,7 @@ import {UserService} from "../../../../services/user.service";
 import {Period} from "../../../../models/common/period";
 import {Dic} from "../../../../models/dic";
 import {NotificationService} from "../../../../services/notification.service";
+import {DicService} from "../../../../services/dic.service";
 
 @Component({
   selector: 'app-claim-view',
@@ -31,6 +32,9 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   photo3DList: any[] = [];
   isAuthor: boolean = false;
   agentList: Dic[];
+  dicDynamic: Dic[];
+  changeAgent: boolean = false;
+  disabled: boolean = true;
 
   constructor(private actRoute: ActivatedRoute,
               public util: Util,
@@ -38,6 +42,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
               private ownerService: OwnerService,
               private userService: UserService,
               private uploader: UploaderService,
+              private dicService: DicService,
               private notifyService: NotificationService,
               private createClaimComponent: CreateClaimComponent,
               private claimService: ClaimService) {
@@ -48,6 +53,9 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
     this.getApplicationById();
     this.subscriptions.add(this.userService.getAgentsToAssign().subscribe(obj => {
       this.agentList = this.util.toSelectArrayRoles(obj.data, 'login');
+    }));
+    this.subscriptions.add(this.dicService.getDics('YES_NO').subscribe(data => {
+      this.dicDynamic = this.util.toSelectArrayOldDic(data);
     }));
   }
 
@@ -140,6 +148,10 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
       );
     }
     this.ngxLoader.stopBackground();
+  }
+
+  changeAgentBtn() {
+    this.changeAgent = !this.changeAgent;
   }
 
   editApplication() {
@@ -235,12 +247,21 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
     data['applicationId'] = this.applicationId;
 
     this.subscriptions.add(this.claimService.reassignApplication(data)
-        .subscribe(res => {
-              this.notifyService.showInfo('Переназначено', 'Информация');
-            }, error => {
-              this.notifyService.showError('', error?.ru);
-            }
-        ))
+      .subscribe(res => {
+          this.notifyService.showInfo('Переназначено', 'Информация');
+          this.searchByLoginAgent(this.claimViewDto.agent);
+          this.changeAgentBtn();
+        }, error => {
+          this.notifyService.showError('', error?.ru);
+        }
+      ));
     this.ngxLoader.stopBackground();
+  }
+
+  toStringCompare(data: any) {
+    if (this.util.isNullOrEmpty(data)) {
+      return 'false';
+    }
+    return data?.toString();
   }
 }

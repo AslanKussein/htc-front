@@ -1,6 +1,5 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import "~angular-notifier/styles";
-@import "../node_modules/angular-calendar/css/angular-calendar.css";
 
 /* You can add global styles to this file, and also import other style files */
 
@@ -16,12 +15,14 @@
 body {
   height: 100%;
   font-family: 'Montserrat', sans-serif;
-  background-color: #ebedf0!important
+  background-color: #ebedf0 !important
 }
+
 .wrapper {
-  height:auto !important;
-  min-height:100%;
+  height: auto !important;
+  min-height: 100%;
 }
+
 .navbar {
   font-weight: bolder;
   font-size: 18px;
@@ -78,7 +79,7 @@ body {
 }
 
 .btn2 {
-  width: 200px!important;
+  width: 200px !important;
   margin: 5px;
 }
 
@@ -86,18 +87,24 @@ body {
   pointer-events: none !important;
   opacity: 0.6 !important;
 }
+
 .disabled {
   pointer-events: none !important;
   opacity: 0.6 !important;
+}
+
+.pointer-events {
+  pointer-events: none !important;
 }
 
 .accordion-header {
   height: 50px;
 }
 
-.card-body.accordionAboutObject{
+.card-body.accordionAboutObject {
   //min-height: 790px!important;
 }
+
 .row {
   margin-bottom: 16px;
 }
@@ -111,8 +118,8 @@ body {
 }
 
 .close:focus {
-  border: none!important;
-  outline: none!important;
+  border: none !important;
+  outline: none !important;
 }
 
 .color-aqua {
@@ -173,4 +180,9 @@ table tbody tr td {
 
 .table thead th, .table thead td {
   border: none;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #00b2a8;
+  color: white;
 }

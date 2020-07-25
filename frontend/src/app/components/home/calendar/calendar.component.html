@@ -1,34 +1,65 @@
-<div class="row text-center">
-  <div class="col-sm">
-    <label>{{viewDate | calendarDate:(view + 'ViewTitle'):'ru'}}</label>
-    <input type="text" id="lastModifyDateTo" class="form-control" [(ngModel)]="viewDate"
-           bsDatepicker #ru="bsDatepicker" (ngModelChange)="getEventForCalendar()"/>
+<div class="row disabled-bottom-margin" style="margin: 0 3px;">
+  <div class="col-sm-2 card" style="border: none!important">
+    <div class="card-body month-block-div">
+      <ul class="list-group " *ngFor="let data of month; let i = index">
+        <li class="list-group-item"
+            [ngClass]="data.id == monthId ? 'color-aqua text-white':''">
+          <a (click)="getEventForCalendar(data.id)">{{data.name}}</a>
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
-<br/>
-<div ngxUiLoaderBlurred>
-  <mwl-calendar-month-view
-    [viewDate]="viewDate"
-    [refresh]="refresh"
-    [events]="events"
-    (dayClicked)="getEventsByClick($event.day)"
-    [weekStartsOn]="1"
-    (eventClicked)="handleEvent($event.event)"
-  >
-  </mwl-calendar-month-view>
-</div>
-
-<ng-template #modalContent let-close="close">
-  <div class="modal-header">
-    <h5 class="modal-title">Просмотр события</h5>
-    <button type="button" class="close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+  <div class="col-sm card" style="border: none!important">
+    <div class="card-body">
+      <div class="row text-center">
+        <div class="col-sm-1">
+          <div
+            style=" width: 14px;height: 24px;"
+            mwlCalendarPreviousView
+            [view]="view"
+            [(viewDate)]="viewDate"
+            (viewDateChange)="viewDateChange.next(viewDate); changeMonthBlock(viewDate)"
+          >
+            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="col-sm">
+          <label class="main-month-name">{{viewDate | calendarDate:(view + 'ViewTitle'):'ru'}}</label>
+        </div>
+        <div class="col-sm-1">
+          <div
+            style="width: 14px;height: 24px;"
+            mwlCalendarNextView
+            [view]="view"
+            [(viewDate)]="viewDate"
+            (viewDateChange)="viewDateChange.next(viewDate);changeMonthBlock(viewDate)"
+          >
+            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+      <div ngxUiLoaderBlurred>
+        <mwl-calendar-month-view
+          (beforeViewRender)="applyDateSelectionPolicy($event)"
+          [viewDate]="viewDate"
+          [ngClass]="'calActive'"
+          [refresh]="refresh"
+          [events]="events"
+          [locale]="locale"
+          (dayClicked)="getEventsByClick($event.day)"
+          [weekStartsOn]="1"
+          (eventClicked)="handleEvent($event.event)"
+        >
+        </mwl-calendar-month-view>
+      </div>
+    </div>
   </div>
-  <div class="modal-body">
-    <div class="row">
-      <div class="col-sm">
-        <table class="table table-bordered table-sm">
+  <div class="col-sm-4 card to-do-month" style="border: none!important">
+    <div class="card-body">
+      <p class="to-do-title">Выполнить</p>
+      <p class="to-do-title py-3">{{getUTCDay(date)}} {{viewDate | calendarDate:(view + 'ViewTitle'):'ru'}}</p>
+      <div class="row  overflow-auto">
+        <table class="table table-sm">
           <thead class="text-center">
           <tr>
             <th>ID</th>
@@ -40,14 +71,14 @@
             <th>Комментарий</th>
           </tr>
           </thead>
-          <tbody style="cursor: pointer">
+          <tbody>
           <tr *ngFor="let ev of eventsData;let i = index">
-            <td>{{i+1}}</td>
+            <td>{{i + 1}}</td>
             <td>{{format2(ev?.eventDate)}}</td>
             <td>{{getDicNameByLanguage(ev, 'eventType')}}</td>
             <td>{{getDicNameByLanguage(ev, 'operationType')}}</td>
             <td>
-              <a (click)="close()" [routerLink]="['/create-claim-view/', ev?.applicationId]">{{ev.applicationId}}</a>
+              <a [routerLink]="['/create-claim-view/', ev?.applicationId]">{{ev.applicationId}}</a>
             </td>
             <td>{{ev.description}}</td>
             <td>{{ev.comment}}</td>
@@ -70,9 +101,4 @@
       </div>
     </div>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="close()">
-      OK
-    </button>
-  </div>
-</ng-template>
+</div>

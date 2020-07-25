@@ -66,6 +66,11 @@ export class BoardService {
       .pipe(tap(), catchError(BoardService.handleError));
   }
 
+  getTargetApplication(id: number): Observable<any> {
+    return this.http.get(`${this.configService.apiDataManagerUrl}/api/kanban/getTargetApplication/${id}`)
+      .pipe(tap(), catchError(BoardService.handleError));
+  }
+
   private static handleError(error: HttpErrorResponse) {
     return throwError(
       error);

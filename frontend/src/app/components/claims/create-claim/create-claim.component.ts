@@ -31,6 +31,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {NewDicService} from "../../../services/new.dic.service";
 import {DicService} from "../../../services/dic.service";
+import {HttpParams} from "@angular/common/http";
 declare var jquery: any;   // not required
 declare var $: any;   // not required
 
@@ -101,7 +102,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   postcode2: any;
   dicName: string;
   activeTab = 'claim';
-
+  expandBlock: boolean = false;
   public parameters = {
     options: {
       provider: 'yandex#search'
@@ -314,13 +315,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.ngxLoader.stopBackground();
     }
 
-    if (!this.applicationId) {
-      this.subscriptions.add(
-        this.roleManagerService.readUser(3).subscribe(obj => {
-          this.roles = obj.operations;
-        })
-      )
-    }
+    let params = new HttpParams();
+    params = params.append('groupCodes', String('AGENT_GROUP'))
+    this.roleManagerService.getCheckOperationList(params).subscribe(obj => {
+      this.roles = obj.data
+    });
 
     window.scrollTo(0, 0);
     this.applicationForm.unification = 'address';
@@ -783,9 +782,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.setValidator('totalArea', Validators.required);
         this.setValidator('numberOfBedrooms', Validators.required);
         this.setValidator('apartmentNumber', Validators.required);
+        this.setValidator('unification', Validators.required);
       } else if (this.isSell()) { // купить
         this.setValidator('districtId', Validators.required);
         this.setValidator('objectPrice', Validators.nullValidator);
+        this.setValidator('unification', Validators.nullValidator);
       }
     } else if (this.isHouse()) { // дом
       this.setValidator('districtId', Validators.required);
@@ -980,6 +981,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       if (this.util.isNullOrEmpty(this.applicationForm.phoneNumber)) return;
       this.subscriptions.add(this.ownerService.findByLoginAndAppId(this.applicationForm.phoneNumber, null)
         .subscribe(res => {
+          this.existsClient = true;
         }, () => this.createClient()));
 
     }
@@ -994,7 +996,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     dto.email = this.applicationForm.email;
     dto.gender = this.applicationForm.gender;
     dto.phoneNumber = this.applicationForm.phoneNumber;
-    this.subscriptions.add(this.userService.createUserClient(dto).subscribe());
+    this.subscriptions.add(this.userService.createUserClient(dto).subscribe(res=>{
+      this.existsClient = true;
+    }, () => this.notifyService.error('Ошибка', 'Повторите позже')));
   }
 
   submit() {
@@ -1041,36 +1045,32 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
           this.notifyService.showWarning('', err?.ru);
         }));
     } else {
-      this.subscriptions.add(this.claimService.saveClaim(this.application)
-        .subscribe(data => {
-          if (data != null) {
-            this.saved = true;
-            this.util.navigateByUrl(`/create-claim-view/` + data)
-            this.notifyService.showSuccess('', 'Успешно сохранено');
-          }
-        }, err => {
-          this.ngxLoader.stopBackground();
-          if (err?.ru.includes('На апартаменты')) {
-            this.modal.open(this.modalContent, {size: 'sm'});
-          } else {
-            this.notifyService.showWarning('', err?.ru);
-          }
-        }));
+      if (this.existsClient) {
+        setTimeout(()=> {
+          this.subscriptions.add(this.claimService.saveClaim(this.application)
+            .subscribe(data => {
+              if (data != null) {
+                this.saved = true;
+                this.util.navigateByUrl(`/create-claim-view/` + data)
+                this.notifyService.showSuccess('', 'Успешно сохранено');
+              }
+            }, err => {
+              this.ngxLoader.stopBackground();
+              if (err?.ru.includes('На апартаменты')) {
+                this.modal.open(this.modalContent, {size: 'sm'});
+              } else {
+                this.notifyService.showWarning('', err?.ru);
+              }
+            }));
+        }, 1000)
+      }
     }
     this.ngxLoader.stopBackground();
   }
 
   hasShowGroup(operation: any) {
     if (this.util.isNullOrEmpty(this.applicationId)) {
-      if (!this.util.isNullOrEmpty(this.roles)) {
-        for (const data of this.roles) {
-          if (!this.util.isNullOrEmpty(data)) {
-            if (operation.includes(data)) {
-              return false;
-            }
-          }
-        }
-      }
+      return false;
     } else {
       if (!this.util.isNullOrEmpty(this.operationList)) {
         for (const data of this.operationList) {
@@ -1083,6 +1083,26 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       }
     }
     return true
+  }
+
+  toStringCompare(data: any) {
+    if (this.util.isNullOrEmpty(data)) {
+      if (this.applicationId) {
+        return 'false';
+      }
+    }
+    return data?.toString();
+  }
+
+  hasUpdateRole() {
+    if (!this.util.isNullOrEmpty(this.operationList)) {
+      for (const operation of this.operationList) {
+        if (operation.includes("UPDATE_")) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   reassignApplication() {
@@ -1369,7 +1389,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.yardTypeId = generalCharacteristicsDto.yardTypeId;
       this.applicationForm.yearOfConstruction = generalCharacteristicsDto.yearOfConstruction;
     }
-
   }
 
   customSearchFn(term: string, item) {
@@ -1567,5 +1586,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         }, 300);
       }));
     }
+  }
+
+  expandedBlock() {
+    this.expandBlock = !this.expandBlock;
   }
 }

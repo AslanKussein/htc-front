@@ -65,9 +65,8 @@ export class CloseDealComponent implements OnInit {
   }
 
   cancel() {
-    // this.board.displayBoardContent = true;
-    this.location.replaceState('board');
-    this.util.refresh()
+    this.board.displayBoardContent = true;
+    this.util.navigateByUrl(localStorage.getItem('backUrl'));
     // this.board.sortStatusesDic(this.board.activeTab);
   }
 
@@ -92,6 +91,17 @@ export class CloseDealComponent implements OnInit {
           }));
       }
     }
+  }
+
+  fileDeleted(uuid, id) {
+    this.uploader.removePhotoById(uuid).subscribe(res=> {
+      if (id == 1) {
+        this.contract = null;
+      }
+      if (id == 2) {
+        this.deposit = null;
+      }
+    })
   }
 
   btnEnabled () {

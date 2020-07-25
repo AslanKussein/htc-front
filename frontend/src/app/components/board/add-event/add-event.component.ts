@@ -71,14 +71,13 @@ export class AddEventComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.eventsService.addEvent(this.eventsForm.value).subscribe(res => {
       this.eventsService.putCommentEvent(res, this.eventsForm.value.comment).subscribe();
       this.notificationService.showSuccess('Информация', 'Статус изменен');
-      this.board.sortStatusesDic(this.board.activeTab);
+      this.cancel();
     }))
   }
 
   cancel() {
-    this.util.dnHref('board');
     this.board.displayBoardContent = true;
-    this.board.sortStatusesDic(this.board.activeTab);
+    this.util.navigateByUrl(localStorage.getItem('backUrl'));
   }
 
   ngOnDestroy() {

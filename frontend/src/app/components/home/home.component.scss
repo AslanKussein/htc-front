@@ -22,22 +22,60 @@ textarea.form-controls {
   height: 4.375rem;
 }
 
-input[type='radio']:after {
-  width: 15px;
-  height: 15px;
-  border-radius: 15px;
-  top: -2px;
-  left: -1px;
-  position: relative;
-  background-color: #d1d3d1;
+.checkbox label:after,
+.radio label:after {
   content: '';
-  display: inline-block;
-  visibility: visible;
-  border: 2px solid white;
+  display: table;
+  clear: both;
 }
 
-input[type='radio']:checked:after,input[type='radio']:checked:before {
-  background-color: #00b2a8;
+.checkbox .cr,
+.radio .cr {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #00b2a8;
+  border-radius: .25em;
+  width: 1.3em;
+  height: 1.3em;
+  float: left;
+  margin-right: .5em;
+}
+
+.radio .cr {
+  border-radius: 50%;
+}
+
+.checkbox .cr .cr-icon,
+.radio .cr .cr-icon {
+  position: absolute;
+  font-size: .8em;
+  line-height: 0;
+  top: 50%;
+  left: 13%;
+}
+
+.radio .cr .cr-icon {
+  margin-left: 0.04em;
+}
+
+.checkbox label input[type="checkbox"],
+.radio label input[type="radio"] {
+  display: none;
+}
+
+.checkbox label input[type="checkbox"]+.cr>.cr-icon,
+.radio label input[type="radio"]+.cr>.cr-icon {
+  opacity: 0;
+}
+
+.checkbox label input[type="checkbox"]:checked+.cr>.cr-icon,
+.radio label input[type="radio"]:checked+.cr>.cr-icon {
+  opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled+.cr,
+.radio label input[type="radio"]:disabled+.cr {
+  opacity: .5;
 }
 
 .badge-txt {
@@ -45,22 +83,87 @@ input[type='radio']:checked:after,input[type='radio']:checked:before {
   font-size: 1.125rem;
 }
 
-table {
-  font-family: Montserrat-Bold, serif;
-  color: #767d86;
-  line-height: 1.75rem;
-  font-size: 1.125rem;
+table thead {
+  width: 80px;
+  height: 31px;
+  font-size: 18px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  text-align: left;
+  color: #717274;
 }
 
-table thead {
-  font-family: Montserrat-Regular, serif;
+table tbody tr td {
+  font-stretch: normal;
+  font-style: normal;
   color: #767d86;
-  line-height: 1.75rem;
-  font-size: 1.125rem;
+  height: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.56;
+  letter-spacing: normal;
 }
 
 .card-agent {
   font-size: 1rem;
   min-height: 18.125rem;
   max-height: 18.125rem;
+  width: 100%;
+  padding-right: 5px;
+}
+
+.card-agent-col-sm {
+  padding-right: 0px!important;
+}
+
+.operation-type {
+  border-radius: 0.3125rem;
+  border: 1px solid #d0d0d0;
+  margin-right: 0.3125rem;
+}
+
+.card-agent-title {
+    width: 109px;
+    height: 43px;
+    font-size: 20px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.1;
+    letter-spacing: normal;
+    text-align: left;
+    color: #373737;
+}
+
+.input-info {
+  padding: 0 41px;
+}
+
+.sell-buy-text {
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 0.44;
+  letter-spacing: normal;
+  text-align: left;
+  color: #00b2a8;
+}
+
+.radio {
+  width: 270px;
+}
+
+.pad-left41 {
+  padding-left: 41px;
+}
+
+.pad-right41 {
+  padding-right: 41px;
+}
+
+.width-100 {
+  width: 100%;
 }

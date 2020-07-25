@@ -31,9 +31,11 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   homeTypes: Dic[];
   objectTypes: any;
   myObject: boolean;
-  objectMy: any;
+  objectMy: any = [
+    {label: 'Все объекты', value: false},
+    {label: 'Мои объекты', value: true},
+  ];
   eventCall: any = false;
-  objectMyModel: number;
   subscriptions: Subscription = new Subscription();
   objectFilterDto: ObjectFilterDto;
   modalRef: BsModalRef;
@@ -43,6 +45,7 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   roomsCount: any;
   expanded: boolean = false;
   objectForm: any;
+  myClaims: boolean = false;
   @ViewChild('openObjectClaims', {static: true}) openObjectClaims: TemplateRef<any>;
 
   constructor(private router: Router,
@@ -79,11 +82,6 @@ export class ObjectsComponent implements OnInit, OnDestroy {
     this.findObjects(1);
     this.loadDictionary();
     this.myObject = true;
-    this.objectMyModel = 1;
-    this.objectMy = [
-      {label: 'Все объекты', value: 1},
-      {label: 'Мои объекты', value: 2},
-    ];
     this.roomsCount = []
     for (let i = 1; i < 6; i++) {
       this.roomsCount.push(i);
@@ -115,15 +113,9 @@ export class ObjectsComponent implements OnInit, OnDestroy {
     });
   }
 
-  myObjectChange(id: number) {
-    this.objectMyModel = id;
-    if (this.objectMyModel == 1) {
-      this.objectForm.my = false;
-      this.findObjects(1);
-    } else if (this.objectMyModel == 2) {
-      this.objectForm.my = true;
-      this.findObjects(1);
-    }
+  filterBtnChange(value) {
+    this.myClaims = value;
+    this.findObjects(1);
   }
 
   objectsData;
@@ -184,9 +176,8 @@ export class ObjectsComponent implements OnInit, OnDestroy {
     if (!this.util.isNullOrEmpty(this.objectForm?.numberOfRooms)) {
       this.objectFilterDto.numberOfRooms = parseInt(this.objectForm?.numberOfRooms);
     }
-    if (!this.util.isNullOrEmpty(this.objectForm?.my)) {
-      this.objectFilterDto.my = this.objectForm?.my;
-    }
+    this.objectFilterDto.my = this.myClaims;
+
     if (this.fromBoard) {
       this.subscriptions.add(this.objectService.getRealPropertyWithAppList(this.objectFilterDto).subscribe(res => {
         this.objectsData = res.data.data.data;

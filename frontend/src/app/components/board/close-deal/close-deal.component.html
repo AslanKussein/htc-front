@@ -19,6 +19,7 @@
           </label>
           <a *ngIf="this.contract?.uuid" [href]="util.generatorFullUrl(this.contract?.uuid)" target="_blank"><i class="fa fa-paperclip" aria-hidden="true"></i>
             {{this.contract?.name}} ({{this.contract?.size}} КБ)</a>
+          &nbsp;&nbsp;&nbsp;<i *ngIf="this.contract?.uuid" aria-hidden="true" class="fa fa-trash text-danger" (click)="fileDeleted(this.contract?.uuid, 1)"></i>
         </div>
       </div>
       <p class="text-danger" *ngIf="!this.contract?.uuid">Для закрытия сделки необходимо прикрепить сканированный документ</p>
@@ -42,6 +43,7 @@
           </label>
           <a *ngIf="this.deposit?.uuid" [href]="util.generatorFullUrl(this.deposit?.uuid)" target="_blank"><i class="fa fa-paperclip" aria-hidden="true"></i>
             {{this.deposit?.name}} ({{this.deposit?.size}} КБ)</a>
+          &nbsp;&nbsp;&nbsp;<i *ngIf="this.deposit?.uuid" aria-hidden="true" class="fa fa-trash text-danger" (click)="fileDeleted(this.deposit?.uuid, 2)"></i>
         </div>
       </div>
       <p class="text-danger" *ngIf="this.operationId == 1 && this.boardSelect.hasDepositContract && !this.deposit?.uuid">Для закрытия сделки необходимо прикрепить сканированный документ</p>

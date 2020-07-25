@@ -52,7 +52,11 @@ export class AuthenticationService implements OnDestroy {
           this.subscriptions.add(this.userService.findUserByLogin().subscribe(data => {
             if (data != null) {
               param_.name = data.name
-              param_.photoUuid = data.photoUuid
+              if (!this.util.isNullOrEmpty(data.photoUuid)) {
+                param_.photoUuid = this.util.generatorPreviewUrl(data.photoUuid)
+              } else {
+                param_.photoUuid = 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png'
+              }
               param_.surname = data.surname
               param_.login = data.login
               param_.roles = data.roles
