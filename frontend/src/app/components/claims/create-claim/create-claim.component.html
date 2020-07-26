@@ -544,6 +544,7 @@
                       <ng-select
                         [items]="districts"
                         bindValue="value"
+                        [multiple]="isSell()"
                         [readonly]="isBuy()"
                         [(ngModel)]="applicationForm.districtId"
                         formControlName="districtId"
