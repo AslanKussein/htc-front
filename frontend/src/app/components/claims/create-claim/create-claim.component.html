@@ -536,6 +536,23 @@
                     </div>
                   </div>
                   <div class="row">
+                    <div class="col-sm" *ngIf="isSell()"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                      <label class="form-label-v" translate>Город
+                        <span class="text-danger" *ngIf="!applicationForm.cityId">&nbsp;*</span>
+                      </label>
+                      <ng-select
+                        [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])"
+                        [items]="city"
+                        [(ngModel)]="applicationForm.cityId"
+                        formControlName="cityId"
+                        bindValue="value"
+                        placeholder="Город">
+                      </ng-select>
+                      <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">
+                        <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>
+                      </div>
+                    </div>
                     <div class="col-sm"
                          [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
                       <label class="form-label-v">Район
@@ -554,62 +571,79 @@
                         <div *ngIf="f.districtId.errors.required" translate>claim.requiredField</div>
                       </div>
                     </div>
-                    <div class="row" *ngIf="isBuy()">
-                      <div class="col-sm">
-                        <label class="form-label-v" translate>claim.numberHouse
-                          <span class="text-danger" *ngIf="!applicationForm.houseNumber">&nbsp;*</span>
+                    <div class="col-sm" *ngIf="isBuy()">
+                      <label class="form-label-v" translate>claim.numberHouse
+                        <span class="text-danger" *ngIf="!applicationForm.houseNumber">&nbsp;*</span>
+                      </label>
+                      <div class="input-group">
+                        <input type="text" min="0" class="form-control"
+                               [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])"
+                               placeholder="{{'claim.numberHouse' | translate}}"
+                               [(ngModel)]="applicationForm.houseNumber" maxlength="10"
+                               (ngModelChange)="getMap()"
+
+                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                               (keypress)="util.keyPress($event)"
+                               [readOnly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
+                               formControlName="houseNumber"
+                        />
+                      </div>
+                      <div *ngIf="f.houseNumber.touched && f.houseNumber.invalid" class="text-danger">
+                        <div *ngIf="f.houseNumber.errors.required" translate>claim.requiredField</div>
+                      </div>
+                    </div>
+                    <div class="col-sm" *ngIf="isBuy()"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])">
+                      <div *ngIf="isApartment()">
+                        <label class="form-label-v" translate>Номер квартиры
+                          <span class="text-danger" *ngIf="!applicationForm.apartmentNumber">&nbsp;*</span>
                         </label>
                         <div class="input-group">
-                          <input type="text" min="0" class="form-control"
-                                 [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])"
-                                 placeholder="{{'claim.numberHouse' | translate}}"
-                                 [(ngModel)]="applicationForm.houseNumber" maxlength="10"
-                                 (ngModelChange)="getMap()"
-
+                          <input type="number" min="1" class="form-control"
+                                 placeholder="Номер квартиры" maxlength="20"
                                  oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                 (keypress)="util.keyPress($event)"
-                                 [readOnly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
-                                 formControlName="houseNumber"
-                          />
+                                 [(ngModel)]="applicationForm.apartmentNumber"
+                                 (change)="showModalChooseClaim()"
+                                 formControlName="apartmentNumber"/>
                         </div>
-                        <div *ngIf="f.houseNumber.touched && f.houseNumber.invalid" class="text-danger">
-                          <div *ngIf="f.houseNumber.errors.required" translate>claim.requiredField</div>
-                        </div>
-                      </div>
-                      <div class="col-sm"
-                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])">
-                        <div *ngIf="isApartment()">
-                          <label class="form-label-v" translate>Номер квартиры
-                            <span class="text-danger" *ngIf="!applicationForm.apartmentNumber">&nbsp;*</span>
-                          </label>
-                          <div class="input-group">
-                            <input type="number" min="1" class="form-control"
-                                   placeholder="Номер квартиры" maxlength="20"
-                                   oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                   [(ngModel)]="applicationForm.apartmentNumber"
-                                   (change)="showModalChooseClaim()"
-                                   formControlName="apartmentNumber"/>
-                          </div>
-                          <div *ngIf="f.apartmentNumber.touched && f.apartmentNumber.invalid" class="text-danger">
-                            <div *ngIf="f.apartmentNumber.errors.required" translate>claim.requiredField</div>
-                          </div>
+                        <div *ngIf="f.apartmentNumber.touched && f.apartmentNumber.invalid" class="text-danger">
+                          <div *ngIf="f.apartmentNumber.errors.required" translate>claim.requiredField</div>
                         </div>
                       </div>
-                      <div class="col-sm"
-                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
-                           *ngIf="!isSell()">
-                        <label class="form-label-v" translate>claim.roomCount
-                          <span class="text-danger" *ngIf="!applicationForm.numberOfRooms">&nbsp;*</span>
-                        </label>
-                        <input type="number" min="1" class="form-control"
-                               placeholder="Количество комнат" maxlength="2"
+                    </div>
+                    <div class="col-sm"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
+                         *ngIf="isBuy()">
+                      <label class="form-label-v" translate>claim.roomCount
+                        <span class="text-danger" *ngIf="!applicationForm.numberOfRooms">&nbsp;*</span>
+                      </label>
+                      <input type="number" min="1" class="form-control"
+                             placeholder="Количество комнат" maxlength="2"
+                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                             [(ngModel)]="applicationForm.numberOfRooms"
+                             (keypress)="util.keyPress($event)"
+                             formControlName="numberOfRooms"/>
+                      <div *ngIf="f.numberOfRooms.touched && f.numberOfRooms.invalid" class="text-danger">
+                        <div *ngIf="f.numberOfRooms.errors.required" translate>claim.requiredField</div>
+                      </div>
+                    </div>
+                    <div class="col-sm" *ngIf="isSell()"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                      <label class="form-label-v" translate>claim.roomCount </label>
+                      <div class="input-group"
+                           [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
+                        <input type="number" min="0" class="form-control" maxlength="10"
                                oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                               [(ngModel)]="applicationForm.numberOfRooms"
+                               placeholder="{{'patterns.from2' | translate}}"
                                (keypress)="util.keyPress($event)"
-                               formControlName="numberOfRooms"/>
-                        <div *ngIf="f.numberOfRooms.touched && f.numberOfRooms.invalid" class="text-danger">
-                          <div *ngIf="f.numberOfRooms.errors.required" translate>claim.requiredField</div>
-                        </div>
+                               [(ngModel)]="applicationForm.numberOfRoomsFrom"
+                               formControlName="numberOfRoomsFrom"/>
+                        <input type="number" min="0" class="form-control" maxlength="10"
+                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                               placeholder="{{'patterns.to2' | translate}}"
+                               [(ngModel)]="applicationForm.numberOfRoomsTo"
+                               (keypress)="util.keyPress($event)"
+                               formControlName="numberOfRoomsTo"/>
                       </div>
                     </div>
                   </div>
@@ -841,43 +875,7 @@
                   </div>
                   <div class="row w-100"></div>
                   <div *ngIf="expandBlock">
-                    <div class="row w-100">
-                      <div class="col-sm" *ngIf="isSell()"
-                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                        <label class="form-label-v" translate>Город
-                          <span class="text-danger" *ngIf="!applicationForm.cityId">&nbsp;*</span>
-                        </label>
-                        <ng-select
-                          [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])"
-                          [items]="city"
-                          [(ngModel)]="applicationForm.cityId"
-                          formControlName="cityId"
-                          bindValue="value"
-                          placeholder="Город">
-                        </ng-select>
-                        <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">
-                          <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>
-                        </div>
-                      </div>
-                      <div class="col-sm" *ngIf="isSell()"
-                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                        <label class="form-label-v" translate>claim.roomCount </label>
-                        <div class="input-group"
-                             [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
-                          <input type="number" min="0" class="form-control" maxlength="10"
-                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                 placeholder="{{'patterns.from2' | translate}}"
-                                 (keypress)="util.keyPress($event)"
-                                 [(ngModel)]="applicationForm.numberOfRoomsFrom"
-                                 formControlName="numberOfRoomsFrom"/>
-                          <input type="number" min="0" class="form-control" maxlength="10"
-                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                 placeholder="{{'patterns.to2' | translate}}"
-                                 [(ngModel)]="applicationForm.numberOfRoomsTo"
-                                 (keypress)="util.keyPress($event)"
-                                 formControlName="numberOfRoomsTo"/>
-                        </div>
-                      </div>
+                    <div class="row">
                       <div class="col-sm" *ngIf="isApartment()"
                            [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
                         <label class="form-label-v">Этаж</label>
