@@ -22,16 +22,16 @@ declare var jquery: any;   // not required
 declare var $: any;   // not required
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'htc';
-  _language = language;
-  currentUser: User;
-  logo: string = '../../../assets/images/home/Лого.png';
-  subscriptions: Subscription = new Subscription();
+    title = 'htc';
+    _language = language;
+    currentUser: User;
+    logo: string = '../../../assets/images/home/Лого.png';
+    subscriptions: Subscription = new Subscription();
     private stompClient = null;
     webSocketConnection: boolean = false;
 
@@ -60,9 +60,15 @@ export class AppComponent implements OnInit, OnDestroy {
             $("#wrapper").toggleClass("toggled");
         });
         this.webSocketConnect()
-
+        $(document).scroll(function () {
+            let y = $(this).scrollTop();
+            if (y > 600) {
+                $('.bottomMenu').fadeIn();
+            } else {
+                $('.bottomMenu').fadeOut();
+            }
+        });
     }
-
 
     isActive() {
         return '/' + localStorage.getItem('url') == this.router.url;
@@ -128,5 +134,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this.showWebSocketConnected(false);
         console.log('Disconnected!');
+    }
+
+    navigateTop() {
+        window.scrollTo(0, 0);
     }
 }

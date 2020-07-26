@@ -19,3 +19,13 @@ a, a:active {
   outline: 0;
   border: 0;
 }
+
+.bottomMenu {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  height: 60px;
+  border-top: 1px solid #000;
+  z-index: 1;
+  left: 70px;
+}

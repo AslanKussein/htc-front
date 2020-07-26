@@ -66,8 +66,8 @@ export class CloseDealComponent implements OnInit {
 
   cancel() {
     this.board.displayBoardContent = true;
+    this.board.sortStatusesDic(this.board.activeTab);
     this.util.navigateByUrl(localStorage.getItem('backUrl'));
-    // this.board.sortStatusesDic(this.board.activeTab);
   }
 
   ngOnInit(): void {
