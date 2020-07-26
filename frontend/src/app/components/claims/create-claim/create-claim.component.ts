@@ -70,6 +70,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   propertyDevelopers: Dic[];
   heatingSystems: Dic[];
   applicationFlag: Dic[];
+  houseClass: Dic[];
   applicationFlagSort: Dic[];
   agentList: Dic[];
   sewerageSystems: Dic[];
@@ -384,6 +385,10 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     }));
     this.subscriptions.add(this.newDicService.getDictionary('ApplicationFlag').subscribe(data => {
       this.applicationFlag = this.util.toSelectArrayFlag(data);
+    }));
+
+    this.subscriptions.add(this.newDicService.getDictionary('HouseClass').subscribe(data => {
+      this.houseClass = this.util.toSelectArray(data);
     }));
 
     this.subscriptions.add(this.userService.getAgentsToAssign().subscribe(obj => {

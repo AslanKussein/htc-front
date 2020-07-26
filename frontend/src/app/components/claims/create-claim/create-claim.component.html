@@ -995,11 +995,13 @@
                       <div class="col-sm" [hidden]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])"
                            *ngIf="isApartment() && isBuy()">
                         <label class="form-label-v">Класс жилья</label>
-                        <input type="text" id="housingClass" class="form-control" maxlength="20"
-                               [(ngModel)]="applicationForm.housingClass"
-                               placeholder="{{'Класс жилья' | translate}}"
-                               [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
-                               formControlName="housingClass"/>
+                        <ng-select
+                          [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
+                          [items]="houseClass"
+                          [(ngModel)]="applicationForm.housingClass"
+                          formControlName="housingClass"
+                          bindValue="value">
+                        </ng-select>
                       </div>
                       <div class="col-sm" *ngIf="isApartment()"
                            [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
