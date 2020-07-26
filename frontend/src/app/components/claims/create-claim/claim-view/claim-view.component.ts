@@ -35,6 +35,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   dicDynamic: Dic[];
   changeAgent: boolean = false;
   disabled: boolean = true;
+  expandBlock: boolean = false;
 
   constructor(private actRoute: ActivatedRoute,
               public util: Util,
@@ -121,7 +122,10 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
       this.subscriptions.add(
         this.claimService.getApplicationViewById(this.applicationId).subscribe(res => {
           this.claimViewDto = res;
-
+          this.claimViewDto.possibleReasonForBiddingIdList = this.util.toSelectArrayView(this.claimViewDto.possibleReasonForBiddingIdList)
+          this.claimViewDto.applicationFlagIdList = this.util.toSelectArrayView(this.claimViewDto.applicationFlagIdList)
+          this.claimViewDto.typeOfElevatorList = this.util.toSelectArrayView(this.claimViewDto.typeOfElevatorList)
+          this.claimViewDto.parkingTypes = this.util.toSelectArrayView(this.claimViewDto.parkingTypes)
           this.fillIsEmpty();
           this.searchByPhone(res.clientLogin);
           this.searchByLoginAgent(res.agent);
@@ -208,13 +212,6 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  getDicNameByLanguageColum(data: any) {
-    if (!this.util.isNullOrEmpty(data)) {
-      let x = this.util.getDicNameByLanguage();
-      return data[x];
-    }
-  }
-
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
@@ -263,5 +260,9 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
       return 'false';
     }
     return data?.toString();
+  }
+
+  expandedBlock() {
+    this.expandBlock = !this.expandBlock;
   }
 }

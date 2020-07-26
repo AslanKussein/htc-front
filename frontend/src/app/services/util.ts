@@ -46,6 +46,17 @@ export class Util {
     return list;
   }
 
+  toSelectArrayView(data) {
+    const list = [];
+    if (data) {
+      const len = data.length;
+      for (let i = 0; i < len; i++) {
+        list.push({value: data[i][this.getDicNameByLanguage()], label: data[i][this.getDicNameByLanguage()]});
+      }
+    }
+    return list;
+  }
+
   toSelectArrayOldDic(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
     const list = [];
     if (data) {
