@@ -4,6 +4,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ConfigService} from "./config.service";
 import {isArray} from "rxjs/internal-compatibility";
 import {formatDate} from '@angular/common';
+declare var jquery: any;   // not required
+declare var $: any;   // not required
 
 const moment = require('moment')
 
@@ -441,5 +443,15 @@ export class Util {
     delete params.esid;
     console.log(params)
     this.router.navigate([href], { queryParams: params });
+  }
+
+  showHideMenu(action) {
+    if (action) {
+      $("#sidebar-wrapper").show();
+      $("#mainNavBar").show();
+    } else {
+      $("#sidebar-wrapper").hide();
+      $("#mainNavBar").hide();
+    }
   }
 }

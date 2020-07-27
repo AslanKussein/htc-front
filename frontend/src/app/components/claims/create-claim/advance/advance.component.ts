@@ -52,8 +52,7 @@ export class AdvanceComponent implements OnInit, OnDestroy {
               private uploaderService: UploaderService) {
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('fromBoard'))) {
       this.fromBoard = this.actRoute.snapshot.queryParamMap.get('fromBoard') == 'true';
-      $("#sidebar-wrapper").hide();
-      $("#mainNavBar").hide();
+      this.util.showHideMenu(false);
     }
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
       this.payTypeId = this.actRoute.snapshot.queryParamMap.get('activeTab') == 'advanceAgreement' ? '5' : '4';
