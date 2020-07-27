@@ -127,6 +127,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   percent: number;
   roles: any;
   contractDto: ContractDto;
+  fromBoard: boolean = false;
 
   constructor(public util: Util,
               private notifyService: NotificationService,
@@ -156,6 +157,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     }
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
       this.activeTab = this.actRoute.snapshot.queryParamMap.get('activeTab');
+    }
+    if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('fromBoard'))) {
+      this.fromBoard = this.actRoute.snapshot.queryParamMap.get('fromBoard') == 'true';
     }
   }
 
@@ -442,7 +446,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.ngxLoader.startBackground();
 
     this.subscriptions.add(this.claimService.getClaimById(id).subscribe(data => {
-      if (data != null) {
+      if (!this.util.isNullOrEmpty(data)) {
         this.searchByPhone(data.clientLogin);
         this.fillApplicationForm(data);
         this.cdRef.detectChanges();
@@ -544,7 +548,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.yardTypeId = this.util.nvl(this.applicationForm.residentialComplexId?.yardType, null);//Двор
       this.applicationForm.playground = this.util.nvl(this.util.toString(this.applicationForm.residentialComplexId?.playground), null);//Детская площадка
       this.applicationForm.propertyDeveloperId = this.util.nvl(this.applicationForm.residentialComplexId?.propertyDeveloperId, null);//Затройщик
-      this.applicationForm.housingClass = this.util.nvl(this.applicationForm.residentialComplexId?.housingClass, null);//Класс жилья
+      this.applicationForm.housingClass = parseInt(this.util.nvl(this.applicationForm.residentialComplexId?.housingClass, null));//Класс жилья
       this.applicationForm.houseConditionId = this.util.nvl(this.applicationForm.residentialComplexId?.houseConditionId, null);//Состояния
       this.applicationForm.numberOfApartments = this.util.nvl(this.applicationForm.residentialComplexId?.numberOfApartments, null);//Кол-во кв
       this.applicationForm.ceilingHeight = this.util.nvl(this.applicationForm.residentialComplexId?.ceilingHeight, null);//Кол-во кв
@@ -673,7 +677,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.applicationForm.playground = this.util.toString(data?.realPropertyDto?.generalCharacteristicsDto?.playground);
         this.applicationForm.ceilingHeight = data?.realPropertyDto?.generalCharacteristicsDto?.ceilingHeight;
         this.applicationForm.houseConditionId = data?.realPropertyDto?.generalCharacteristicsDto?.houseConditionId;
-        this.applicationForm.housingClass = data?.realPropertyDto?.generalCharacteristicsDto?.housingClass;
+        this.applicationForm.housingClass = parseInt(data?.realPropertyDto?.generalCharacteristicsDto?.housingClass);
         this.applicationForm.materialOfConstructionId = data?.realPropertyDto?.generalCharacteristicsDto?.materialOfConstructionId;
         this.applicationForm.numberOfApartments = data?.realPropertyDto?.generalCharacteristicsDto?.numberOfApartments;
         this.applicationForm.numberOfFloors = data?.realPropertyDto?.generalCharacteristicsDto?.numberOfFloors;
@@ -1343,57 +1347,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.kazPost2 = this.util.toSelectArrayPost(res.data)
       this.kazPost2 = [...this.kazPost2, this.util.toSelectArrayPost(res.data)];
     }))
-  }
-
-  onSuccess() {
-    this.fillRealPropertyFromKazPostId(this.data.realPropertyDto);
-  }
-
-  fillRealPropertyFromKazPostId(data) {
-    this.applicationForm.apartmentNumber = data?.apartmentNumber;
-    this.applicationForm.atelier = data?.atelier;
-    this.applicationForm.balconyArea = data?.balconyArea;
-    this.applicationForm.floor = data?.floor;
-    this.applicationForm.floor = data?.floor;
-    this.applicationForm.heatingSystemId = data?.heatingSystemId;
-    this.applicationForm.kitchenArea = data?.kitchenArea;
-    this.applicationForm.landArea = data?.landArea;
-    this.applicationForm.livingArea = data?.livingArea;
-    this.applicationForm.numberOfBedrooms = data?.numberOfBedrooms;
-    this.applicationForm.numberOfRooms = data?.numberOfRooms;
-    this.applicationForm.separateBathroom = data?.separateBathroom;
-    this.applicationForm.sewerageId = data?.sewerageId;
-    this.applicationForm.totalArea = data?.totalArea;
-    const buildingDto = data?.buildingDto;
-    if (!this.util.isNullOrEmpty(buildingDto)) {
-      this.applicationForm.cityId = buildingDto.cityId;
-      this.applicationForm.districtId = buildingDto.districtId;
-
-      this.applicationForm.houseNumber = buildingDto.houseNumber;
-      this.applicationForm.houseNumberFraction = buildingDto.houseNumberFraction;
-      this.applicationForm.latitude = buildingDto.latitude;
-      this.applicationForm.longitude = buildingDto.longitude;
-      this.applicationForm.postcode = buildingDto.postcode;
-      this.applicationForm.streetId = buildingDto.streetId;
-    }
-    const generalCharacteristicsDto = data?.generalCharacteristicsDto;
-    if (!this.util.isNullOrEmpty(generalCharacteristicsDto)) {
-      this.applicationForm.apartmentsOnTheSite = generalCharacteristicsDto.apartmentsOnTheSite;
-      this.applicationForm.ceilingHeight = generalCharacteristicsDto.ceilingHeight;
-      this.applicationForm.concierge = generalCharacteristicsDto.concierge;
-      this.applicationForm.houseConditionId = generalCharacteristicsDto.houseConditionId;
-      this.applicationForm.housingClass = generalCharacteristicsDto.housingClass;
-      this.applicationForm.materialOfConstructionId = generalCharacteristicsDto.materialOfConstructionId;
-      this.applicationForm.numberOfApartments = generalCharacteristicsDto.numberOfApartments;
-      this.applicationForm.numberOfFloors = generalCharacteristicsDto.numberOfFloors;
-      this.applicationForm.parkingTypeIds = generalCharacteristicsDto.parkingTypeIds;
-      this.applicationForm.playground = generalCharacteristicsDto.playground;
-      this.applicationForm.propertyDeveloperId = generalCharacteristicsDto.propertyDeveloperId;
-      this.applicationForm.typeOfElevatorList = generalCharacteristicsDto.typeOfElevatorList;
-      this.applicationForm.wheelchair = generalCharacteristicsDto.wheelchair;
-      this.applicationForm.yardTypeId = generalCharacteristicsDto.yardTypeId;
-      this.applicationForm.yearOfConstruction = generalCharacteristicsDto.yearOfConstruction;
-    }
   }
 
   customSearchFn(term: string, item) {

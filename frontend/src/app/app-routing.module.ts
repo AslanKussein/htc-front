@@ -46,8 +46,6 @@ const routes: Routes = [
   {path: 'client-card/:id', component: ClientCardComponent, canActivate: [AuthGuard]},
   {path: 'compare', component: CompareComponent, canActivate: [AuthGuard]},
   {path: 'organizations', component: OrganizationComponent, canActivate: [AuthGuard]},
-
-
 ];
 
 @NgModule({

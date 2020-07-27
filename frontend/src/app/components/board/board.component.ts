@@ -70,6 +70,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
       this.activeTab = parseInt(this.actRoute.snapshot.queryParamMap.get('activeTab'));
     }
+    this.util.showHideMenu(true);
   }
 
   ngOnInit(): void {

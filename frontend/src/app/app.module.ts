@@ -67,6 +67,7 @@ import {AdvanceComponent} from "./components/claims/create-claim/advance/advance
 import { CompareComponent } from './components/compare/compare.component';
 import { MaterialModule } from './MaterialModule';
 import { OrganizationComponent } from './components/organization/organization.component';
+import {AuthGuard} from "./helpers/auth.guard";
 
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
@@ -164,6 +165,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     UploaderService,
+    AuthGuard,
     ExitDeactivate,
     UserService,
     NotificationService
