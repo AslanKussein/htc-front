@@ -8,7 +8,7 @@
                  aria-label="Search">
         </div>
         <div class="col-sm">
-          <button type="button" class="btn btn-primary float-right btn2" (click)="openModal(template); addOrg()">
+          <button type="button" *ngIf="admRoles" class="btn btn-primary float-right btn2" (click)="openModal(template); addOrg()">
             Создать
             организацию
           </button>

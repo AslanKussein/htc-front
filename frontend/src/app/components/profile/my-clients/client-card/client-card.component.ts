@@ -128,14 +128,14 @@ export class ClientCardComponent implements OnInit, OnDestroy {
       searchFilter['applicationStatusList'] = this.formData.applicationStatuses;
     }
     if (!this.util.isNullOrEmpty(this.clientId)) {
-      searchFilter['clientId'] = Number(this.clientId);
+      searchFilter['clientLogin'] = this.clientId;
     }
 
     searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = 30;
-    this.subscriptions.add(this.claimService.getClaims(searchFilter).subscribe(res => {
+    this.subscriptions.add(this.claimService.getMyApplicationList(searchFilter).subscribe(res => {
       if (res != null && res.data != null && !res.data.data.empty) {
         this.claimData = res.data.data.data;
         this.claimData.forEach(data =>
