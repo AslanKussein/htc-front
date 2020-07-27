@@ -51,7 +51,7 @@
           </div>
           <div class="col-sm" [hidden]="hasShowGroup(['VIEW_CLIENT_DATA'])">
             <label class="form-label-v">ID клиента</label>
-            &nbsp;<a *ngIf="this.clientId" [routerLink]="'/client-card/' + this.clientLogin">{{this.clientId}}</a>
+            &nbsp;<a *ngIf="this.clientId" [routerLink]="'/client-card/' + this.clientLogin+'/claimId/'+this.applicationId">{{this.clientId}}</a>
             <input type="text" class="form-control text-uppercase" readonly [value]="clientFullName"/>
           </div>
         </div>

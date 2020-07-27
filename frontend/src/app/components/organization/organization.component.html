@@ -8,7 +8,7 @@
                  aria-label="Search">
         </div>
         <div class="col-sm">
-          <button type="button" class="btn btn-primary float-right btn2" (click)="openModal(template); addOrg()">
+          <button type="button" *ngIf="admRoles" class="btn btn-primary float-right btn2" (click)="openModal(template); addOrg()">
             Создать
             организацию
           </button>
@@ -118,12 +118,12 @@
           </div>
           <div class="modal-body">
             <h6 class="modal-title">Действительно хотите удалить организацию?</h6>
-            <h6 class="modal-title" *ngIf="users">Определите сотрудников этой организации в другую организацию?</h6>
+            <h6 class="modal-title" *ngIf="usersView">Определите сотрудников этой организации в другую организацию?</h6>
 
 
 
             <div class="row">
-              <div class="col-sm" *ngIf="users">
+              <div class="col-sm" *ngIf="usersView">
                 <table class="table table-bordered table-sm">
                   <thead class="text-center">
                   <tr>

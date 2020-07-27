@@ -33,6 +33,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
   itemsPerPage = 30;
   currentPage = 1;
   clientId: string;
+  claimId: string;
   gender: string;
   agentRoles: boolean;
   rgRoles: boolean;
@@ -53,6 +54,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
               private util: Util) {
     this.subscriptions.add(this.authenticationService.currentUser.subscribe(x => this.currentUser = x));
     this.clientId = this.actRoute.snapshot.params.id;
+    this.claimId = this.actRoute.snapshot.params.appId;
 
     if (this.currentUser.roles != null) {
       this.agentRoles = false;
@@ -128,14 +130,14 @@ export class ClientCardComponent implements OnInit, OnDestroy {
       searchFilter['applicationStatusList'] = this.formData.applicationStatuses;
     }
     if (!this.util.isNullOrEmpty(this.clientId)) {
-      searchFilter['clientId'] = Number(this.clientId);
+      searchFilter['clientLogin'] = this.clientId;
     }
 
     searchFilter['direction'] = 'ASC';
     searchFilter['sortBy'] = 'id';
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = 30;
-    this.subscriptions.add(this.claimService.getClaims(searchFilter).subscribe(res => {
+    this.subscriptions.add(this.claimService.getMyApplicationList(searchFilter).subscribe(res => {
       if (res != null && res.data != null && !res.data.data.empty) {
         this.claimData = res.data.data.data;
         this.claimData.forEach(data =>
@@ -175,7 +177,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
 
   getClientById(id: string) {
     this.ngxLoader.start();
-    this.subscriptions.add(this.clientsService.getClientById(id).subscribe(res => {
+    this.subscriptions.add(this.clientsService.findByLoginAndAppId(this.clientId,this.claimId).subscribe(res => {
       if (res != null) {
         this.formClient = res;
         if (!this.util.isNullOrEmpty(this.formClient.clientFileDtoList)) {
