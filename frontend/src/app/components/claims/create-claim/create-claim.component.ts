@@ -127,6 +127,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   percent: number;
   roles: any;
   contractDto: ContractDto;
+  fromBoard: boolean = false;
 
   constructor(public util: Util,
               private notifyService: NotificationService,
@@ -156,6 +157,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     }
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
       this.activeTab = this.actRoute.snapshot.queryParamMap.get('activeTab');
+    }
+    if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('fromBoard'))) {
+      this.fromBoard = this.actRoute.snapshot.queryParamMap.get('fromBoard') == 'true';
     }
   }
 

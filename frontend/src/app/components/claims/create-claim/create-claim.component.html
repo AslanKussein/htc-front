@@ -1,6 +1,6 @@
 <div class="row w-100"></div>
 <div class="row" *ngIf="applicationId" ngxUiLoaderBlurred>
-  <div class="col-sm">
+  <div class="col-sm" *ngIf="!fromBoard">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item">
         <a class="nav-link panel-header" [ngClass]="{ 'active':activeTab === 'claim'}" id="fillClaims-tab" data-toggle="tab"

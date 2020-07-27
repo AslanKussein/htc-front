@@ -13,7 +13,8 @@ import {NewDicService} from "../../../../services/new.dic.service";
 import {UploaderService} from "../../../../services/uploader.service";
 import {Dic} from "../../../../models/dic";
 import {ComponentCanDeactivate} from "../../../../helpers/canDeactivate/componentCanDeactivate";
-
+declare var jquery: any;   // not required
+declare var $: any;   // not required
 @Component({
   selector: 'app-contract-ou',
   templateUrl: './contract-ou.component.html',
@@ -32,7 +33,7 @@ export class ContractOuComponent implements OnInit, ComponentCanDeactivate, OnDe
   fromBoard: boolean = false;
   operationType: Dic[];
   isBuy: boolean;
-  saved: boolean = false;
+
   constructor(
     private util: Util,
     private formBuilder: FormBuilder,
@@ -49,6 +50,8 @@ export class ContractOuComponent implements OnInit, ComponentCanDeactivate, OnDe
     this._createForm();
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('fromBoard'))) {
       this.fromBoard = this.actRoute.snapshot.queryParamMap.get('fromBoard') == 'true';
+      $("#sidebar-wrapper").hide();
+      $("#mainNavBar").hide();
     }
   }
 
@@ -190,13 +193,7 @@ export class ContractOuComponent implements OnInit, ComponentCanDeactivate, OnDe
   }
 
   canDeactivate(): boolean | Observable<boolean> {
-    alert(1)
-    if (!this.saved) {
-      let result = confirm("Вы хотите покинуть страницу?");
-      return result;
-    } else {
-      return true;
-    }
+    return confirm("Вы хотите покинуть страницу?");
   }
 
   ngOnDestroy() {

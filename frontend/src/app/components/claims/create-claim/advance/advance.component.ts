@@ -1,13 +1,15 @@
-import {Component, EventEmitter, Injectable, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, Injectable, Input, OnDestroy, OnInit} from '@angular/core';
 import {Util} from "../../../../services/util";
 import {filter, pairwise} from "rxjs/operators";
 import {ActivatedRoute, Router, RoutesRecognized} from "@angular/router";
 import {ContractService} from "../../../../services/contract.service";
-import {Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {FormBuilder, Validators} from "@angular/forms";
 import {NotificationService} from "../../../../services/notification.service";
 import {UploaderService} from "../../../../services/uploader.service";
+declare var jquery: any;   // not required
+declare var $: any;   // not required
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +52,8 @@ export class AdvanceComponent implements OnInit, OnDestroy {
               private uploaderService: UploaderService) {
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('fromBoard'))) {
       this.fromBoard = this.actRoute.snapshot.queryParamMap.get('fromBoard') == 'true';
+      $("#sidebar-wrapper").hide();
+      $("#mainNavBar").hide();
     }
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
       this.payTypeId = this.actRoute.snapshot.queryParamMap.get('activeTab') == 'advanceAgreement' ? '5' : '4';
