@@ -1230,8 +1230,7 @@
                         <legend class="scheduler-border" style="font-size: 12px; width: 80%">Фото объекта
                           <span class="badge badge-danger ml-2">{{photoList.length}}</span>
                         </legend>
-                        <div id="photoCarousel" class="carousel slide" data-ride="carousel"
-                             style="width: 240px;">
+                        <div id="photoCarousel" class="carousel slide photoCarouselBlock" data-ride="carousel">
                           <div class="carousel-inner" style="position: static">
                             <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                  *ngFor="let photo of photoList;let i = index">
@@ -1259,8 +1258,7 @@
                         <legend class="scheduler-border" style="font-size: 12px; width: 80%">Планы
                           <span class="badge badge-danger ml-2">{{photoPlanList.length}}</span>
                         </legend>
-                        <div id="photoPlanList" class="carousel slide" data-ride="carousel"
-                             style="width: 180px;">
+                        <div id="photoPlanList" class="carousel slide photoCarouselBlock" data-ride="carousel">
                           <div class="carousel-inner">
                             <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                  *ngFor="let plan of photoPlanList;let i = index">
@@ -1287,8 +1285,7 @@
                         <legend class="scheduler-border" style="font-size: 12px; width: 80%">3D тур
                           <span class="badge badge-danger ml-2">{{photo3DList.length}}</span>
                         </legend>
-                        <div id="photo3DList" class="carousel slide" data-ride="carousel"
-                             style="width: 180px;">
+                        <div id="photo3DList" class="carousel slide photoCarouselBlock" data-ride="carousel">
                           <div class="carousel-inner">
                             <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                  *ngFor="let plan of photo3DList;let i = index">

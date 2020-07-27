@@ -50,7 +50,7 @@ input[type='radio']:after {
   visibility: visible;
 }
 
-input[type='radio']:checked:after,input[type='radio']:checked:before,
+input[type='radio']:checked:after, input[type='radio']:checked:before,
 .custom-control-input:checked ~ .custom-control-label::before {
   background-color: #00b2a8;
 }
@@ -78,9 +78,14 @@ textarea, textarea:focus {
 
 .removeItemCarousel {
   position: relative;
-  bottom: 280px;
-  right: -140px;
+  bottom: 301px;
+  left: 200px;
   z-index: 9999;
+}
+
+.photoCarouselBlock {
+  width: 240px;
+  margin: 0 auto;
 }
 
 .photoList {
@@ -89,7 +94,7 @@ textarea, textarea:focus {
 }
 
 @function aqua($opacity) {
-  @return rgba(0,178,168, $opacity)
+  @return rgba(0, 178, 168, $opacity)
 }
 
 .square-t {
@@ -99,7 +104,7 @@ textarea, textarea:focus {
 }
 
 @function grey($opacity) {
-  @return rgba(196,196,196, $opacity)
+  @return rgba(196, 196, 196, $opacity)
 }
 
 .atelier {
@@ -129,8 +134,8 @@ textarea, textarea:focus {
   border: none;
 }
 
-.panel-header:active,.panel-header:focus, .nav-tabs .nav-link.active, .nav-item.show .nav-link, .badge:active {
-  color: #00b2a8!important;
+.panel-header:active, .panel-header:focus, .nav-tabs .nav-link.active, .nav-item.show .nav-link, .badge:active {
+  color: #00b2a8 !important;
   border-bottom: 2px solid #00b2a8;
 }
 

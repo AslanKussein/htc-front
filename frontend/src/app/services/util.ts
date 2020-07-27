@@ -269,9 +269,11 @@ export class Util {
   }
 
   getDictionaryValueById(data, id: any) {
-    for (const obj of data) {
-      if (obj['value'] == id) {
-        return obj;
+    if (!this.isNullOrEmpty(data)) {
+      for (const obj of data) {
+        if (obj['value'] == id) {
+          return obj;
+        }
       }
     }
   }
