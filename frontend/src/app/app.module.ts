@@ -57,7 +57,7 @@ import {PaginationModule} from "ngx-bootstrap/pagination";
 import {ModalModule} from "ngx-bootstrap/modal";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ruLocale} from "ngx-bootstrap/locale";
-import {AngularYandexMapsModule, IConfig as IConfigYandex} from "angular8-yandex-maps";
+// import {AngularYandexMapsModule, IConfig as IConfigYandex} from "angular8-yandex-maps";
 import {ClaimViewComponent} from './components/claims/create-claim/claim-view/claim-view.component';
 import {ContractOuComponent} from './components/claims/create-claim/contract-ou/contract-ou.component';
 import {MyAgentsComponent} from './components/profile/my-agents/my-agents.component';
@@ -155,7 +155,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     }),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     NgbModule,
-    AngularYandexMapsModule,
+    // AngularYandexMapsModule,
     MDBBootstrapModule.forRoot(),
     MDBBootstrapModule.forRoot(),
     MaterialModule,

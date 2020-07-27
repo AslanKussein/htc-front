@@ -195,6 +195,10 @@ export class ClientCardComponent implements OnInit, OnDestroy {
     this.ngxLoader.stop();
   }
 
+  backToPrev() {
+    this.util.navigateByUrl(localStorage.getItem('previousUrl'));
+  }
+
   openModal(template: TemplateRef<any>) {
     this.ngxLoader.start();
     this.formClientCopy =  {...this.formClient};
