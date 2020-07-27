@@ -283,7 +283,7 @@ export class OrganizationComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.staffService.getUserInfo(this.organization).subscribe(res => {
         if (res != null) {
           this.users = res.data;
-          if(res.data.id!=null){
+          if(res.data.length>0){
             this.usersView=true;
           }else{
             this.usersView=false;
