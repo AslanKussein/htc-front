@@ -33,7 +33,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
   itemsPerPage = 30;
   currentPage = 1;
   clientId: string;
-  appId: string;
+  claimId: string;
   gender: string;
   agentRoles: boolean;
   rgRoles: boolean;
@@ -54,7 +54,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
               private util: Util) {
     this.subscriptions.add(this.authenticationService.currentUser.subscribe(x => this.currentUser = x));
     this.clientId = this.actRoute.snapshot.params.id;
-    this.appId = this.actRoute.snapshot.params.appId;
+    this.claimId = this.actRoute.snapshot.params.appId;
 
     if (this.currentUser.roles != null) {
       this.agentRoles = false;
@@ -177,7 +177,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
 
   getClientById(id: string) {
     this.ngxLoader.start();
-    this.subscriptions.add(this.clientsService.findByLoginAndAppId(this.clientId,this.appId).subscribe(res => {
+    this.subscriptions.add(this.clientsService.findByLoginAndAppId(this.clientId,this.claimId).subscribe(res => {
       if (res != null) {
         this.formClient = res;
         if (!this.util.isNullOrEmpty(this.formClient.clientFileDtoList)) {
