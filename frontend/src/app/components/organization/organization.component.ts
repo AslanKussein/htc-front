@@ -45,7 +45,7 @@ export class OrganizationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.findObjects(1);
   }
-
+  usersView:boolean;
   users = [];
   organizations = [];
   organizationsDic: Dic[];
@@ -283,10 +283,16 @@ export class OrganizationComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.staffService.getUserInfo(this.organization).subscribe(res => {
         if (res != null) {
           this.users = res.data;
+          if(res.data.id!=null){
+            this.usersView=true;
+          }else{
+            this.usersView=false;
+          }
         }
       },
       () => {
         this.users = null;
+        this.usersView=false;
       }
     ));
     this.ngxLoader.stop();
