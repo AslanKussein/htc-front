@@ -6,6 +6,8 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {Util} from "../../services/util";
 import {Subscription} from "rxjs/index";
 import {Dic} from "../../models/dic";
+import {User} from "../../models/users";
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
   selector: 'app-organization',
@@ -15,13 +17,29 @@ import {Dic} from "../../models/dic";
 export class OrganizationComponent implements OnInit, OnDestroy{
   modalRef: BsModalRef;
   actions: string;
+  currentUser: User;
+  admRoles:boolean;
 
   subscriptions: Subscription = new Subscription();
   constructor(private modalService: BsModalService,
               private staffService: StaffService,
               private notifyService: NotificationService,
+              private authenticationService: AuthenticationService,
               private util: Util,
-              private ngxLoader: NgxUiLoaderService) { }
+              private ngxLoader: NgxUiLoaderService) {
+    this.subscriptions.add(this.authenticationService.currentUser.subscribe(x => this.currentUser = x));
+    if (this.currentUser.roles != null) {
+      this.admRoles = false;
+      for (const role of this.currentUser.roles) {
+        if (role == 'Administrator resursa') {
+          this.admRoles = true;
+        }
+      }
+
+    }
+
+
+  }
 
   ngOnInit(): void {
     this.findObjects(1);
@@ -89,12 +107,11 @@ export class OrganizationComponent implements OnInit, OnDestroy{
       name:null,
     }
     };
-
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
+    this.modalRef = this.modalService.show(template, {backdrop: 'static', keyboard: false});
   }
   openModal2(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, {class: 'modal-lg'});  }
+    this.modalRef = this.modalService.show(template, {class: 'modal-lg',backdrop: 'static', keyboard: false });  }
 
   delData(org: any){
     this.organization.organizationId=org.id;
@@ -184,7 +201,6 @@ export class OrganizationComponent implements OnInit, OnDestroy{
     this.actions = 'ADD';
     this.formData = {
       id:null,
-
       nameKk: null,
       nameRu: null,
       nameEn: null,
@@ -205,6 +221,16 @@ export class OrganizationComponent implements OnInit, OnDestroy{
   }
 
   submit() {
+    if (this.util.isNullOrEmpty(this.formData.nameKk) || this.util.isNullOrEmpty(this.formData.nameRu)
+      ||  this.util.isNullOrEmpty(this.formData.nameEn) ||  this.util.isNullOrEmpty(this.formData.bin)
+      ||  this.util.isNullOrEmpty(this.formData.addressKk) ||  this.util.isNullOrEmpty(this.formData.addressRu)
+      ||  this.util.isNullOrEmpty(this.formData.addressEn) ||  this.util.isNullOrEmpty(this.formData.requisiteDto.name)
+      ||  this.util.isNullOrEmpty(this.formData.requisiteDto.account)
+      ||  this.util.isNullOrEmpty(this.formData.requisiteDto.bin)
+      ||  this.util.isNullOrEmpty(this.formData.requisiteDto.bik)) {
+      this.notifyService.showError('Пожалуйста, заполните обязательные поля', "");
+      return;
+    }
     this.ngxLoader.start();
     if (this.actions == 'EDIT') {
       this.subscriptions.add(this.staffService.updateOrganization(this.formData)

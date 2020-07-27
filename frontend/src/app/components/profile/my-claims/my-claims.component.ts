@@ -45,7 +45,7 @@ export class MyClaimsComponent implements OnInit, OnDestroy {
     searchFilter['text'] = this.text;
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = this.itemsPerPage;
-    this.subscriptions.add(this.claimService.getClaims(searchFilter).subscribe(res => {
+    this.subscriptions.add(this.claimService.getMyApplicationList(searchFilter).subscribe(res => {
       this.claimData = res.data.data.data;
       this.totalItems = res.data.total;
       this.currentPage = res.data.pageNumber + 1;
