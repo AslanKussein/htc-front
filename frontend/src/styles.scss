@@ -94,6 +94,7 @@ body {
 }
 
 .pointer-events {
+  opacity: 0.8 !important;
   pointer-events: none !important;
 }
 
@@ -186,3 +187,8 @@ table tbody tr td {
   background-color: #00b2a8;
   color: white;
 }
+
+.width-100 {
+  width: 100%;
+}
+

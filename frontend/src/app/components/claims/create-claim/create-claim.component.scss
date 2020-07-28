@@ -1,5 +1,4 @@
 .operation-type {
-  width: 12.5rem;
   border-radius: 0.3125rem;
   border: 1px solid #d0d0d0;
   margin-right: 0.3125rem;
@@ -84,7 +83,7 @@ textarea, textarea:focus {
 }
 
 .photoCarouselBlock {
-  width: 240px;
+  width: 350px;
   margin: 0 auto;
 }
 
@@ -137,14 +136,6 @@ textarea, textarea:focus {
 .panel-header:active, .panel-header:focus, .nav-tabs .nav-link.active, .nav-item.show .nav-link, .badge:active {
   color: #00b2a8 !important;
   border-bottom: 2px solid #00b2a8;
-}
-
-.operation-type-btn {
-  width: 8.5rem;
-  height: 36.2px;
-  border-radius: 0.3125rem;
-  border: 1px solid #d0d0d0;
-  margin-right: 0.3125rem;
 }
 
 .expanded-search {

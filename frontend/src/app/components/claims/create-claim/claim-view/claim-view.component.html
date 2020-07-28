@@ -75,20 +75,18 @@
               <div class="row" [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO'])">
                 <div class="col-sm">
                   <label class="form-label-v">Операция</label>
-                  <div>
-                    <mat-button-toggle-group>
-                      <mat-button-toggle class="operation-type2 pointer-events"
-                                         [class]="'Купить' != util.toString(claimViewDto.operationType.nameRu) ? 'bg-white text-dark' : ''"
-                                         [ngClass]="{ 'color-aqua text-white':'Купить' === util.toString(claimViewDto.operationType.nameRu)}">
-                        Купить
-                      </mat-button-toggle>
-                      <mat-button-toggle class="operation-type2 pointer-events"
-                                         [class]="'Продать' != util.toString(claimViewDto.operationType.nameRu) ? 'bg-white text-dark' : ''"
-                                         [ngClass]="{ 'color-aqua text-white':'Продать' === util.toString(claimViewDto.operationType.nameRu)}">
-                        Продать
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
+                  <mat-button-toggle-group class="width-100">
+                    <mat-button-toggle class="operation-type pointer-events width-100"
+                                       [class]="'Купить' != util.toString(claimViewDto.operationType?.nameRu) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':'Купить' === util.toString(claimViewDto.operationType?.nameRu)}">
+                      Купить
+                    </mat-button-toggle>
+                    <mat-button-toggle class="operation-type pointer-events width-100"
+                                       [class]="'Продать' != util.toString(claimViewDto.operationType?.nameRu) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':'Продать' === util.toString(claimViewDto.operationType?.nameRu)}">
+                      Продать
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
                 </div>
               </div>
               <div class="row" [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO'])">
@@ -132,61 +130,54 @@
               <div class="row">
                 <div class="col-sm">
                   <label class="form-label-v">Ипотека</label>
-                  <div class="pointer-events">
-                    <mat-button-toggle-group [(ngModel)]="claimViewDto.mortgage">
-                      <mat-button-toggle class="operation-type operation-type-btn" *ngFor="let item of dicDynamic"
-                                         [value]="item"
-                                         [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.mortgage) ? 'bg-white text-dark' : ''"
-                                         [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.mortgage)}">
-                        {{item.label}}
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
+                  <mat-button-toggle-group [(ngModel)]="claimViewDto.mortgage" class="pointer-events width-100">
+                    <mat-button-toggle class="operation-type width-100" *ngFor="let item of dicDynamic"
+                                       [value]="item"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.mortgage) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.mortgage)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
                 </div>
               </div>
               <div class="row" *ngIf="!claimViewDto.isSell" [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO'])">
                 <div class="col-sm">
                   <label class="form-label-v">Обмен</label>
-                  <div class="pointer-events">
-                    <mat-button-toggle-group [(ngModel)]="claimViewDto.exchange">
-                      <mat-button-toggle class="operation-type operation-type-btn" *ngFor="let item of dicDynamic"
-                                         [value]="item"
-                                         [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.exchange) ? 'bg-white text-dark' : ''"
-                                         [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.exchange)}">
-                        {{item.label}}
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
+                  <mat-button-toggle-group [(ngModel)]="claimViewDto.exchange" class="pointer-events width-100">
+                    <mat-button-toggle class="operation-type width-100" *ngFor="let item of dicDynamic"
+                                       [value]="item"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.exchange) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.exchange)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
                 </div>
               </div>
               <div class="row" *ngIf="!claimViewDto.isSell" [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO'])">
                 <div class="col-sm">
                   <label class="form-label-v">Обременение</label>
-                  <div class="pointer-events">
-                    <mat-button-toggle-group [(ngModel)]="claimViewDto.encumbrance">
-                      <mat-button-toggle class="operation-type operation-type-btn" *ngFor="let item of dicDynamic"
-                                         [value]="item"
-                                         [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.encumbrance) ? 'bg-white text-dark' : ''"
-                                         [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.encumbrance)}">
-                        {{item.label}}
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
+                  <mat-button-toggle-group [(ngModel)]="claimViewDto.encumbrance" class="pointer-events width-100">
+                    <mat-button-toggle class="operation-type width-100" *ngFor="let item of dicDynamic"
+                                       [value]="item"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.encumbrance) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.encumbrance)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
                 </div>
               </div>
               <div class="row" *ngIf="!claimViewDto.isSell" [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO'])">
                 <div class="col-sm">
                   <label class="form-label-v">Общая долевая собственность</label>
-                  <div class="pointer-events">
-                    <mat-button-toggle-group [(ngModel)]="claimViewDto.sharedOwnershipProperty">
-                      <mat-button-toggle class="operation-type operation-type-btn" *ngFor="let item of dicDynamic"
-                                         [value]="item"
-                                         [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.sharedOwnershipProperty) ? 'bg-white text-dark' : ''"
-                                         [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.sharedOwnershipProperty)}">
-                        {{item.label}}
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
+                  <mat-button-toggle-group [(ngModel)]="claimViewDto.sharedOwnershipProperty"
+                                           class="pointer-events width-100">
+                    <mat-button-toggle class="operation-type width-100" *ngFor="let item of dicDynamic"
+                                       [value]="item"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.sharedOwnershipProperty) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.sharedOwnershipProperty)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
                 </div>
               </div>
             </div>
@@ -194,16 +185,15 @@
               <div class="row" [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO'])">
                 <div class="col-sm">
                   <label class="form-label-v">Вероятность торга</label>
-                  <div class="pointer-events">
-                    <mat-button-toggle-group [(ngModel)]="claimViewDto.probabilityOfBidding">
-                      <mat-button-toggle class="operation-type operation-type-btn" *ngFor="let item of dicDynamic"
-                                         [value]="item"
-                                         [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.probabilityOfBidding) ? 'bg-white text-dark' : ''"
-                                         [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.probabilityOfBidding)}">
-                        {{item.label}}
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
+                  <mat-button-toggle-group [(ngModel)]="claimViewDto.probabilityOfBidding"
+                                           class="width-100 pointer-events">
+                    <mat-button-toggle class="operation-type width-100" *ngFor="let item of dicDynamic"
+                                       [value]="item"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.probabilityOfBidding) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.probabilityOfBidding)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
                 </div>
               </div>
               <div class="row" [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO'])">
@@ -278,7 +268,7 @@
                    [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])">
                 <label class="form-label-v">Номер дома</label>
                 <input type="text" class="form-control" readonly
-                       [(ngModel)]="claimViewDto.houseNumber"/>
+                       [(ngModel)]="claimViewDto.houseNumber" (ngModelChange)="getMap()">
               </div>
               <div class="col-sm" *ngIf="!claimViewDto.isSell && isAuthor && claimViewDto.isFlat"
                    [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])">
@@ -374,41 +364,37 @@
                 </div>
                 <div class="col-sm" *ngIf="claimViewDto.isFlat">
                   <label class="form-label-v">Студия</label>
-                  <div class="row disabled-bottom-margin pointer-events">
-                    <mat-button-toggle-group [(ngModel)]="claimViewDto.atelier" formControlName="atelier">
-                      <mat-button-toggle class="operation-type-btn"
-                                         *ngFor="let item of dicDynamic"
-                                         [value]="item.code"
-                                         [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.atelier) ? 'bg-white text-dark' : ''"
-                                         [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.atelier)}">
-                        {{item.label}}
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
+                  <mat-button-toggle-group [(ngModel)]="claimViewDto.atelier"
+                                           class="pointer-events width-100">
+                    <mat-button-toggle class="operation-type width-100"
+                                       *ngFor="let item of dicDynamic"
+                                       [value]="item.code"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.atelier) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.atelier)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
                 </div>
                 <div class="col-sm" *ngIf="claimViewDto.isFlat">
                   <label class="form-label-v">Санузел раздельный</label>
-                  <div class="row disabled-bottom-margin pointer-events">
-                    <mat-button-toggle-group [(ngModel)]="claimViewDto.separateBathroom"
-                                             formControlName="separateBathroom">
-                      <mat-button-toggle class="operation-type-btn"
-                                         *ngFor="let item of dicDynamic"
-                                         [value]="item.code"
-                                         [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.separateBathroom) ? 'bg-white text-dark' : ''"
-                                         [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.separateBathroom)}">
-                        {{item.label}}
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
+                  <mat-button-toggle-group [(ngModel)]="claimViewDto.separateBathroom" class="pointer-events width-100">
+                    <mat-button-toggle class="operation-type width-100"
+                                       *ngFor="let item of dicDynamic"
+                                       [value]="item.code"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.separateBathroom) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.separateBathroom)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
                 </div>
               </div>
             </div>
-            <div class="row font-weight-bold">
+            <div class="row font-weight-bold disabled-bottom-margin">
               <div class="col-sm expanded-search" (click)="expandedBlock()">
                 <span *ngIf="!expandBlock">Показать детали</span>
                 <span *ngIf="expandBlock">Скрыть детали</span>
-                <i class="fa fa-angle-down fa-2x" *ngIf="!expandBlock" aria-hidden="true"></i>
-                <i class="fa fa-angle-up fa-2x" *ngIf="expandBlock" aria-hidden="true"></i>
+                <i class="fa fa-angle-down font-weight-bold" *ngIf="!expandBlock" aria-hidden="true"></i>
+                <i class="fa fa-angle-up font-weight-bold" *ngIf="expandBlock" aria-hidden="true"></i>
               </div>
             </div>
             <div class="row w-100"></div>
@@ -465,6 +451,16 @@
                   <label class="form-label-v">Состояние</label>
                   <input type="text" class="form-control" readonly
                          [value]="getDicNameByLanguage(claimViewDto, 'houseCondition')"/>
+                </div>
+                <div class="col-sm" [hidden]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])"
+                     *ngIf="claimViewDto.isFlat && !claimViewDto.isSell">
+                  <label class="form-label-v">Класс жилья</label>
+                  <ng-select
+                    [readonly]="true"
+                    [items]="claimViewDto.housingClass"
+                    [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="claimViewDto.housingClass">
+                  </ng-select>
                 </div>
                 <div class="col-sm" *ngIf="claimViewDto.isFlat"
                      [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
@@ -559,47 +555,44 @@
                   <input type="text" class="form-control" readonly
                          [value]="getDicNameByLanguage(claimViewDto, 'yardType')"/>
                 </div>
-                <div class="col-sm">
+                <div class="col-sm"
+                     [hidden]="!hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
                   <label class="form-label-v">Консьерж</label>
-                  <div class="row disabled-bottom-margin pointer-events" [hidden]="!hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                    <mat-button-toggle-group>
-                      <mat-button-toggle class="operation-type-btn"
-                                         *ngFor="let item of dicDynamic"
-                                         [value]="item.code"
-                                         [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.concierge) ? 'bg-white text-dark' : ''"
-                                         [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.concierge)}">
-                        {{item.label}}
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
+                  <mat-button-toggle-group class="pointer-events width-100">
+                    <mat-button-toggle class="operation-type width-100"
+                                       *ngFor="let item of dicDynamic"
+                                       [value]="item.code"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.concierge) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.concierge)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
                 </div>
-                <div class="col-sm">
+                <div class="col-sm"
+                     [hidden]="!hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
                   <label class="form-label-v">Колясочная</label>
-                  <div class="row disabled-bottom-margin pointer-events" [hidden]="!hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                    <mat-button-toggle-group>
-                      <mat-button-toggle class="operation-type-btn"
-                                         *ngFor="let item of dicDynamic"
-                                         [value]="item.code"
-                                         [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.wheelchair) ? 'bg-white text-dark' : ''"
-                                         [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.wheelchair)}">
-                        {{item.label}}
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
+                  <mat-button-toggle-group class="pointer-events width-100">
+                    <mat-button-toggle class="operation-type width-100"
+                                       *ngFor="let item of dicDynamic"
+                                       [value]="item.code"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.wheelchair) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.wheelchair)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
                 </div>
-                <div class="col-sm">
+                <div class="col-sm"
+                     [hidden]="!hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
                   <label class="form-label-v">Детская площадка</label>
-                  <div class="row disabled-bottom-margin pointer-events" [hidden]="!hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                    <mat-button-toggle-group>
-                      <mat-button-toggle class="operation-type-btn"
-                                         *ngFor="let item of dicDynamic"
-                                         [value]="item.code"
-                                         [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.playground) ? 'bg-white text-dark' : ''"
-                                         [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.playground)}">
-                        {{item.label}}
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
+                  <mat-button-toggle-group class="pointer-events width-100">
+                    <mat-button-toggle class="operation-type width-100"
+                                       *ngFor="let item of dicDynamic"
+                                       [value]="item.code"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.playground) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.playground)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
                 </div>
               </div>
               <div class="row" *ngIf="!claimViewDto.isSell"
@@ -633,18 +626,15 @@
               <div class="row">
                 <div class="col-sm" *ngIf="photoList.length > 0">
                   <fieldset class="scheduler-border col-sm">
-                    <legend class="scheduler-border " translate>Фото объекта<br/>
+                    <legend class="scheduler-border " translate>Фото объекта
                       <span class="badge badge-danger ml-2">{{photoList.length}}</span>
                     </legend>
-                    <div id="photoCarousel" class="carousel slide" data-ride="carousel"
-                         style="width: 350px;">
-
+                    <div id="photoCarousel" class="carousel slide photoCarouselBlock" data-ride="carousel">
                       <div class="carousel-inner">
                         <div class="carousel-item" [class]="i==0 ? 'active': ''"
                              *ngFor="let photo of photoList;let i = index">
                           <div class="container">
-                            <img [src]="photo.image" alt="First Slide" class="photoList" width="350"
-                                 height="320">
+                            <img [src]="photo.image" alt="First Slide" class="photoList" width="350" height="320">
                           </div>
                         </div>
                       </div>
@@ -659,11 +649,10 @@
                 </div>
                 <div class="col-sm" *ngIf="photoPlanList.length > 0">
                   <fieldset class="scheduler-border col-sm">
-                    <legend class="scheduler-border" translate>Планы<br/>
+                    <legend class="scheduler-border" translate>Планы
                       <span class="badge badge-danger ml-2">{{photoPlanList.length}}</span>
                     </legend>
-                    <div id="photoPlanList" class="carousel slide" data-ride="carousel"
-                         style="width: 350px;">
+                    <div id="photoPlanList" class="carousel slide photoCarouselBlock" data-ride="carousel">
                       <div class="carousel-inner">
                         <div class="carousel-item" [class]="i==0 ? 'active': ''"
                              *ngFor="let plan of photoPlanList;let i = index">
@@ -683,16 +672,14 @@
 
                 <div class="col-sm" *ngIf="photo3DList.length > 0">
                   <fieldset class="scheduler-border col-sm">
-                    <legend class="scheduler-border" translate>3D тур<br/>
+                    <legend class="scheduler-border" translate>3D тур
                       <span class="badge badge-danger ml-2">{{photo3DList.length}}</span>
                     </legend>
-                    <div id="photo3DList" class="carousel slide" data-ride="carousel"
-                         style="width: 350px;">
+                    <div id="photo3DList" class="carousel slide photoCarouselBlock" data-ride="carousel">
                       <div class="carousel-inner">
                         <div class="carousel-item" [class]="i==0 ? 'active': ''"
                              *ngFor="let plan of photo3DList;let i = index">
-                          <img [src]="plan.image" alt="First Slide" class="photoList" width="350"
-                               height="320">
+                          <img [src]="plan.image" class="photoList" width="350" height="320"/>
                         </div>
                       </div>
                       <a class="carousel-control-prev" href="#photo3DList" data-slide="prev">
@@ -705,6 +692,45 @@
                   </fieldset>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row w-100">
+  <div class="col-sm">
+    <div class="accordion" id="accordionMap">
+      <div class="card z-depth-0 bordered">
+        <div class="card-header accordion-header text-white bg-dark" id="headingMap">
+          <div class="font-weight-bold" data-toggle="collapse"
+               data-target="#collapseMap"
+               aria-expanded="true" aria-controls="collapseMap" translate>
+            Местоположение
+          </div>
+        </div>
+        <div id="collapseMap" class="collapse show" aria-labelledby="headingMap"
+             data-parent="#accordionMap">
+          <div class="card-body">
+            <div class="map">
+              <angular-yandex-map [center]="[51.12, 71.43]" (yaclick)="onLoad($event)" [zoom]="12">
+                <angular-yandex-placemark
+                  [geometry]="cord"
+                  [options]="placemarkOptions"
+                  (drag)="onLoad2($event)"
+                  (load)="onLoad3($event)">
+                </angular-yandex-placemark>
+                <angular-yandex-control
+                  [type]="'SearchControl'"
+                  [ngModelOptions]="{standalone: true}"
+                  name="fieldName" ngDefaultControl
+                  [parameters]="parameters"
+                  [ngModel]="claimViewDto.houseNumber"
+                  (load)="onControlLoad($event)">
+                </angular-yandex-control>
+              </angular-yandex-map>
             </div>
           </div>
         </div>

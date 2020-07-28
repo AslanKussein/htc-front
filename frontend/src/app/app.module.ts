@@ -68,6 +68,7 @@ import { CompareComponent } from './components/compare/compare.component';
 import { MaterialModule } from './MaterialModule';
 import { OrganizationComponent } from './components/organization/organization.component';
 import {AuthGuard} from "./helpers/auth.guard";
+import {AngularYandexMapsModule} from "angular8-yandex-maps";
 
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
@@ -156,7 +157,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     }),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     NgbModule,
-    // AngularYandexMapsModule,
+    AngularYandexMapsModule,
     MDBBootstrapModule.forRoot(),
     MDBBootstrapModule.forRoot(),
     MaterialModule,

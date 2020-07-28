@@ -118,30 +118,3 @@ table tbody tr td {
   padding-top: 26px;
 }
 
-.test {
-  max-width: 12.5rem;
-  min-width: 12.5rem;
-  height: 36px;
-  border-radius: 5px;
-  border: 1px solid #c4c4c4;
-  background: grey(0.111);
-  margin: 0 -2px;
-  padding: 5px 6px;
-}
-
-input[type='radio']:after {
-  width: 0.9375rem;
-  height: 0.9375rem;
-  top: -3px;
-  left: -2px;
-  position: relative;
-  background-color: transparent;
-  content: '';
-  display: inline-block;
-  visibility: visible;
-}
-
-input[type='radio']:checked:after,input[type='radio']:checked:before,
-.custom-control-input:checked ~ .custom-control-label::before {
-  background-color: #00b2a8;
-}

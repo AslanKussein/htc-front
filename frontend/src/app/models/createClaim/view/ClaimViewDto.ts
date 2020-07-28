@@ -67,4 +67,8 @@ export class ClaimViewDto {
   public heatingSystem: any;
   public sewerage: any;
   public operationList: any;
+  public housingClass: any;
+  public latitude: any;
+  public longitude: any;
+  public postcode: any;
 }

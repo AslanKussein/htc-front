@@ -36,6 +36,19 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   changeAgent: boolean = false;
   disabled: boolean = true;
   expandBlock: boolean = false;
+  cord: any;
+  ddd: any;
+  modelMap: any;
+  placemarkOptions = {
+    preset: "twirl#redIcon",
+    draggable: true,
+    iconImageSize: [32, 32]
+  };
+  parameters = {
+    options: {
+      provider: 'yandex#search'
+    }
+  };
 
   constructor(private actRoute: ActivatedRoute,
               public util: Util,
@@ -51,6 +64,9 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.modelMap = [];
+    this.claimViewDto = new ClaimViewDto();
+    this.cord = [51.12, 71.43];
     this.getApplicationById();
     this.subscriptions.add(this.userService.getAgentsToAssign().subscribe(obj => {
       this.agentList = this.util.toSelectArrayRoles(obj.data, 'login');
@@ -58,6 +74,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.dicService.getDics('YES_NO').subscribe(data => {
       this.dicDynamic = this.util.toSelectArrayOldDic(data);
     }));
+
   }
 
   hasShowGroup(operation: any) {
@@ -116,7 +133,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   }
 
   getApplicationById() {
-    this.claimViewDto = new ClaimViewDto();
+
     this.ngxLoader.startBackground();
     if (!this.util.isNullOrEmpty(this.applicationId)) {
       this.subscriptions.add(
@@ -126,6 +143,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
           this.claimViewDto.applicationFlagIdList = this.util.toSelectArrayView(this.claimViewDto.applicationFlagIdList)
           this.claimViewDto.typeOfElevatorList = this.util.toSelectArrayView(this.claimViewDto.typeOfElevatorList)
           this.claimViewDto.parkingTypes = this.util.toSelectArrayView(this.claimViewDto.parkingTypes)
+          this.claimViewDto.housingClass = this.util.toSelectArrayView(this.claimViewDto.housingClass)
           this.fillIsEmpty();
           this.searchByPhone(res.clientLogin);
           this.searchByLoginAgent(res.agent);
@@ -148,6 +166,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
               this.fillPicture(ph, 3);
             }
           }
+          this.getMap();
         }, () => this.ngxLoader.stopBackground())
       );
     }
@@ -264,5 +283,56 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
 
   expandedBlock() {
     this.expandBlock = !this.expandBlock;
+  }
+
+  getMap() {
+    setTimeout(() => {
+      if (!this.util.isNullOrEmpty(this.modelMap)) {
+        this.loadMap();
+      }
+    }, 1000)
+  }
+
+  loadMap() {
+    if (!this.util.isNullOrEmpty(this.claimViewDto.postcode)) {
+      let str = '';
+      if (!this.util.isNullOrEmpty(this.claimViewDto.postcode.label)) {
+        str = this.claimViewDto.postcode?.label;
+      } else {
+        str = this.claimViewDto.postcode;
+      }
+
+      this.modelMap.instance.search(str).then(data => {
+        this.ddd.geometry.setCoordinates([data.responseMetaData.SearchResponse.Point.coordinates[1], data.responseMetaData.SearchResponse.Point.coordinates[0]])
+        this.claimViewDto.latitude = data.responseMetaData.SearchResponse.Point.coordinates[1];
+        this.claimViewDto.longitude = data.responseMetaData.SearchResponse.Point.coordinates[0];
+      });
+    }
+  }
+
+  onControlLoad(event) {
+    this.modelMap = event;
+  }
+
+  onLoad(event) {
+    this.cord = event.event.get('coords')
+    this.ddd.geometry.setCoordinates(this.cord);
+    this.claimViewDto.latitude = this.cord[0];
+    this.claimViewDto.longitude = this.cord[1];
+  }
+
+  onLoad2(event) {
+    if (event.type == 'dragend') {
+      this.cord = event.instance.geometry.getCoordinates();
+      event.instance.geometry.setCoordinates(this.cord);
+      this.claimViewDto.latitude = this.cord[0];
+      this.claimViewDto.longitude = this.cord[1];
+    }
+  }
+
+  onLoad3(event) {
+    this.cord = event.instance.geometry.getCoordinates();
+    event.instance.geometry.setCoordinates(this.cord);
+    this.ddd = event.instance;
   }
 }
