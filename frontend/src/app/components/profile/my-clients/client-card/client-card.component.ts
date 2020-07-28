@@ -4,7 +4,7 @@ import {User} from "../../../../models/users";
 import {formatDate} from "@angular/common";
 import {Util} from "../../../../services/util";
 import {ClaimService} from "../../../../services/claim.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router, RoutesRecognized} from "@angular/router";
 import {ClientDto} from "../../../../models/clientCard/clientDto";
 import {ClientsService} from "../../../../services/clients.service";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
@@ -14,6 +14,7 @@ import {UploaderService} from "../../../../services/uploader.service";
 import {Subscription} from "rxjs";
 import {Period} from "../../../../models/common/period";
 import {UserService} from "../../../../services/user.service";
+import {filter, pairwise} from "rxjs/operators";
 
 @Component({
   selector: 'app-client-card',
@@ -55,7 +56,6 @@ export class ClientCardComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.authenticationService.currentUser.subscribe(x => this.currentUser = x));
     this.clientId = this.actRoute.snapshot.params.id;
     this.claimId = this.actRoute.snapshot.params.appId;
-
     if (this.currentUser.roles != null) {
       this.agentRoles = false;
       this.rgRoles = false;
@@ -137,7 +137,7 @@ export class ClientCardComponent implements OnInit, OnDestroy {
     searchFilter['sortBy'] = 'id';
     searchFilter['pageNumber'] = pageNo - 1;
     searchFilter['pageSize'] = 30;
-    this.subscriptions.add(this.claimService.getMyApplicationList(searchFilter).subscribe(res => {
+    this.subscriptions.add(this.claimService.getClaims(searchFilter).subscribe(res => {
       if (res != null && res.data != null && !res.data.data.empty) {
         this.claimData = res.data.data.data;
         this.claimData.forEach(data =>
@@ -195,10 +195,6 @@ export class ClientCardComponent implements OnInit, OnDestroy {
       }
     }));
     this.ngxLoader.stop();
-  }
-
-  backToPrev() {
-    this.util.navigateByUrl(localStorage.getItem('previousUrl'));
   }
 
   openModal(template: TemplateRef<any>) {
