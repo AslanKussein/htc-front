@@ -1,0 +1,23 @@
+<div class=" notifications-wrapper" ngxUiLoaderBlurred>
+
+
+    <div class="container" *ngIf="content && content.length==0">
+        <p class="text-center no-notifications">Уведомлений не найдено!</p>
+    </div>
+    <div class="container" *ngIf="content && content.length>0">
+        <div *ngFor="let item of content">
+            <mdb-card class="app-card notification-card ">
+                <div class="d-flex justify-content">
+                    <b class="card-title">
+                        {{item?.notification?.notificationType?.name}}
+                    </b>
+                    <span class="card-header-dat">{{item?.notification?.messageDate|date:'mm:hh dd.MM.yyyy'}}</span>
+                </div>
+                <div class="clearfix notification-message">
+                    <p [innerHTML]="sanitize(item?.notification?.message)"></p>
+                </div>
+            </mdb-card>
+
+        </div>
+    </div>
+</div>
