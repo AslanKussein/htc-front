@@ -7,19 +7,19 @@ import {NotificationService} from "../../../../services/notification.service";
 import {TranslateService} from "@ngx-translate/core";
 import {ContractService} from "../../../../services/contract.service";
 import {ClaimService} from "../../../../services/claim.service";
-import {ActivatedRoute, Router, RoutesRecognized} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {NewDicService} from "../../../../services/new.dic.service";
-import {filter, pairwise} from "rxjs/operators";
 import {UploaderService} from "../../../../services/uploader.service";
 import {Dic} from "../../../../models/dic";
+import {ComponentCanDeactivate} from "../../../../helpers/canDeactivate/componentCanDeactivate";
 
 @Component({
   selector: 'app-contract-ou',
   templateUrl: './contract-ou.component.html',
   styleUrls: ['./contract-ou.component.scss']
 })
-export class ContractOuComponent implements OnInit, OnDestroy {
+export class ContractOuComponent implements OnInit, ComponentCanDeactivate, OnDestroy {
   subscriptions: Subscription = new Subscription();
   contractFormDto: ContractFormDto
   contractForm: any;
@@ -32,6 +32,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
   fromBoard: boolean = false;
   operationType: Dic[];
   isBuy: boolean;
+
   constructor(
     private util: Util,
     private formBuilder: FormBuilder,
@@ -48,6 +49,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
     this._createForm();
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('fromBoard'))) {
       this.fromBoard = this.actRoute.snapshot.queryParamMap.get('fromBoard') == 'true';
+      this.util.showHideMenu(false);
     }
   }
 
@@ -189,7 +191,7 @@ export class ContractOuComponent implements OnInit, OnDestroy {
   }
 
   canDeactivate(): boolean | Observable<boolean> {
-    return confirm('Вы хотите покинуть страницу?');
+    return confirm("Вы хотите покинуть страницу?");
   }
 
   ngOnDestroy() {

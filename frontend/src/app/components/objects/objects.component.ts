@@ -325,4 +325,11 @@ export class ObjectsComponent implements OnInit, OnDestroy {
   expandedBlock() {
     this.expanded = !this.expanded;
   }
+
+  toStringCompare(data: any) {
+    if (this.util.isNullOrEmpty(data)) {
+      return 'false';
+    }
+    return data?.toString();
+  }
 }

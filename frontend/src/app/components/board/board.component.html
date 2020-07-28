@@ -1,15 +1,6 @@
 <div class="card">
   <div class="card-body bg-white" ngxUiLoaderBlurred>
 
-    <div class="row">
-      <div class="btn-group btn-breadcrumb">
-        <a href="#" class="btn btn-primary"><i class="fa fa-home"></i></a>
-        <a class="btn btn-primary active" (click)="util.dnHrefParam('board', 3); refresh()">Панель управления</a>
-      </div>
-    </div>
-
-    <br/>
-
     <router-outlet *ngIf="!displayBoardContent"></router-outlet>
 
     <br/>

@@ -103,9 +103,6 @@
                  formControlName="patronymic" [(ngModel)]="applicationLightForm.patronymic">
         </div>
         <div class="row input-info">
-          <textarea class="col-sm-12 form-controls" formControlName="note" placeholder="Комментарий"></textarea>
-        </div>
-        <div class="row input-info">
           <div class="col-sm-12">
             <ng-select
               style="margin: 0 -15px"
@@ -142,6 +139,9 @@
               <div *ngIf="f.agentLogin.errors.required" translate>claim.requiredField</div>
             </div>
           </div>
+        </div>
+        <div class="row input-info">
+          <textarea class="col-sm-12 form-controls" formControlName="note" placeholder="Комментарий"></textarea>
         </div>
         <div class="row">
           <mat-button-toggle-group class="width-100 pad-left41 pad-right41">

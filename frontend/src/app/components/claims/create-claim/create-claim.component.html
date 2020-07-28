@@ -1,6 +1,6 @@
 <div class="row w-100"></div>
 <div class="row" *ngIf="applicationId" ngxUiLoaderBlurred>
-  <div class="col-sm">
+  <div class="col-sm" *ngIf="!fromBoard">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item">
         <a class="nav-link panel-header" [ngClass]="{ 'active':activeTab === 'claim'}" id="fillClaims-tab" data-toggle="tab"
@@ -14,7 +14,7 @@
            aria-controls="contractOU" (click)="changeTab('ou')"
            aria-selected="false">Договор ОУ</a>
       </li>
-      <li class="nav-item" *ngIf="this.applicationId && isSell()" [class.disabled]="isShowAdvanceAgreement()">
+      <li class="nav-item" *ngIf="this.applicationId && isSell()" [class.pointer-events]="isShowAdvanceAgreement()">
         <a class="nav-link panel-header" [ngClass]="{ 'active':activeTab === 'advanceAgreement' || activeTab === 'depositAgreement'}"
            id="advanceAgreement-tab" data-toggle="tab" href="#advanceAgreement" role="tab"
            aria-controls="advanceAgreement" (click)="openModal2(modalContentAdvance);"
@@ -58,7 +58,7 @@
                 </div>
               </div>
               <div id="aboutOwnerOne" class="collapse show" aria-labelledby="headingOne"
-                   data-parent="#accordionaboutOwnerOne" [class.disabledDev]="this.applicationId">
+                   data-parent="#accordionaboutOwnerOne" [class.pointer-events]="this.applicationId">
                 <div class="card-body accordionAboutObject">
                   <div class="row">
                     <div class="col-sm-3"
@@ -210,25 +210,25 @@
                     </ng-select>
                   </div>
                 </div>
-                <div [class.disabled]="!edit">
+                <div [class.pointer-events]="!edit">
                   <div class="row">
                     <div class="col-sm">
                       <div class="row">
                         <div class="col-sm"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_DEAL_DATA'])"
-                             [class.disabledDev]="hasShowGroup(['UPDATE_DEAL_DATA']) && this.applicationId">
+                             [class.pointer-events]="hasShowGroup(['UPDATE_DEAL_DATA']) && this.applicationId">
                           <label class="form-label-v">Операция<span class="text-danger">&nbsp;*</span></label>
-                          <div [class.disabledDev]="this.applicationId">
-                            <mat-button-toggle-group [(ngModel)]="applicationForm.operationTypeId"
-                                                     formControlName="operationTypeId">
-                              <mat-button-toggle class="operation-type" (click)="setApplicationFlagSort()"
-                                                 *ngFor="let item of operationType" [value]="item"
-                                                 [class]="item.value != applicationForm.operationTypeId?.value ? 'bg-white text-dark' : ''"
-                                                 [ngClass]="{ 'color-aqua text-white':item.value === applicationForm.operationTypeId?.value}">
-                                {{item.label}}
-                              </mat-button-toggle>
-                            </mat-button-toggle-group>
-                          </div>
+                          <mat-button-toggle-group [(ngModel)]="applicationForm.operationTypeId"
+                                                   formControlName="operationTypeId"
+                                                   class="width-100"
+                                                   [class.pointer-events]="this.applicationId">
+                            <mat-button-toggle class="operation-type width-100" (click)="setApplicationFlagSort()"
+                                               *ngFor="let item of operationType" [value]="item"
+                                               [class]="item.value != applicationForm.operationTypeId?.value ? 'bg-white text-dark' : ''"
+                                               [ngClass]="{ 'color-aqua text-white':item.value === applicationForm.operationTypeId?.value}">
+                              {{item.label}}
+                            </mat-button-toggle>
+                          </mat-button-toggle-group>
                           <div
                             *ngIf="f.operationTypeId.touched && f.operationTypeId.invalid || !f.operationTypeId.valid"
                             class="text-danger">
@@ -240,8 +240,8 @@
                         <div class="col-sm"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_DEAL_DATA'])">
                           <label class="form-label-v">Тип объекта<span class="text-danger">&nbsp;*</span></label>
-                          <ng-select [disabled]="hasShowGroup(['UPDATE_DEAL_DATA'])"
-                                     [class.disabledDev]="this.applicationId"
+                          <ng-select [class.pointer-events]="hasShowGroup(['UPDATE_DEAL_DATA'])"
+                                     [class.pointer-events]="this.applicationId"
                                      [items]="objectType"
                                      [(ngModel)]="applicationForm.objectTypeId"
                                      (ngModelChange)="setHouseOrApartmentsForMaterials()"
@@ -292,7 +292,7 @@
                         <div class="col-sm">
                           <label class="form-label-v">Признак</label>
                           <ng-select
-                            [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])"
+                            [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])"
                             [multiple]="true"
                             appendTo="body"
                             bindValue="value"
@@ -308,101 +308,95 @@
                       <div class="row">
                         <div class="col-sm"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])"
-                             [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
+                             [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
                           <label class="form-label-v">Ипотека</label>
-                          <div class="row disabled-bottom-margin"
-                               [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
-                            <mat-button-toggle-group [(ngModel)]="applicationForm.mortgage" formControlName="mortgage">
-                              <mat-button-toggle class="operation-type-btn"
-                                                 *ngFor="let item of dicDynamic"
-                                                 [value]="item.code"
-                                                 [class]="toStringCompare(item.code) != toStringCompare(applicationForm.mortgage) ? 'bg-white text-dark' : ''"
-                                                 [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.mortgage)}">
-                                {{item.label}}
-                              </mat-button-toggle>
-                            </mat-button-toggle-group>
-                          </div>
+                          <mat-button-toggle-group [(ngModel)]="applicationForm.mortgage" formControlName="mortgage"
+                                                   [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])"
+                                                   class="width-100">
+                            <mat-button-toggle class="operation-type width-100"
+                                               *ngFor="let item of dicDynamic"
+                                               [value]="item.code"
+                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.mortgage) ? 'bg-white text-dark' : ''"
+                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.mortgage)}">
+                              {{item.label}}
+                            </mat-button-toggle>
+                          </mat-button-toggle-group>
                         </div>
                       </div>
                       <div class="row" *ngIf="isBuy()">
                         <div class="col-sm"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
                           <label class="form-label-v">Обмен</label>
-                          <div class="row disabled-bottom-margin">
-                            <mat-button-toggle-group [(ngModel)]="applicationForm.exchange" formControlName="exchange">
-                              <mat-button-toggle class="operation-type-btn"
-                                                 *ngFor="let item of dicDynamic"
-                                                 [value]="item.code"
-                                                 [class]="toStringCompare(item.code) != toStringCompare(applicationForm.exchange) ? 'bg-white text-dark' : ''"
-                                                 [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.exchange)}">
-                                {{item.label}}
-                              </mat-button-toggle>
-                            </mat-button-toggle-group>
-                          </div>
+                          <mat-button-toggle-group [(ngModel)]="applicationForm.exchange" formControlName="exchange"
+                                                   class="width-100">
+                            <mat-button-toggle class="operation-type width-100"
+                                               *ngFor="let item of dicDynamic"
+                                               [value]="item.code"
+                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.exchange) ? 'bg-white text-dark' : ''"
+                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.exchange)}">
+                              {{item.label}}
+                            </mat-button-toggle>
+                          </mat-button-toggle-group>
                         </div>
                       </div>
                       <div class="row" *ngIf="isBuy()">
                         <div class="col-sm"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
                           <label class="form-label-v">Обременение</label>
-                          <div class="row disabled-bottom-margin" [class.disabledDev]="hasShowGroup(['UPDATE_SALE_DEAL_INFO'])">
-                            <mat-button-toggle-group [(ngModel)]="applicationForm.encumbrance"
-                                                     formControlName="encumbrance">
-                              <mat-button-toggle class="operation-type-btn"
-                                                 *ngFor="let item of dicDynamic"
-                                                 [value]="item.code"
-                                                 [class]="toStringCompare(item.code) != toStringCompare(applicationForm.encumbrance) ? 'bg-white text-dark' : ''"
-                                                 [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.encumbrance)}">
-                                {{item.label}}
-                              </mat-button-toggle>
-                            </mat-button-toggle-group>
-                          </div>
+                          <mat-button-toggle-group [(ngModel)]="applicationForm.encumbrance"
+                                                   formControlName="encumbrance" class="width-100"
+                                                   [class.pointer-events]="hasShowGroup(['UPDATE_SALE_DEAL_INFO'])">
+                            <mat-button-toggle class="operation-type width-100"
+                                               *ngFor="let item of dicDynamic"
+                                               [value]="item.code"
+                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.encumbrance) ? 'bg-white text-dark' : ''"
+                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.encumbrance)}">
+                              {{item.label}}
+                            </mat-button-toggle>
+                          </mat-button-toggle-group>
                         </div>
                       </div>
                       <div class="row" *ngIf="isBuy()">
                         <div class="col-sm"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
                           <label class="form-label-v">Общая долевая собственность</label>
-                          <div class="row disabled-bottom-margin" [class.disabledDev]="hasShowGroup(['UPDATE_SALE_DEAL_INFO'])">
-                            <mat-button-toggle-group [(ngModel)]="applicationForm.sharedOwnershipProperty"
-                                                     formControlName="sharedOwnershipProperty">
-                              <mat-button-toggle class="operation-type-btn"
-                                                 *ngFor="let item of dicDynamic"
-                                                 [value]="item.code"
-                                                 [class]="toStringCompare(item.code) != toStringCompare(applicationForm.sharedOwnershipProperty) ? 'bg-white text-dark' : ''"
-                                                 [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.sharedOwnershipProperty)}">
-                                {{item.label}}
-                              </mat-button-toggle>
-                            </mat-button-toggle-group>
-                          </div>
+                          <mat-button-toggle-group [(ngModel)]="applicationForm.sharedOwnershipProperty"
+                                                   formControlName="sharedOwnershipProperty"
+                                                   [class.pointer-events]="hasShowGroup(['UPDATE_SALE_DEAL_INFO'])"
+                                                   class="width-100">
+                            <mat-button-toggle class="operation-type width-100"
+                                               *ngFor="let item of dicDynamic"
+                                               [value]="item.code"
+                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.sharedOwnershipProperty) ? 'bg-white text-dark' : ''"
+                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.sharedOwnershipProperty)}">
+                              {{item.label}}
+                            </mat-button-toggle>
+                          </mat-button-toggle-group>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm">
                       <div class="row">
-                        <div class="col-sm" [class.disabled]="!edit"
+                        <div class="col-sm" [class.pointer-events]="!edit"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])">
                           <label class="form-label-v">Вероятность торга</label>
-                          <div class="row disabled-bottom-margin"
-                               [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
-                            <div class="col-sm">
-                              <mat-button-toggle-group [(ngModel)]="applicationForm.probabilityOfBidding"
-                                                       formControlName="probabilityOfBidding">
-                                <mat-button-toggle class="operation-type-btn"
-                                                   *ngFor="let item of dicDynamic"
-                                                   [value]="item.code"
-                                                   [class]="toStringCompare(item.code) != toStringCompare(applicationForm.probabilityOfBidding) ? 'bg-white text-dark' : ''"
-                                                   [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.probabilityOfBidding)}">
-                                  {{item.label}}
-                                </mat-button-toggle>
-                              </mat-button-toggle-group>
-                            </div>
-                          </div>
+                          <mat-button-toggle-group [(ngModel)]="applicationForm.probabilityOfBidding"
+                                                   formControlName="probabilityOfBidding"
+                                                   [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])"
+                                                   class="width-100">
+                            <mat-button-toggle class="operation-type width-100"
+                                               *ngFor="let item of dicDynamic"
+                                               [value]="item.code"
+                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.probabilityOfBidding) ? 'bg-white text-dark' : ''"
+                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.probabilityOfBidding)}">
+                              {{item.label}}
+                            </mat-button-toggle>
+                          </mat-button-toggle-group>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-sm" *ngIf="applicationForm.probabilityOfBidding == 'true'"
-                             [class.disabled]="!edit"
+                             [class.pointer-events]="!edit"
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])">
                           <label class="form-label-v">Размер торга</label>
                           <input type="text" class="form-control" maxlength="20"
@@ -420,7 +414,7 @@
                              [hidden]="hasShowGroup(['VIEW_SALE_DEAL_INFO', 'VIEW_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO', 'UPDATE_PURCHASE_DEAL_INFO'])">
                           <label class="form-label-v">Возможные причины торга</label>
                           <ng-select
-                            [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])"
+                            [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])"
                             [multiple]="true"
                             bindValue="value"
                             (click)="setPossibleReasonForBidding()"
@@ -435,7 +429,7 @@
                     </div>
                   </div>
                   <div class="row"
-                       [class.disabledDev]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
+                       [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_DEAL_INFO', 'UPDATE_SALE_DEAL_INFO'])">
                     <div class="col-sm">
                       <label class="form-label-v">Комментарий</label>
                       <textarea rows="1" class="col-sm-12 control"
@@ -475,7 +469,7 @@
               </div>
               <div id="collapseOne" class="collapse show" aria-labelledby="aboutObjectOne"
                    data-parent="#accordionAboutObject">
-                <div class="card-body" [class.disabled]="!edit">
+                <div class="card-body" [class.pointer-events]="!edit">
                   <div class="row" *ngIf="isBuy()">
                     <div class="col-sm"></div>
                     <div class="col-sm-4">
@@ -496,7 +490,7 @@
                     <div class="col-sm"></div>
                   </div>
                   <div class="row" *ngIf="isBuy()">
-                    <div class="col-sm" [class.disabled]="this.applicationForm.unification != 'address'">
+                    <div class="col-sm" [class.pointer-events]="this.applicationForm.unification != 'address'">
                       <label class="form-label-v">Полный адрес
                         <span class="text-danger" *ngIf="!applicationForm.postcode">&nbsp;*</span>
                       </label>
@@ -512,14 +506,14 @@
                       </ng-select>
                     </div>
                     <div class="col-sm"
-                         [class.disabled]="this.applicationForm.unification != 'residence'"
+                         [class.pointer-events]="this.applicationForm.unification != 'residence'"
                          [hidden]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])"
                          *ngIf="isApartment() && isBuy()">
                       <label class="form-label-v" translate>ЖК</label>
                       <div class="row">
                         <div class="col-sm-10">
                           <ng-select
-                            [class.disabled]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
+                            [class.pointer-events]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
                             [items]="residentialComplexes"
                             [(ngModel)]="applicationForm.residentialComplexId"
                             (ngModelChange)="setResidenceComplexType()"
@@ -536,6 +530,23 @@
                     </div>
                   </div>
                   <div class="row">
+                    <div class="col-sm" *ngIf="isSell()"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                      <label class="form-label-v" translate>Город
+                        <span class="text-danger" *ngIf="!applicationForm.cityId">&nbsp;*</span>
+                      </label>
+                      <ng-select
+                        [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])"
+                        [items]="city"
+                        [(ngModel)]="applicationForm.cityId"
+                        formControlName="cityId"
+                        bindValue="value"
+                        placeholder="Город">
+                      </ng-select>
+                      <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">
+                        <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>
+                      </div>
+                    </div>
                     <div class="col-sm"
                          [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
                       <label class="form-label-v">Район
@@ -544,6 +555,7 @@
                       <ng-select
                         [items]="districts"
                         bindValue="value"
+                        [multiple]="isSell()"
                         [readonly]="isBuy()"
                         [(ngModel)]="applicationForm.districtId"
                         formControlName="districtId"
@@ -553,62 +565,79 @@
                         <div *ngIf="f.districtId.errors.required" translate>claim.requiredField</div>
                       </div>
                     </div>
-                    <div class="row" *ngIf="isBuy()">
-                      <div class="col-sm">
-                        <label class="form-label-v" translate>claim.numberHouse
-                          <span class="text-danger" *ngIf="!applicationForm.houseNumber">&nbsp;*</span>
+                    <div class="col-sm" *ngIf="isBuy()">
+                      <label class="form-label-v">Номер дома
+                        <span class="text-danger" *ngIf="!applicationForm.houseNumber">&nbsp;*</span>
+                      </label>
+                      <div class="input-group">
+                        <input type="text" min="0" class="form-control"
+                               [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])"
+                               placeholder="{{'claim.numberHouse' | translate}}"
+                               [(ngModel)]="applicationForm.houseNumber" maxlength="10"
+                               (ngModelChange)="getMap()"
+
+                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                               (keypress)="util.keyPress($event)"
+                               [readOnly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
+                               formControlName="houseNumber"
+                        />
+                      </div>
+                      <div *ngIf="f.houseNumber.touched && f.houseNumber.invalid" class="text-danger">
+                        <div *ngIf="f.houseNumber.errors.required" translate>claim.requiredField</div>
+                      </div>
+                    </div>
+                    <div class="col-sm" *ngIf="isBuy()"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])">
+                      <div *ngIf="isApartment()">
+                        <label class="form-label-v" translate>Номер квартиры
+                          <span class="text-danger" *ngIf="!applicationForm.apartmentNumber">&nbsp;*</span>
                         </label>
                         <div class="input-group">
-                          <input type="text" min="0" class="form-control"
-                                 [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])"
-                                 placeholder="{{'claim.numberHouse' | translate}}"
-                                 [(ngModel)]="applicationForm.houseNumber" maxlength="10"
-                                 (ngModelChange)="getMap()"
-
+                          <input type="number" min="1" class="form-control"
+                                 placeholder="Номер квартиры" maxlength="20"
                                  oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                 (keypress)="util.keyPress($event)"
-                                 [readOnly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
-                                 formControlName="houseNumber"
-                          />
+                                 [(ngModel)]="applicationForm.apartmentNumber"
+                                 (change)="showModalChooseClaim()"
+                                 formControlName="apartmentNumber"/>
                         </div>
-                        <div *ngIf="f.houseNumber.touched && f.houseNumber.invalid" class="text-danger">
-                          <div *ngIf="f.houseNumber.errors.required" translate>claim.requiredField</div>
-                        </div>
-                      </div>
-                      <div class="col-sm"
-                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])">
-                        <div *ngIf="isApartment()">
-                          <label class="form-label-v" translate>Номер квартиры
-                            <span class="text-danger" *ngIf="!applicationForm.apartmentNumber">&nbsp;*</span>
-                          </label>
-                          <div class="input-group">
-                            <input type="number" min="1" class="form-control"
-                                   placeholder="Номер квартиры" maxlength="20"
-                                   oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                   [(ngModel)]="applicationForm.apartmentNumber"
-                                   (change)="showModalChooseClaim()"
-                                   formControlName="apartmentNumber"/>
-                          </div>
-                          <div *ngIf="f.apartmentNumber.touched && f.apartmentNumber.invalid" class="text-danger">
-                            <div *ngIf="f.apartmentNumber.errors.required" translate>claim.requiredField</div>
-                          </div>
+                        <div *ngIf="f.apartmentNumber.touched && f.apartmentNumber.invalid" class="text-danger">
+                          <div *ngIf="f.apartmentNumber.errors.required" translate>claim.requiredField</div>
                         </div>
                       </div>
-                      <div class="col-sm"
-                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
-                           *ngIf="!isSell()">
-                        <label class="form-label-v" translate>claim.roomCount
-                          <span class="text-danger" *ngIf="!applicationForm.numberOfRooms">&nbsp;*</span>
-                        </label>
-                        <input type="number" min="1" class="form-control"
-                               placeholder="Количество комнат" maxlength="2"
+                    </div>
+                    <div class="col-sm"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
+                         *ngIf="isBuy()">
+                      <label class="form-label-v" translate>claim.roomCount
+                        <span class="text-danger" *ngIf="!applicationForm.numberOfRooms">&nbsp;*</span>
+                      </label>
+                      <input type="number" min="1" class="form-control"
+                             placeholder="Количество комнат" maxlength="2"
+                             oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                             [(ngModel)]="applicationForm.numberOfRooms"
+                             (keypress)="util.keyPress($event)"
+                             formControlName="numberOfRooms"/>
+                      <div *ngIf="f.numberOfRooms.touched && f.numberOfRooms.invalid" class="text-danger">
+                        <div *ngIf="f.numberOfRooms.errors.required" translate>claim.requiredField</div>
+                      </div>
+                    </div>
+                    <div class="col-sm" *ngIf="isSell()"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                      <label class="form-label-v" translate>claim.roomCount </label>
+                      <div class="input-group"
+                           [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
+                        <input type="number" min="0" class="form-control" maxlength="10"
                                oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                               [(ngModel)]="applicationForm.numberOfRooms"
+                               placeholder="{{'patterns.from2' | translate}}"
                                (keypress)="util.keyPress($event)"
-                               formControlName="numberOfRooms"/>
-                        <div *ngIf="f.numberOfRooms.touched && f.numberOfRooms.invalid" class="text-danger">
-                          <div *ngIf="f.numberOfRooms.errors.required" translate>claim.requiredField</div>
-                        </div>
+                               [(ngModel)]="applicationForm.numberOfRoomsFrom"
+                               formControlName="numberOfRoomsFrom"/>
+                        <input type="number" min="0" class="form-control" maxlength="10"
+                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                               placeholder="{{'patterns.to2' | translate}}"
+                               [(ngModel)]="applicationForm.numberOfRoomsTo"
+                               (keypress)="util.keyPress($event)"
+                               formControlName="numberOfRoomsTo"/>
                       </div>
                     </div>
                   </div>
@@ -618,7 +647,7 @@
                       <div class="col-sm" *ngIf="isSell()">
                         <label class="form-label-v" translate>claim.square</label>
                         <div class="input-group"
-                             [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
+                             [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
                           <input type="text" min="0" class="form-control" maxlength="10"
                                  oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                  placeholder="{{'patterns.from2' | translate}}"
@@ -650,7 +679,7 @@
                       <div class="col-sm" *ngIf="isSell()">
                         <label class="form-label-v" translate>claim.live</label>
                         <div class="input-group"
-                             [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
+                             [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
                           <input type="text" min="0" class="form-control" maxlength="10"
                                  oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                  placeholder="{{'patterns.from2' | translate}}"
@@ -677,7 +706,7 @@
                       <div class="col-sm" *ngIf="isSell()">
                         <label class="form-label-v" translate>claim.kitchen</label>
                         <div class="input-group"
-                             [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
+                             [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
                           <input type="text" min="0" class="form-control" maxlength="10"
                                  oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                  placeholder="{{'patterns.from2' | translate}}"
@@ -706,7 +735,7 @@
                            *ngIf="isSell() && isApartment()">
                         <label class="form-label-v" translate>claim.balcony</label>
                         <div class="input-group"
-                             [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
+                             [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
                           <input type="text" min="0" class="form-control" maxlength="10"
                                  oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                  placeholder="{{'patterns.from2' | translate}}"
@@ -766,7 +795,7 @@
                       <div class="col-sm" *ngIf="isSell()">
                         <label class="form-label-v" translate>claim.badRoomCount</label>
                         <div class="input-group"
-                             [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
+                             [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
                           <input type="number" min="0" class="form-control" maxlength="10"
                                  oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                  placeholder="{{'patterns.from2' | translate}}"
@@ -799,34 +828,32 @@
                         </div>
                       </div>
                       <div class="col-sm"
-                           [class.disabled]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                           [class.pointer-events]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
                         <label class="form-label-v">Студия</label>
-                        <div class="row disabled-bottom-margin">
-                          <mat-button-toggle-group [(ngModel)]="applicationForm.atelier" formControlName="atelier">
-                            <mat-button-toggle class="operation-type-btn"
-                                               *ngFor="let item of dicDynamic"
-                                               [value]="item.code"
-                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.atelier) ? 'bg-white text-dark' : ''"
-                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.atelier)}">
-                              {{item.label}}
-                            </mat-button-toggle>
-                          </mat-button-toggle-group>
-                        </div>
+                        <mat-button-toggle-group [(ngModel)]="applicationForm.atelier" formControlName="atelier"
+                                                 class="width-100">
+                          <mat-button-toggle class="operation-type width-100"
+                                             *ngFor="let item of dicDynamic"
+                                             [value]="item.code"
+                                             [class]="toStringCompare(item.code) != toStringCompare(applicationForm.atelier) ? 'bg-white text-dark' : ''"
+                                             [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.atelier)}">
+                            {{item.label}}
+                          </mat-button-toggle>
+                        </mat-button-toggle-group>
                       </div>
                       <div class="col-sm"
-                           [class.disabled]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                           [class.pointer-events]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
                         <label class="form-label-v">Санузел раздельный</label>
-                        <div class="row disabled-bottom-margin">
-                          <mat-button-toggle-group [(ngModel)]="applicationForm.separateBathroom" formControlName="separateBathroom">
-                            <mat-button-toggle class="operation-type-btn"
-                                               *ngFor="let item of dicDynamic"
-                                               [value]="item.code"
-                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.separateBathroom) ? 'bg-white text-dark' : ''"
-                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.separateBathroom)}">
-                              {{item.label}}
-                            </mat-button-toggle>
-                          </mat-button-toggle-group>
-                        </div>
+                        <mat-button-toggle-group [(ngModel)]="applicationForm.separateBathroom"
+                                                 formControlName="separateBathroom" class="width-100">
+                          <mat-button-toggle class="operation-type width-100"
+                                             *ngFor="let item of dicDynamic"
+                                             [value]="item.code"
+                                             [class]="toStringCompare(item.code) != toStringCompare(applicationForm.separateBathroom) ? 'bg-white text-dark' : ''"
+                                             [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.separateBathroom)}">
+                            {{item.label}}
+                          </mat-button-toggle>
+                        </mat-button-toggle-group>
                       </div>
                     </div>
                   </div>
@@ -834,54 +861,18 @@
                     <div class="col-sm expanded-search" (click)="expandedBlock()">
                        <span *ngIf="!expandBlock">Показать детали</span>
                        <span *ngIf="expandBlock">Скрыть детали</span>
-                      <i class="fa fa-angle-down fa-2x" *ngIf="!expandBlock" aria-hidden="true"></i>
-                      <i class="fa fa-angle-up fa-2x" *ngIf="expandBlock" aria-hidden="true"></i>
+                      <i class="fa fa-angle-down font-weight-bold" *ngIf="!expandBlock" aria-hidden="true"></i>
+                      <i class="fa fa-angle-up font-weight-bold" *ngIf="expandBlock" aria-hidden="true"></i>
                     </div>
                   </div>
                   <div class="row w-100"></div>
                   <div *ngIf="expandBlock">
-                    <div class="row w-100">
-                      <div class="col-sm" *ngIf="isSell()"
-                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                        <label class="form-label-v" translate>Город
-                          <span class="text-danger" *ngIf="!applicationForm.cityId">&nbsp;*</span>
-                        </label>
-                        <ng-select
-                          [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO'])"
-                          [items]="city"
-                          [(ngModel)]="applicationForm.cityId"
-                          formControlName="cityId"
-                          bindValue="value"
-                          placeholder="Город">
-                        </ng-select>
-                        <div *ngIf="f.cityId.touched && f.cityId.invalid" class="text-danger">
-                          <div *ngIf="f.cityId.errors.required" translate>claim.requiredField</div>
-                        </div>
-                      </div>
-                      <div class="col-sm" *ngIf="isSell()"
-                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                        <label class="form-label-v" translate>claim.roomCount </label>
-                        <div class="input-group"
-                             [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
-                          <input type="number" min="0" class="form-control" maxlength="10"
-                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                 placeholder="{{'patterns.from2' | translate}}"
-                                 (keypress)="util.keyPress($event)"
-                                 [(ngModel)]="applicationForm.numberOfRoomsFrom"
-                                 formControlName="numberOfRoomsFrom"/>
-                          <input type="number" min="0" class="form-control" maxlength="10"
-                                 oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                 placeholder="{{'patterns.to2' | translate}}"
-                                 [(ngModel)]="applicationForm.numberOfRoomsTo"
-                                 (keypress)="util.keyPress($event)"
-                                 formControlName="numberOfRoomsTo"/>
-                        </div>
-                      </div>
+                    <div class="row">
                       <div class="col-sm" *ngIf="isApartment()"
                            [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
                         <label class="form-label-v">Этаж</label>
                         <div class="input-group" *ngIf="isSell()"
-                             [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
+                             [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
                           <input type="text" min="0" class="form-control" maxlength="10"
                                  oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                  placeholder="{{'patterns.from2' | translate}}"
@@ -911,7 +902,7 @@
                            [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
                         <label class="form-label-v">Этажность дома</label>
                         <div class="input-group" *ngIf="isSell()"
-                             [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
+                             [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
                           <input type="number" min="0" class="form-control"
                                  placeholder="{{'patterns.from2' | translate}}"
                                  [(ngModel)]="applicationForm.numberOfFloorsFrom"
@@ -940,7 +931,7 @@
                       </div>
                       <div class="col-sm" *ngIf="isSell() && isApartment()">
                         <label class="form-label-v">Выс. потолков</label>
-                        <div class="input-group" [class.disabled]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
+                        <div class="input-group" [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
                           <input type="text" min="0" class="form-control" maxlength="10"
                                  oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                  placeholder="{{'patterns.from2' | translate}}"
@@ -994,11 +985,13 @@
                       <div class="col-sm" [hidden]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])"
                            *ngIf="isApartment() && isBuy()">
                         <label class="form-label-v">Класс жилья</label>
-                        <input type="text" id="housingClass" class="form-control" maxlength="20"
-                               [(ngModel)]="applicationForm.housingClass"
-                               placeholder="{{'Класс жилья' | translate}}"
-                               [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
-                               formControlName="housingClass"/>
+                        <ng-select
+                          [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
+                          [items]="houseClass"
+                          [(ngModel)]="applicationForm.housingClass"
+                          formControlName="housingClass"
+                          bindValue="value">
+                        </ng-select>
                       </div>
                       <div class="col-sm" *ngIf="isApartment()"
                            [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
@@ -1138,52 +1131,46 @@
                       </div>
                       <div class="col-sm">
                         <label class="form-label-v" translate>claim.concierge</label>
-                        <div class="row disabled-bottom-margin"
-                             [class.disabledDev]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                          <mat-button-toggle-group [(ngModel)]="applicationForm.concierge" formControlName="concierge">
-                            <mat-button-toggle class="operation-type-btn"
-                                               *ngFor="let item of dicDynamic"
-                                               [value]="item.code"
-                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.concierge) ? 'bg-white text-dark' : ''"
-                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.concierge)}">
-                              {{item.label}}
-                            </mat-button-toggle>
-                          </mat-button-toggle-group>
-                        </div>
+                        <mat-button-toggle-group [(ngModel)]="applicationForm.concierge" formControlName="concierge" class="width-100" [class.pointer-events]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                          <mat-button-toggle class="operation-type width-100"
+                                             *ngFor="let item of dicDynamic"
+                                             [value]="item.code"
+                                             [class]="toStringCompare(item.code) != toStringCompare(applicationForm.concierge) ? 'bg-white text-dark' : ''"
+                                             [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.concierge)}">
+                            {{item.label}}
+                          </mat-button-toggle>
+                        </mat-button-toggle-group>
                       </div>
                       <div class="col-sm">
                         <label class="form-label-v" translate>claim.stroller</label>
-                        <div class="row disabled-bottom-margin"
-                             [class.disabledDev]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                          <mat-button-toggle-group [(ngModel)]="applicationForm.wheelchair" formControlName="wheelchair">
-                            <mat-button-toggle class="operation-type-btn"
-                                               *ngFor="let item of dicDynamic"
-                                               [value]="item.code"
-                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.wheelchair) ? 'bg-white text-dark' : ''"
-                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.wheelchair)}">
-                              {{item.label}}
-                            </mat-button-toggle>
-                          </mat-button-toggle-group>
-                        </div>
+                        <mat-button-toggle-group [(ngModel)]="applicationForm.wheelchair" formControlName="wheelchair" [class.pointer-events]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
+                                                 class="width-100">
+                          <mat-button-toggle class="operation-type width-100"
+                                             *ngFor="let item of dicDynamic"
+                                             [value]="item.code"
+                                             [class]="toStringCompare(item.code) != toStringCompare(applicationForm.wheelchair) ? 'bg-white text-dark' : ''"
+                                             [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.wheelchair)}">
+                            {{item.label}}
+                          </mat-button-toggle>
+                        </mat-button-toggle-group>
                       </div>
                       <div class="col-sm">
                         <label class="form-label-v">Детская площадка</label>
-                        <div class="row disabled-bottom-margin"
-                             [class.disabledDev]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
-                          <mat-button-toggle-group [(ngModel)]="applicationForm.playground" formControlName="playground">
-                            <mat-button-toggle class="operation-type-btn"
-                                               *ngFor="let item of dicDynamic"
-                                               [value]="item.code"
-                                               [class]="toStringCompare(item.code) != toStringCompare(applicationForm.playground) ? 'bg-white text-dark' : ''"
-                                               [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.playground)}">
-                              {{item.label}}
-                            </mat-button-toggle>
-                          </mat-button-toggle-group>
-                        </div>
+                        <mat-button-toggle-group [(ngModel)]="applicationForm.playground" formControlName="playground"
+                                                 [class.pointer-events]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
+                                                 class="width-100">
+                          <mat-button-toggle class="operation-type width-100"
+                                             *ngFor="let item of dicDynamic"
+                                             [value]="item.code"
+                                             [class]="toStringCompare(item.code) != toStringCompare(applicationForm.playground) ? 'bg-white text-dark' : ''"
+                                             [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(applicationForm.playground)}">
+                            {{item.label}}
+                          </mat-button-toggle>
+                        </mat-button-toggle-group>
                       </div>
                     </div>
                     <div class="row" *ngIf="isBuy()">
-                      <div class="col-sm" [class.disabledDev]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])">
+                      <div class="col-sm" [class.pointer-events]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])">
                         <label class="form-label-v">Описание</label>
                         <textarea rows="1" class="col-sm-12 control"
                                   [(ngModel)]="applicationForm.description" formControlName="description"
@@ -1229,14 +1216,12 @@
                         <legend class="scheduler-border" style="font-size: 12px; width: 80%">Фото объекта
                           <span class="badge badge-danger ml-2">{{photoList.length}}</span>
                         </legend>
-                        <div id="photoCarousel" class="carousel slide" data-ride="carousel"
-                             style="width: 240px;">
+                        <div id="photoCarousel" class="carousel slide photoCarouselBlock" data-ride="carousel">
                           <div class="carousel-inner" style="position: static">
                             <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                  *ngFor="let photo of photoList;let i = index">
                               <img [src]="photo.image" alt="First Slide" class="photoList"
-                                   width="250" height="300"
-                                   (click)="showPhotoFull(photo.fullImage)">
+                                   width="350" height="320" (click)="showPhotoFull(photo.fullImage)">
                               <button class="btn btn-sm btn-danger removeItemCarousel"
                                       *ngIf="edit && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
                                       (click)="removeByGuid(photo, 1)"><i class="fa fa-times fa-2x"
@@ -1258,14 +1243,12 @@
                         <legend class="scheduler-border" style="font-size: 12px; width: 80%">Планы
                           <span class="badge badge-danger ml-2">{{photoPlanList.length}}</span>
                         </legend>
-                        <div id="photoPlanList" class="carousel slide" data-ride="carousel"
-                             style="width: 180px;">
+                        <div id="photoPlanList" class="carousel slide photoCarouselBlock" data-ride="carousel">
                           <div class="carousel-inner">
                             <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                  *ngFor="let plan of photoPlanList;let i = index">
                               <img [src]="plan.image" alt="First Slide" class="photoList"
-                                   width="250" height="300"
-                                   (click)="showPhotoFull(plan.fullImage)">
+                                   width="350" height="320" (click)="showPhotoFull(plan.fullImage)">
                               <button class="btn btn-sm btn-danger removeItemCarousel"
                                       *ngIf="edit && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
                                       (click)="removeByGuid(plan, 2)"><i class="fa fa-times fa-2x"
@@ -1286,14 +1269,12 @@
                         <legend class="scheduler-border" style="font-size: 12px; width: 80%">3D тур
                           <span class="badge badge-danger ml-2">{{photo3DList.length}}</span>
                         </legend>
-                        <div id="photo3DList" class="carousel slide" data-ride="carousel"
-                             style="width: 180px;">
+                        <div id="photo3DList" class="carousel slide photoCarouselBlock" data-ride="carousel">
                           <div class="carousel-inner">
                             <div class="carousel-item" [class]="i==0 ? 'active': ''"
                                  *ngFor="let plan of photo3DList;let i = index">
                               <img [src]="plan.image" alt="First Slide" class="photoList"
-                                   width="250" height="300"
-                                   (click)="showPhotoFull(plan.fullImage)">
+                                   width="350" height="320" (click)="showPhotoFull(plan.fullImage)">
                               <button class="btn btn-sm btn-danger removeItemCarousel"
                                       *ngIf="edit && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
                                       (click)="removeByGuid(plan, 3)"><i class="fa fa-times fa-2x"

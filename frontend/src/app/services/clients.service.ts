@@ -26,6 +26,11 @@ export class ClientsService {
     return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/profile-client/` + id);
   }
 
+
+  findByLoginAndAppId(login:string,appId:string): Observable<any> {
+    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/profile-client/findByLoginAndAppId?appId=` + appId+`&login=`+login);
+  }
+
   updateClientById(form: any): Observable<any> {
     return this.http.put<any>(`${this.configService.apiUserManagerUrl}/api/profile-client/crm`, form);
   }

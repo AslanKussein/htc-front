@@ -57,7 +57,7 @@ import {PaginationModule} from "ngx-bootstrap/pagination";
 import {ModalModule} from "ngx-bootstrap/modal";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ruLocale} from "ngx-bootstrap/locale";
-import {AngularYandexMapsModule, IConfig as IConfigYandex} from "angular8-yandex-maps";
+// import {AngularYandexMapsModule, IConfig as IConfigYandex} from "angular8-yandex-maps";
 import {ClaimViewComponent} from './components/claims/create-claim/claim-view/claim-view.component';
 import {ContractOuComponent} from './components/claims/create-claim/contract-ou/contract-ou.component';
 import {MyAgentsComponent} from './components/profile/my-agents/my-agents.component';
@@ -68,6 +68,8 @@ import { CompareComponent } from './components/compare/compare.component';
 import { MaterialModule } from './MaterialModule';
 import { OrganizationComponent } from './components/organization/organization.component';
 import { NotificationComponent } from './components/notification/notification.component';
+import {AuthGuard} from "./helpers/auth.guard";
+import {AngularYandexMapsModule} from "angular8-yandex-maps";
 
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
@@ -166,6 +168,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     UploaderService,
+    AuthGuard,
     ExitDeactivate,
     UserService,
     NotificationService

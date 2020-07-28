@@ -8,7 +8,7 @@
                  aria-label="Search">
         </div>
         <div class="col-sm">
-          <button type="button" class="btn btn-primary float-right btn2" (click)="openModal(template); addOrg()">
+          <button type="button" *ngIf="admRoles" class="btn btn-primary float-right btn2" (click)="openModal(template); addOrg()">
             Создать
             организацию
           </button>
@@ -27,60 +27,71 @@
           <div class="modal-body">
             <div class="col-sm">
               <label class="col-sm col-form-label">Наименование KZ<span class="text-danger">&nbsp;*</span></label>
-              <input type="text" class="col-sm form-control" name="nameKk"
+              <input type="text" class="col-sm form-control" name="nameKk"  required="true"
                      [(ngModel)]="formData.nameKk">
             </div>
             <div class="col-sm">
               <label class="col-sm col-form-label">Наименование RU<span class="text-danger">&nbsp;*</span></label>
-              <input type="text" class="col-sm form-control" name="nameRu"
+              <input type="text" class="col-sm form-control" name="nameRu"  required="true"
                      [(ngModel)]="formData.nameRu">
             </div>
             <div class="col-sm">
               <label class="col-sm col-form-label">Наименование EN<span class="text-danger">&nbsp;*</span></label>
-              <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formData.nameEn">
+              <input type="text" class="col-sm form-control" name="nameEn" [(ngModel)]="formData.nameEn"
+                     required="true">
             </div>
             <div class="col-sm">
               <label class="col-sm col-form-label">ИИН/БИН<span class="text-danger">&nbsp;*</span></label>
-              <input type="text" class="col-sm form-control" name="bin" [(ngModel)]="formData.bin">
+              <input type="text" class="col-sm form-control" name="bin" [(ngModel)]="formData.bin"
+                     maxlength="12" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                     value=${var}  mask="000000000000"
+                     required="true">
             </div>
             <div class="col-sm">
               <label class="col-sm col-form-label">Адрес KZ<span class="text-danger">&nbsp;*</span></label>
-              <input type="text" class="col-sm form-control" name="addressKk" [(ngModel)]="formData.addressKk">
+              <input type="text" class="col-sm form-control" name="addressKk" [(ngModel)]="formData.addressKk"
+                     required="true">
             </div>
             <div class="col-sm">
               <label class="col-sm col-form-label">Адрес RU<span class="text-danger">&nbsp;*</span></label>
-              <input type="text" class="col-sm form-control" name="addressRu" [(ngModel)]="formData.addressRu">
+              <input type="text" class="col-sm form-control" name="addressRu" [(ngModel)]="formData.addressRu"
+                     required="true">
             </div>
             <div class="col-sm">
               <label class="col-sm col-form-label">Адрес EN<span class="text-danger">&nbsp;*</span></label>
-              <input type="text" class="col-sm form-control" name="addressEn" [(ngModel)]="formData.addressEn">
+              <input type="text" class="col-sm form-control" name="addressEn" [(ngModel)]="formData.addressEn"
+                     required="true">
             </div>
             <div class="col-sm">
-              <label class="col-sm col-form-label">Телефон<span class="text-danger">&nbsp;*</span></label>
-              <input type="text" class="col-sm form-control" name="phoneNumber" [(ngModel)]="formData.phoneNumber">
+              <label class="col-sm col-form-label">Телефон</label>
+              <input type="text" class="col-sm form-control" name="phoneNumber" prefix="+7 " mask="(000) 000 00 00" [(ngModel)]="formData.phoneNumber">
             </div>
             <div class="col-sm">
-              <label class="col-sm col-form-label">E-mail<span class="text-danger">&nbsp;*</span></label>
-              <input type="text" class="col-sm form-control" name="email" [(ngModel)]="formData.email">
+              <label class="col-sm col-form-label">E-mail</label>
+              <input type="email" class="col-sm form-control" name="email" [(ngModel)]="formData.email">
             </div>
             <div class="col-sm">
               <label class="col-sm col-form-label">  Наименование банка, филиала<span class="text-danger">&nbsp;*</span></label>
-              <input type="text" class="col-sm form-control" name="name" [(ngModel)]="formData.requisiteDto.name">
+              <input type="text" class="col-sm form-control" name="name" [(ngModel)]="formData.requisiteDto.name"
+                     required="true">
             </div>
             <div class="col-sm">
               <label class="col-sm col-form-label">  Расчетный счет	<span class="text-danger">&nbsp;*</span></label>
-              <input type="text" class="col-sm form-control" name="account" [(ngModel)]="formData.requisiteDto.account">
+              <input type="text" class="col-sm form-control" name="account" [(ngModel)]="formData.requisiteDto.account"
+                     required="true">
             </div>
             <div class="col-sm">
               <label class="col-sm col-form-label">  БИН банка	<span class="text-danger">&nbsp;*</span></label>
-              <input type="text" class="col-sm form-control" name="bin" [(ngModel)]="formData.requisiteDto.bin">
+              <input type="text" class="col-sm form-control" name="bin" [(ngModel)]="formData.requisiteDto.bin"
+                     required="true">
             </div>
             <div class="col-sm">
               <label class="col-sm col-form-label">  БИК банка	<span class="text-danger">&nbsp;*</span></label>
-              <input type="text" class="col-sm form-control" name="bik" [(ngModel)]="formData.requisiteDto.bik">
+              <input type="text" class="col-sm form-control" name="bik" [(ngModel)]="formData.requisiteDto.bik"
+                     required="true">
             </div>
             <div class="col-sm">
-              <label class="col-sm col-form-label">Дополнительно<span class="text-danger">&nbsp;*</span></label>
+              <label class="col-sm col-form-label">Дополнительно</label>
               <input type="text" class="col-sm form-control" name="additionally" [(ngModel)]="formData.requisiteDto.additionally">
             </div>
             <div class="col-sm text-right">
@@ -107,12 +118,12 @@
           </div>
           <div class="modal-body">
             <h6 class="modal-title">Действительно хотите удалить организацию?</h6>
-            <h6 class="modal-title" *ngIf="users">Определите сотрудников этой организации в другую организацию?</h6>
+            <h6 class="modal-title" *ngIf="usersView">Определите сотрудников этой организации в другую организацию?</h6>
 
 
 
             <div class="row">
-              <div class="col-sm" *ngIf="users">
+              <div class="col-sm" *ngIf="usersView">
                 <table class="table table-bordered table-sm">
                   <thead class="text-center">
                   <tr>
@@ -193,11 +204,11 @@
               <td>{{org.email}}</td>
               <td>{{org.requisiteDto?.name}} {{org.requisiteDto?.account}} {{org.requisiteDto?.bin}}</td>
               <td>
-                <button type="button" class="btn btn-sm btn-light"
+                <button type="button" class="btn btn-sm btn-light"  *ngIf="admRoles"
                                   (click)="editData(org);openModal(template)">
                 Редактировать
               </button>
-                <button type="button" class="btn btn-sm btn-danger"
+                <button type="button" class="btn btn-sm btn-danger"  *ngIf="admRoles"
                    (click)="delData(org);openModal2(template2)"
                 >
                 Удалить

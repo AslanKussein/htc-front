@@ -20,7 +20,6 @@ import {ClientCardComponent} from "./components/profile/my-clients/client-card/c
 import {ClaimViewComponent} from "./components/claims/create-claim/claim-view/claim-view.component";
 import {CompareComponent} from "./components/compare/compare.component";
 import {OrganizationComponent} from "./components/organization/organization.component";
-import {NotificationComponent} from "./components/notification/notification.component";
 
 // определение дочерних маршрутов
 const itemRoutes: Routes = [
@@ -45,6 +44,7 @@ const routes: Routes = [
   {path: 'create-claim-view/:id', component: ClaimViewComponent, canActivate: [AuthGuard]},
   {path: 'create-claim', component: CreateClaimComponent, canActivate: [AuthGuard], canDeactivate: [ExitDeactivate]},
   {path: 'client-card/:id', component: ClientCardComponent, canActivate: [AuthGuard]},
+  {path: 'client-card/:id/claimId/:appId', component: ClientCardComponent, canActivate: [AuthGuard]},
   {path: 'compare', component: CompareComponent, canActivate: [AuthGuard]},
   {path: 'organizations', component: OrganizationComponent, canActivate: [AuthGuard]},
   {path: 'notification', component: NotificationComponent, canActivate: [AuthGuard]},

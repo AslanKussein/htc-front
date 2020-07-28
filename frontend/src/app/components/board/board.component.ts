@@ -70,6 +70,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     if (!this.util.isNullOrEmpty(this.actRoute.snapshot.queryParamMap.get('activeTab'))) {
       this.activeTab = parseInt(this.actRoute.snapshot.queryParamMap.get('activeTab'));
     }
+    this.util.showHideMenu(true);
   }
 
   ngOnInit(): void {
@@ -211,17 +212,17 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
     this.getBoardData(tab, ids, this.login);
 
-    if (this.router.url.includes("board/close-deal")) {
-      this.displayBoardContent = false;
-      this.openInnerPage('board/close-deal/' + this.activeTab);
-      return
-    } else {
+    // if (this.router.url.includes("board/close-deal")) {
+    //   this.displayBoardContent = false;
+    //   this.openInnerPage('board/close-deal/' + this.activeTab);
+    //   return
+    // } else {
       this.router.navigate(['/board'], {
         queryParams: {
           activeTab: tab
         }
       });
-    }
+    // }
   }
 
   getBgColorBySumm(price: number) {

@@ -58,6 +58,7 @@ export class ClaimViewDto {
   public fullAddress: string;
   public residenceComplex: string;
   public apartmentNumber: string;
+  public houseNumber: string;
   public photoIdList: any;
   public housingPlanImageIdList: any;
   public virtualTourImageIdList: any;
@@ -66,4 +67,8 @@ export class ClaimViewDto {
   public heatingSystem: any;
   public sewerage: any;
   public operationList: any;
+  public housingClass: any;
+  public latitude: any;
+  public longitude: any;
+  public postcode: any;
 }

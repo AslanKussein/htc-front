@@ -17,6 +17,10 @@ export class ClaimService {
     return this.http.post<any>(`${this.configService.apiViewManagerUrl}/api/register/getApplicationList`, search);
   }
 
+  getMyApplicationList(search: any): Observable<any> {
+    return this.http.post<any>(`${this.configService.apiViewManagerUrl}/api/register/getMyApplicationList`, search);
+  }
+
   getShortApplicationList(search: any): Observable<any> {
     return this.http.post<any>(`${this.configService.apiViewManagerUrl}/api/register/getShortApplicationList`, search);
   }
