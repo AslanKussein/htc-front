@@ -22,7 +22,11 @@ export class NotificationComponent implements OnInit {
         pageSize: 10
     };
     formGroup = new FormGroup({
-        dateBeg: new FormControl()
+        dateBeg: new FormControl(),
+        dateEnd: new FormControl(),
+        status: new FormControl(),
+        notificationType: new FormControl(),
+        id: new FormControl(),
     });
 
     filterModel: any
