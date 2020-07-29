@@ -51,7 +51,8 @@
           </div>
           <div class="col-sm" [hidden]="hasShowGroup(['VIEW_CLIENT_DATA'])">
             <label class="form-label-v">ID клиента</label>
-            &nbsp;<a *ngIf="this.clientId" [routerLink]="'/client-card/' + this.clientLogin+'/claimId/'+this.applicationId">{{this.clientId}}</a>
+            &nbsp;<a *ngIf="this.clientId"
+                     [routerLink]="'/client-card/' + this.clientLogin+'/claimId/'+this.applicationId">{{this.clientId}}</a>
             <input type="text" class="form-control text-uppercase" readonly [value]="clientFullName"/>
           </div>
         </div>
@@ -261,10 +262,15 @@
               <div class="col-sm"
                    [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])">
                 <label class="form-label-v">Район</label>
-                <input type="text" class="form-control" readonly
-                       [value]="getDicNameByLanguage(claimViewDto, 'district')"/>
+                <ng-select
+                  [(ngModel)]="claimViewDto.districts"
+                  [ngModelOptions]="{standalone: true}"
+                  [items]="claimViewDto.districts"
+                  [multiple]="true"
+                  [readonly]="true">
+                </ng-select>
               </div>
-              <div class="col-sm" *ngIf="!claimViewDto.isSell && isAuthor && !claimViewDto.isFlat"
+              <div class="col-sm" *ngIf="!claimViewDto.isSell"
                    [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])">
                 <label class="form-label-v">Номер дома</label>
                 <input type="text" class="form-control" readonly
@@ -611,13 +617,14 @@
   </div>
 </div>
 
-<div class="row w-100">
+<div class="row w-100"></div>
+<div class="row">
   <div class="col-sm">
     <div class="card" *ngIf="!claimViewDto.isSell">
       <div class="card-header bg-dark text-white font-weight-bold" type="button" data-toggle="collapse"
            id="headingThree"
            data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-        Детали объекта
+        Фотографии
       </div>
       <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
         <div class="card-body">
@@ -700,7 +707,8 @@
   </div>
 </div>
 
-<div class="row w-100">
+<div class="row w-100"></div>
+<div class="row">
   <div class="col-sm">
     <div class="accordion" id="accordionMap">
       <div class="card z-depth-0 bordered">
