@@ -63,7 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
             $("#wrapper").toggleClass("toggled");
         });
         this.webSocketConnect();
-        this.getNotifCount();
+
 
         this.webSocketConnect()
         $(document).scroll(function () {
@@ -100,6 +100,7 @@ export class AppComponent implements OnInit, OnDestroy {
             return;
         }
         if (currentUser) {
+            this.getNotifCount();
             const socket = new SockJS(this.configService.apiNotifManagerUrl + '/open-api/stomp-endpoint');
             this.stompClient = Stomp.over(socket);
 
