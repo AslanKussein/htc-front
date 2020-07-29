@@ -3,8 +3,20 @@
   padding-bottom: 20px;
 }
 
-.notification-card {
-  padding: 10px;
-  margin-bottom: 10px;
-  margin-top: 10px;
+.notification-card-filter {
+  .card-header {
+    background-color: #333333;
+    color: #ffffff;
+  }
+
+  margin-bottom: 30px;
+}
+
+.new-notify {
+  color: #00b2a8;
+}
+
+.new-notify.fa.fa-circle {
+   font-size: 10px;
+  padding-right: 5px;
 }
