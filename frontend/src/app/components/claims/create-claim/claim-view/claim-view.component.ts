@@ -275,9 +275,6 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   }
 
   toStringCompare(data: any) {
-    if (this.util.isNullOrEmpty(data)) {
-      return 'false';
-    }
     return data?.toString();
   }
 

@@ -1095,11 +1095,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   toStringCompare(data: any) {
-    if (this.util.isNullOrEmpty(data)) {
-      if (this.applicationId) {
-        return 'false';
-      }
-    }
     return data?.toString();
   }
 
