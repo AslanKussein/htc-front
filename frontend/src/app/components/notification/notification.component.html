@@ -1,0 +1,105 @@
+<div class=" notifications-wrapper" ngxUiLoaderBlurred>
+
+
+    <mdb-card class="app-card notification-card-filter">
+        <mdb-card-header>Центр уведомления</mdb-card-header>
+        <div class="card-body">
+            <div class=" form-container notification-filter-form" [formGroup]="formGroup">
+                <div class="col-md-2">
+                    <label class="form-control-label">Дата создания</label>
+                    <input formControlName="dateBeg" class=" form-control " type="text" placeholder="С"  bsDatepicker #ru="bsDatepicker"/>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-control-label">&nbsp;</label>
+                    <input formControlName="dateEnd" class=" form-control " type="text" placeholder="По"  bsDatepicker #ru="bsDatepicker"/>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-control-label">Статус</label>
+                    <input formControlName="status" class=" form-control " type="text"/>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-control-label">Описание</label>
+                    <input formControlName="notificationType" class=" form-control " type="text"/>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-control-label">ID завки</label>
+                    <input formControlName="id" class=" form-control " type="text"/>
+                </div>
+            </div>
+        </div>
+        <mdb-card-footer style="text-align: right">
+            <button
+                    mdbBtn
+                    type="button"
+                    mdbWavesEffect
+                    (click)="clearForm()"
+                    class="mr-2">
+                {{'Очистить' }}
+            </button>
+            <button
+                    mdbBtn
+                    type="button"
+
+                    mdbWavesEffect
+                    class="ml-2 btn__find"
+                    (click)="find()">
+                {{ 'Поиск' }}
+            </button>
+        </mdb-card-footer>
+    </mdb-card>
+
+    <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" striped="true" class="z-depth-1">
+        <thead class="sticky-top">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Описание</th>
+            <th scope="col">Дата уведомления</th>
+            <th scope="col">Статус</th>
+        </tr>
+        </thead>
+        <tbody #row>
+        <tr *ngFor="let item of content; let i = index">
+            <th width="150" class="td-id">
+                <span class="notify-circle-wrapper"><i *ngIf="!item?.isOpened" class="new-notify fa fa-circle"> </i></span>
+                <span class="fa fa-envelope"></span>
+                <span>{{item.id}}</span>
+            </th>
+            <th>{{item?.notification?.notificationType?.name}}
+                <i *ngIf="!item.isReadBody" (click)="opened(item)" class="fa fa-chevron-down"></i>
+                <i *ngIf="item.isReadBody" (click)="item.isReadBody=false" class="fa fa-chevron-up"></i>
+
+                <div *ngIf="item.isReadBody" class="clearfix notification-body"
+                     [innerHTML]="sanitize(item?.notification?.message)">
+                </div>
+            </th>
+            <th width="220">{{item?.notification?.messageDate|date:'dd.MM.yyyy      hh:mm'}}</th>
+            <th width="120">
+                <b *ngIf="item?.isOpened">Прочитано</b>
+                <b *ngIf="!item?.isOpened" class="new-notify">Новое</b>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <!--  <div>
+        <div>
+          <mdb-card class="app-card notification-card ">
+            <mdb-card-header>Центр уведомления</mdb-card-header>
+            <mdb-card-body>
+              <div *ngFor="let item of content">
+                <div class="d-flex justify-content">
+                  <b class="card-title">
+                    {{item?.notification?.notificationType?.name}}
+                  </b>
+                  <span class="card-header-dat">{{item?.notification?.messageDate|date:'mm:hh dd.MM.yyyy'}}</span>
+                </div>
+                <div class="clearfix notification-message">
+                  <p [innerHTML]="sanitize(item?.notification?.message)"></p>
+                </div>
+                <th>
+              </div>
+            </mdb-card-body>
+          </mdb-card>
+
+        </div>
+      </div>-->
+</div>

@@ -1,0 +1,52 @@
+.notifications-wrapper {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.notification-card-filter {
+  .card-header {
+    background-color: #333333;
+    color: #ffffff;
+  }
+
+  margin-bottom: 30px;
+}
+
+.new-notify {
+  color: #00b2a8;
+}
+
+.new-notify.fa.fa-circle {
+  font-size: 10px;
+  padding-right: 5px;
+}
+
+.notification-filter-form {
+  .form-control-label {
+    display: block;
+  }
+
+  .col-md-2 {
+    float: left;
+  }
+}
+
+.btn__find {
+  background-color: #00b2a8;
+  color: #ffffff;
+}
+
+.notification-body {
+  padding: 10px 0;
+  margin-top: 5px;
+}
+
+.td-id span{
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.notify-circle-wrapper {
+  width: 20px;
+  display: inline-block;
+}

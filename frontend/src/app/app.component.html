@@ -50,12 +50,19 @@
         </ul>
 
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-          <li class="nav-item dropdown">
+            <li class="nav-item">
+                <a class="nav-link   fa fa-bell menu-notification-icon" routerLink="/notification" >
+                            <span *ngIf="notifCount>0" class="menu-notification-count rounded-circle">
+                                {{notifCount}}
+                            </span>
+                </a>
+            </li>
+            <li class="nav-item dropdown">
             <a class="nav-link p-0 dropdown-toggle nav-link-name" style="font-size: 14px" href="#" id="navbarDropdown"
                role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
               <img [src]="this.util.getCurrentUser()?.photoUuid" class="rounded-circle" style="width: 2.5rem; height: 2.5rem" [alt]=""/>
-              <span>{{currentUser?.surname}} {{currentUser?.name}}</span>
+              <span  class="username">{{currentUser?.surname}} {{currentUser?.name}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" (click)="util.dnHref('profile')" translate>profile.myProfile</a>
