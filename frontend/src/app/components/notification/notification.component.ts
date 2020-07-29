@@ -21,6 +21,9 @@ export class NotificationComponent implements OnInit {
     pageSize: 10
   };
 
+
+
+
   content: NotificationAddresses[]
 
   constructor(
