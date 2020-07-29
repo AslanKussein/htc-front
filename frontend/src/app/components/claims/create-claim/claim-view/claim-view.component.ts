@@ -144,6 +144,8 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
           this.claimViewDto.typeOfElevatorList = this.util.toSelectArrayView(this.claimViewDto.typeOfElevatorList)
           this.claimViewDto.parkingTypes = this.util.toSelectArrayView(this.claimViewDto.parkingTypes)
           this.claimViewDto.housingClass = this.util.toSelectArrayView(this.claimViewDto.housingClass)
+          this.claimViewDto.districts = this.util.toSelectArrayView(this.claimViewDto.districts)
+          console.log(this.claimViewDto.districts)
           this.fillIsEmpty();
           this.searchByPhone(res.clientLogin);
           this.searchByLoginAgent(res.agent);

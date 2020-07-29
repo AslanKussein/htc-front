@@ -42,7 +42,7 @@ export class ClaimViewDto {
   public numberOfBedrooms: number;
   public atelier: boolean = false;
   public separateBathroom: boolean = false;
-  public district: any;
+  public districts: any;
   public numberOfFloors: number;
   public apartmentsOnTheSite: string;
   public materialOfConstruction: any;
