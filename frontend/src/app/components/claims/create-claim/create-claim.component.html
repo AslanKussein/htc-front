@@ -550,7 +550,7 @@
                     <div class="col-sm"
                          [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
                       <label class="form-label-v">Район
-                        <span class="text-danger" *ngIf="!applicationForm.districtId">&nbsp;*</span>
+                        <span class="text-danger" *ngIf="!applicationForm.districts">&nbsp;*</span>
                       </label>
                       <ng-select
                         [items]="districts"
@@ -558,11 +558,11 @@
                         [multiple]="isSell()"
                         [readonly]="isBuy()"
                         [(ngModel)]="applicationForm.districts"
-                        formControlName="districtId"
+                        formControlName="districts"
                         placeholder="Район">
                       </ng-select>
-                      <div *ngIf="f.districtId.touched && f.districtId.invalid" class="text-danger">
-                        <div *ngIf="f.districtId.errors.required" translate>claim.requiredField</div>
+                      <div *ngIf="f.districts.touched && f.districts.invalid" class="text-danger">
+                        <div *ngIf="f.districts.errors.required" translate>claim.requiredField</div>
                       </div>
                     </div>
                     <div class="col-sm" *ngIf="isBuy()">
