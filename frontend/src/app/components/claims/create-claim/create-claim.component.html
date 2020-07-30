@@ -198,7 +198,7 @@
                     </div>
                   </div>
                   <div class="col-sm"
-                       [hidden]="(hasUpdateRole() || !this.applicationId) && hasShowGroup(['CHOOSE_GROUP_AGENT', 'CHOOSE_ANY_AGENT'])">
+                       [hidden]="hasUpdateRole() && hasShowGroup(['CHOOSE_GROUP_AGENT', 'CHOOSE_ANY_AGENT'])">
                     <label class="form-label-v">Выберите агента</label>
                     <ng-select
                       [items]="agentList"
