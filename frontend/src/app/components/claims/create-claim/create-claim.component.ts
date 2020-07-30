@@ -1118,16 +1118,18 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.notifyService.showInfo('Для переназначения нужно выбрать агента', 'Информация');
       return;
     }
-    data['agent'] = this.applicationForm.value.agent;
-    data['applicationId'] = this.applicationId;
+    if (this.applicationId) {
+      data['agent'] = this.applicationForm.value.agent;
+      data['applicationId'] = this.applicationId;
 
-    this.subscriptions.add(this.claimService.reassignApplication(data)
-      .subscribe(res => {
-          this.notifyService.showInfo('Переназначено', 'Информация');
-        }, error => {
-          this.notifyService.showError('', error?.ru);
-        }
-      ))
+      this.subscriptions.add(this.claimService.reassignApplication(data)
+        .subscribe(res => {
+            this.notifyService.showInfo('Переназначено', 'Информация');
+          }, error => {
+            this.notifyService.showError('', error?.ru);
+          }
+        ))
+    }
     this.ngxLoader.stopBackground();
   }
 
