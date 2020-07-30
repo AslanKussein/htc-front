@@ -557,7 +557,7 @@
                         bindValue="value"
                         [multiple]="isSell()"
                         [readonly]="isBuy()"
-                        [(ngModel)]="applicationForm.districtId"
+                        [(ngModel)]="applicationForm.districts"
                         formControlName="districtId"
                         placeholder="Район">
                       </ng-select>
@@ -1529,7 +1529,7 @@
         bindValue="value"
         bindLabel="label"
         [items]="districts"
-        [(ngModel)]="formRes.buildingDto.districtId">
+        [(ngModel)]="formRes.buildingDto.districts">
       </ng-select>
     </div>
     <div class="col-sm" *ngIf="resident">
