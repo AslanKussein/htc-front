@@ -13,7 +13,7 @@ export class ApplicationNotificationService {
     }
 
     public getAllPageable(params: any): Observable<any> {
-        return this.http.post(`${this.configService.apiNotifManagerUrl}/api/notification/getAllPageable`, {})
+        return this.http.post(`${this.configService.apiNotifManagerUrl}/api/notification/getAllPageable`, params)
             .pipe(
                 tap(data => {
                 }),
