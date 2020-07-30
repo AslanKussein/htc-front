@@ -167,7 +167,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     apartmentsOnTheSite: '',
     buildingDto: {
       cityId: null,
-      districts: null,
+      districtId: null,
       houseNumber: null,
       houseNumberFraction: '',
       latitude: null,
@@ -414,7 +414,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       apartmentsOnTheSite: '',
       buildingDto: {
         cityId: null,
-        districts: null,
+        districtId: null,
         houseNumber: null,
         houseNumberFraction: '',
         latitude: null,
