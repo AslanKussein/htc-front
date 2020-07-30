@@ -105,11 +105,11 @@
                                  [disabled]="this.eventObjectId?.length>15">
                 Добавить на показ {{this.eventObjectId?.length}}
               </mat-button-toggle>
-              <mat-button-toggle id="clearBtn" class="btn btn-sm btn-outline-dark clear-btn operation-type"
+              <mat-button-toggle id="clearBtn" class="operation-type bg-white text-dark clear-btn"
                                  (click)="clearForm()">
                 Очистить
               </mat-button-toggle>
-              <mat-button-toggle id="searchBtn" class="btn btn-sm color-aqua text-white search-btn operation-type"
+              <mat-button-toggle id="searchBtn" class="operation-type color-aqua text-white search-btn"
                                  (click)="findClaims(1)">
                 <i aria-hidden="true" class="fa fa-search"></i>
                 Поиск

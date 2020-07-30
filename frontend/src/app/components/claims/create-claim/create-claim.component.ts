@@ -510,7 +510,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   clearResidentialComplex() {
     this.applicationForm.houseNumber = null;//Номер дома
     this.applicationForm.houseNumberFraction = null;//номер дробь
-    this.applicationForm.districtId = null;//Район
+    this.applicationForm.districts = null;//Район
     this.applicationForm.numberOfFloors = null;//Этажность дома
     this.applicationForm.apartmentsOnTheSite = null;//Кв. на площадке
     this.applicationForm.materialOfConstructionId = null;//Материал
@@ -536,7 +536,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     if (this.applicationForm.residentialComplexId) {
       this.applicationForm.houseNumber = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.houseNumber, null);//Номер дома
       this.applicationForm.houseNumberFraction = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.houseNumberFraction, null);//номер дробь
-      this.applicationForm.districtId = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.districtId, null);//Район
+      this.applicationForm.districts = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.districts, null);//Район
       this.applicationForm.numberOfFloors = this.util.nvl(this.applicationForm.residentialComplexId?.numberOfFloors, null);//Этажность дома
       this.applicationForm.apartmentsOnTheSite = this.util.nvl(this.applicationForm.residentialComplexId?.apartmentsOnTheSite, null);//Кв. на площадке
       this.applicationForm.materialOfConstructionId = this.util.nvl(this.applicationForm.residentialComplexId?.materialOfConstructionId, null);//Материал
@@ -604,7 +604,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     this.applicationForm.agent = data?.agent;
     if (!this.util.isNullOrEmpty(data?.purchaseDataDto)) {
       this.applicationForm.cityId = data?.purchaseDataDto?.cityId;
-      this.applicationForm.districtId = data?.purchaseDataDto?.districtId;
+      this.applicationForm.districts = data?.purchaseDataDto?.districts;
       this.applicationForm.mortgage = this.util.toString(data?.purchaseDataDto?.mortgage);
       this.applicationForm.note = data?.purchaseDataDto?.note;
       this.applicationForm.probabilityOfBidding = this.util.toString(data?.purchaseDataDto?.probabilityOfBidding);
@@ -660,7 +660,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.applicationForm.balconyArea = data?.realPropertyDto?.balconyArea;
       if (!this.util.isNullOrEmpty(data?.realPropertyDto?.buildingDto)) {
         this.applicationForm.cityId = data?.realPropertyDto?.buildingDto?.cityId;
-        this.applicationForm.districtId = data?.realPropertyDto?.buildingDto?.districtId;
+        this.applicationForm.districts = data?.realPropertyDto?.buildingDto?.districts;
         this.applicationForm.houseNumber = data?.realPropertyDto?.buildingDto?.houseNumber;
         this.applicationForm.houseNumberFraction = data?.realPropertyDto?.buildingDto?.houseNumberFraction;
         this.latitude = data?.realPropertyDto?.buildingDto?.latitude;
@@ -793,12 +793,12 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.setValidator('apartmentNumber', Validators.required);
         this.setValidator('unification', Validators.required);
       } else if (this.isSell()) { // купить
-        this.setValidator('districtId', Validators.required);
+        this.setValidator('districts', Validators.required);
         this.setValidator('objectPrice', Validators.nullValidator);
         this.setValidator('unification', Validators.nullValidator);
       }
     } else if (this.isHouse()) { // дом
-      this.setValidator('districtId', Validators.required);
+      this.setValidator('districts', Validators.required);
       if (this.isBuy()) { // продать
         this.setValidator('houseNumber', Validators.required);
         this.setValidator('landArea', Validators.required);
@@ -839,7 +839,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     return this.application.purchaseDataDto = new ApplicationPurchaseDataDto(
       null,
       this.applicationForm.cityId,
-      this.applicationForm.districtId,
+      this.applicationForm.districts,
       this.applicationForm.mortgage,
       this.applicationForm.note,
       this.applicationForm.probabilityOfBidding,
@@ -882,7 +882,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   fillBuildingDto() {
     return this.application.realPropertyDto.buildingDto = new BuildingDto(
       this.applicationForm.cityId,
-      this.applicationForm.districtId,
+      this.applicationForm.districts,
       this.applicationForm.houseNumber,
       this.applicationForm.houseNumberFraction,
       this.latitude,
@@ -1378,7 +1378,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
             // this.loadMap()
             this.applicationForm.cityId = res.city?.id;
             this.applicationForm.streetId = res.street?.id;
-            this.applicationForm.districtId = res.district?.id;
+            this.applicationForm.districts = res.district?.id;
             this.applicationForm.houseNumber = res.houseNumber;
             if(!this.applicationId) {
               this.showModalChooseClaim();
