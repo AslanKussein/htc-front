@@ -16,24 +16,26 @@ import * as Stomp from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import {ConfigService} from "./services/config.service";
 import {NotificationService} from "./services/notification.service";
+import {ApplicationNotificationService} from "./services/application.notification.service";
 
 
 declare var jquery: any;   // not required
 declare var $: any;   // not required
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-    title = 'htc';
-    _language = language;
-    currentUser: User;
-    logo: string = '../../../assets/images/home/Лого.png';
-    subscriptions: Subscription = new Subscription();
+  title = 'htc';
+  _language = language;
+  currentUser: User;
+  logo: string = '../../../assets/images/home/Лого.png';
+  subscriptions: Subscription = new Subscription();
     private stompClient = null;
     webSocketConnection: boolean = false;
+    notifCount: number = 0;
 
     constructor(private newDicService: NewDicService,
                 private dicService: DicService,
@@ -46,6 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 private configService: ConfigService,
                 private authenticationService: AuthenticationService,
                 private config: NgSelectConfig,
+                private applicationNotificationService: ApplicationNotificationService,
                 private notifyService: NotificationService) {
         translate.setDefaultLang(this._language.language)
         translate.use(this._language.language);
@@ -59,6 +62,9 @@ export class AppComponent implements OnInit, OnDestroy {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
+        this.webSocketConnect();
+
+
         this.webSocketConnect()
         $(document).scroll(function () {
             let y = $(this).scrollTop();
@@ -94,6 +100,7 @@ export class AppComponent implements OnInit, OnDestroy {
             return;
         }
         if (currentUser) {
+            this.getNotifCount();
             const socket = new SockJS(this.configService.apiNotifManagerUrl + '/open-api/stomp-endpoint');
             this.stompClient = Stomp.over(socket);
 
@@ -102,6 +109,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 _this.showWebSocketConnected(true);
                 _this.stompClient.subscribe('/user/' + currentUser.login + '/topic/notification', function (hello) {
                     _this.showNotification(JSON.parse(hello.body).greeting);
+                    _this.getNotifCount();
                 }, function () {
                     _this.tryToConnectWebSocketAfter(20);
                 });
@@ -134,6 +142,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this.showWebSocketConnected(false);
         console.log('Disconnected!');
+    }
+
+    getNotifCount() {
+        this.applicationNotificationService.getAllNotOpenedNotificationCount()
+            .subscribe(res => {
+                this.notifCount = res;
+            }, err => {
+                this.notifyService.showError(err, 'Ошибка');
+            });
     }
 
     navigateTop() {
