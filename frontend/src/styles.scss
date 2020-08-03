@@ -192,3 +192,15 @@ table tbody tr td {
   width: 100%;
 }
 
+.postcode-select.ng-select.ng-select-single .ng-select-container {
+  height: 100%;
+}
+
+.postcode-select.ng-select.ng-select-single .ng-select-container .ng-value-container,
+.postcode-select.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+  white-space: normal;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  white-space: normal !important;
+}
