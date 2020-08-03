@@ -494,6 +494,7 @@
                         <span class="text-danger" *ngIf="!applicationForm.postcode">&nbsp;*</span>
                       </label>
                       <ng-select
+                        class="postcode-select"
                         [items]="kazPost"
                         [searchFn]="customSearchFn"
                         (search)="getDataKzPost($event)"
