@@ -50,7 +50,6 @@ export class StaffsComponent implements OnInit, OnDestroy {
     email: ''
   };
 
-
   ngOnInit(): void {
     this.ngxLoader.startBackground();
     this.loadDictionary();
@@ -69,7 +68,6 @@ export class StaffsComponent implements OnInit, OnDestroy {
     }
   }
 
-
   getGroup(){
     this.ngxLoader.startBackground();
     let obj={
@@ -82,7 +80,6 @@ export class StaffsComponent implements OnInit, OnDestroy {
     });
     this.ngxLoader.stopBackground();
   }
-
 
   getUserInfo() {
     this.users = [];
@@ -165,6 +162,30 @@ export class StaffsComponent implements OnInit, OnDestroy {
 
   submit() {
     this.ngxLoader.startBackground();
+    let valid = true;
+    if (!this.isEdit) {
+      if (this.util.isNullOrEmpty(this.formData.pass)) {
+        valid = false;
+      }
+    }
+    if (this.isEdit) {
+      if (!this.util.isNullOrEmpty(this.formData.passNew) && this.util.isNullOrEmpty(this.formData.passNew2)) {
+        valid = false;
+      }
+    }
+    if (this.util.isNullOrEmpty(this.formData.login) || this.util.isNullOrEmpty(this.formData.name)
+      || this.util.isNullOrEmpty(this.formData.surname) || this.util.isNullOrEmpty(this.formData.phone)
+      || this.util.isNullOrEmpty(this.formData.email) || this.util.isNullOrEmpty(this.formData.isActive)
+      || this.util.isNullOrEmpty(this.formData.roles) || this.util.isNullOrEmpty(this.formData.group)
+      || this.util.isNullOrEmpty(this.formData.organizationId)) {
+      valid = false;
+    }
+    if (!valid) {
+      this.ngxLoader.stopBackground();
+      this.notifyService.showInfo('Пожалуйста заполните все обязательные поля', 'Информация');
+      return;
+    }
+
     if (this.isEdit) {
 
       this.subscriptions.add(this.staffService.updateUserGroupById(this.formData)

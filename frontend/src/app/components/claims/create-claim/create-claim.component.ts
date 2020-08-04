@@ -828,6 +828,16 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.setValidator('postcode', Validators.required);
       this.setValidator('postcode', Validators.required);
     }
+    if (this.applicationId) {
+      this.setValidator('firstName', Validators.nullValidator);
+      this.setValidator('surname', Validators.nullValidator);
+      this.setValidator('phoneNumber', Validators.nullValidator);
+      this.setValidator('email', Validators.nullValidator);
+    } else {
+      this.setValidator('firstName', Validators.required);
+      this.setValidator('surname', Validators.required);
+      this.setValidator('phoneNumber', Validators.required);
+    }
   }
 
   setValidator(code: string, validator) {
