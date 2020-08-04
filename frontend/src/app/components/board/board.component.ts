@@ -50,9 +50,11 @@ export class BoardComponent implements OnInit, OnDestroy {
   isUpload: boolean;
   percent: number;
   isTargetApplicationId: boolean;
+
   get boardSelect(): Board {
     return this._boardSelect;
   }
+
   @ViewChild('modalContentAdvance', {static: true}) private _modalContentAdvance: TemplateRef<any>;
 
   constructor(private boardService: BoardService,
@@ -106,7 +108,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     searchFilter['agentLoginList'] = login
     if (this.util.isNullOrEmpty(searchFilter['agentLoginList'])) {
       this.login = [];
-      this.agentList.forEach(e=>this.login.push(e?.login))
+      this.agentList.forEach(e => this.login.push(e?.login))
       searchFilter['agentLoginList'] = this.login;
     }
     if (this.util.isNullOrEmpty(searchFilter['agentLoginList'])) {
@@ -217,11 +219,11 @@ export class BoardComponent implements OnInit, OnDestroy {
     //   this.openInnerPage('board/close-deal/' + this.activeTab);
     //   return
     // } else {
-      this.router.navigate(['/board'], {
-        queryParams: {
-          activeTab: tab
-        }
-      });
+    this.router.navigate(['/board'], {
+      queryParams: {
+        activeTab: tab
+      }
+    });
     // }
   }
 
@@ -282,6 +284,17 @@ export class BoardComponent implements OnInit, OnDestroy {
     return this.util.getDicNameByLanguage();
   }
 
+  getCharFromList(list) {
+    let district = '';
+    if (!this.util.isNullOrEmpty(list)) {
+      for (let distr of list) {
+        if (!this.util.isNullOrEmpty(distr))
+          district += this.util.isNullOrEmpty(district) ? distr?.name[this.getDicNameByLanguage()] : ',' + distr?.name[this.getDicNameByLanguage()]
+      }
+    }
+    return district;
+  }
+
   /**
    "id": 1, "Первичный контакт",
    "id": 2, Встреча
@@ -323,7 +336,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       } else if (prevStatusId == 6 && currentStatusId == 10) { // 2.4. С "Показ *" на "Договор о задатке/авансе *"
         this.openModal2(this._modalContentAdvance, '-modal-sm');
         return;
-      }else if (prevStatusId == 6 && currentStatusId == 7) { //NEW С "Показ *" на на "Закрытие сделки *" - обязательный статус
+      } else if (prevStatusId == 6 && currentStatusId == 7) { //NEW С "Показ *" на на "Закрытие сделки *" - обязательный статус
         this.openInnerPage('board/close-deal/' + this.activeTab);
         return;
       } else if (prevStatusId == 10 && currentStatusId == 7) { // 2.5. С "Договор о задатке/авансе *" на "Закрытие сделки *"
@@ -386,7 +399,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       }
     }));
     this.subscriptions.add(this.boardService.getTargetApplication(this.applicationId).subscribe(res => {
-      if(res) {
+      if (res) {
         this.isActive = true;
         this.isTargetApplicationId = true;
         this.secondId = res.id;
@@ -526,7 +539,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       }));
     }
 
-    if(!this.util.hasShowApplicationGroup('CLOSE_APPLICATION', this.roles)) {
+    if (!this.util.hasShowApplicationGroup('CLOSE_APPLICATION', this.roles)) {
       this.subscriptions.add(this.boardService.confirmComplete(obj).subscribe(res => {
         this.notificationService.showSuccess('', 'Успешно сохранено');
         this.sortStatusesDic(this.activeTab);

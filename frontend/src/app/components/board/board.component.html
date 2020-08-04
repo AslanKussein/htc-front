@@ -79,7 +79,7 @@
                     {{item.numberOfRooms}} комнатная, кв {{item.totalArea}}
                     <span
                       *ngIf="activeTab == 2">{{item?.residentialComplex ? item?.residentialComplex[getDicNameByLanguage()] : ''}}</span>
-                    <span *ngIf="activeTab == 1">{{item.district?.name[getDicNameByLanguage()]}}</span>
+                    <span *ngIf="activeTab == 1">{{getCharFromList(item.districts)}}</span>
                     <br/><span>цена: {{item.price | mask : 'separator.2'}}</span></p>
                   <i class="fa fa-phone" *ngIf="item.phone">
                     <a href="tel:8{{item.phone}}" class="text-white">+7{{item.phone | mask: ' (000) 000-0000'}}</a></i>
