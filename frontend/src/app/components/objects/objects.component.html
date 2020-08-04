@@ -365,4 +365,7 @@
       </div>
     </div>
   </div>
+  <div class="modal-footer">
+    <button type="button" [disabled]="this.eventObjectId.length == 0" (click)="modalRef.hide()" class="float-right btn operation-type color-aqua text-white">OK</button>
+  </div>
 </ng-template>
