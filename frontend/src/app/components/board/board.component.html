@@ -317,7 +317,7 @@
             <td>{{ item.id }}</td>
             <td>{{ item.operationType }}</td>
             <td>{{ item.createDate | date: 'dd.MM.yyyy' }}</td>
-            <td>{{ item.district }}</td>
+            <td>{{ item.districts}}</td>
             <td *ngIf="isSellTargetApp">{{ item.numberOfRooms }}</td>
             <td *ngIf="!isSellTargetApp">{{ item.numberOfRoomsPeriod?.from }}</td>
             <td *ngIf="!isSellTargetApp">{{ item.numberOfRoomsPeriod?.to }}</td>
