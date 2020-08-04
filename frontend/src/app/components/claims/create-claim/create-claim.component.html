@@ -61,7 +61,14 @@
                    data-parent="#accordionaboutOwnerOne" [class.pointer-events]="this.applicationId">
                 <div class="card-body accordionAboutObject">
                   <div class="row">
-                    <div class="col-sm-3"
+                    <div class="col-sm-2" *ngIf="applicationForm.clientId">
+                      <label class="form-label-v" translate>claim.clientID</label>
+                      <input type="text" id="clientId" class="form-control"
+                             [(ngModel)]="applicationForm.clientId"
+                             formControlName="clientId" [readOnly]="true"
+                             placeholder="{{'claim.clientID' | translate}}"/>
+                    </div>
+                    <div [className]="applicationForm.clientId ? 'col-sm-2' : 'col-sm-4'"
                          [hidden]="hasShowGroup(['VIEW_CLIENT_DATA', 'UPDATE_CLIENT_DATA'])">
                       <label class="form-label-v" translate>claim.contacts
                         <span class="text-danger" *ngIf="!applicationForm.phoneNumber">&nbsp;*</span>
@@ -77,7 +84,7 @@
                         <div *ngIf="f.phoneNumber.errors.required" translate>claim.requiredField</div>
                       </div>
                     </div>
-                    <div class="col-sm" [hidden]="hasShowGroup(['VIEW_CLIENT_DATA', 'UPDATE_CLIENT_DATA'])">
+                    <div class="col-sm-4" [hidden]="hasShowGroup(['VIEW_CLIENT_DATA', 'UPDATE_CLIENT_DATA'])">
                       <label class="form-label-v" translate>name
                         <span class="text-danger" *ngIf="!applicationForm.firstName">&nbsp;*</span>
                       </label>
@@ -90,7 +97,7 @@
                         <div *ngIf="f.firstName.errors.required" translate>claim.requiredField</div>
                       </div>
                     </div>
-                    <div class="col-sm" [hidden]="hasShowGroup(['VIEW_CLIENT_DATA', 'UPDATE_CLIENT_DATA'])">
+                    <div class="col-sm-4" [hidden]="hasShowGroup(['VIEW_CLIENT_DATA', 'UPDATE_CLIENT_DATA'])">
                       <label class="form-label-v" translate>surname
                         <span class="text-danger" *ngIf="!applicationForm.surname">&nbsp;*</span>
                       </label>
@@ -105,7 +112,7 @@
                   </div>
                   <div class="row"
                        [hidden]="hasShowGroup(['VIEW_CLIENT_DATA', 'UPDATE_CLIENT_DATA'])">
-                    <div class="col-sm-3"
+                    <div class="col-sm-4"
                          [hidden]="hasShowGroup(['VIEW_CLIENT_DATA', 'UPDATE_CLIENT_DATA'])">
                       <label class="form-label-v" translate>patronymic</label>
                       <input type="text" class="form-control" id="patronymic" formControlName="patronymic"
@@ -113,42 +120,30 @@
                              [readOnly]="hasShowGroup(['UPDATE_CLIENT_DATA'])"
                              [(ngModel)]="applicationForm.patronymic" maxlength="255"/>
                     </div>
-                    <div class="col-sm" [class.disabledDiv]="hasShowGroup(['UPDATE_CLIENT_INFO'])"
+                    <div class="col-sm-4" [class.disabledDiv]="hasShowGroup(['UPDATE_CLIENT_INFO'])"
                          [hidden]="hasShowGroup(['UPDATE_CLIENT_INFO', 'VIEW_CLIENT_INFO'])">
                       <label class="form-label-v" translate>gender</label>
-                      <div class="row">
-                        <div class="col-sm">
-                          <div class="gender-border">
-                            <input type="radio" id="men" name="gender" value="MALE" class="custom-control-input"
-                                   [(ngModel)]="applicationForm.gender" formControlName="gender">
-                            <label class="custom-control-label" for="men">Муж.</label>
-                          </div>
-                        </div>
-                        &nbsp;
-                        <div class="col-sm">
-                          <div class="gender-border">
-                            <input type="radio" id="women" name="gender" value="FEMALE"
-                                   class="custom-control-input"
-                                   [(ngModel)]="applicationForm.gender" formControlName="gender">
-                            <label class="custom-control-label" for="women">Жен.</label>
-                          </div>
-                        </div>
-                      </div>
+                      <mat-button-toggle-group [(ngModel)]="applicationForm.gender" formControlName="gender"
+                                               class="width-100">
+                        <mat-button-toggle class="operation-type width-100" [value]="'MALE'"
+                                           [class]="applicationForm.gender != 'MALE' ? 'bg-white text-dark' : ''"
+                                           [ngClass]="{ 'color-aqua text-white':applicationForm.gender == 'MALE'}">
+                          Муж.
+                        </mat-button-toggle>
+                        <mat-button-toggle class="operation-type width-100" [value]="'FEMALE'"
+                                           [class]="applicationForm.gender != 'FEMALE' ? 'bg-white text-dark' : ''"
+                                           [ngClass]="{ 'color-aqua text-white':applicationForm.gender == 'FEMALE'}">
+                          Жен.
+                        </mat-button-toggle>
+                      </mat-button-toggle-group>
                     </div>
-                    <div class="col-sm"
+                    <div class="col-sm-4"
                          [hidden]="hasShowGroup(['VIEW_CLIENT_DATA', 'UPDATE_CLIENT_DATA'])">
                       <label class="form-label-v" translate>claim.email</label>
                       <input type="text" id="email" class="form-control" [(ngModel)]="applicationForm.email"
                              placeholder="{{'claim.email' | translate}}"
                              [readOnly]="hasShowGroup(['UPDATE_CLIENT_DATA'])"
                              formControlName="email"/>
-                    </div>
-                    <div class="col-sm-2" *ngIf="applicationForm.clientId">
-                      <label class="form-label-v" translate>claim.clientID</label>
-                      <input type="text" id="clientId" class="form-control"
-                             [(ngModel)]="applicationForm.clientId"
-                             formControlName="clientId" [readOnly]="true"
-                             placeholder="{{'claim.clientID' | translate}}"/>
                     </div>
                   </div>
                   <!--                      <div class="row" *ngIf="!this.applicationId">-->
@@ -469,24 +464,22 @@
               <div id="collapseOne" class="collapse show" aria-labelledby="aboutObjectOne"
                    data-parent="#accordionAboutObject">
                 <div class="card-body" [class.pointer-events]="!edit">
-                  <div class="row" *ngIf="isBuy()">
-                    <div class="col-sm"></div>
-                    <div class="col-sm-4">
-                      <mat-button-toggle-group [(ngModel)]="applicationForm.unification"
+                  <div class="row">
+                    <div class="col-sm">
+                      <mat-button-toggle-group [(ngModel)]="applicationForm.unification" *ngIf="isBuy()"
                                                formControlName="unification">
-                        <mat-button-toggle class="operation-type" [value]="'address'"
+                        <mat-button-toggle class="operation-type" [value]="'address'" style="width: 200px"
                                            [class]="'address' != applicationForm.unification ? 'bg-white text-dark' : ''"
                                            [ngClass]="{ 'color-aqua text-white': 'address' === applicationForm.unification}">
                           По полному адресу
                         </mat-button-toggle>
-                        <mat-button-toggle class="operation-type" [value]="'residence'" *ngIf="this.isApartment()"
+                        <mat-button-toggle class="operation-type" [value]="'residence'" *ngIf="this.isApartment()" style="width: 200px"
                                            [class]="'residence' != applicationForm.unification ? 'bg-white text-dark' : ''"
                                            [ngClass]="{ 'color-aqua text-white': 'residence' === applicationForm.unification}">
                           ЖК
                         </mat-button-toggle>
                       </mat-button-toggle-group>
                     </div>
-                    <div class="col-sm"></div>
                   </div>
                   <div class="row" *ngIf="isBuy()">
                     <div class="col-sm" [class.pointer-events]="this.applicationForm.unification != 'address'">
@@ -792,9 +785,9 @@
                       </div>
                     </div>
                     <div class="row" *ngIf="isApartment()">
-                      <div class="col-sm" *ngIf="isSell()">
-                        <label class="form-label-v" translate>claim.badRoomCount</label>
-                        <div class="input-group"
+                      <div class="col-sm">
+                        <label class="form-label-v">Количество спален</label>
+                        <div class="input-group" *ngIf="isSell()"
                              [class.pointer-events]="hasShowGroup(['UPDATE_PURCHASE_OBJECT_INFO'])">
                           <input type="number" min="0" class="form-control" maxlength="10"
                                  oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
@@ -809,23 +802,12 @@
                                  [(ngModel)]="applicationForm.numberOfBedroomsTo"
                                  formControlName="numberOfBedroomsTo"/>
                         </div>
-                      </div>
-                      <div class="col-sm" *ngIf="!isSell()">
-                        <label class="form-label-v" translate>claim.badRoomCount
-                          <span class="text-danger" *ngIf="!applicationForm.numberOfBedrooms">&nbsp;*</span>
-                        </label>
-                        <input type="number" id="numberOfBedrooms" class="form-control"
+                        <input type="number" id="numberOfBedrooms" class="form-control" *ngIf="!isSell()"
                                [(ngModel)]="applicationForm.numberOfBedrooms" maxlength="10"
                                oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                [readonly]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO'])"
-                               placeholder="{{'claim.badRoomCount' | translate}}"
                                (keypress)="util.keyPress($event)"
                                formControlName="numberOfBedrooms" min="1" pattern="\d*"/>
-                        <div *ngIf="f.numberOfBedrooms.touched && f.numberOfBedrooms.invalid"
-                             class="text-danger">
-                          <div *ngIf="f.numberOfBedrooms.errors.required" translate>claim.requiredField
-                          </div>
-                        </div>
                       </div>
                       <div class="col-sm"
                            [class.pointer-events]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
@@ -855,6 +837,7 @@
                           </mat-button-toggle>
                         </mat-button-toggle-group>
                       </div>
+                      <div class="col-sm"></div>
                     </div>
                   </div>
                   <div class="row font-weight-bold">

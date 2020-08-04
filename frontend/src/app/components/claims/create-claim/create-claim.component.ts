@@ -789,7 +789,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         this.setValidator('objectPrice', Validators.required);
         this.setValidator('numberOfRooms', Validators.required);
         this.setValidator('totalArea', Validators.required);
-        this.setValidator('numberOfBedrooms', Validators.required);
         this.setValidator('apartmentNumber', Validators.required);
         this.setValidator('unification', Validators.required);
       } else if (this.isSell()) { // купить
