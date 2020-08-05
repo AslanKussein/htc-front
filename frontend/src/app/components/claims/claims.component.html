@@ -174,7 +174,8 @@
           <br/>
           <span class="font-weight-bolder">{{claim.emailAgent}}</span>
         </td>
-        <td>{{getDicNameByLanguage(claim, 'district')}}</td>
+<!--        <td>{{getDicNameByLanguage(claim, 'district')}}</td>-->
+        <td>{{this.getCharFromList(claim.districts)}}</td>
         <td>{{claim.numberOfRooms}}</td>
         <td>{{claim.price}}</td>
         <td>

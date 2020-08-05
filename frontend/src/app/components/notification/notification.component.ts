@@ -57,6 +57,7 @@ export class NotificationComponent implements OnInit {
     this.filterModel = new NotificationFilter();
     this.find();
     this.getDicStatus();
+    this.getAllNotificationType();
   }
 
   getDicStatus() {
@@ -74,7 +75,7 @@ export class NotificationComponent implements OnInit {
       for (let i = 0; i < len; i++) {
         list.push({
           value: data[i][idField],
-          label: data[i].multiLang[labelField],
+          label:data[i].multiLang? data[i].multiLang[labelField]: data[i][labelField],
           code: data[i]['code'],
           operationCode: data[i]['operationCode']
         });
@@ -113,7 +114,6 @@ export class NotificationComponent implements OnInit {
     };
     this.applicationNotificationService.getAllPageable(params)
       .subscribe(res => {
-        console.log(res)
         this.content = res.content;
       }, err => {
         this.notifyService.showError(err, '');
@@ -129,6 +129,13 @@ export class NotificationComponent implements OnInit {
 
   }
 
+  getAllNotificationType() {
+    this.applicationNotificationService.getAllNotificationType().subscribe(res => {
+      this.dicNotificationType =  this.toSelectArray(res, 'id','name');
+    }, err => {
+      this.notifyService.showError(err, '');
+    });
+  }
 
   opened(item: NotificationAddresses) {
     item.isReadBody = true;
