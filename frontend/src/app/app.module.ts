@@ -29,7 +29,7 @@ import {CalendarModule, DateAdapter} from 'angular-calendar';
 import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
 import localeRu from '@angular/common/locales/ru';
 import localeKz from '@angular/common/locales/ru-KZ';
-import {NgxMaskModule, IConfig} from 'ngx-mask'
+import {NgxMaskModule,IConfig} from 'ngx-mask'
 import {MDBBootstrapModule} from "angular-bootstrap-md";
 import {ExitDeactivate} from "./helpers/canDeactivate/exitDeactivate";
 import {UserService} from "./services/user.service";
@@ -77,7 +77,7 @@ export function HttpLoaderFactory(httpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
 
-export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
+ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: 'indigo',
@@ -89,7 +89,10 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   pbThickness: 5 // progress bar thickness
 };
 
-
+// const mapConfig: IConfig = {
+//   apikey: '658f67a2-fd77-42e9-b99e-2bd48c4ccad4',
+//   lang: 'ru_RU',
+// };
 
 @NgModule({
   declarations: [
@@ -148,7 +151,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     DragDropModule,
     ToastrModule.forRoot(),
     NgxMaskModule.forRoot(options),
-    AngularYandexMapsModule.forRoot('658f67a2-fd77-42e9-b99e-2bd48c4ccad4'),
+    AngularYandexMapsModule.forRoot("658f67a2-fd77-42e9-b99e-2bd48c4ccad4"),
       CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
