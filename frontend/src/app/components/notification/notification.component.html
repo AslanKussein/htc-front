@@ -1,114 +1,136 @@
 <div class=" notifications-wrapper" ngxUiLoaderBlurred>
 
 
-  <mdb-card class="app-card notification-card-filter">
-    <mdb-card-header>Центр уведомлений</mdb-card-header>
-    <div class="card-body">
-      <div class=" form-container notification-filter-form" [formGroup]="formGroup">
-        <div class="col-md-2">
-          <label class="form-control-label">Дата создания</label>
-          <input formControlName="dateBeg" id="dateBeg" [(ngModel)]="filterModel.dateBeg" class=" form-control " type="text"
-                 placeholder="С" bsDatepicker
-                 #ru="bsDatepicker"/>
-        </div>
-        <div class="col-md-2">
-          <label class="form-control-label">&nbsp;</label>
-          <input formControlName="dateEnd"  id="dateEnd"  [(ngModel)]="filterModel.dateEnd" class=" form-control " type="text"
-                 placeholder="По" bsDatepicker
-                 #ru="bsDatepicker"/>
-        </div>
-        <div class="col-md-2">
-          <label class="form-control-label">Статус</label>
-          <ng-select formControlName="status"  id="status"
-                     [items]="dicStatus"
-                     bindValue="value"
-                     bindlabel="value"
-                     [searchable]="false"
-                     [(ngModel)]="filterModel.status">
-          </ng-select>
-        </div>
-        <div class="col-md-2">
-          <label class="form-control-label">Описание</label>
-          <ng-select formControlName="notificationType"  id="notificationType"
-                     [items]="dicNotificationType"
-                     [searchable]="false"
-                     bindValue="value"
-                     bindlabel="value"
-                     [(ngModel)]="filterModel.notificationType">
-          </ng-select>
-        </div>
-        <div class="col-md-2">
-          <label class="form-control-label">ID завки</label>
-          <input formControlName="applicationId"  id="applicationId"  [(ngModel)]="filterModel.applicationId" class=" form-control "
-                 type="text"/>
-        </div>
-      </div>
-    </div>
-    <mdb-card-footer>
-      <mat-button-toggle-group class="float-right">
-        <mat-button-toggle class="operation-type bg-white text-dark clear-btn" (click)="clearForm() ">
-          Очистить
-        </mat-button-toggle>
-        <mat-button-toggle class="operation-type color-aqua text-white search-btn" (click)="find()">
-          <i aria-hidden="true" class="fa fa-search"></i>
-          Поиск
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-    </mdb-card-footer>
-  </mdb-card>
-
-  <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" striped="true" class="z-depth-1">
-    <thead class="sticky-top">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Описание</th>
-      <th scope="col">Дата уведомления</th>
-      <th scope="col">Статус</th>
-    </tr>
-    </thead>
-    <tbody #row>
-    <tr *ngFor="let item of content; let i = index">
-      <th width="150" class="td-id">
-        <span class="notify-circle-wrapper"><i *ngIf="!item?.isOpened" class="new-notify fa fa-circle"> </i></span>
-        <span class="fa fa-envelope"></span>
-        <span>{{item.id}}</span>
-      </th>
-      <th>{{item?.notification?.notificationType?.name}}
-        <i *ngIf="!item.isReadBody" (click)="opened(item)" class="fa fa-chevron-down"></i>
-        <i *ngIf="item.isReadBody" (click)="item.isReadBody=false" class="fa fa-chevron-up"></i>
-
-        <div *ngIf="item.isReadBody" class="clearfix notification-body"
-             [innerHTML]="sanitize(item?.notification?.message)">
-        </div>
-      </th>
-      <th width="220">{{item?.notification?.messageDate|date:'dd.MM.yyyy      hh:mm'}}</th>
-      <th width="120">
-        <b *ngIf="item?.isOpened">Прочитано</b>
-        <b *ngIf="!item?.isOpened" class="new-notify">Новое</b>
-      </th>
-    </tr>
-    </tbody>
-  </table>
-  <!--  <div>
-      <div>
-        <mdb-card class="app-card notification-card ">
-          <mdb-card-header>Центр уведомления</mdb-card-header>
-          <mdb-card-body>
-            <div *ngFor="let item of content">
-              <div class="d-flex justify-content">
-                <b class="card-title">
-                  {{item?.notification?.notificationType?.name}}
-                </b>
-                <span class="card-header-dat">{{item?.notification?.messageDate|date:'mm:hh dd.MM.yyyy'}}</span>
-              </div>
-              <div class="clearfix notification-message">
-                <p [innerHTML]="sanitize(item?.notification?.message)"></p>
-              </div>
-              <th>
+    <mdb-card class="app-card notification-card-filter">
+        <mdb-card-header>Центр уведомлений</mdb-card-header>
+        <div class="card-body">
+            <div class=" form-container notification-filter-form" [formGroup]="formGroup">
+                <div class="col-md-2">
+                    <label class="form-control-label">Дата создания</label>
+                    <input formControlName="dateBeg" id="dateBeg" [(ngModel)]="filterModel.dateBeg"
+                           class=" form-control " type="text"
+                           placeholder="С" bsDatepicker
+                           #ru="bsDatepicker"/>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-control-label">&nbsp;</label>
+                    <input formControlName="dateEnd" id="dateEnd" [(ngModel)]="filterModel.dateEnd"
+                           class=" form-control " type="text"
+                           placeholder="По" bsDatepicker
+                           #ru="bsDatepicker"/>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-control-label">Статус</label>
+                    <ng-select formControlName="status" id="status"
+                               [items]="dicStatus"
+                               bindValue="value"
+                               bindlabel="value"
+                               [searchable]="false"
+                               [(ngModel)]="filterModel.status">
+                    </ng-select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-control-label">Описание</label>
+                    <ng-select formControlName="notificationType" id="notificationType"
+                               [items]="dicNotificationType"
+                               [searchable]="false"
+                               bindValue="value"
+                               bindlabel="value"
+                               [(ngModel)]="filterModel.notificationType">
+                    </ng-select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-control-label">ID завки</label>
+                    <input formControlName="applicationId" id="applicationId" [(ngModel)]="filterModel.applicationId"
+                           class=" form-control "
+                           type="text"/>
+                </div>
             </div>
-          </mdb-card-body>
-        </mdb-card>
+        </div>
+        <mdb-card-footer>
+            <mat-button-toggle-group class="float-right">
+                <mat-button-toggle class="operation-type bg-white text-dark clear-btn" (click)="clearForm() ">
+                    Очистить
+                </mat-button-toggle>
+                <mat-button-toggle class="operation-type color-aqua text-white search-btn" (click)="find()">
+                    <i aria-hidden="true" class="fa fa-search"></i>
+                    Поиск
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+        </mdb-card-footer>
+    </mdb-card>
 
-      </div>
-    </div>-->
+    <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" striped="true" class="z-depth-1">
+        <thead class="sticky-top">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Описание</th>
+            <th scope="col">Дата уведомления</th>
+            <th scope="col">Статус</th>
+        </tr>
+        </thead>
+        <tbody #row>
+        <tr *ngFor="let item of content; let i = index">
+            <th width="160" class="td-id">
+                <span class="notify-circle-wrapper"><i *ngIf="!item?.isOpened"
+                                                       class="new-notify fa fa-circle"> </i></span>
+                <span class="fa fa-envelope"></span>
+                <span>{{item.id}}</span>
+            </th>
+            <th>
+                <span  (click)="opened(item)">{{item?.notification?.notificationType?.name}}
+                    <i *ngIf="!item.isReadBody" class="fa fa-chevron-down"></i>
+                    <i *ngIf="item.isReadBody" class="fa fa-chevron-up"></i>
+                </span>
+                <div *ngIf="item.isReadBody" class="clearfix notification-body">
+                    <span [innerHTML]="sanitize(item?.notification?.message)"></span>
+
+                    <div *ngIf="item?.notification?.notificationType?.id==1">
+                        <div class="answer-btn-wrapper">
+                            <b class="answer-btn"
+                               (click)="item.isWriteAnswer=!item.isWriteAnswer"
+                            >Ответить
+                                <i *ngIf="!item.isWriteAnswer"
+                                   class="fa fa-chevron-down"></i>
+                                <i *ngIf="item.isWriteAnswer"
+                                   class="fa fa-chevron-up"></i>
+                            </b>
+                        </div>
+                        <div *ngIf="item.isWriteAnswer" class="answer-wrapper">
+                            <textarea rows="3" placeholder="Введите текст ответа"></textarea>
+                            <b (click)="answerBtnClick(item?.notification)">Отправить</b>
+                        </div>
+                    </div>
+                </div>
+            </th>
+            <th width="250">{{item?.notification?.messageDate|date:'dd.MM.yyyy      hh:mm'}}</th>
+            <th width="130">
+                <b *ngIf="item?.isOpened">Прочитано</b>
+                <b *ngIf="!item?.isOpened" class="new-notify">Новое</b>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <!--  <div>
+        <div>
+          <mdb-card class="app-card notification-card ">
+            <mdb-card-header>Центр уведомления</mdb-card-header>
+            <mdb-card-body>
+              <div *ngFor="let item of content">
+                <div class="d-flex justify-content">
+                  <b class="card-title">
+                    {{item?.notification?.notificationType?.name}}
+                  </b>
+                  <span class="card-header-dat">{{item?.notification?.messageDate|date:'mm:hh dd.MM.yyyy'}}</span>
+                </div>
+                <div class="clearfix notification-message">
+                  <p [innerHTML]="sanitize(item?.notification?.message)"></p>
+                </div>
+                <th>
+              </div>
+            </mdb-card-body>
+          </mdb-card>
+
+        </div>
+      </div>-->
 </div>

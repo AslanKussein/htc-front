@@ -6,4 +6,5 @@ export class NotificationAddresses {
     login: string;
     isOpened: boolean;
     isReadBody: boolean = false;
+    isWriteAnswer: boolean = false;
 }
