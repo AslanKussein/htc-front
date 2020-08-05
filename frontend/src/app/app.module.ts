@@ -69,6 +69,7 @@ import { MaterialModule } from './MaterialModule';
 import { OrganizationComponent } from './components/organization/organization.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import {AuthGuard} from "./helpers/auth.guard";
+import { DetailingComponent } from './components/detailing/detailing.component';
 
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
@@ -129,6 +130,7 @@ const mapConfig: IConfig = {
     CompareComponent,
     OrganizationComponent,
     NotificationComponent,
+    DetailingComponent,
   ],
   imports: [
     BrowserModule,

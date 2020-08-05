@@ -21,6 +21,7 @@ import {ClaimViewComponent} from "./components/claims/create-claim/claim-view/cl
 import {CompareComponent} from "./components/compare/compare.component";
 import {OrganizationComponent} from "./components/organization/organization.component";
 import {NotificationComponent} from "./components/notification/notification.component";
+import {DetailingComponent} from "./components/detailing/detailing.component";
 
 // определение дочерних маршрутов
 const itemRoutes: Routes = [
@@ -49,6 +50,7 @@ const routes: Routes = [
   {path: 'compare', component: CompareComponent, canActivate: [AuthGuard]},
   {path: 'organizations', component: OrganizationComponent, canActivate: [AuthGuard]},
   {path: 'notification', component: NotificationComponent, canActivate: [AuthGuard]},
+  {path: 'detailing/:id', component: DetailingComponent, canActivate: [AuthGuard]},
 
 
 ];

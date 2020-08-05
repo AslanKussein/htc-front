@@ -27,8 +27,9 @@ export class RealPropertyDto {
     public sewerageId?: number,//""Отопительная система"
     public totalArea?: number,//Общая площадь
     private housingPlanImageIdList?: any,//"ID фотографии"
-    private photoIdList?: any,//"ID фотографии"
+    public photoIdList?: string [],  // массив изображений
     public virtualTourImageIdList?: any//"ID фотографии"
+
   ) {
   }
 }

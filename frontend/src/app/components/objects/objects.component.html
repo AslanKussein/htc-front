@@ -279,7 +279,9 @@
       </thead>
       <tbody class="bg-white text-center">
       <tr *ngFor="let object of objectsData;let i = index">
-        <td>{{object.realPropertyId}}</td>
+        <td>
+          <a [routerLink]="['/detailing/', object?.applicationId]">{{object.realPropertyId}}</a>
+          </td>
         <td><img *ngIf="getImgUrl(object)" [src]="getImgUrl(object)" alt="First Slide" class="photoList"
                  height="150px" width="220px"></td>
         <td>{{getDicNameByLanguage(object, 'objectType')}}</td>

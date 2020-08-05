@@ -155,6 +155,22 @@ export class Util {
     return list;
   }
 
+
+  toSelectArrayCredit(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
+    const list = [];
+    if (data) {
+      const len = data.length;
+      for (let i = 0; i < len; i++) {
+        let multiLang = data[i];
+        if (data[i].multiLang) {
+          multiLang = data[i].multiLang;
+        }
+        list.push({id: data[i][idField], label: multiLang[labelField], code: data[i]['code']});
+      }
+    }
+    return list;
+  }
+
   getDicName() {
     let fieldName;
     fieldName = 'name';
