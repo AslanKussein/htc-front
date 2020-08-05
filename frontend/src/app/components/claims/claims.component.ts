@@ -134,6 +134,17 @@ export class ClaimsComponent implements OnInit, OnDestroy {
     return claim[column]?.name[x];
   }
 
+  getCharFromList(list) {
+    let district = '';
+    if (!this.util.isNullOrEmpty(list)) {
+      for (let distr of list) {
+        if (!this.util.isNullOrEmpty(distr))
+          district += this.util.isNullOrEmpty(district) ? distr?.name[this.util.getDicNameByLanguage()] : ',' + distr?.name[this.util.getDicNameByLanguage()]
+      }
+    }
+    return district;
+  }
+
   formatDate(claim: any) {
     return formatDate(claim.creationDate, 'dd.MM.yyyy', 'en-US');
   }
