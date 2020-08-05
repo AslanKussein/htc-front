@@ -55,7 +55,7 @@ export class ClaimViewDto {
   public playground: boolean = false;
   public city: any;
   public street: any;
-  public fullAddress: string;
+  public fullAddress: any;
   public residenceComplex: string;
   public apartmentNumber: string;
   public houseNumber: string;

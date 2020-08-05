@@ -42,7 +42,6 @@ declare var $: any;   // not required
   selector: 'app-create-claim',
   templateUrl: './create-claim.component.html',
   styleUrls: ['./create-claim.component.scss'],
-  providers: [YandexMapComponent]
 })
 export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnDestroy {
   @ViewChild('modalContent', {static: true}) modalContent: TemplateRef<any>;
@@ -1373,7 +1372,14 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   checkPostData() {
+    console.log(this.applicationForm.postcode)
+
     if (!this.util.isNullOrEmpty(this.applicationForm.postcode?.fullAddress)) {
+      this.modelMap.instance.search(this.applicationForm.postcode?.label).then(data => {
+        this.ddd.geometry.setCoordinates([data.responseMetaData.SearchResponse.Point.coordinates[1], data.responseMetaData.SearchResponse.Point.coordinates[0]])
+        this.applicationForm.latitude = data.responseMetaData.SearchResponse.Point.coordinates[1];
+        this.applicationForm.longitude = data.responseMetaData.SearchResponse.Point.coordinates[0];
+      });
       this.ngxLoader.startBackground()
       this.subscriptions.add(this.kazPostService.checkPostData(this.applicationForm.postcode?.fullAddress)
         .subscribe(res => {
@@ -1535,6 +1541,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   checkPostData2() {
+
     if (!this.util.isNullOrEmpty(this.postcode2?.fullAddress)) {
       this.ngxLoader.startBackground();
 
@@ -1547,6 +1554,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
           this.formRes.buildingDto.streetId = res.street.id;
           this.formRes.buildingDto.houseNumber = res.houseNumber;
           this.ngxLoader.stopBackground();
+
         }, 300);
       }));
     }
