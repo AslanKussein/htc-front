@@ -29,7 +29,7 @@ import {CalendarModule, DateAdapter} from 'angular-calendar';
 import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
 import localeRu from '@angular/common/locales/ru';
 import localeKz from '@angular/common/locales/ru-KZ';
-import {NgxMaskModule, IConfig} from 'ngx-mask'
+import {NgxMaskModule,IConfig as IconfigMask} from 'ngx-mask'
 import {MDBBootstrapModule} from "angular-bootstrap-md";
 import {ExitDeactivate} from "./helpers/canDeactivate/exitDeactivate";
 import {UserService} from "./services/user.service";
@@ -57,7 +57,7 @@ import {PaginationModule} from "ngx-bootstrap/pagination";
 import {ModalModule} from "ngx-bootstrap/modal";
 import {defineLocale} from "ngx-bootstrap/chronos";
 import {ruLocale} from "ngx-bootstrap/locale";
-// import {AngularYandexMapsModule, IConfig as IConfigYandex} from "angular8-yandex-maps";
+import {AngularYandexMapsModule,IConfig } from "angular8-yandex-maps";
 import {ClaimViewComponent} from './components/claims/create-claim/claim-view/claim-view.component';
 import {ContractOuComponent} from './components/claims/create-claim/contract-ou/contract-ou.component';
 import {MyAgentsComponent} from './components/profile/my-agents/my-agents.component';
@@ -69,7 +69,6 @@ import { MaterialModule } from './MaterialModule';
 import { OrganizationComponent } from './components/organization/organization.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import {AuthGuard} from "./helpers/auth.guard";
-import {AngularYandexMapsModule} from "angular8-yandex-maps";
 
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
@@ -78,7 +77,7 @@ export function HttpLoaderFactory(httpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '.json');
 }
 
-export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
+ export const options: Partial<IconfigMask> | (() => Partial<IconfigMask>) = {};
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: 'indigo',
@@ -90,10 +89,10 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   pbThickness: 5 // progress bar thickness
 };
 
-// const mapConfig: IConfigYandex = {
-//   // apikey: '0d07c1d4-e2f0-4eb1-ba8b-8e7d0fbc53ab',
-//   // lang: 'ru_RU',
-// };
+const mapConfig: IConfig = {
+  apikey: '658f67a2-fd77-42e9-b99e-2bd48c4ccad4',
+  lang: 'ru_RU',
+};
 
 @NgModule({
   declarations: [
@@ -152,7 +151,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     DragDropModule,
     ToastrModule.forRoot(),
     NgxMaskModule.forRoot(options),
-    // AngularYandexMapsModule.forRoot(mapConfig),
+    AngularYandexMapsModule.forRoot(mapConfig),
       CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
