@@ -95,7 +95,7 @@
         <div class="rieltor-raiting">
           <span class="rieltor-raiting-text">Рейтинг риэлтора:</span>
           <span class="rieltor-raiting-text float-right"><i aria-hidden="true"
-                                                            class="fa fa-star"></i> 9,1 баллов</span>
+                                                            class="fa fa-star"></i> {{profile.rating}} баллов</span>
         </div>
         <br/>
         <table style="width:100%;">
@@ -103,20 +103,20 @@
             <th class="table-column-header">
               <i aria-hidden="true" class="fa fa-edit"></i>Агентские договора:
             </th>
-            <td class="table-blue-value">2 500 000 тг</td>
+            <td class="table-blue-value">{{profile.agentContractAmount}} тг</td>
           </tr>
           <tr>
             <th class="table-column-header">
               <i class="fa fa-suitcase" aria-hidden="true"></i>
               Сумма задатков:
             </th>
-            <td class="table-blue-value">1 000 000 тг</td>
+            <td class="table-blue-value">{{profile.depositAmount}} тг</td>
           </tr>
           <tr>
             <th class="table-column-header">
               <i class="fa fa-money" aria-hidden="true"></i>Сумма продаж:
             </th>
-            <td class="table-blue-value">70 000 000 тг</td>
+            <td class="table-blue-value">{{profile.saleAmount}}  тг</td>
           </tr>
         </table>
       </div>
