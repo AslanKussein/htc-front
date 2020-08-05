@@ -13,7 +13,6 @@ import {UploaderService} from "../../services/uploader.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {ClaimService} from "../../services/claim.service";
 import {ActivatedRoute} from "@angular/router";
-import {YandexMapComponent} from "../claims/create-claim/yandex-map/yandex-map.component";
 import {CreditProgramm} from "../../models/CreditProgramm";
 import {FormControl, FormGroup} from "@angular/forms";
 import {CreditCalculatotModel} from "../../models/CreditCalculatotModel";
