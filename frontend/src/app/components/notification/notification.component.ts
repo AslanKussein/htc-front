@@ -133,7 +133,8 @@ export class NotificationComponent implements OnInit {
     }
 
     clearForm() {
-
+        this.filterModel = new NotificationFilter();
+        this.find();
     }
 
     getAllNotificationType() {
