@@ -8,9 +8,6 @@ import {Util} from "./util";
 import {UserService} from "./user.service";
 import {NotificationService} from "./notification.service";
 import {ActivatedRoute} from "@angular/router";
-import {BsModalService} from "ngx-bootstrap/modal";
-import {ProfileService} from "./profile.service";
-import {CommentService} from "./comment.service";
 import {NotificationsUtil} from "./notifications.util";
 
 @Injectable({providedIn: 'root'})
