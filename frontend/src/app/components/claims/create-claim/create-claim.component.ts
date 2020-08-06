@@ -20,7 +20,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {RoleManagerService} from "../../../services/roleManager.service";
 import {UserService} from "../../../services/user.service";
-import {YandexMapComponent} from "./yandex-map/yandex-map.component";
 import {KazPostService} from 'src/app/services/kaz.post.service';
 import {ApplicationPurchaseDataDto} from "../../../models/createClaim/applicationPurchaseDataDto";
 import {ContractDto} from "../../../models/createClaim/contractDto";
@@ -844,10 +843,13 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   fillApplicationPurchaseDataDto() {
+    if (this.isBuy()) {
+      return
+    }
     return this.application.purchaseDataDto = new ApplicationPurchaseDataDto(
       null,
       this.applicationForm.cityId,
-      [this.applicationForm.districts],
+      this.applicationForm.districts,
       this.applicationForm.mortgage,
       this.applicationForm.note,
       this.applicationForm.probabilityOfBidding,
@@ -890,7 +892,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   fillBuildingDto() {
     return this.application.realPropertyDto.buildingDto = new BuildingDto(
       this.applicationForm.cityId,
-      this.applicationForm.districts[0],
+      this.applicationForm.districts,
       this.applicationForm.houseNumber,
       this.applicationForm.houseNumberFraction,
       this.latitude,
