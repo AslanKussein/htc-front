@@ -10,6 +10,9 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {Dic} from "../../models/dic";
 import {NotificationFilter} from "../../models/notification/notification.filter";
 import {language} from "../../../environments/language";
+import {NotesDto} from "../../models/notification/notesDto";
+import {CommentService} from "../../services/comment.service";
+import {Notification} from "../../models/notification/notification";
 
 @Component({
   selector: 'app-notification',
@@ -45,7 +48,8 @@ export class NotificationComponent implements OnInit {
     public router: Router,
     private authenticationService: AuthenticationService,
     private sanitizer: DomSanitizer,
-    private applicationNotificationService: ApplicationNotificationService) {
+    private applicationNotificationService: ApplicationNotificationService,
+    private commentService: CommentService) {
     localStorage.setItem('url', this.router.url);
   }
 
@@ -62,10 +66,10 @@ export class NotificationComponent implements OnInit {
 
   getDicStatus() {
     this.dicStatus = this.toSelectArray([
-      {id: -1,multiLang: {nameRu: "Все", nameKz: "Все", nameEn: "Все"}},
+      {id: -1, multiLang: {nameRu: "Все", nameKz: "Все", nameEn: "Все"}},
       {id: 1, multiLang: {nameRu: "Прочитано", nameKz: "Прочитано", nameEn: "Прочитано"}},
       {id: 0, multiLang: {nameRu: "Новое", nameKz: "Новое", nameEn: "Новое"}}
-    ]);
+    ],);
   }
 
   toSelectArray(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
@@ -75,7 +79,7 @@ export class NotificationComponent implements OnInit {
       for (let i = 0; i < len; i++) {
         list.push({
           value: data[i][idField],
-          label:data[i].multiLang? data[i].multiLang[labelField]: data[i][labelField],
+          label: data[i].multiLang ? data[i].multiLang[labelField] : data[i][labelField],
           code: data[i]['code'],
           operationCode: data[i]['operationCode']
         });
@@ -131,21 +135,39 @@ export class NotificationComponent implements OnInit {
 
   getAllNotificationType() {
     this.applicationNotificationService.getAllNotificationType().subscribe(res => {
-      this.dicNotificationType =  this.toSelectArray(res, 'id','name');
+      this.dicNotificationType = this.toSelectArray(res, 'id', 'name');
     }, err => {
       this.notifyService.showError(err, '');
     });
   }
 
   opened(item: NotificationAddresses) {
+    if (item.isReadBody) {
+      item.isReadBody = false;
+      return;
+    }
     item.isReadBody = true;
     if (!item.isOpened) {
       this.applicationNotificationService.opened(item.notification.id).subscribe(res => {
         item.isOpened = true;
       }, err => {
-        this.notifyService.showError(err, '');
+        this.notifyService.showError(err?.message?.ru, '');
       });
     }
   }
 
+  answerBtnClick(item: NotificationAddresses) {
+    const data: NotesDto = {
+      realPropertyId: item.notification.realPropertyId,
+      text: item.notification.answer,
+      questionId: item.notification.notesId
+    };
+    this.commentService.saveComment(data).subscribe(res => {
+      if (res) {
+        this.notifyService.showInfo('Ответ отправлен!', '');
+        item.notification.answer = null;
+        item.isWriteAnswer = false;
+      }
+    });
+  }
 }
