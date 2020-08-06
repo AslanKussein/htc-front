@@ -1,0 +1,818 @@
+
+<div class="row w-100"></div>
+<div class="row">
+  <div class="col-sm">
+    <div class="accordion" id="accordionExample">
+      <div class="card">
+        <div class="card-header bg-dark text-white font-weight-bold" id="headingTwo" data-toggle="collapse"
+             data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Об объекте
+        </div>
+        <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+          <div class="card-body">
+            <div class="row" *ngIf="!claimViewDto.isSell">
+              <div class="col-sm">
+                <label class="form-label-v">Полный адрес</label>
+                <input type="text" class="form-control" readonly
+                       [value]="getDicNameByLanguage(claimViewDto, 'fullAddress')"/>
+              </div>
+              <div class="col-sm" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])" *ngIf="!claimViewDto.isSell">
+                <label class="form-label-v">ЖК</label>
+                <input type="text" class="form-control" readonly
+                       [(ngModel)]="claimViewDto.residenceComplex"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm" *ngIf="claimViewDto.isSell"
+                   [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                <label class="form-label-v">Город</label>
+                <input type="text" class="form-control" readonly
+                       [value]="getDicNameByLanguage(claimViewDto, 'city')"/>
+              </div>
+              <div class="col-sm"
+                   [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])">
+                <label class="form-label-v">Район</label>
+                <ng-select
+                  [(ngModel)]="claimViewDto.districts"
+                  [ngModelOptions]="{standalone: true}"
+                  [items]="claimViewDto.districts"
+                  [multiple]="true"
+                  [readonly]="true">
+                </ng-select>
+              </div>
+              <div class="col-sm" *ngIf="!claimViewDto.isSell"
+                   [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])">
+                <label class="form-label-v">Номер дома</label>
+                <input type="text" class="form-control" readonly
+                       [(ngModel)]="claimViewDto.houseNumber" (ngModelChange)="getMap()">
+              </div>
+              <div class="col-sm" *ngIf="!claimViewDto.isSell && isAuthor && claimViewDto.isFlat"
+                   [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])">
+                <label class="form-label-v">Номер квартиры</label>
+                <input type="text" class="form-control" readonly
+                       [(ngModel)]="claimViewDto.apartmentNumber"/>
+              </div>
+              <div class="col-sm"
+                   [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                <label class="form-label-v">Количество комнат</label>
+                <div class="input-group" *ngIf="claimViewDto.isSell"
+                     [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
+                  <input type="text" class="form-control" [(ngModel)]="claimViewDto.numberOfRoomsPeriod.from"
+                         mask="separator" thousandSeparator=" " readonly/>
+                  <input type="text" class="form-control" [(ngModel)]="claimViewDto.numberOfRoomsPeriod.to"
+                         mask="separator" thousandSeparator=" " readonly/>
+                </div>
+                <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                       [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"
+                       [(ngModel)]="claimViewDto.numberOfRooms"/>
+              </div>
+            </div>
+            <div class="square-t" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+              <div class="row">
+                <div class="col-sm">
+                  <label class="form-label-v">Площадь</label>
+                  <div class="input-group" *ngIf="claimViewDto.isSell"
+                       [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
+                    <input type="text" class="form-control" [(ngModel)]="claimViewDto.totalAreaPeriod.from"
+                           mask="separator" thousandSeparator=" " readonly/>
+                    <input type="text" class="form-control" [(ngModel)]="claimViewDto.totalAreaPeriod.to"
+                           mask="separator" thousandSeparator=" " readonly/>
+                  </div>
+                  <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"
+                         [(ngModel)]="claimViewDto.totalArea"/>
+                </div>
+                <div class="col-sm">
+                  <label class="form-label-v">Жилая</label>
+                  <div class="input-group" *ngIf="claimViewDto.isSell"
+                       [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
+                    <input type="text" class="form-control" [(ngModel)]="claimViewDto.livingAreaPeriod.from"
+                           mask="separator" thousandSeparator=" " readonly/>
+                    <input type="text" class="form-control" [(ngModel)]="claimViewDto.livingAreaPeriod.to"
+                           mask="separator" thousandSeparator=" " readonly/>
+                  </div>
+                  <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                         [(ngModel)]="claimViewDto.livingArea"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"/>
+                </div>
+                <div class="col-sm">
+                  <label class="form-label-v">Кухня</label>
+                  <div class="input-group" *ngIf="claimViewDto.isSell"
+                       [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
+                    <input type="text" class="form-control" [(ngModel)]="claimViewDto.kitchenAreaPeriod.from"
+                           mask="separator" thousandSeparator=" " readonly/>
+                    <input type="text" class="form-control" [(ngModel)]="claimViewDto.kitchenAreaPeriod.to"
+                           mask="separator" thousandSeparator=" " readonly/>
+                  </div>
+                  <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                         [(ngModel)]="claimViewDto.kitchenArea"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"/>
+                </div>
+                <div class="col-sm">
+                  <label class="form-label-v">Балкон</label>
+                  <div class="input-group" *ngIf="claimViewDto.isSell"
+                       [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
+                    <input type="text" class="form-control" [(ngModel)]="claimViewDto.balconyAreaPeriod.from"
+                           mask="separator" thousandSeparator=" " readonly/>
+                    <input type="text" class="form-control" [(ngModel)]="claimViewDto.balconyAreaPeriod.to"
+                           mask="separator" thousandSeparator=" " readonly/>
+                  </div>
+                  <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                         [(ngModel)]="claimViewDto.balconyArea"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm" *ngIf="claimViewDto.isFlat">
+                  <label class="form-label-v">Количество спален</label>
+                  <div class="input-group" *ngIf="claimViewDto.isSell"
+                       [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
+                    <input type="text" class="form-control"
+                           [(ngModel)]="claimViewDto.numberOfBedroomsPeriod.from"
+                           mask="separator" thousandSeparator=" " readonly/>
+                    <input type="text" class="form-control"
+                           [(ngModel)]="claimViewDto.numberOfBedroomsPeriod.to"
+                           mask="separator" thousandSeparator=" " readonly/>
+                  </div>
+                  <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                         [(ngModel)]="claimViewDto.numberOfBedrooms"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"/>
+                </div>
+                <div class="col-sm" *ngIf="claimViewDto.isFlat">
+                  <label class="form-label-v">Студия</label>
+                  <mat-button-toggle-group [(ngModel)]="claimViewDto.atelier"
+                                           class="pointer-events width-100">
+                    <mat-button-toggle class="operation-type width-100"
+                                       *ngFor="let item of dicDynamic"
+                                       [value]="item.code"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.atelier) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.atelier)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
+                </div>
+                <div class="col-sm" *ngIf="claimViewDto.isFlat">
+                  <label class="form-label-v">Санузел раздельный</label>
+                  <mat-button-toggle-group [(ngModel)]="claimViewDto.separateBathroom" class="pointer-events width-100">
+                    <mat-button-toggle class="operation-type width-100"
+                                       *ngFor="let item of dicDynamic"
+                                       [value]="item.code"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.separateBathroom) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.separateBathroom)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
+                </div>
+              </div>
+            </div>
+            <div class="row font-weight-bold disabled-bottom-margin">
+              <div class="col-sm expanded-search" (click)="expandedBlock()">
+                <span *ngIf="!expandBlock">Показать детали</span>
+                <span *ngIf="expandBlock">Скрыть детали</span>
+                <i class="fa fa-angle-down font-weight-bold" *ngIf="!expandBlock" aria-hidden="true"></i>
+                <i class="fa fa-angle-up font-weight-bold" *ngIf="expandBlock" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="row w-100"></div>
+            <div *ngIf="expandBlock">
+              <div class="row">
+                <div class="col-sm" *ngIf="claimViewDto.isFlat"
+                     [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                  <label class="form-label-v">Этаж</label>
+                  <div class="input-group" *ngIf="claimViewDto.isSell"
+                       [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
+                    <input type="text" class="form-control" [(ngModel)]="claimViewDto.floorPeriod.from"
+                           mask="separator" thousandSeparator=" " readonly/>
+                    <input type="text" class="form-control" [(ngModel)]="claimViewDto.floorPeriod.to"
+                           mask="separator" thousandSeparator=" " readonly/>
+                  </div>
+                  <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"
+                         [(ngModel)]="claimViewDto.floor"/>
+                </div>
+                <div class="col-sm"
+                     [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                  <label class="form-label-v">Этажность дома</label>
+                  <div class="input-group" *ngIf="claimViewDto.isSell"
+                       [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
+                    <input type="text" class="form-control"
+                           [(ngModel)]="claimViewDto.numberOfFloorsPeriod.from"
+                           mask="separator" thousandSeparator=" " readonly/>
+                    <input type="text" class="form-control"
+                           [(ngModel)]="claimViewDto.numberOfFloorsPeriod.to"
+                           mask="separator" thousandSeparator=" " readonly/>
+                  </div>
+                  <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                         [(ngModel)]="claimViewDto.numberOfFloors"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"/>
+                </div>
+                <div class="col-sm" *ngIf="claimViewDto.isFlat">
+                  <label class="form-label-v">Высота потолков</label>
+                  <div class="input-group" *ngIf="claimViewDto.isSell"
+                       [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
+                    <input type="text" class="form-control"
+                           [(ngModel)]="claimViewDto.ceilingHeightPeriod.from"
+                           mask="separator" thousandSeparator=" " readonly/>
+                    <input type="text" class="form-control" [(ngModel)]="claimViewDto.ceilingHeightPeriod.to"
+                           mask="separator" thousandSeparator=" " readonly/>
+                  </div>
+                  <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                         [(ngModel)]="claimViewDto.ceilingHeight"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm" *ngIf="!claimViewDto.isSell"
+                     [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                  <label class="form-label-v">Состояние</label>
+                  <input type="text" class="form-control" readonly
+                         [value]="getDicNameByLanguage(claimViewDto, 'houseCondition')"/>
+                </div>
+                <div class="col-sm" [hidden]="hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'VIEW_SALE_OBJECT_INFO'])"
+                     *ngIf="claimViewDto.isFlat && !claimViewDto.isSell">
+                  <label class="form-label-v">Класс жилья</label>
+                  <ng-select
+                    [readonly]="true"
+                    [items]="claimViewDto.housingClass"
+                    [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="claimViewDto.housingClass">
+                  </ng-select>
+                </div>
+                <div class="col-sm" *ngIf="claimViewDto.isFlat"
+                     [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                  <label class="form-label-v">Кв. на площадке</label>
+                  <div class="input-group" *ngIf="claimViewDto.isSell"
+                       [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
+                    <input type="text" class="form-control"
+                           [(ngModel)]="claimViewDto.apartmentsOnTheSitePeriod.from"
+                           mask="0000" readonly/>
+                    <input type="text" class="form-control"
+                           [(ngModel)]="claimViewDto.apartmentsOnTheSitePeriod.to"
+                           mask="0000" readonly/>
+                  </div>
+                  <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                         [(ngModel)]="claimViewDto.apartmentsOnTheSite"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm"
+                     [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                  <label class="form-label-v">Материал</label>
+                  <input type="text" class="form-control" readonly
+                         [value]="getDicNameByLanguage(claimViewDto, 'materialOfConstruction')"/>
+                </div>
+                <div class="col-sm"
+                     [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                  <label class="form-label-v">Год постройки</label>
+                  <div class="input-group" *ngIf="claimViewDto.isSell"
+                       [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
+                    <input type="text" class="form-control"
+                           [(ngModel)]="claimViewDto.yearOfConstructionPeriod.from"
+                           mask="0000" readonly/>
+                    <input type="text" class="form-control"
+                           [(ngModel)]="claimViewDto.yearOfConstructionPeriod.to"
+                           mask="0000" readonly/>
+                  </div>
+                  <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                         [(ngModel)]="claimViewDto.yearOfConstruction"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"/>
+                </div>
+                <div class="col-sm" *ngIf="claimViewDto.isFlat"
+                     [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                  <label class="form-label-v">Лифт</label>
+                  <ng-select
+                    [(ngModel)]="claimViewDto.typeOfElevatorList"
+                    [ngModelOptions]="{standalone: true}"
+                    [items]="claimViewDto.typeOfElevatorList"
+                    [multiple]="true"
+                    [readonly]="true">
+                  </ng-select>
+                </div>
+                <div class="col-sm">
+                  <label class="form-label-v">Парковка</label>
+                  <ng-select
+                    [(ngModel)]="claimViewDto.parkingTypes"
+                    [ngModelOptions]="{standalone: true}"
+                    [items]="claimViewDto.parkingTypes"
+                    [multiple]="true"
+                    [readonly]="true">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row" *ngIf="!claimViewDto.isFlat">
+                <div class="col-sm" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO'])">
+                  <label class="form-label-v">Площадь участка</label>
+                  <div class="input-group" *ngIf="claimViewDto.isSell"
+                       [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
+                    <input type="text" class="form-control" [(ngModel)]="claimViewDto.landAreaPeriod.from"
+                           mask="separator" thousandSeparator=" " readonly/>
+                    <input type="text" class="form-control" [(ngModel)]="claimViewDto.landAreaPeriod.to"
+                           mask="separator" thousandSeparator=" " readonly/>
+                  </div>
+                  <input type="text" class="form-control" readonly *ngIf="!claimViewDto.isSell"
+                         [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"
+                         [(ngModel)]="claimViewDto.landArea"/>
+                </div>
+                <div class="col-sm" *ngIf="!claimViewDto.isFlat">
+                  <label class="form-label-v">Канализация</label>
+                  <input type="text" class="form-control" readonly
+                         [value]="getDicNameByLanguage(claimViewDto, 'sewerage')"/>
+                </div>
+                <div class="col-sm" *ngIf="!claimViewDto.isFlat">
+                  <label class="form-label-v">Отопление</label>
+                  <input type="text" class="form-control" readonly
+                         [value]="getDicNameByLanguage(claimViewDto, 'heatingSystem')"/>
+                </div>
+              </div>
+              <div class="row" *ngIf="claimViewDto.isFlat">
+                <div class="col-sm">
+                  <label class="form-label-v">Двор</label>
+                  <input type="text" class="form-control" readonly
+                         [value]="getDicNameByLanguage(claimViewDto, 'yardType')"/>
+                </div>
+                <div class="col-sm"
+                     [hidden]="!hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                  <label class="form-label-v">Консьерж</label>
+                  <mat-button-toggle-group class="pointer-events width-100">
+                    <mat-button-toggle class="operation-type width-100"
+                                       *ngFor="let item of dicDynamic"
+                                       [value]="item.code"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.concierge) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.concierge)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
+                </div>
+                <div class="col-sm"
+                     [hidden]="!hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                  <label class="form-label-v">Колясочная</label>
+                  <mat-button-toggle-group class="pointer-events width-100">
+                    <mat-button-toggle class="operation-type width-100"
+                                       *ngFor="let item of dicDynamic"
+                                       [value]="item.code"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.wheelchair) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.wheelchair)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
+                </div>
+                <div class="col-sm"
+                     [hidden]="!hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                  <label class="form-label-v">Детская площадка</label>
+                  <mat-button-toggle-group class="pointer-events width-100">
+                    <mat-button-toggle class="operation-type width-100"
+                                       *ngFor="let item of dicDynamic"
+                                       [value]="item.code"
+                                       [class]="toStringCompare(item.code) != toStringCompare(claimViewDto.playground) ? 'bg-white text-dark' : ''"
+                                       [ngClass]="{ 'color-aqua text-white':toStringCompare(item.code) === toStringCompare(claimViewDto.playground)}">
+                      {{item.label}}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
+                </div>
+              </div>
+              <div class="row" *ngIf="!claimViewDto.isSell"
+                   [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])">
+                <div class="col-sm">
+                  <label class="form-label-v">Описание</label>
+                  <textarea class="col-sm-12 control" rows="2" [(ngModel)]="claimViewDto.description"
+                            readonly></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row w-100"></div>
+<div class="row">
+  <div class="col-sm">
+    <div class="card" *ngIf="!claimViewDto.isSell">
+      <div class="card-header bg-dark text-white font-weight-bold" type="button" data-toggle="collapse"
+           id="headingThree"
+           data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        Фотографии
+      </div>
+      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm">
+              <div class="row">
+                <div class="col-sm" *ngIf="photoList.length > 0">
+                  <fieldset class="scheduler-border col-sm">
+                    <legend class="scheduler-border " translate>Фото объекта
+                      <span class="badge badge-danger ml-2">{{photoList.length}}</span>
+                    </legend>
+                    <div id="photoCarousel" class="carousel slide photoCarouselBlock" data-ride="carousel">
+                      <div class="carousel-inner">
+                        <div class="carousel-item" [class]="i==0 ? 'active': ''"
+                             *ngFor="let photo of photoList;let i = index">
+                          <div class="container">
+                            <img [src]="photo.image" alt="First Slide" class="photoList" width="350" height="320">
+                          </div>
+                        </div>
+                      </div>
+                      <a class="carousel-control-prev" href="#photoCarousel" data-slide="prev">
+                        <span class="carousel-control-prev-icon bg-dark"></span>
+                      </a>
+                      <a class="carousel-control-next" href="#photoCarousel" data-slide="next">
+                        <span class="carousel-control-next-icon bg-dark"></span>
+                      </a>
+                    </div>
+                  </fieldset>
+                </div>
+                <div class="col-sm" *ngIf="photoPlanList.length > 0">
+                  <fieldset class="scheduler-border col-sm">
+                    <legend class="scheduler-border" translate>Планы
+                      <span class="badge badge-danger ml-2">{{photoPlanList.length}}</span>
+                    </legend>
+                    <div id="photoPlanList" class="carousel slide photoCarouselBlock" data-ride="carousel">
+                      <div class="carousel-inner">
+                        <div class="carousel-item" [class]="i==0 ? 'active': ''"
+                             *ngFor="let plan of photoPlanList;let i = index">
+                          <img [src]="plan.image" alt="First Slide" class="photoList" width="350"
+                               height="320">
+                        </div>
+                      </div>
+                      <a class="carousel-control-prev" href="#photoPlanList" data-slide="prev">
+                        <span class="carousel-control-prev-icon bg-dark"></span>
+                      </a>
+                      <a class="carousel-control-next" href="#photoPlanList" data-slide="next">
+                        <span class="carousel-control-next-icon bg-dark"></span>
+                      </a>
+                    </div>
+                  </fieldset>
+                </div>
+
+                <div class="col-sm" *ngIf="photo3DList.length > 0">
+                  <fieldset class="scheduler-border col-sm">
+                    <legend class="scheduler-border" translate>3D тур
+                      <span class="badge badge-danger ml-2">{{photo3DList.length}}</span>
+                    </legend>
+                    <div id="photo3DList" class="carousel slide photoCarouselBlock" data-ride="carousel">
+                      <div class="carousel-inner">
+                        <div class="carousel-item" [class]="i==0 ? 'active': ''"
+                             *ngFor="let plan of photo3DList;let i = index">
+                          <img [src]="plan.image" class="photoList" width="350" height="320"/>
+                        </div>
+                      </div>
+                      <a class="carousel-control-prev" href="#photo3DList" data-slide="prev">
+                        <span class="carousel-control-prev-icon bg-dark"></span>
+                      </a>
+                      <a class="carousel-control-next" href="#photo3DList" data-slide="next">
+                        <span class="carousel-control-next-icon bg-dark"></span>
+                      </a>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row w-100"></div>
+<div class="row">
+  <div class="col-sm">
+    <div class="accordion" id="accordionMap">
+      <div class="card z-depth-0 bordered">
+        <div class="card-header accordion-header text-white bg-dark" id="headingMap">
+          <div class="font-weight-bold" data-toggle="collapse"
+               data-target="#collapseMap"
+               aria-expanded="true" aria-controls="collapseMap" translate>
+            Местоположение
+          </div>
+        </div>
+        <div id="collapseMap" class="collapse show" aria-labelledby="headingMap"
+             data-parent="#accordionMap">
+          <div class="card-body">
+            <div class="map">
+              <angular-yandex-map [center]="[51.12, 71.43]" (yaclick)="onLoad($event)" [zoom]="12">
+                <angular-yandex-placemark
+                  [geometry]="cord"
+                  [options]="placemarkOptions"
+                  (drag)="onLoad2($event)"
+                  (load)="onLoad3($event)">
+                </angular-yandex-placemark>
+                <angular-yandex-control
+                  [type]="'SearchControl'"
+                  [ngModelOptions]="{standalone: true}"
+                  name="fieldName" ngDefaultControl
+                  [parameters]="parameters"
+                  [ngModel]="claimViewDto.houseNumber"
+                  (load)="onControlLoad($event)">
+                </angular-yandex-control>
+              </angular-yandex-map>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row w-100"></div>
+<div class="row">
+  <div class="col-sm">
+    <div class="accordion" id="accordionKredit">
+      <div class="card z-depth-0 bordered">
+        <div class="card-header accordion-header text-white bg-dark" id="headingKredit">
+          <div class="font-weight-bold" data-toggle="collapse"
+               data-target="#collapseKredit"
+               aria-expanded="true" aria-controls="collapseKredit" translate>
+            Кредитный калькулятор
+          </div>
+        </div>
+        <div id="collapseKredit" class="collapse show" aria-labelledby="headingKredit"
+             data-parent="#accordionKredit">
+          <div class="card-body" [formGroup]="calculatorFormGroup">
+            <div class="row">
+              <div class="col-sm">
+                <div class="info-block">
+                  <label id="firstPay">Первоначальный взнос (тг):</label>
+                  <div>
+                    <input formControlName="firstPay"
+                           [(ngModel)]="calculatorModel.firstPay"
+                           currencyMask
+                           [options]="{ prefix: '', thousands: ' ', decimal: '.',precision:0,  align:'left' }"
+                           class="form-control mr-1" type="text">
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm">
+                <div class="info-block">
+                  <label id="years">Срок кредитования (лет):</label>
+                  <div>
+                    <input formControlName="years"
+                           [(ngModel)]="calculatorModel.years"
+                           class="form-control mr-1" type="number">
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm" >
+                <div class="info-block">
+                  <label id="programmId">Программа:</label>
+                  <div>
+                    <ng-select
+                      [items]="creditProgrammDic"
+                      formControlName="programmId"
+                      bindValue="id"
+                      [clearable]="false"
+                      [(ngModel)]="calculatorModel.programmId"
+                      class="mr-1">
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm">
+                <div class="info-block">
+                  <label>Ставка вознаграждения:</label>
+                  <div>
+                    <span><b>{{getObjectById(creditProgramm, calculatorModel?.programmId)?.percent}}%</b></span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm">
+                <div class="info-block">
+                  <label>Ежемесячный платеж (тг):</label>
+                  <div>
+                    <span><b>{{getMonthPay()| currency  :' ': 'symbol' : '1.0-0'}}</b></span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row w-100"></div>
+<div class="row">
+  <div class="col-sm">
+    <div class="accordion" id="accordionSchool">
+      <div class="card z-depth-0 bordered">
+        <div class="card-header accordion-header text-white bg-dark" id="headingSchool">
+          <div class="font-weight-bold" data-toggle="collapse"
+               data-target="#collapseSchool"
+               aria-expanded="true" aria-controls="collapseMap" translate>
+            Расположение ближайших ШКОЛ / ТРЦ / БОЛЬНИЦ
+          </div>
+        </div>
+        <div id="collapseSchool" class="collapse show" aria-labelledby="headingMap"
+             data-parent="#accordionSchool">
+          <div class="card-body">
+
+            <div class="row">
+              <div class="col-sm">
+                <ul class="nav nav-tabs" id="myTab2" role="tablist">
+                  <li class="nav-item" >
+                    <a class="nav-link active panel-header" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                       aria-controls="profile"
+                       aria-selected="false">Школы</a>
+                  </li>
+                  <li class="nav-item" >
+                    <a class="nav-link  panel-header" id="profile-tab2" data-toggle="tab" href="#profile2" role="tab"
+                       aria-controls="profile2"
+                       aria-selected="false">Больницы</a>
+                  </li>
+                  <li class="nav-item" >
+                    <a class="nav-link  panel-header" id="profile-tab3" data-toggle="tab" href="#profile3" role="tab"
+                       aria-controls="profile3"
+                       aria-selected="false">ТРЦ</a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="myTabContent2">
+                  <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                  <br/>
+                    <b>Школа-гимназия №75</b>
+                    <br/>
+                    <br/>
+                    <b>Haileybury Astana</b>
+                    <br/>
+
+                </div>
+                  <div class="tab-pane fade show " id="profile2" role="tabpanel" aria-labelledby="profile-tab2">
+                    <br/>
+                    <b>Больница №5</b>
+                  </div>
+                  <div class="tab-pane fade show " id="profile3" role="tabpanel" aria-labelledby="profile-tab3">
+                    <br/>
+                    <b>MEGA</b>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm">
+    <div class="accordion" id="accordionBol2">
+      <div class="card z-depth-0 bordered">
+        <div class="card-header accordion-header text-white bg-dark" id="headingBol2">
+          <div class="font-weight-bold" data-toggle="collapse"
+               data-target="#collapseBol2"
+               aria-expanded="true" aria-controls="collapseBol2" translate>
+            Рейтинг локализации
+          </div>
+        </div>
+        <div id="collapseBol2" class="collapse show" aria-labelledby="headingBol2"
+             data-parent="#accordionBol2">
+          <div class="card-body">
+            <b>Рейтинг ЖК</b>
+          <br/>
+          <br/>
+            <b>Рейтинг района</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row w-100"></div>
+<div class="row">
+  <div class="col-sm">
+
+    <div class="accordion" id="accordionObj">
+      <div class="card z-depth-0 bordered">
+        <div class="card-header accordion-header text-white bg-dark" id="headingObj">
+          <div class="font-weight-bold" data-toggle="collapse"
+               data-target="#collapseObj"
+               aria-expanded="true" aria-controls="collapseObj" translate>
+            Похожие объекты
+          </div>
+        </div>
+        <div id="collapseObj" class="collapse show" aria-labelledby="headingObj"
+             data-parent="#accordionObj">
+          <div class="card-body" >
+            <div class="row">
+              <div class="col-sm border" style="padding: 10px">
+                <img [src]="util.generatorPreviewUrl('3c0bd76f-eab6-4d77-9341-2e8940150a49')" alt="First Slide" class="photoList center" height="180px">
+                <br/>
+                <br/>
+                <h5 class="bold">ЖК Томирис, 28 000 000 тг</h5>
+                <br/>
+                <b>1 комнатная, 68 м2, 10 из 21</b>
+              </div>
+              <div class="col-sm border" style="padding: 10px">
+                <img [src]="util.generatorPreviewUrl('6e69f37d-b881-44ca-989c-45a9b41726d7')" alt="First Slide" class="photoList center" height="180px">
+                <br/>
+                <br/>
+                <h5 class="bold">ЖК Айсанам, 27 000 000 тг</h5>
+                <br/>
+                <b>1 комнатная, 60 м2, 11 из 21</b>
+              </div>
+              <div class="col-sm border" style="padding: 10px">
+                <img [src]="util.generatorPreviewUrl('bf8e8daf-fb26-4dc7-97f3-e83275215771')" alt="First Slide" class="photoList center" height="180px">
+                <br/>
+                <br/>
+                <h5 class="bold">ЖК Нур-Аспан, 23 000 000 тг</h5>
+                <br/>
+                <b>1 комнатная, 54 м2, 12 из 21</b>
+              </div>
+              <div class="col-sm border" style="padding: 10px">
+                <img [src]="util.generatorPreviewUrl('87d09749-e9fb-4d7c-89a6-e4d809dbc820')" alt="First Slide" class="photoList center" height="180px">
+                <br/>
+                <br/>
+                <h5 class="bold">ЖК Only Sun, 28 000 000 тг</h5>
+                <br/>
+                <b>1 комнатная, 72 м2, 14 из 21</b>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="row w-100"></div>
+<div class="row">
+  <div class="col-sm">
+
+    <div class="accordion" id="accordionClaim">
+      <div class="card z-depth-0 bordered">
+        <div class="card-header accordion-header text-white bg-dark" id="headingClaim">
+          <div class="font-weight-bold" data-toggle="collapse"
+               data-target="#collapseClaim"
+               aria-expanded="true" aria-controls="collapseClaim" translate>
+            Заявки по объекту
+          </div>
+        </div>
+        <div id="collapseClaim" class="collapse show" aria-labelledby="headingClaim"
+             data-parent="#accordionClaim">
+          <div class="card-body" >
+            <div class="row">
+              <div class="col-sm overflow-auto">
+                <table class="table table-sm">
+                  <thead class="text-center border-0 hex-blue-color">
+                  <tr style="height: 60px">
+                    <th>Операция</th>
+                    <th translate>claim.crDateFrom</th>
+                    <th translate>fio</th>
+                    <th width="120px" translate>Контакты</th>
+                    <th translate>Цена</th>
+                    <th translate>Статус</th>
+                    <th translate>Комментарий</th>
+                    <th translate></th>
+                  </tr>
+                  </thead>
+                  <br/>
+                  <tbody class="bg-white">
+                  <tr *ngFor="let claim of claimData;let i = index">
+
+
+                    <td>{{claim.operationType.name.nameRu}}</td>
+                    <td>{{formatDate(claim)}}</td>
+                    <td>{{claim.fullNameAgent}}</td>
+                    <td>
+                      <span *ngIf="claim.phoneNumberAgent">+7 {{claim.phoneNumberAgent | mask: '(000) 000-0000'}}</span>
+                    </td>
+                    <td>{{claim.price}}</td>
+
+                    <td>{{claim.status.name.nameRu}}</td>
+                    <td>{{claim.comment}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+
+                <!--<h3 class="text-center" *ngIf="empty">Нет данных для отображения</h3>-->
+
+                <!--<pagination [(ngModel)]="currentPage"-->
+                            <!--[totalItems]="totalItems"-->
+                            <!--[itemsPerPage]="itemsPerPage"-->
+                            <!--[maxSize]="10"-->
+                            <!--[rotate]="true"-->
+                            <!--[boundaryLinks]="true"-->
+                            <!--previousText="&lsaquo;"-->
+                            <!--nextText="&rsaquo;"-->
+                            <!--firstText="&laquo;"-->
+                            <!--lastText="&raquo;"-->
+                            <!--(pageChanged)="pageChanged($event)">-->
+                <!--</pagination>-->
+              </div>
+            </div>
+
+
+          </div></div></div></div></div></div>
+

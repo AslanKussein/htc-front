@@ -29,6 +29,7 @@
     </ul>
   </div>
 </div>
+
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane fade" [ngClass]="activeTab == 'claim' ? 'active show' : ''" [formGroup]="applicationForm"
        id="fillClaims"
@@ -1311,6 +1312,8 @@
           </div>
         </div>
       </div>
+
+
 
       <div class="row" *ngIf="isBuy()">
         <div class="col-sm">

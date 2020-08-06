@@ -1,25 +1,34 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ClaimService} from "../../../../services/claim.service";
-import {Subscription} from "rxjs";
-import {Util} from "../../../../services/util";
+import {UserService} from "../../services/user.service";
+import {CreateClaimComponent} from "../claims/create-claim/create-claim.component";
+import {Period} from "../../models/common/period";
+import {DicService} from "../../services/dic.service";
+import {Dic} from "../../models/dic";
+import {Util} from "../../services/util";
+import {Subscription} from "rxjs/index";
+import {OwnerService} from "../../services/owner.service";
+import {NotificationService} from "../../services/notification.service";
+import {ClaimViewDto} from "../../models/createClaim/view/ClaimViewDto";
+import {UploaderService} from "../../services/uploader.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
-import {ClaimViewDto} from "../../../../models/createClaim/view/ClaimViewDto";
-import {OwnerService} from "../../../../services/owner.service";
-import {UploaderService} from "../../../../services/uploader.service";
-import {CreateClaimComponent} from "../create-claim.component";
-import {UserService} from "../../../../services/user.service";
-import {Period} from "../../../../models/common/period";
-import {Dic} from "../../../../models/dic";
-import {NotificationService} from "../../../../services/notification.service";
-import {DicService} from "../../../../services/dic.service";
+import {ClaimService} from "../../services/claim.service";
+import {ActivatedRoute} from "@angular/router";
+import {CreditProgramm} from "../../models/CreditProgramm";
+import {FormControl, FormGroup} from "@angular/forms";
+import {CreditCalculatotModel} from "../../models/CreditCalculatotModel";
+import {CreditProgrammService} from "../../services/creditProgrammService";
+import {RealPropertyDto} from "../../models/createClaim/realPropertyDto";
+import {formatDate} from "@angular/common";
 
 @Component({
-  selector: 'app-claim-view',
-  templateUrl: './claim-view.component.html',
-  styleUrls: ['./claim-view.component.scss']
+  selector: 'app-detailing',
+  templateUrl: './detailing.component.html',
+  styleUrls: ['./detailing.component.scss'],
+
 })
-export class ClaimViewComponent implements OnInit, OnDestroy {
+export class DetailingComponent implements OnInit,OnDestroy {
+  creditProgramm: CreditProgramm[];
+
   applicationId: number;
   claimViewDto: ClaimViewDto;
   subscriptions: Subscription = new Subscription();
@@ -37,8 +46,26 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   disabled: boolean = true;
   expandBlock: boolean = false;
   cord: any;
+  claimData:any;
   ddd: any;
   modelMap: any;
+  calculatorModel: CreditCalculatotModel = new CreditCalculatotModel();
+  creditProgrammDic: Dic[];
+  otherObjectsData: RealPropertyDto[];
+  pageable = {
+    direction: 'DESC',
+    sortBy: 'id',
+    pageNumber: 0,
+    pageSize: 5
+  };
+  calculatorFormGroup = new FormGroup({
+    firstPay: new FormControl(),
+    years: new FormControl(),
+    monthIncome: new FormControl(),
+    programmId: new FormControl(),
+    percent: new FormControl(),
+    monthPay: new FormControl()
+  });
   placemarkOptions = {
     preset: "twirl#redIcon",
     draggable: true,
@@ -56,6 +83,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
               private ownerService: OwnerService,
               private userService: UserService,
               private uploader: UploaderService,
+              private creditProgrammService: CreditProgrammService,
               private dicService: DicService,
               private notifyService: NotificationService,
               private createClaimComponent: CreateClaimComponent,
@@ -74,6 +102,10 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.dicService.getDics('YES_NO').subscribe(data => {
       this.dicDynamic = this.util.toSelectArrayOldDic(data);
     }));
+    this.otherObjectsData = [];
+
+
+    this.getCreditProgramm();
 
   }
 
@@ -132,20 +164,36 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  getApplicationsByPostcode(postcode){
+    this.ngxLoader.startBackground();
+    this.subscriptions.add(
+    this.claimService.getApplicationsByPostcode(postcode).subscribe(res => {
+      this.claimData=res;
+    })
+    );
+    this.ngxLoader.stopBackground();
+  }
+
+  formatDate(claim: any) {
+    return formatDate(claim.creationDate, 'dd.MM.yyyy', 'en-US');
+  }
+
   getApplicationById() {
 
     this.ngxLoader.startBackground();
     if (!this.util.isNullOrEmpty(this.applicationId)) {
       this.subscriptions.add(
         this.claimService.getApplicationViewById(this.applicationId).subscribe(res => {
+          console.log(res)
           this.claimViewDto = res;
+          this.getMap();
           this.claimViewDto.possibleReasonForBiddingIdList = this.util.toSelectArrayView(this.claimViewDto.possibleReasonForBiddingIdList)
           this.claimViewDto.applicationFlagIdList = this.util.toSelectArrayView(this.claimViewDto.applicationFlagIdList)
           this.claimViewDto.typeOfElevatorList = this.util.toSelectArrayView(this.claimViewDto.typeOfElevatorList)
           this.claimViewDto.parkingTypes = this.util.toSelectArrayView(this.claimViewDto.parkingTypes)
           this.claimViewDto.housingClass = this.util.toSelectArrayView(this.claimViewDto.housingClass)
           this.claimViewDto.districts = this.util.toSelectArrayView(this.claimViewDto.districts)
-          console.log(this.claimViewDto.districts)
           this.fillIsEmpty();
           this.searchByPhone(res.clientLogin);
           this.searchByLoginAgent(res.agent);
@@ -168,7 +216,10 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
               this.fillPicture(ph, 3);
             }
           }
-          this.getMap();
+          if (!this.util.isNullOrEmpty(this.claimViewDto?.postcode)) {
+              this.getApplicationsByPostcode(this.claimViewDto.postcode)
+          }
+
         }, () => this.ngxLoader.stopBackground())
       );
     }
@@ -285,18 +336,28 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   }
 
   getMap() {
+    console.log(this.claimViewDto)
     setTimeout(() => {
-      if (!this.util.isNullOrEmpty(this.modelMap)) {
+
         this.loadMap();
-      }
+
     }, 1000)
   }
 
-  loadMap() {
-    if (!this.util.isNullOrEmpty(this.claimViewDto.postcode)) {
-      let str = this.claimViewDto.fullAddress;
+  onControlLoad(event) {
+    this.modelMap = event;
+  }
 
-      this.modelMap.instance.search(str.nameRu).then(data => {
+
+  loadMap() {
+    console.log(this.claimViewDto)
+    if (!this.util.isNullOrEmpty(this.claimViewDto.fullAddress)) {
+
+
+
+      let str = this.claimViewDto.fullAddress.nameRu;
+
+      this.modelMap.instance.search(str).then(data => {
         this.ddd.geometry.setCoordinates([data.responseMetaData.SearchResponse.Point.coordinates[1], data.responseMetaData.SearchResponse.Point.coordinates[0]])
         this.claimViewDto.latitude = data.responseMetaData.SearchResponse.Point.coordinates[1];
         this.claimViewDto.longitude = data.responseMetaData.SearchResponse.Point.coordinates[0];
@@ -304,9 +365,6 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  onControlLoad(event) {
-    this.modelMap = event;
-  }
 
   onLoad(event) {
     this.cord = event.event.get('coords')
@@ -328,5 +386,92 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
     this.cord = event.instance.geometry.getCoordinates();
     event.instance.geometry.setCoordinates(this.cord);
     this.ddd = event.instance;
+  }
+
+
+  getObjectById(data: any, id: any) {
+    if (data) {
+      for (let o of data) {
+        if (o.id == id) {
+          let dto = o;
+          if (o.multiLang) {
+            dto = o.multiLang;
+          }
+          return dto;
+        }
+      }
+    }
+    return null;
+  }
+
+
+  least(e1: number, e2: number) {
+    if (e1 < e2) {
+      return e1;
+    }
+    return e2;
+  }
+
+  greatest(e1: number, e2: number) {
+    if (e1 < e2) {
+      return e2;
+    }
+    return e1;
+  }
+
+  round(x: number, n: number): number {
+    let m = Math.pow(10, n);
+    return Math.round(x * m) / m
+  }
+
+  getMonthPay() {
+    let objectPrice=null;
+    if(this.claimViewDto.objectPrice){
+      objectPrice= this.claimViewDto.objectPrice;
+    }
+
+    if (objectPrice) {
+      let selCreditProgramm: CreditProgramm = this.getObjectById(this.creditProgramm, this.calculatorModel.programmId);
+      if (selCreditProgramm) {
+        let years = this.util.nvl(this.calculatorModel?.years, 0);
+        years = this.least(years, selCreditProgramm.maxCreditPeriod);
+        years = this.greatest(years, selCreditProgramm.minCreditPeriod);
+        this.calculatorModel.years = years;
+
+        let firstPay = this.util.nvl(this.calculatorModel.firstPay, 0);
+        firstPay = this.least(firstPay, selCreditProgramm.maxDownPayment);
+        firstPay = this.greatest(firstPay, selCreditProgramm.minDownPayment);
+        this.calculatorModel.firstPay = firstPay;
+
+
+        this.calculatorModel.percent = selCreditProgramm.percent;
+
+
+        let s = objectPrice - firstPay;
+        let monthPercent = this.round(selCreditProgramm.percent / 100 / 12, 4);
+        let tmp = this.round(Math.pow(1 + monthPercent, years * 12), 3);
+        return this.greatest(this.round(s * monthPercent * tmp / (tmp - 1), 0), 0);
+      }
+    }
+    return 0;
+  }
+
+  initCalculator() {
+    this.calculatorModel = new CreditCalculatotModel();
+    if (this.creditProgramm && this.creditProgramm.length > 0) {
+      this.calculatorModel.programmId = this.creditProgramm[0].id;
+    }
+    this.calculatorModel.firstPay = 2000000;
+    this.calculatorModel.years = 10;
+  }
+
+  getCreditProgramm() {
+    this.creditProgrammService.getAll().subscribe(data => {
+      this.creditProgramm = data;
+      this.creditProgrammDic = this.util.toSelectArrayCredit(data);
+      this.initCalculator()
+    }, error1 => {
+      this.notifyService.error('Ошибка',error1.me);
+    });
   }
 }

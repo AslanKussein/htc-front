@@ -71,4 +71,11 @@ export class ClaimService {
         tap()
       );
   }
+
+  public getApplicationsByPostcode(postcode: string): Observable<any> {
+    return this.http.get(`${this.configService.apiDataManagerUrl}/api/applications/getApplicationsByPostCode/` + postcode, {})
+      .pipe(
+        tap()
+      );
+  }
 }
