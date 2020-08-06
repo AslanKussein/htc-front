@@ -65,7 +65,7 @@ export class NotificationComponent implements OnInit {
       {id: -1,multiLang: {nameRu: "Все", nameKz: "Все", nameEn: "Все"}},
       {id: 1, multiLang: {nameRu: "Прочитано", nameKz: "Прочитано", nameEn: "Прочитано"}},
       {id: 0, multiLang: {nameRu: "Новое", nameKz: "Новое", nameEn: "Новое"}}
-    ],);
+    ]);
   }
 
   toSelectArray(data, idField = 'id', labelField = this.getDicNameByLanguage()) {
