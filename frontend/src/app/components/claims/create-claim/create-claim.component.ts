@@ -847,7 +847,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     return this.application.purchaseDataDto = new ApplicationPurchaseDataDto(
       null,
       this.applicationForm.cityId,
-      this.applicationForm.districts,
+      [this.applicationForm.districts],
       this.applicationForm.mortgage,
       this.applicationForm.note,
       this.applicationForm.probabilityOfBidding,
