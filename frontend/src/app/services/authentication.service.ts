@@ -10,6 +10,8 @@ import {NotificationService} from "./notification.service";
 import {ActivatedRoute} from "@angular/router";
 import {BsModalService} from "ngx-bootstrap/modal";
 import {ProfileService} from "./profile.service";
+import {CommentService} from "./comment.service";
+import {NotificationsUtil} from "./notifications.util";
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService implements OnDestroy {
@@ -30,7 +32,8 @@ export class AuthenticationService implements OnDestroy {
               private util: Util,
               private activatedRoute: ActivatedRoute,
               private userService: UserService,
-              private notifyService: NotificationService) {
+              private notifyService: NotificationService,
+              private notificationsUtil: NotificationsUtil) {
     this.currentUserSubject = new BehaviorSubject<User>(this.util.getCurrentUser());
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -64,6 +67,7 @@ export class AuthenticationService implements OnDestroy {
               param_.id = data.id
               param_.organizationDto = data.organizationDto
               localStorage.setItem('currentUser', JSON.stringify(param_));
+              this.notificationsUtil.webSocketConnect(this.currentUserValue)
             }
           }));
           if (id == 1) {
@@ -110,6 +114,7 @@ export class AuthenticationService implements OnDestroy {
     this.currentUserSubject.next(null);
     if (!['login'].includes(this.activatedRoute.snapshot['_routerState'].url.split(";")[0].replace('/', ''))) {
       this.util.dnHref('login');
+      this.notificationsUtil.webSocketDisconnect();
       // this.util.refresh();
     }
     localStorage.setItem('action', 'logout');
