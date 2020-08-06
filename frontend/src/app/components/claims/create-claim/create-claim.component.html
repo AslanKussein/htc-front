@@ -547,6 +547,7 @@
                       </label>
                       <ng-select
                         [items]="districts"
+                        [minTermLength]="1"
                         bindValue="value"
                         [multiple]="isSell()"
                         [readonly]="isBuy()"

@@ -7,7 +7,7 @@ export class ApplicationPurchaseDataDto {
   constructor(
     public id?: number,//ID
     public cityId?: number,//ID города
-    public districts?: number,//ID района
+    public districts?: any,//ID района
     public mortgage?: boolean,//ипотека
     public note?: string,//Примечание
     public probabilityOfBidding?: boolean,//Вероятность торга

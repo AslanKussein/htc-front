@@ -10,7 +10,7 @@
           <div class="col-sm">
             <label class="form-label-v">Операция</label>
             <div>
-              <mat-button-toggle-group formControlName="operationTypeId">
+              <mat-button-toggle-group formControlName="operationTypeId" [(ngModel)]="applicationSearchForm.operationTypeId">
                 <mat-button-toggle class="operation-type"
                                    *ngFor="let item of operationType" [value]="item" [id]="item.code"
                                    [class]="item.value != applicationSearchForm.operationTypeId?.value ? 'bg-white text-dark' : ''"
