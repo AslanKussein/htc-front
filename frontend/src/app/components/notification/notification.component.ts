@@ -170,6 +170,8 @@ export class NotificationComponent implements OnInit {
                 item.notification.answer = null;
                 item.isWriteAnswer = false;
             }
+        }, err => {
+            this.notifyService.showError(err?.ru, '');
         });
     }
 }
