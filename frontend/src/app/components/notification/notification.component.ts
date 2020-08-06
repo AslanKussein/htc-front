@@ -40,6 +40,8 @@ export class NotificationComponent implements OnInit {
     dicStatus: Dic[];
     dicNotificationType: Dic[];
 
+    sending: boolean = false;
+
     content: NotificationAddresses[];
 
     constructor(
@@ -159,18 +161,24 @@ export class NotificationComponent implements OnInit {
     }
 
     answerBtnClick(item: NotificationAddresses) {
+        if (this.sending) {
+            return;
+        }
         const data: NotesDto = {
             realPropertyId: item.notification.realPropertyId,
             text: item.notification.answer,
             questionId: item.notification.notesId
         };
+        this.sending = true;
         this.commentService.saveComment(data).subscribe(res => {
+            this.sending = false;
             if (res) {
                 this.notifyService.showInfo('Ответ отправлен!', '');
                 item.notification.answer = null;
                 item.isWriteAnswer = false;
             }
         }, err => {
+            this.sending = false;
             this.notifyService.showError(err?.ru, '');
         });
     }
