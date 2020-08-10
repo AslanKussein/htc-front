@@ -12,30 +12,25 @@ import {Router} from "@angular/router";
 import {UploaderService} from "./services/uploader.service";
 import {ProfileService} from "./services/profile.service";
 import {Subscription} from "rxjs";
-import * as Stomp from '@stomp/stompjs';
-import * as SockJS from 'sockjs-client';
 import {ConfigService} from "./services/config.service";
-import {NotificationService} from "./services/notification.service";
-import {ApplicationNotificationService} from "./services/application.notification.service";
+import {NotificationsUtil} from "./services/notifications.util";
 
 
 declare var jquery: any;   // not required
 declare var $: any;   // not required
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'htc';
-  _language = language;
-  currentUser: User;
-  logo: string = '../../../assets/images/home/Лого.png';
-  subscriptions: Subscription = new Subscription();
-    private stompClient = null;
-    webSocketConnection: boolean = false;
-    notifCount: number = 0;
+    title = 'htc';
+    _language = language;
+    currentUser: User;
+    logo: string = '../../../assets/images/home/Лого.png';
+    subscriptions: Subscription = new Subscription();
+
 
     constructor(private newDicService: NewDicService,
                 private dicService: DicService,
@@ -48,8 +43,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 private configService: ConfigService,
                 private authenticationService: AuthenticationService,
                 private config: NgSelectConfig,
-                private applicationNotificationService: ApplicationNotificationService,
-                private notifyService: NotificationService) {
+                private notificationsUtil: NotificationsUtil) {
         translate.setDefaultLang(this._language.language)
         translate.use(this._language.language);
         this.localeService.use('ru');
@@ -62,10 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
-        this.webSocketConnect();
-
-
-        this.webSocketConnect()
+        this.notificationsUtil.webSocketConnect(this.authenticationService.currentUserValue);
         $(document).scroll(function () {
             let y = $(this).scrollTop();
             if (y > 600) {
@@ -86,72 +77,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscriptions.unsubscribe();
-        this.disconnect();
+        this.notificationsUtil.webSocketDisconnect();
     }
 
-    showWebSocketConnected(connected: boolean) {
-        this.webSocketConnection = connected;
-    }
-
-    webSocketConnect() {
-        let currentUser = this.authenticationService.currentUserValue;
-
-        if (this.webSocketConnection) {
-            return;
-        }
-        if (currentUser) {
-            this.getNotifCount();
-            const socket = new SockJS(this.configService.apiNotifManagerUrl + '/open-api/stomp-endpoint');
-            this.stompClient = Stomp.over(socket);
-
-            const _this = this;
-            this.stompClient.connect({}, function (frame) {
-                _this.showWebSocketConnected(true);
-                _this.stompClient.subscribe('/user/' + currentUser.login + '/topic/notification', function (hello) {
-                    _this.showNotification(JSON.parse(hello.body).greeting);
-                    _this.getNotifCount();
-                }, function () {
-                    _this.tryToConnectWebSocketAfter(20);
-                });
-
-            }, function () {
-                _this.tryToConnectWebSocketAfter(20);
-            });
-        } else {
-            this.tryToConnectWebSocketAfter(20);
-        }
-    }
-
-    tryToConnectWebSocketAfter(sec: number) {
-        this.showWebSocketConnected(false)
-        let _this = this;
-        console.log('WebSocket disconnected try connect after ' + sec + ' sec')
-        setTimeout(function () {
-            _this.webSocketConnect();
-        }, sec * 1000)
-    }
-
-    showNotification(data) {
-        this.notifyService.showSuccess(data?.messagePushup, "У вас новое уведомление");
-    }
-
-    disconnect() {
-        if (this.stompClient != null) {
-            this.stompClient.disconnect();
-        }
-
-        this.showWebSocketConnected(false);
-        console.log('Disconnected!');
-    }
-
-    getNotifCount() {
-        this.applicationNotificationService.getAllNotOpenedNotificationCount()
-            .subscribe(res => {
-                this.notifCount = res;
-            }, err => {
-                this.notifyService.showError(err, 'Ошибка');
-            });
-    }
 
     navigateTop() {
         window.scrollTo(0, 0);
