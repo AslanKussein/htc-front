@@ -890,6 +890,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   fillBuildingDto() {
+    if (this.isSell()) {
+      return
+    }
     return this.application.realPropertyDto.buildingDto = new BuildingDto(
       this.applicationForm.cityId,
       this.applicationForm.districts,
