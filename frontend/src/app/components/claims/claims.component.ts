@@ -8,7 +8,6 @@ import {NotificationService} from '../../services/notification.service';
 import {NgxUiLoaderService} from 'ngx-ui-loader';
 import {Subscription} from "rxjs";
 import {FormBuilder, Validators} from "@angular/forms";
-import {SearchCommon} from "../../models/common/search.common";
 import {Period} from "../../models/common/period";
 import {OwnerService} from "../../services/owner.service";
 import {NewDicService} from "../../services/new.dic.service";

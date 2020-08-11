@@ -825,7 +825,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
       this.setValidator('postcode', Validators.required);
       this.setValidator('postcode', Validators.required);
     }
-    if (this.applicationId) {
+    if (this.applicationId || this.existsClient) {
       this.setValidator('firstName', Validators.nullValidator);
       this.setValidator('surname', Validators.nullValidator);
       this.setValidator('phoneNumber', Validators.nullValidator);
@@ -890,6 +890,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   fillBuildingDto() {
+    if (this.isSell()) {
+      return
+    }
     return this.application.realPropertyDto.buildingDto = new BuildingDto(
       this.applicationForm.cityId,
       this.applicationForm.districts,
