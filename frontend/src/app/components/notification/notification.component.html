@@ -52,7 +52,7 @@
         <mat-button-toggle class="operation-type bg-white text-dark clear-btn" (click)="clearForm() ">
           Очистить
         </mat-button-toggle>
-        <mat-button-toggle class="operation-type color-aqua text-white search-btn" (click)="find()">
+        <mat-button-toggle class="operation-type color-aqua text-white search-btn" (click)="find(0)">
           <i aria-hidden="true" class="fa fa-search"></i>
           Поиск
         </mat-button-toggle>
@@ -111,26 +111,19 @@
     </tr>
     </tbody>
   </table>
-  <!--  <div>
-      <div>
-        <mdb-card class="app-card notification-card ">
-          <mdb-card-header>Центр уведомления</mdb-card-header>
-          <mdb-card-body>
-            <div *ngFor="let item of content">
-              <div class="d-flex justify-content">
-                <b class="card-title">
-                  {{item?.notification?.notificationType?.name}}
-                </b>
-                <span class="card-header-dat">{{item?.notification?.messageDate|date:'mm:hh dd.MM.yyyy'}}</span>
-              </div>
-              <div class="clearfix notification-message">
-                <p [innerHTML]="sanitize(item?.notification?.message)"></p>
-              </div>
-              <th>
-            </div>
-          </mdb-card-body>
-        </mdb-card>
 
-      </div>
-    </div>-->
+   <div class="pagination-wrapper">
+     <pagination [(ngModel)]="currentPage"
+                 [totalItems]="totalItems"
+                 [itemsPerPage]="pageable.pageSize"
+                 [maxSize]="10"
+                 [rotate]="true"
+                 [boundaryLinks]="true"
+                 previousText="&lsaquo;"
+                 nextText="&rsaquo;"
+                 firstText="&laquo;"
+                 lastText="&raquo;"
+                 (pageChanged)="pageChanged($event)">
+     </pagination>
+   </div>
 </div>

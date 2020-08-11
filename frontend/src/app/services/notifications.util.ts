@@ -42,7 +42,7 @@ export class NotificationsUtil {
             const _this = this;
             this.stompClient.connect({}, function (frame) {
                 _this.setWebSocketConnected(true);
-                _this.stompClient.subscribe('/user/' + currentUser.login + '/topic/notification', function (hello) {
+                _this.stompClient.subscribe('/user/' + currentUser.login.toLocaleLowerCase() + '/topic/notification', function (hello) {
                     _this.showNotification(JSON.parse(hello.body).greeting);
                     _this.getNotifCount();
                 }, function () {
