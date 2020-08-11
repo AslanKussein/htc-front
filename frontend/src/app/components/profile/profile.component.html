@@ -29,7 +29,7 @@
                 <i aria-hidden="true" class="fa fa-phone-square profile-icon" *ngIf="!save"></i>
                 <input type="text" class="form-control small" placeholder="Введите ваш номер"
                        [(ngModel)]="profile.phone" *ngIf="save" prefix="+7 " mask="(000) 000 00 00">
-                <span *ngIf="!save">{{profile.phone | mask: '0 (000) 000-0000'}}</span>
+                <span *ngIf="!save">+7 ({{profile?.phone | slice:0:3}}) {{profile?.phone | slice:3:6}} {{profile?.phone | slice:6:8}} {{profile?.phone | slice:8:10}}</span>
               </span>
               <span class="profile-info-label w-100">
                 <i aria-hidden="true" class="fa fa-envelope profile-icon" *ngIf="!save"></i>
