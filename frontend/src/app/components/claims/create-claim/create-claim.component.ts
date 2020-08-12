@@ -442,7 +442,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
 
   loadDataById(id: number) {
     this.ngxLoader.startBackground();
-
     this.subscriptions.add(this.claimService.getClaimById(id).subscribe(data => {
       if (!this.util.isNullOrEmpty(data)) {
         this.searchByPhone(data.clientLogin);
@@ -456,6 +455,11 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
         }
       }
     }));
+  }
+
+  setValue(controlName, value) {
+    this.applicationForm.controls[controlName].setValue(value);
+    this.applicationForm.controls[controlName].updateValueAndValidity();
   }
 
   setPossibleReasonForBidding() {
@@ -861,6 +865,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   fillPurchaseInfoDto() {
+    if (this.isBuy()) {
+      return
+    }
     return this.application.purchaseInfoDto = new PurchaseInfoDto(
       new Period(this.applicationForm.apartmentsOnTheSiteFrom, this.applicationForm.apartmentsOnTheSiteTo),
       new Period(this.applicationForm?.balconyAreaFrom, this.applicationForm?.balconyAreaTo),
@@ -906,6 +913,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   fillGeneralCharacteristicsDto() {
+    if (this.isSell()) {
+      return
+    }
     return this.application.realPropertyDto.generalCharacteristicsDto = new GeneralCharacteristicsDto(
       this.applicationForm.apartmentsOnTheSite,
       this.applicationForm.ceilingHeight,
@@ -967,6 +977,9 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   fillSellDataDto() {
+    if (this.isSell()) {
+      return
+    }
     return this.application.sellDataDto = new ApplicationSellDataDto(
       this.applicationForm.description, // описание
       this.applicationForm.encumbrance,
