@@ -75,7 +75,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   houseCondition: Dic[];
   countries: Dic[];
   materials: Dic[];
-  sortMaterials: Dic[] = [];
   possibleReasonForBidding: Dic[];
   possibleReasonForBiddingSort: Dic[];
   applicationForm: any;
@@ -487,23 +486,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
           m["label"] = pos["label"];
           m["code"] = pos["code"];
           this.applicationFlagSort.push(m);
-        }
-      }
-    }
-  }
-
-  setHouseOrApartmentsForMaterials() {
-    this.sortMaterials = [];
-    if (this.isApartment()) { // кв
-      this.sortMaterials = this.materials;
-    } else if (this.isHouse()) { // дом
-      for (const materials of this.materials) {
-        if (materials['code'] == 'house') {
-          let m = {};
-          m['value'] = materials['value'];
-          m['label'] = materials['label'];
-          m['code'] = materials['code'];
-          this.sortMaterials.push(m)
         }
       }
     }
