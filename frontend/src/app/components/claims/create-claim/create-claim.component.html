@@ -239,7 +239,6 @@
                                      [class.pointer-events]="this.applicationId"
                                      [items]="objectType"
                                      [(ngModel)]="applicationForm.objectTypeId"
-                                     (ngModelChange)="setHouseOrApartmentsForMaterials()"
                                      formControlName="objectTypeId">
                           </ng-select>
                           <div *ngIf="f.objectTypeId.touched && f.objectTypeId.invalid || !f.operationTypeId.valid"
@@ -1027,6 +1026,20 @@
                           placeholder="Канализация">
                         </ng-select>
                       </div>
+                      <div class="col-sm" *ngIf="isHouse()"
+                           [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
+                        <label class="form-label-v">Материал постройки</label>
+                        <ng-select
+                          [items]="materials"
+                          [(ngModel)]="applicationForm.materialOfConstructionId"
+                          [multiple]="true"
+                          appendTo="body"
+                          [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
+                          formControlName="materialOfConstructionId"
+                          bindValue="value"
+                          placeholder="Материал постройки">
+                        </ng-select>
+                      </div>
                       <div class="col-sm" *ngIf="isHouse()">
                         <label class="control-labels">Отопление</label>
                         <ng-select
@@ -1040,15 +1053,16 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-sm"
+                      <div class="col-sm" *ngIf="isApartment()"
                            [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO', 'VIEW_PURCHASE_OBJECT_INFO', 'UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])">
                         <label class="form-label-v">Материал постройки</label>
                         <ng-select
                           [items]="materials"
-                          appendTo="body"
                           [(ngModel)]="applicationForm.materialOfConstructionId"
-                          formControlName="materialOfConstructionId"
+                          [multiple]="true"
+                          appendTo="body"
                           [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
+                          formControlName="materialOfConstructionId"
                           bindValue="value"
                           placeholder="Материал постройки">
                         </ng-select>
@@ -1081,6 +1095,7 @@
                           [items]="elevatorType"
                           [(ngModel)]="applicationForm.typeOfElevatorList"
                           [multiple]="true"
+                          appendTo="body"
                           [readonly]="readonlyChooseJK && !hasShowGroup(['UPDATE_SALE_OBJECT_INFO', 'UPDATE_PURCHASE_OBJECT_INFO'])"
                           formControlName="typeOfElevatorList"
                           bindValue="value"
@@ -1162,6 +1177,8 @@
                                   maxlength="1000"></textarea>
                       </div>
                     </div>
+                    <div class="row" style="height: 30px" *ngIf="isHouse()">
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1169,6 +1186,8 @@
           </div>
         </div>
       </div>
+
+
       <div class="row " *ngIf="isBuy()">
         <div class="col-sm">
           <div class="accordion" id="accordionPhoto">
