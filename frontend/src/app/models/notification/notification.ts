@@ -8,5 +8,6 @@ export class Notification {
     message: string;
     notificationType: NotificationType;
     messageDate: Date;
-    answer: string;
+    answer: Notification;
+    questionId: number;
 }

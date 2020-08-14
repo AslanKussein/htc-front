@@ -46,11 +46,11 @@ export class NotificationsUtil {
                     _this.showNotification(JSON.parse(hello.body).greeting);
                     _this.getNotifCount();
                 }, function () {
-                    _this.tryToConnectWebSocketAfter(currentUser, this.tryToConnectSec);
+                    _this.tryToConnectWebSocketAfter(currentUser, _this.tryToConnectSec);
                 });
 
             }, function () {
-                _this.tryToConnectWebSocketAfter(currentUser, this.tryToConnectSec);
+                _this.tryToConnectWebSocketAfter(currentUser, _this.tryToConnectSec);
             });
         }
     }

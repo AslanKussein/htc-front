@@ -88,7 +88,7 @@
           <div *ngIf="item?.notification?.notificationType?.id==1">
             <div class="answer-btn-wrapper">
               <b class="answer-btn"
-                 (click)="item.isWriteAnswer=!item.isWriteAnswer"
+                 (click)="showWriteAnswer(item)"
               >Ответить
                 <i *ngIf="!item.isWriteAnswer"
                    class="fa fa-chevron-down"></i>
@@ -97,8 +97,13 @@
               </b>
             </div>
             <div *ngIf="item.isWriteAnswer" class="answer-wrapper">
-              <textarea rows="2" [(ngModel)]="item.notification.answer" placeholder="Введите текст ответа"></textarea>
-              <b (click)="answerBtnClick(item)">Отправить</b>
+              <div *ngIf="!item.notification?.answer?.id">
+                  <textarea rows="3" [(ngModel)]="item.notification.answer.message" placeholder="Введите текст ответа"></textarea>
+                  <b (click)="answerBtnClick(item)">Отправить</b>
+              </div>
+              <div *ngIf="item.notification?.answer?.id" class="answer_text">
+                  {{item.notification.answer.message}}
+              </div>
             </div>
           </div>
         </div>
