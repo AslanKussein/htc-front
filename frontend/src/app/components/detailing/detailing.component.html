@@ -786,9 +786,11 @@
                     <td>{{formatDate(claim)}}</td>
                     <td>{{claim.fullNameAgent}}</td>
                     <td>
-                      <span *ngIf="claim.phoneNumberAgent">+7 {{claim.phoneNumberAgent | mask: '(000) 000-0000'}}</span>
+                      <span *ngIf="claim.phoneNumberAgent">+7 {{claim.phoneNumberAgent | mask: '0000000000'}}</span>
                     </td>
-                    <td>{{claimrice}}</td>
+                    <td>
+                      <!--{{claim.price}}-->
+                    </td>
 
                     <td>{{claim.status.name.nameRu}}</td>
                     <td>{{claim.comment}}</td>
