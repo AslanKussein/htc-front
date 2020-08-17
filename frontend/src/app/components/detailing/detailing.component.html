@@ -396,7 +396,7 @@
            data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
         Фотографии
       </div>
-      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+      <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#headingThree">
         <div class="card-body">
           <div class="row">
             <div class="col-sm">
@@ -574,19 +574,20 @@
             </div>
             <div class="row">
               <div class="col-sm">
-                <div class="info-block">
-                  <label>Ставка вознаграждения:</label>
-                  <div>
-                    <span><b>{{getObjectById(creditProgramm, calculatorModel?.programmId)?.percent}}%</b></span>
-                  </div>
+                <div class="info-block ">
+                  <label style="font-weight: bold;font-size: 24px;">Ставка вознаграждения:</label>
+                          &nbsp;
+                    <span><b style="color: #00b2a8;font-weight: bold;font-size: 40px;">{{getObjectById(creditProgramm, calculatorModel?.programmId)?.percent}}%</b></span>
+
                 </div>
               </div>
               <div class="col-sm">
                 <div class="info-block">
-                  <label>Ежемесячный платеж (тг):</label>
-                  <div>
-                    <span><b>{{getMonthPay()| currency  :' ': 'symbol' : '1.0-0'}}</b></span>
-                  </div>
+                  <label style="font-weight: bold;font-size: 24px;">Ежемесячный платеж (тг):</label>
+                  &nbsp;
+
+                    <span><b style="color: #00b2a8;font-weight: bold;font-size: 40px;">{{getMonthPay()| currency  :' ': 'symbol' : '1.0-0'}} тг</b></span>
+
                 </div>
               </div>
 
@@ -702,37 +703,41 @@
              data-parent="#accordionObj">
           <div class="card-body" >
             <div class="row">
-              <div class="col-sm border" style="padding: 10px">
+              <div class="col-sm border" style="padding: 10px;margin: 10px">
                 <img [src]="util.generatorPreviewUrl('3c0bd76f-eab6-4d77-9341-2e8940150a49')" alt="First Slide" class="photoList center" height="180px">
                 <br/>
                 <br/>
                 <h5 class="bold">ЖК Томирис, 28 000 000 тг</h5>
                 <br/>
                 <b>1 комнатная, 68 м2, 10 из 21</b>
+                <p  style="text-align: right;color: #00b2a8;font-weight: bold; ">ДЕТАЛИ ></p>
               </div>
-              <div class="col-sm border" style="padding: 10px">
+              <div class="col-sm border" style="padding: 10px;margin: 10px">
                 <img [src]="util.generatorPreviewUrl('6e69f37d-b881-44ca-989c-45a9b41726d7')" alt="First Slide" class="photoList center" height="180px">
                 <br/>
                 <br/>
                 <h5 class="bold">ЖК Айсанам, 27 000 000 тг</h5>
                 <br/>
                 <b>1 комнатная, 60 м2, 11 из 21</b>
+                <p  style="text-align: right;color: #00b2a8;font-weight: bold; ">ДЕТАЛИ ></p>
               </div>
-              <div class="col-sm border" style="padding: 10px">
+              <div class="col-sm border" style="padding: 10px;margin: 10px">
                 <img [src]="util.generatorPreviewUrl('bf8e8daf-fb26-4dc7-97f3-e83275215771')" alt="First Slide" class="photoList center" height="180px">
                 <br/>
                 <br/>
                 <h5 class="bold">ЖК Нур-Аспан, 23 000 000 тг</h5>
                 <br/>
                 <b>1 комнатная, 54 м2, 12 из 21</b>
+                <p  style="text-align: right;color: #00b2a8;font-weight: bold; ">ДЕТАЛИ ></p>
               </div>
-              <div class="col-sm border" style="padding: 10px">
+              <div class="col-sm border" style="padding: 10px;margin: 10px">
                 <img [src]="util.generatorPreviewUrl('87d09749-e9fb-4d7c-89a6-e4d809dbc820')" alt="First Slide" class="photoList center" height="180px">
                 <br/>
                 <br/>
                 <h5 class="bold">ЖК Only Sun, 28 000 000 тг</h5>
                 <br/>
                 <b>1 комнатная, 72 м2, 14 из 21</b>
+                <p  style="text-align: right;color: #00b2a8;font-weight: bold; ">ДЕТАЛИ ></p>
               </div>
             </div>
 
@@ -765,35 +770,39 @@
             <div class="row">
               <div class="col-sm overflow-auto">
                 <table class="table table-sm">
-                  <thead class="text-center border-0 hex-blue-color">
-                  <tr style="height: 60px">
+                  <thead class="text-right border-0 hex-blue-color">
+                  <tr style="height: 60px;">
+                    <th>ID</th>
                     <th>Операция</th>
                     <th translate>claim.crDateFrom</th>
-                    <th translate>fio</th>
-                    <th width="120px" translate>Контакты</th>
                     <th translate>Цена</th>
                     <th translate>Статус</th>
                     <th translate>Комментарий</th>
-                    <th translate></th>
+                    <th translate>fio</th>
+                    <th translate>Телефон</th>
                   </tr>
                   </thead>
                   <br/>
-                  <tbody class="bg-white">
+                  <tbody class="bg-white text-right">
                   <tr *ngFor="let claim of claimData;let i = index">
 
-
+                    <td>
+                      {{claim.id}}
+                    </td>
                     <td>{{claim.operationType.name.nameRu}}</td>
                     <td>{{formatDate(claim)}}</td>
-                    <td>{{claim.fullNameAgent}}</td>
                     <td>
-                      <span *ngIf="claim.phoneNumberAgent">+7 {{claim.phoneNumberAgent | mask: '0000000000'}}</span>
+                      {{claim.price}}
                     </td>
-                    <td>
-                      <!--{{claim.price}}-->
-                    </td>
-
                     <td>{{claim.status.name.nameRu}}</td>
                     <td>{{claim.comment}}</td>
+                    <td>{{claim.fullname}}</td>
+                    <td>
+                      <span *ngIf="claim.phone">+7 {{claim.phone | mask: '0000000000'}}</span>
+                    </td>
+
+
+
                   </tr>
                   </tbody>
                 </table>

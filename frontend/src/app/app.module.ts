@@ -70,7 +70,6 @@ import { OrganizationComponent } from './components/organization/organization.co
 import { NotificationComponent } from './components/notification/notification.component';
 import {AuthGuard} from "./helpers/auth.guard";
 import { DetailingComponent } from './components/detailing/detailing.component';
-
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
 
@@ -131,6 +130,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     OrganizationComponent,
     NotificationComponent,
     DetailingComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -164,6 +164,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MDBBootstrapModule.forRoot(),
     MDBBootstrapModule.forRoot(),
     MaterialModule,
+
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

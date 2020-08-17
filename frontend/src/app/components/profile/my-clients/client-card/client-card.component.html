@@ -172,7 +172,7 @@
             <div class="col-sm">
               <div  >
                 <label class="col-sm col-form-label">Телефон<span class="text-danger">&nbsp;*</span></label>
-                  <div class="row" style="margin-left: 1px"> <input  type="text" class="col-sm form-control" name="nameEn" prefix="+" mask="0(000) 000 00 00"  [disabled]="true"
+                  <div class="row" style="margin-left: 1px"> <input  type="text" class="col-sm form-control" name="nameEn" prefix="+7" mask="(000) 000 00 00" [showMaskTyped]="true"  [disabled]="true"
                                            (input)="getDataByPhoneNumber()"
                                            [(ngModel)]="formClient.phoneNumber">
                     <a  style="margin-left: 10px" (click)="addPhoneNumber()"><i style="color:green"
