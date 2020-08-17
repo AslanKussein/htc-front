@@ -338,7 +338,7 @@
                          [(ngModel)]="claimViewDto.kitchenArea"
                          [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])"/>
                 </div>
-                <div class="col-sm">
+                <div class="col-sm" *ngIf="claimViewDto.isFlat">
                   <label class="form-label-v">Балкон</label>
                   <div class="input-group" *ngIf="claimViewDto.isSell"
                        [hidden]="hasShowGroup(['VIEW_PURCHASE_OBJECT_INFO'])">
@@ -519,7 +519,7 @@
                     [readonly]="true">
                   </ng-select>
                 </div>
-                <div class="col-sm">
+                <div class="col-sm" *ngIf="claimViewDto.isFlat">
                   <label class="form-label-v">Парковка</label>
                   <ng-select
                     [(ngModel)]="claimViewDto.parkingTypes"
