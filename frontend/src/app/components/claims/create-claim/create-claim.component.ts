@@ -520,7 +520,7 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
     if (this.applicationForm.residentialComplexId) {
       this.applicationForm.houseNumber = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.houseNumber, null);//Номер дома
       this.applicationForm.houseNumberFraction = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.houseNumberFraction, null);//номер дробь
-      this.applicationForm.districts = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.districts, null);//Район
+      this.applicationForm.districts = this.util.nvl(this.applicationForm.residentialComplexId?.buildingDto?.districtId, null);
       this.applicationForm.numberOfFloors = this.util.nvl(this.applicationForm.residentialComplexId?.numberOfFloors, null);//Этажность дома
       this.applicationForm.apartmentsOnTheSite = this.util.nvl(this.applicationForm.residentialComplexId?.apartmentsOnTheSite, null);//Кв. на площадке
       this.applicationForm.materialOfConstructionId = this.util.nvl(this.applicationForm.residentialComplexId?.materialOfConstructionId, null);//Материал
@@ -1372,8 +1372,6 @@ export class CreateClaimComponent implements OnInit, ComponentCanDeactivate, OnD
   }
 
   checkPostData() {
-    console.log(this.applicationForm.postcode)
-
     if (!this.util.isNullOrEmpty(this.applicationForm.postcode?.fullAddress)) {
       this.modelMap.instance.search(this.applicationForm.postcode?.label).then(data => {
         this.ddd.geometry.setCoordinates([data.responseMetaData.SearchResponse.Point.coordinates[1], data.responseMetaData.SearchResponse.Point.coordinates[0]])
