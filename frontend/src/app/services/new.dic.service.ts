@@ -149,6 +149,13 @@ export class NewDicService {
         catchError(NewDicService.handleError)
       );
   }
+  public getResidentialComplexesByHouseName(houseName: string): Observable<any> {
+    return this.http.get(`${this.configService.apiDataManagerUrl}/open-api/residential-complexes/byHouseName/` + houseName, {})
+      .pipe(
+        tap(),
+        catchError(NewDicService.handleError)
+      );
+  }
 
   private static handleError(error: HttpErrorResponse) {
     return throwError(

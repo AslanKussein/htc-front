@@ -48,6 +48,7 @@ export class DicControlComponent implements OnInit, OnDestroy {
   subscriptions: Subscription = new Subscription();
   kazPost: any;
   apiParam: string;
+  searchHouseName:string;
   apiPage: number = 0;
   postcode: any;
   timer: any;
@@ -208,6 +209,27 @@ export class DicControlComponent implements OnInit, OnDestroy {
       }
       this.ngxLoader.stop();
     }));
+  }
+
+  clearSearch(){
+    this.searchHouseName='';
+    this.loadResidenceComplex(1);
+  }
+
+  getByHouseName(){
+    if (this.util.isNullOrEmpty(this.searchHouseName)) {
+      this.notifyService.showError('Пожалуйста, заполните наименования ЖК', "");
+      return;
+    }
+    this.ngxLoader.start();
+    this.subscriptions.add(this.newDicService.getResidentialComplexesByHouseName(this.searchHouseName).subscribe(res => {
+      if (res != null && res.data != null) {
+        this.residentialComplexes = res.data.data;
+        this.totalItems = res.total;
+        this.currentPage = res.pageNumber + 1;
+      }
+    }));
+    this.ngxLoader.stop();
   }
 
   loadResidenceComplex(pageNo: number) {
