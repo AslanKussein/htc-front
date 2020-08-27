@@ -16,9 +16,9 @@
                 <input type="text" class="form-control" readonly
                        [value]="getDicNameByLanguage(claimViewDto, 'fullAddress')"/>
               </div>
-              <div class="col-sm" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])" *ngIf="!claimViewDto.isSell">
-                <label class="form-label-v">ЖК</label>
-                <input type="text" class="form-control" readonly
+              <div class="col-sm" [hidden]="hasShowGroup(['VIEW_SALE_OBJECT_INFO'])" *ngIf="claimViewDto.objectType.nameRu!='Частный дом'">
+                <label class="form-label-v" >ЖК</label>
+                <input type="text"  class="form-control" readonly *ngIf="!claimViewDto.isSell"
                        [(ngModel)]="claimViewDto.residenceComplex"/>
               </div>
             </div>
