@@ -64,6 +64,7 @@ export class ClaimViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    window.scrollTo(0, 0);
     this.modelMap = [];
     this.claimViewDto = new ClaimViewDto();
     this.cord = [51.12, 71.43];
