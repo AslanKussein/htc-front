@@ -64,6 +64,7 @@ export class AuthenticationService implements OnDestroy {
               param_.id = data.id
               param_.organizationDto = data.organizationDto
               localStorage.setItem('currentUser', JSON.stringify(param_));
+              localStorage.setItem('password', loginForm.value.password);
               this.notificationsUtil.webSocketConnect(this.currentUserValue)
             }
           }));
@@ -130,13 +131,8 @@ export class AuthenticationService implements OnDestroy {
     return localStorage.getItem(this.REFRESH_TOKEN);
   }
 
-  updatePassword(userId: string, passwordForm: any) {
-    const body_ = new HttpParams()
-      .set('value', passwordForm.newPassword)
-      .set('grant_type', 'password')
-      .set('client_id', this.CLIENT_ID);
-
-    return this.http.put<any>(`https://idp-htc.dilau.kz/htc/users/${userId}/reset-password`, body_.toString(), this.options)
+  updatePassword(obj: any) {
+    return this.http.put<any>(`${this.configService.apiUserManagerUrl}/api/users/pass`, obj)
       .pipe(tap());
   }
 
