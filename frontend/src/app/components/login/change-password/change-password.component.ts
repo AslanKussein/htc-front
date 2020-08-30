@@ -3,6 +3,7 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {BsModalRef} from "ngx-bootstrap/modal";
 import {AuthenticationService} from "../../../services/authentication.service";
 import {Util} from "../../../services/util";
+import {NotificationService} from "../../../services/notification.service";
 
 @Component({
   selector: 'app-change-password',
@@ -16,7 +17,8 @@ export class ChangePasswordComponent implements OnInit {
     private formBuilder: FormBuilder,
     public modalRef: BsModalRef,
     private authenticationService: AuthenticationService,
-    public util: Util
+    public util: Util,
+    private notifyService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -32,9 +34,21 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   changePassword(): void {
-    const currentUser = this.util.getCurrentUser();
-    this.authenticationService.updatePassword(currentUser?.id, this.passwordForm.value).subscribe(res => {
-      console.log('res', res);
-    })
+    if (localStorage.getItem('password') !== this.passwordForm.value.currentPassword) {
+      return this.notifyService.showError('Ошибка', 'Не правильно указано текущий пароль');
+    }
+    if (this.passwordForm.value.newPassword !== this.passwordForm.value.confirmationPassword) {
+      return this.notifyService.showError('Ошибка', 'Пароль не совпадает');
+    }
+    const obj = {
+      pass: this.passwordForm.value.newPassword
+    };
+    this.authenticationService.updatePassword(obj).subscribe(res => {
+      if (res && res.success === true) {
+        this.modalRef.hide();
+        this.notifyService.showSuccess('', 'Пароль успешно поменялся');
+        this.authenticationService.logout();
+      }
+    });
   }
 }
