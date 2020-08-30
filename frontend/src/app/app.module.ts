@@ -70,6 +70,7 @@ import { OrganizationComponent } from './components/organization/organization.co
 import { NotificationComponent } from './components/notification/notification.component';
 import {AuthGuard} from "./helpers/auth.guard";
 import { DetailingComponent } from './components/detailing/detailing.component';
+import { ChangePasswordComponent } from './components/login/change-password/change-password.component';
 registerLocaleData(localeRu, localeKz);
 defineLocale('ru', ruLocale);
 
@@ -130,6 +131,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     OrganizationComponent,
     NotificationComponent,
     DetailingComponent,
+    ChangePasswordComponent,
 
   ],
   imports: [

@@ -4,8 +4,7 @@
     <div class="bg-dark border-right" id="sidebar-wrapper" *ngIf="currentUser">
         <div class="mb-5"></div>
         <div class="row">
-            <img (click)="util.dnHref('home')" [src]="logo"
-                 style="margin: 0 auto; max-width: 200px; max-height: 180px"/>
+            <img (click)="util.dnHref('home')" [src]="logo" class="sidebar__logo"/>
         </div>
 
         <div class="list-group list-group-flush li-item-side">
@@ -68,9 +67,11 @@
                             <span class="username">{{currentUser?.surname}} {{currentUser?.name}}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" (click)="util.dnHref('profile')" translate>profile.myProfile</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" (click)="logout()" translate>profile.exit</a>
+                          <a class="dropdown-item" (click)="util.dnHref('profile')" translate>profile.myProfile</a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" (click)="openChangePassword()" translate>profile.passwordChange</a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" (click)="logout()" translate>profile.exit</a>
                         </div>
                     </li>
                 </ul>

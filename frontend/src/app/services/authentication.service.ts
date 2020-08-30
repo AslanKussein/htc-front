@@ -130,6 +130,16 @@ export class AuthenticationService implements OnDestroy {
     return localStorage.getItem(this.REFRESH_TOKEN);
   }
 
+  updatePassword(userId: string, passwordForm: any) {
+    const body_ = new HttpParams()
+      .set('value', passwordForm.newPassword)
+      .set('grant_type', 'password')
+      .set('client_id', this.CLIENT_ID);
+
+    return this.http.put<any>(`https://idp-htc.dilau.kz/htc/users/${userId}/reset-password`, body_.toString(), this.options)
+      .pipe(tap());
+  }
+
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }

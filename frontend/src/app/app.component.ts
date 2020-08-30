@@ -14,6 +14,9 @@ import {ProfileService} from "./services/profile.service";
 import {Subscription} from "rxjs";
 import {ConfigService} from "./services/config.service";
 import {NotificationsUtil} from "./services/notifications.util";
+import {LoginModalComponent} from "./components/login/login-modal/login-modal.component";
+import {ChangePasswordComponent} from "./components/login/change-password/change-password.component";
+import {BsModalService} from "ngx-bootstrap/modal";
 
 
 declare var jquery: any;   // not required
@@ -43,7 +46,8 @@ export class AppComponent implements OnInit, OnDestroy {
                 private configService: ConfigService,
                 private authenticationService: AuthenticationService,
                 private config: NgSelectConfig,
-                private notificationsUtil: NotificationsUtil) {
+                private notificationsUtil: NotificationsUtil,
+                private modalService: BsModalService) {
         translate.setDefaultLang(this._language.language)
         translate.use(this._language.language);
         this.localeService.use('ru');
@@ -73,6 +77,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
     logout() {
         this.authenticationService.logout();
+    }
+
+    openChangePassword() {
+      this.modalService.show(ChangePasswordComponent, {
+        class: 'modal-md',
+        initialState: {
+          centered: true
+        }
+      });
     }
 
     ngOnDestroy() {
