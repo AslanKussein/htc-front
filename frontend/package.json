@@ -1,6 +1,6 @@
 {
   "name": "htc",
-  "version": "0.0.35",
+  "version": "0.0.37",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config  proxy.conf.json --host htc.dilau.kz --port 80",
@@ -59,7 +59,7 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.1000.7",
+    "@angular-devkit/build-angular": "~0.900.6",
     "@angular/cli": "^9.1.4",
     "@angular/compiler-cli": "~9.1.12",
     "@angular/language-service": "~9.1.12",
