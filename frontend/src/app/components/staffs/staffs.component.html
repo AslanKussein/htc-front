@@ -116,7 +116,7 @@
   <div class="modal-body">
     <div class="col-sm">
       <label class="col-sm col-form-label">Login<span class="text-danger">&nbsp;*</span></label>
-      <input type="text" [disabled]="isEdit" class="col-sm form-control" name="Username"  prefix="+7 " mask='0000000000' [showMaskTyped]="true"
+      <input type="text" [disabled]="isEdit" class="col-sm form-control" name="Username"  prefix="+7" mask=' 0000000000' [showMaskTyped]="true" placeHolderCharacter="0"
              [(ngModel)]="formData.login">
     </div>
     <div class="col-sm" *ngIf="!isEdit">

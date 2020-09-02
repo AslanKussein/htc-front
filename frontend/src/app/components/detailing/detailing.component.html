@@ -787,7 +787,7 @@
                   <tr *ngFor="let claim of claimData;let i = index">
 
                     <td>
-                      {{claim.id}}
+                      <a [routerLink]="['/create-claim-view/', claim?.id]">{{claim.id}}</a>
                     </td>
                     <td>{{claim.operationType.name.nameRu}}</td>
                     <td>{{formatDate(claim)}}</td>
