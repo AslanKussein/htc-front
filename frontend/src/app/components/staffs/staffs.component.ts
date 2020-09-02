@@ -6,6 +6,7 @@ import {StaffService} from "../../services/staff.service";
 import {NotificationService} from "../../services/notification.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {Subscription} from "rxjs";
+import {language} from "../../../environments/language";
 
 @Component({
   selector: 'app-staffs',
@@ -60,7 +61,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
   loading;
   totalItems = 0;
   itemsPerPage = 10;
-  currentPage = 1;
+  currentPage = 0;
 
   pageChanged(event: any): void {
     if (this.currentPage !== event.page) {
@@ -117,27 +118,33 @@ export class StaffsComponent implements OnInit, OnDestroy {
     this.loading = true;
     searchFilter['pageNumber'] = pageNo;
     searchFilter['pageSize'] = this.itemsPerPage;
-    this.subscriptions.add(this.staffService.getUserList().subscribe(res => {
+    searchFilter['direction'] = "ASC";
+    searchFilter['sortBy'] = "id";
+    searchFilter['locale'] = String(language.language).toUpperCase();
+    this.subscriptions.add(this.staffService.getUserList(searchFilter).subscribe(res => {
       if (res != null) {
-        res.data.forEach(u=> {
-          let obj = {};
-          if (!this.util.isNullOrEmpty(u.photoUuid)) {
-            obj['ava'] = this.util.generatorPreviewUrl(u.photoUuid);
-          } else {
-            obj['info'] = u.name.substr(0, 1) + ' ' + u.surname.substr(0, 1);
-          }
-          obj['id'] = u.id;
-          obj['phone'] = u.phone;
-          obj['email'] = u.email;
-          obj['roles'] = u.roles;
-          obj['group'] = u.group;
-          obj['isActive'] = u.isActive;
-          obj['login'] = u.login;
-          obj['name'] = u.name;
-          obj['organizationId'] = u.organizationId;
-          obj['surname'] = u.surname;
-          this.users.push(obj);
-        });
+
+          // let obj = {};
+          // if (!this.util.isNullOrEmpty(u.photoUuid)) {
+          //   obj['ava'] = this.util.generatorPreviewUrl(u.photoUuid);
+          // } else {
+          //   obj['info'] = u.name.substr(0, 1) + ' ' + u.surname.substr(0, 1);
+          // }
+          // obj['id'] = u.id;
+          // obj['phone'] = u.phone;
+          // obj['email'] = u.email;
+          // obj['roles'] = u.roles;
+          // obj['group'] = u.group;
+          // obj['isActive'] = u.isActive;
+          // obj['login'] = u.login;
+          // obj['name'] = u.name;
+          // obj['organizationId'] = u.organizationId;
+          // obj['surname'] = u.surname;
+          // this.users.push(obj);
+         this.users=res.content;
+
+        this.totalItems = res.totalElements;
+        this.currentPage = res.pageable.pageNumber + 1;
       }
     }));
     this.loading = false;

@@ -16,10 +16,10 @@ export class StaffService {
               private http: HttpClient) {
   }
 
-  getUserList(): Observable<any> {
+  getUserList(search: any): Observable<any> {
     let params = new HttpParams();
     params = params.append('locale', String(language.language));
-    return this.http.get<any>(`${this.configService.apiUserManagerUrl}/api/users`, {params});
+    return this.http.post<any>(`${this.configService.apiUserManagerUrl}/api/users/list`, search);
   }
 
   getUserById(obj): Observable<any> {
