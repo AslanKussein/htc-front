@@ -54,14 +54,14 @@ export class StaffsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.ngxLoader.startBackground();
     this.loadDictionary();
-    this.findObjects(1);
+    this.findObjects(0);
   }
 
   users = [];
   loading;
   totalItems = 0;
   itemsPerPage = 10;
-  currentPage = 0;
+  currentPage = 1;
 
   pageChanged(event: any): void {
     if (this.currentPage !== event.page) {
@@ -144,7 +144,7 @@ export class StaffsComponent implements OnInit, OnDestroy {
          this.users=res.content;
 
         this.totalItems = res.totalElements;
-        this.currentPage = res.pageable.pageNumber + 1;
+        this.currentPage = res.pageable.pageNumber;
       }
     }));
     this.loading = false;
